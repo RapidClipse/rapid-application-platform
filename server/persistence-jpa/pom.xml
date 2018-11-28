@@ -29,8 +29,8 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>rap-server-persistence-hibernate</artifactId>
-	<name>XDEV Rapid Application Platform - Server - Persistence - Hibernate</name>
+	<artifactId>rap-server-persistence-jpa</artifactId>
+	<name>XDEV Rapid Application Platform - Server - Persistence - JPA</name>
 
 	<properties>
 		<rootDir>../..</rootDir>

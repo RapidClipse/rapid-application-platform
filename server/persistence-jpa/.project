@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>rap-server-persistence-hibernate</name>
+	<name>rap-server-persistence-jpa</name>
 	<comment></comment>
 	<projects>
 	</projects>
