@@ -39,9 +39,27 @@ import com.vaadin.flow.server.VaadinSessionState;
  * @author XDEV Software
  * @since 1.2
  */
-public final class Conversationables implements Serializable
+public interface Conversationables extends Serializable
 {
-	public final static Conversationables getCurrent()
+	public Conversationables put(String persistenceUnit, Conversationable conversation);
+	
+	
+	public Conversationable remove(String persistenceUnit);
+	
+	
+	public Conversationable get(String persistenceUnit);
+	
+	
+	public void forEach(Consumer<Conversationable> consumer);
+	
+	
+	public void closeAll();
+	
+	
+	public void close(Conversationable conversationable);
+	
+	
+	public static Conversationables getCurrent()
 	{
 		final Conversationables conversationables = CurrentInstance.get(Conversationables.class);
 		if(conversationables != null)
@@ -57,86 +75,105 @@ public final class Conversationables implements Serializable
 		
 		return null;
 	}
-
-	private transient Map<String, Conversationable> unitToConversationable;
-
-
-	public Conversationables()
+	
+	
+	public static Conversationables New()
 	{
+		return new Implementation();
 	}
-
-
-	private Map<String, Conversationable> unitToConversationable()
+	
+	
+	
+	public static class Implementation implements Conversationables
 	{
-		if(this.unitToConversationable == null)
+		private transient Map<String, Conversationable> unitToConversationable;
+		
+		
+		public Implementation()
 		{
-			this.unitToConversationable = new LinkedHashMap<>();
+			super();
 		}
-		return this.unitToConversationable;
-	}
-
-
-	public Conversationables put(final String persistenceUnit, final Conversationable conversation)
-	{
-		unitToConversationable().put(persistenceUnit,conversation);
-		return this;
-	}
-
-
-	public Conversationable remove(final String persistenceUnit)
-	{
-		return unitToConversationable().remove(persistenceUnit);
-	}
-
-
-	public Conversationable get(final String persistenceUnit)
-	{
-		return unitToConversationable().get(persistenceUnit);
-	}
-
-
-	public void forEach(final Consumer<Conversationable> consumer)
-	{
-		unitToConversationable().values().forEach(consumer);
-	}
-
-
-	public void closeAll()
-	{
-		unitToConversationable().values().forEach(this::close);
-	}
-
-
-	public void close(final Conversationable conversationable)
-	{
-		final EntityManager em = conversationable.getEntityManager();
-		if(em != null && em.isOpen())
+		
+		
+		private Map<String, Conversationable> unitToConversationable()
 		{
-			final EntityTransaction transaction = em.getTransaction();
-			if(transaction != null && transaction.isActive())
+			if(this.unitToConversationable == null)
 			{
+				this.unitToConversationable = new LinkedHashMap<>();
+			}
+			return this.unitToConversationable;
+		}
+		
+		
+		@Override
+		public Conversationables put(final String persistenceUnit,
+				final Conversationable conversation)
+		{
+			unitToConversationable().put(persistenceUnit,conversation);
+			return this;
+		}
+		
+		
+		@Override
+		public Conversationable remove(final String persistenceUnit)
+		{
+			return unitToConversationable().remove(persistenceUnit);
+		}
+		
+		
+		@Override
+		public Conversationable get(final String persistenceUnit)
+		{
+			return unitToConversationable().get(persistenceUnit);
+		}
+		
+		
+		@Override
+		public void forEach(final Consumer<Conversationable> consumer)
+		{
+			unitToConversationable().values().forEach(consumer);
+		}
+		
+		
+		@Override
+		public void closeAll()
+		{
+			unitToConversationable().values().forEach(this::close);
+		}
+		
+		
+		@Override
+		public void close(final Conversationable conversationable)
+		{
+			final EntityManager em = conversationable.getEntityManager();
+			if(em != null && em.isOpen())
+			{
+				final EntityTransaction transaction = em.getTransaction();
+				if(transaction != null && transaction.isActive())
+				{
+					try
+					{
+						transaction.commit();
+					}
+					catch(final RollbackException e)
+					{
+						if(transaction.isActive())
+						{
+							transaction.rollback();
+						}
+					}
+				}
+				
 				try
 				{
-					transaction.commit();
+					em.close();
 				}
-				catch(final RollbackException e)
+				catch(final Exception e)
 				{
-					if(transaction.isActive())
+					if(transaction != null && transaction.isActive())
 					{
 						transaction.rollback();
 					}
-				}
-			}
-
-			try
-			{
-				em.close();
-			}
-			catch(final Exception e)
-			{
-				if(transaction != null && transaction.isActive())
-				{
-					transaction.rollback();
 				}
 			}
 		}

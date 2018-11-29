@@ -40,8 +40,8 @@ public class ConversationExtension implements RapServletService.Extension
 	{
 		super();
 	}
-
-
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -49,10 +49,10 @@ public class ConversationExtension implements RapServletService.Extension
 	public void sessionCreated(final RapServletService service, final VaadinSession session,
 			final VaadinRequest request)
 	{
-		session.setAttribute(Conversationables.class,new Conversationables());
+		session.setAttribute(Conversationables.class,Conversationables.New());
 	}
-
-
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -70,8 +70,8 @@ public class ConversationExtension implements RapServletService.Extension
 			}
 		}
 	}
-
-
+	
+	
 	/**
 	 * {@inheritDoc}
 	 */

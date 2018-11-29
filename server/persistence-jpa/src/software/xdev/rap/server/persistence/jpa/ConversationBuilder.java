@@ -36,19 +36,19 @@ import com.vaadin.flow.shared.Registration;
  * @author XDEV Software
  *
  */
-public abstract class ConversationBuilder
+public interface ConversationBuilder
 {
-	public static UIBoundConversationBuilder uiBound(final UI ui)
+	public static UIBoundConversationBuilder UIBound(final UI ui)
 	{
 		return new UIBoundConversationBuilder(ui);
 	}
-
-
-	public abstract Conversation startConversation();
-
-
-
-	public static class UIBoundConversationBuilder extends ConversationBuilder
+	
+	
+	public Conversation startConversation();
+	
+	
+	
+	public static class UIBoundConversationBuilder implements ConversationBuilder
 	{
 		private final UI							ui;
 		private String								persistenceUnit;
@@ -57,21 +57,21 @@ public abstract class ConversationBuilder
 		private List<String>						allowedNavigationViews;
 		private ComponentEventListener<DetachEvent>	detachListener;
 		private List<Registration>					detachRegistrations;
-
-
+		
+		
 		public UIBoundConversationBuilder(final UI ui)
 		{
 			this.ui = ui;
 		}
-
-
+		
+		
 		public UIBoundConversationBuilder persistenceUnit(final String persistenceUnit)
 		{
 			this.persistenceUnit = persistenceUnit;
 			return this;
 		}
-
-
+		
+		
 		public UIBoundConversationBuilder endOnDetach(final Component... components)
 		{
 			if(this.detachListener == null)
@@ -79,16 +79,16 @@ public abstract class ConversationBuilder
 				this.detachListener = event -> endConversation();
 				this.detachRegistrations = new ArrayList<>();
 			}
-
+			
 			for(final Component c : components)
 			{
 				this.detachRegistrations.add(c.addDetachListener(this.detachListener));
 			}
-
+			
 			return this;
 		}
-
-
+		
+		
 		public UIBoundConversationBuilder endOnNavigateOut(final String... views)
 		{
 			if(this.allowedNavigationViews == null)
@@ -99,26 +99,26 @@ public abstract class ConversationBuilder
 			{
 				this.allowedNavigationViews.add(view);
 			}
-
+			
 			if(this.afterNavigationListener == null)
 			{
 				this.afterNavigationListener = event -> {
-
+					
 					final String path = event.getLocation().getPath();
 					if(!this.allowedNavigationViews.contains(path))
 					{
 						endConversation();
 					}
 				};
-
+				
 				this.afterNavigationRegistration = this.ui
 						.addAfterNavigationListener(this.afterNavigationListener);
 			}
-
+			
 			return this;
 		}
-
-
+		
+		
 		private void endConversation()
 		{
 			if(this.detachListener != null)
@@ -128,7 +128,7 @@ public abstract class ConversationBuilder
 				this.detachRegistrations = null;
 				this.detachListener = null;
 			}
-
+			
 			if(this.afterNavigationListener != null)
 			{
 				this.afterNavigationRegistration.remove();
@@ -137,7 +137,7 @@ public abstract class ConversationBuilder
 				this.allowedNavigationViews = null;
 				this.afterNavigationListener = null;
 			}
-
+			
 			if(this.persistenceUnit != null)
 			{
 				ConversationUtils.endConversation(this.persistenceUnit);
@@ -147,8 +147,8 @@ public abstract class ConversationBuilder
 				ConversationUtils.endConversation();
 			}
 		}
-
-
+		
+		
 		@Override
 		public Conversation startConversation()
 		{
@@ -156,7 +156,7 @@ public abstract class ConversationBuilder
 			{
 				return ConversationUtils.startConversation(this.persistenceUnit);
 			}
-
+			
 			return ConversationUtils.startConversation();
 		}
 	}
