@@ -21,9 +21,13 @@
 package software.xdev.rap.server;
 
 
+import java.util.function.Supplier;
+
 import javax.servlet.ServletContext;
 
 import org.apache.commons.lang3.StringUtils;
+
+import com.vaadin.flow.server.VaadinSession;
 
 import software.xdev.rap.server.concurrent.RapExecutorService;
 
@@ -36,8 +40,8 @@ public final class Rap
 {
 	private static RapExecutorService		executorService;
 	private static ContentSecurityPolicy	contentSecurityPolicy;
-
-
+	
+	
 	/**
 	 * @return the executorService
 	 */
@@ -50,8 +54,8 @@ public final class Rap
 		}
 		return executorService;
 	}
-
-
+	
+	
 	private static RapExecutorService createXdevExecutorService(final ServletContext context)
 	{
 		final String className = context
@@ -69,11 +73,11 @@ public final class Rap
 				throw new RuntimeException(t);
 			}
 		}
-
+		
 		return new RapExecutorService.Implementation(context);
 	}
-
-
+	
+	
 	/**
 	 * @return the contentSecurityPolicy
 	 */
@@ -81,8 +85,8 @@ public final class Rap
 	{
 		return contentSecurityPolicy;
 	}
-
-
+	
+	
 	/**
 	 * @param contentSecurityPolicy
 	 *            the contentSecurityPolicy to set
@@ -91,8 +95,25 @@ public final class Rap
 	{
 		Rap.contentSecurityPolicy = contentSecurityPolicy;
 	}
-
-
+	
+	
+	public static <T> T sessionBoundInstance(final Class<T> type, final Supplier<T> instantiator)
+	{
+		final VaadinSession session = VaadinSession.getCurrent();
+		if(session == null)
+		{
+			return null;
+		}
+		T instance = session.getAttribute(type);
+		if(instance == null)
+		{
+			instance = instantiator.get();
+			session.setAttribute(type,instance);
+		}
+		return instance;
+	}
+	
+	
 	private Rap()
 	{
 		throw new Error();

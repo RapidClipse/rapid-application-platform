@@ -22,12 +22,11 @@ package software.xdev.rap.server.navigation;
 
 
 import static java.util.Objects.requireNonNull;
+import static software.xdev.rap.server.Rap.sessionBoundInstance;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import com.vaadin.flow.server.VaadinSession;
 
 
 /**
@@ -37,53 +36,46 @@ import com.vaadin.flow.server.VaadinSession;
 public interface NavigationParameterRegistry
 {
 	public String put(final NavigationParameters parameters);
-	
-	
+
+
 	public NavigationParameters get(final String id);
-	
-	
+
+
 	public static NavigationParameterRegistry getCurrent()
 	{
-		final VaadinSession session = VaadinSession.getCurrent();
-		return session != null ? session.getAttribute(NavigationParameterRegistry.class) : null;
+		return sessionBoundInstance(NavigationParameterRegistry.class,Implementation::new);
 	}
-	
-	
-	public static NavigationParameterRegistry New()
-	{
-		return new Implementation();
-	}
-	
-	
-	
+
+
+
 	public static class Implementation implements NavigationParameterRegistry
 	{
 		private final Map<String, NavigationParameters> map = new HashMap<>();
-		
-		
+
+
 		public Implementation()
 		{
 			super();
 		}
-		
-		
+
+
 		@Override
 		public synchronized String put(final NavigationParameters parameters)
 		{
 			requireNonNull(parameters);
-			
+
 			String id = null;
 			while(id == null || this.map.containsKey(id))
 			{
 				id = UUID.randomUUID().toString();
 			}
-			
+
 			this.map.put(id,parameters);
-			
+
 			return id;
 		}
-		
-		
+
+
 		@Override
 		public synchronized NavigationParameters get(final String id)
 		{
