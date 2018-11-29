@@ -18,65 +18,28 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.ui.navigation;
+package software.xdev.rap.server;
 
 
-import static java.util.Objects.requireNonNull;
-
-import java.util.Arrays;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
+ *
  * @author XDEV Software
  *
+ * @see ServiceLoader
+ *
  */
-public final class UrlParameterKey
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ServicePriority
 {
-	private final Class<?>	viewType;
-	private final String	name;
-	private final int		hash;
+	public final static int DEFAULT = 0;
 
 
-	/**
-	 * @param viewType
-	 * @param name
-	 */
-	public UrlParameterKey(final Class<?> viewType, final String name)
-	{
-		super();
-		this.viewType = requireNonNull(viewType);
-		this.name = requireNonNull(name);
-		this.hash = Arrays.hashCode(new Object[]{viewType,name});
-	}
-
-
-	public Class<?> viewType()
-	{
-		return this.viewType;
-	}
-
-
-	public String name()
-	{
-		return this.name;
-	}
-
-
-	@Override
-	public int hashCode()
-	{
-		return this.hash;
-	}
-
-
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if(this == obj)
-		{
-			return true;
-		}
-
-		return obj instanceof UrlParameterKey && this.hash == ((UrlParameterKey)obj).hash;
-	}
+	public int value() default DEFAULT;
 }

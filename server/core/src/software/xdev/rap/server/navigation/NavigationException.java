@@ -18,21 +18,61 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.ui.navigation;
-
-
-import com.vaadin.flow.router.BeforeEvent;
+package software.xdev.rap.server.navigation;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface HasUrlParameter extends com.vaadin.flow.router.HasUrlParameter<String>
+public class NavigationException extends RuntimeException
 {
-	@Override
-	default void setParameter(final BeforeEvent event, final String parameter)
+	/**
+	 *
+	 */
+	public NavigationException()
 	{
+		super();
+	}
 
+
+	/**
+	 * @param message
+	 * @param cause
+	 * @param enableSuppression
+	 * @param writableStackTrace
+	 */
+	public NavigationException(final String message, final Throwable cause,
+			final boolean enableSuppression, final boolean writableStackTrace)
+	{
+		super(message,cause,enableSuppression,writableStackTrace);
+	}
+
+
+	/**
+	 * @param message
+	 * @param cause
+	 */
+	public NavigationException(final String message, final Throwable cause)
+	{
+		super(message,cause);
+	}
+
+
+	/**
+	 * @param message
+	 */
+	public NavigationException(final String message)
+	{
+		super(message);
+	}
+
+
+	/**
+	 * @param cause
+	 */
+	public NavigationException(final Throwable cause)
+	{
+		super(cause);
 	}
 }

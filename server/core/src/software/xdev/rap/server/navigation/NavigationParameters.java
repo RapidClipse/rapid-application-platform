@@ -18,30 +18,57 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.annotations;
+package software.xdev.rap.server.navigation;
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import static java.util.Collections.unmodifiableMap;
+import static java.util.Objects.requireNonNull;
 
-import software.xdev.rap.server.ServiceLoader;
+import java.util.Map;
 
 
 /**
- *
  * @author XDEV Software
  *
- * @see ServiceLoader
- *
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ServicePriority
+public interface NavigationParameters
 {
-	public final static int DEFAULT = 0;
+	public Iterable<String> names();
+	
+	
+	public Object value(final String name);
+	
+	
+	public static NavigationParameters New(final Map<String, Object> mapping)
+	{
+		return new Implementation(mapping);
+	}
 
 
-	public int value() default DEFAULT;
+
+	public static class Implementation implements NavigationParameters
+	{
+		private final Map<String, Object> mapping;
+		
+		
+		public Implementation(final Map<String, Object> mapping)
+		{
+			super();
+			this.mapping = unmodifiableMap(requireNonNull(mapping));
+		}
+		
+		
+		@Override
+		public Iterable<String> names()
+		{
+			return this.mapping.keySet();
+		}
+		
+		
+		@Override
+		public Object value(final String name)
+		{
+			return this.mapping.get(name);
+		}
+	}
 }

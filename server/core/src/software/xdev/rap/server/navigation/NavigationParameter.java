@@ -18,44 +18,27 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.ui.navigation;
+package software.xdev.rap.server.navigation;
 
 
-import java.util.HashMap;
-import java.util.Map;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Inherited;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
  * @author XDEV Software
  *
  */
-public final class UrlParameterRegistry
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ElementType.FIELD,ElementType.METHOD})
+@Inherited
+public @interface NavigationParameter
 {
-	private final Map<UrlParameterKey, Object> map = new HashMap<>();
-	
-	
-	public UrlParameterRegistry()
-	{
-		super();
-	}
-	
-	
-	public UrlParameterRegistry put(final UrlParameterKey key, final Object value)
-	{
-		this.map.put(key,value);
-		
-		return this;
-	}
-	
-	
-	public Object get(final UrlParameterKey key)
-	{
-		return this.map.get(key);
-	}
-	
-	
-	public void removeAll(final Class<?> viewType)
-	{
-		this.map.keySet().removeIf(key -> key.viewType().equals(viewType));
-	}
+	String name() default "";
+
+
+	boolean optional() default false;
 }
