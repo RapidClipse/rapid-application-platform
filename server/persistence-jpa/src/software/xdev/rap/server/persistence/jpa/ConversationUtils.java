@@ -32,22 +32,22 @@ import javax.persistence.LockModeType;
  * @author XDEV Software
  *
  */
-public class ConversationUtils
+public final class ConversationUtils
 {
 	public static Conversation getConversation()
 	{
 		return getConversation(Jpa.getPersistenceManager().getDefaultPersistenceUnit());
 	}
-
-
+	
+	
 	public static Conversation getConversation(final String persistenceUnit)
 	{
 		final Conversationable conversationable = Conversationables.getCurrent()
 				.get(persistenceUnit);
 		return conversationable != null ? conversationable.getConversation() : null;
 	}
-
-
+	
+	
 	private static Conversation newConversation(final String persistenceUnit)
 	{
 		final Conversationable conversationable = Conversationables.getCurrent()
@@ -55,7 +55,7 @@ public class ConversationUtils
 		if(conversationable != null)
 		{
 			final Conversation conversation = new Conversation.Implementation();
-
+			
 			try
 			{
 				conversationable.setConversation(conversation);
@@ -64,20 +64,20 @@ public class ConversationUtils
 			{
 				return conversationable.getConversation();
 			}
-
+			
 			return conversation;
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	public static Conversation startConversation()
 	{
 		return startConversation(Jpa.getPersistenceManager().getDefaultPersistenceUnit());
 	}
-
-
+	
+	
 	public static Conversation startConversation(final String persistenceUnit)
 	{
 		final Conversation conversation = newConversation(persistenceUnit);
@@ -87,27 +87,27 @@ public class ConversationUtils
 		}
 		return conversation;
 	}
-
-
+	
+	
 	public static void startPessimisticConversation()
 	{
 		startPessimisticConversation(LockModeType.WRITE);
 	}
-
-
+	
+	
 	public static void startPessimisticConversation(final String persistenceUnit)
 	{
 		startPessimisticConversation(persistenceUnit,LockModeType.WRITE);
 	}
-
-
+	
+	
 	public static Conversation startPessimisticConversation(final LockModeType lockMode)
 	{
 		return startPessimisticConversation(Jpa.getPersistenceManager().getDefaultPersistenceUnit(),
 				lockMode);
 	}
-
-
+	
+	
 	public static Conversation startPessimisticConversation(final String persistenceUnit,
 			final LockModeType lockMode)
 	{
@@ -119,8 +119,8 @@ public class ConversationUtils
 		}
 		return conversation;
 	}
-
-
+	
+	
 	public static void lockConversation(final Object entity)
 	{
 		final String persistenceUnit = Jpa.getPersistenceManager()
@@ -136,8 +136,8 @@ public class ConversationUtils
 			}
 		}
 	}
-
-
+	
+	
 	public static void lockConversation(final Object entity, final Map<String, Object> properties)
 	{
 		final String persistenceUnit = Jpa.getPersistenceManager()
@@ -154,14 +154,14 @@ public class ConversationUtils
 			}
 		}
 	}
-
-
+	
+	
 	public static void releaseConversationLock()
 	{
 		releaseConversationLock(Jpa.getPersistenceManager().getDefaultPersistenceUnit());
 	}
-
-
+	
+	
 	public static void releaseConversationLock(final String persistenceUnit)
 	{
 		final EntityManager em = Jpa.getEntityManager(persistenceUnit);
@@ -174,8 +174,8 @@ public class ConversationUtils
 			}
 		}
 	}
-
-
+	
+	
 	public static void endConversation()
 	{
 		final Conversation conversation = getConversation();
@@ -184,8 +184,8 @@ public class ConversationUtils
 			conversation.end();
 		}
 	}
-
-
+	
+	
 	public static void endConversation(final String persistenceUnit)
 	{
 		final Conversation conversation = getConversation(persistenceUnit);
@@ -194,8 +194,8 @@ public class ConversationUtils
 			conversation.end();
 		}
 	}
-
-
+	
+	
 	public static boolean isConversationActive()
 	{
 		final Conversation conversation = getConversation();
@@ -205,8 +205,8 @@ public class ConversationUtils
 		}
 		return false;
 	}
-
-
+	
+	
 	public static boolean isConversationActive(final String persistenceUnit)
 	{
 		final Conversation conversation = getConversation(persistenceUnit);
@@ -215,5 +215,11 @@ public class ConversationUtils
 			return conversation.isActive();
 		}
 		return false;
+	}
+
+
+	private ConversationUtils()
+	{
+		throw new Error();
 	}
 }

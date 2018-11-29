@@ -42,10 +42,6 @@ import com.vaadin.flow.router.BeforeEvent;
  */
 final class NavigationUtils
 {
-	private NavigationUtils()
-	{
-	}
-
 	public static String ID_PARAMETER_NAME = "_";
 
 
@@ -126,8 +122,7 @@ final class NavigationUtils
 	{
 		try
 		{
-			final NavigationParameterRegistry registry = NavigationParameterRegistry
-					.get(event.getUI().getSession());
+			final NavigationParameterRegistry registry = NavigationParameterRegistry.getCurrent();
 			final NavigationParameters mapping = registry.get(event.getLocation()
 					.getQueryParameters().getParameters().get(ID_PARAMETER_NAME).get(0));
 			final NavigationParametersMetadata metadata = NavigationParametersMetadata
@@ -159,5 +154,11 @@ final class NavigationUtils
 		{
 			throw new NavigationException(e);
 		}
+	}
+
+
+	private NavigationUtils()
+	{
+		throw new Error();
 	}
 }

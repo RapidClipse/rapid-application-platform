@@ -18,23 +18,25 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.navigation;
 
 
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinSession;
+
+import software.xdev.rap.server.RapServletService;
 
 
 /**
  * @author XDEV Software
  *
  */
-public class ClientInfoExtension implements RapServletService.Extension
+public class NavigationParameterRegistryExtension implements RapServletService.Extension
 {
 	@Override
 	public void sessionCreated(final RapServletService service, final VaadinSession session,
 			final VaadinRequest request)
 	{
-		session.setAttribute(ClientInfo.class,ClientInfo.New(request));
+		session.setAttribute(NavigationParameterRegistry.class,NavigationParameterRegistry.New());
 	}
 }

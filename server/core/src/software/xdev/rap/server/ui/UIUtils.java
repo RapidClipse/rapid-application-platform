@@ -35,11 +35,6 @@ import com.vaadin.flow.component.HasComponents;
  */
 public final class UIUtils
 {
-	private UIUtils()
-	{
-	}
-	
-	
 	public static <T> T getNextParent(final Component c, final Class<T> type)
 	{
 		Component parent = c;
@@ -49,14 +44,14 @@ public final class UIUtils
 			{
 				return type.cast(parent);
 			}
-
+			
 			parent = parent.getParent().orElse(null);
 		}
-
+		
 		return null;
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param parent
@@ -67,8 +62,8 @@ public final class UIUtils
 	{
 		lookupComponentTree(parent,toFunction(visitor));
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param parent
@@ -80,8 +75,8 @@ public final class UIUtils
 	{
 		lookupComponentTree(parent,toFunction(visitor),type);
 	}
-	
-	
+
+
 	private static <C extends Component, T> Function<C, T> toFunction(final Consumer<C> consumer)
 	{
 		return c -> {
@@ -89,8 +84,8 @@ public final class UIUtils
 			return null;
 		};
 	}
-	
-	
+
+
 	/**
 	 * Shortcut for <code>lookupComponentTree(parent,visitor,null)</code>.
 	 *
@@ -103,14 +98,14 @@ public final class UIUtils
 	 * @return
 	 * @see #lookupComponentTree(Component, Function, Class)
 	 */
-	
+
 	public static <T> T lookupComponentTree(final Component parent,
 			final Function<Component, T> visitor)
 	{
 		return lookupComponentTree(parent,visitor,null);
 	}
-	
-	
+
+
 	/**
 	 * Walks through the <code>parent</code>'s component tree hierarchy.
 	 * <p>
@@ -135,28 +130,28 @@ public final class UIUtils
 	 * @return
 	 * @see {@link ComponentTreeVisitor}
 	 */
-	
+
 	@SuppressWarnings("unchecked")
 	public static <C extends Component, T> T lookupComponentTree(final Component parent,
 			final Function<C, T> visitor, final Class<C> type)
 	{
 		T value = null;
-		
+
 		if(type == null || type.isInstance(parent))
 		{
 			value = visitor.apply((C)parent);
 		}
-		
+
 		if(value == null)
 		{
 			value = parent.getChildren().map(child -> traverse(child,visitor,type))
 					.filter(Objects::nonNull).findFirst().orElse(null);
 		}
-		
+
 		return value;
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	private static <C extends Component, T> T traverse(final Component child,
 			final Function<C, T> visitor, final Class<C> type)
@@ -165,12 +160,18 @@ public final class UIUtils
 		{
 			return lookupComponentTree(child,visitor,type);
 		}
-		
+
 		if(type == null || type.isInstance(child))
 		{
 			return visitor.apply((C)child);
 		}
-		
+
 		return null;
+	}
+	
+	
+	private UIUtils()
+	{
+		throw new Error();
 	}
 }

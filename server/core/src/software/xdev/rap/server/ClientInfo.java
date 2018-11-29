@@ -44,63 +44,24 @@ import eu.bitwalker.useragentutils.UserAgent;
  * @see WebBrowser
  * @see UserAgent
  */
-public class ClientInfo implements Serializable
+public interface ClientInfo extends Serializable
 {
-	/**
-	 * Gets the currently used session's client info.
-	 *
-	 * @return the current client info if available, otherwise <code>null</code>
-	 */
-	public static ClientInfo getCurrent()
-	{
-		final VaadinSession session = VaadinSession.getCurrent();
-		return session != null ? session.getAttribute(ClientInfo.class) : null;
-	}
-
-
-	/**
-	 * Gets the appropriate {@link ClientInfo} for the client request.
-	 */
-	public static ClientInfo get(final VaadinRequest request)
-	{
-		return new ClientInfo(request);
-	}
-
-	private final UserAgent		userAgent;
-	private final WebBrowser	webBrowser;
-	
-	
-	private ClientInfo(final VaadinRequest request)
-	{
-		this.userAgent = UserAgent.parseUserAgentString(request.getHeader("user-agent"));
-
-		this.webBrowser = new WebBrowser();
-		this.webBrowser.updateRequestDetails(request);
-	}
-
-
 	/**
 	 * Detects if the client is a standard desktop or laptop computer
 	 *
 	 * @see #isTablet()
 	 * @see #isMobile()
 	 */
-	public boolean isComputer()
-	{
-		return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.COMPUTER;
-	}
-
-
+	public boolean isComputer();
+	
+	
 	/**
 	 * Detects if the client is a small tablet type computer
 	 *
 	 * @see #isComputer()
 	 * @see #isMobile()
 	 */
-	public boolean isTablet()
-	{
-		return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.TABLET;
-	}
+	public boolean isTablet();
 
 
 	/**
@@ -109,183 +70,106 @@ public class ClientInfo implements Serializable
 	 * @see #isComputer()
 	 * @see #isTablet()
 	 */
-	public boolean isMobile()
-	{
-		return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.MOBILE;
-	}
+	public boolean isMobile();
 
 
 	/**
 	 * Detects if the client is run on Android.
 	 */
-	public boolean isAndroid()
-	{
-		return isOperatingSystem(OperatingSystem.ANDROID);
-	}
-
-
+	public boolean isAndroid();
+	
+	
 	/**
 	 * Detects if the client is run on iOS.
 	 */
-	public boolean isIOS()
-	{
-		return isOperatingSystem(OperatingSystem.IOS);
-	}
+	public boolean isIOS();
 
 
 	/**
 	 * Detects if the client is run on MacOS-X.
 	 */
-	public boolean isMacOSX()
-	{
-		return isOperatingSystem(OperatingSystem.MAC_OS_X);
-	}
-
-
+	public boolean isMacOSX();
+	
+	
 	/**
 	 * Detects if the client is run on Windows.
 	 */
-	public boolean isWindows()
-	{
-		return isOperatingSystem(OperatingSystem.WINDOWS);
-	}
-
-
+	public boolean isWindows();
+	
+	
 	/**
 	 * Detects if the client is run on Linux.
 	 */
-	public boolean isLinux()
-	{
-		return isOperatingSystem(OperatingSystem.LINUX);
-	}
-
-
-	private boolean isOperatingSystem(final OperatingSystem test)
-	{
-		final OperatingSystem os = this.userAgent.getOperatingSystem();
-		return os == test || os.getGroup() == test;
-	}
-
-
+	public boolean isLinux();
+	
+	
 	/**
 	 * Detects if the client is using the Chrome browser.
 	 */
-	public boolean isChrome()
-	{
-		return isBrowser(Browser.CHROME);
-	}
-
-
+	public boolean isChrome();
+	
+	
 	/**
 	 * Detects if the client is using the Firefox browser.
 	 */
-	public boolean isFirefox()
-	{
-		return isBrowser(Browser.FIREFOX);
-	}
-
-
+	public boolean isFirefox();
+	
+	
 	/**
 	 * Detects if the client is using the Internet Explorer browser.
 	 */
-	public boolean isInternetExplorer()
-	{
-		return isBrowser(Browser.IE);
-	}
-
-
+	public boolean isInternetExplorer();
+	
+	
 	/**
 	 * Detects if the client is using the Edge browser.
 	 */
-	public boolean isEdge()
-	{
-		return isBrowser(Browser.EDGE);
-	}
-
-
+	public boolean isEdge();
+	
+	
 	/**
 	 * Detects if the client is using the Safari browser.
 	 */
-	public boolean isSafari()
-	{
-		return isBrowser(Browser.SAFARI);
-	}
-
-
+	public boolean isSafari();
+	
+	
 	/**
 	 * Detects if the client is using the Operabrowser.
 	 */
-	public boolean isOpera()
-	{
-		return isBrowser(Browser.OPERA);
-	}
-
-
-	private boolean isBrowser(final Browser test)
-	{
-		final Browser browser = this.userAgent.getBrowser();
-		return browser == test || browser.getGroup() == test;
-	}
-
-
+	public boolean isOpera();
+	
+	
 	/**
 	 * Gets the height of the screen in pixels. This is the full screen
 	 * resolution and not the height available for the application.
 	 *
 	 * @return the height of the screen in pixels.
 	 */
-	public int getScreenHeight()
-	{
-		return this.webBrowser.getScreenHeight();
-	}
-
-
+	public int getScreenHeight();
+	
+	
 	/**
 	 * Gets the width of the screen in pixels. This is the full screen
 	 * resolution and not the width available for the application.
 	 *
 	 * @return the width of the screen in pixels.
 	 */
-	public int getScreenWidth()
-	{
-		return this.webBrowser.getScreenWidth();
-	}
-
-
+	public int getScreenWidth();
+	
+	
 	/**
 	 * Returns the IP-address of the client. If the application is running
 	 * inside a portlet, this method will return null. *
 	 */
-	public String getAddress()
-	{
-		return this.webBrowser.getAddress();
-	}
-
-
+	public String getAddress();
+	
+	
 	/**
 	 * Returns the locale of the client browser.
 	 */
-	public Locale getLocale()
-	{
-		return this.webBrowser.getLocale();
-	}
-
-
-	/**
-	 * Returns the browser-reported TimeZone offset in milliseconds from GMT.
-	 * This includes possible daylight saving adjustments, to figure out which
-	 * TimeZone the user actually might be in, see
-	 * {@link #getRawTimezoneOffset()}.
-	 *
-	 * @see WebBrowser#getRawTimezoneOffset()
-	 * @return timezone offset in milliseconds, 0 if not available
-	 */
-	public int getTimezoneOffset()
-	{
-		return this.webBrowser.getTimezoneOffset();
-	}
-
-
+	public Locale getLocale();
+	
+	
 	/**
 	 * Returns the browser-reported TimeZone offset in milliseconds from GMT
 	 * ignoring possible daylight saving adjustments that may be in effect in
@@ -303,12 +187,9 @@ public class ClientInfo implements Serializable
 	 *
 	 * @return timezone offset in milliseconds excluding DST, 0 if not available
 	 */
-	public int getRawTimezoneOffset()
-	{
-		return this.webBrowser.getRawTimezoneOffset();
-	}
-
-
+	public int getRawTimezoneOffset();
+	
+	
 	/**
 	 * Returns the offset in milliseconds between the browser's GMT TimeZone and
 	 * DST.
@@ -316,8 +197,213 @@ public class ClientInfo implements Serializable
 	 * @return the number of milliseconds that the TimeZone shifts when DST is
 	 *         in effect
 	 */
-	public int getDSTSavings()
+	public int getDSTSavings();
+	
+	
+	/**
+	 * Returns the browser-reported TimeZone offset in milliseconds from GMT.
+	 * This includes possible daylight saving adjustments, to figure out which
+	 * TimeZone the user actually might be in, see
+	 * {@link #getRawTimezoneOffset()}.
+	 *
+	 * @see WebBrowser#getRawTimezoneOffset()
+	 * @return timezone offset in milliseconds, 0 if not available
+	 */
+	public int getTimezoneOffset();
+	
+	
+	/**
+	 * Gets the currently used session's client info.
+	 *
+	 * @return the current client info if available, otherwise <code>null</code>
+	 */
+	public static ClientInfo getCurrent()
 	{
-		return this.webBrowser.getDSTSavings();
+		final VaadinSession session = VaadinSession.getCurrent();
+		return session != null ? session.getAttribute(ClientInfo.class) : null;
+	}
+
+
+	public static ClientInfo New(final VaadinRequest request)
+	{
+		return new Implementation(request);
+	}
+
+
+
+	public static class Implementation implements ClientInfo
+	{
+		private final UserAgent		userAgent;
+		private final WebBrowser	webBrowser;
+
+
+		public Implementation(final VaadinRequest request)
+		{
+			this.userAgent = UserAgent.parseUserAgentString(request.getHeader("user-agent"));
+
+			this.webBrowser = new WebBrowser();
+			this.webBrowser.updateRequestDetails(request);
+		}
+		
+		
+		@Override
+		public boolean isComputer()
+		{
+			return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.COMPUTER;
+		}
+
+
+		@Override
+		public boolean isTablet()
+		{
+			return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.TABLET;
+		}
+		
+		
+		@Override
+		public boolean isMobile()
+		{
+			return this.userAgent.getOperatingSystem().getDeviceType() == DeviceType.MOBILE;
+		}
+
+
+		@Override
+		public boolean isAndroid()
+		{
+			return isOperatingSystem(OperatingSystem.ANDROID);
+		}
+
+
+		@Override
+		public boolean isIOS()
+		{
+			return isOperatingSystem(OperatingSystem.IOS);
+		}
+
+
+		@Override
+		public boolean isMacOSX()
+		{
+			return isOperatingSystem(OperatingSystem.MAC_OS_X);
+		}
+
+
+		@Override
+		public boolean isWindows()
+		{
+			return isOperatingSystem(OperatingSystem.WINDOWS);
+		}
+
+
+		@Override
+		public boolean isLinux()
+		{
+			return isOperatingSystem(OperatingSystem.LINUX);
+		}
+
+
+		private boolean isOperatingSystem(final OperatingSystem test)
+		{
+			final OperatingSystem os = this.userAgent.getOperatingSystem();
+			return os == test || os.getGroup() == test;
+		}
+
+
+		@Override
+		public boolean isChrome()
+		{
+			return isBrowser(Browser.CHROME);
+		}
+
+
+		@Override
+		public boolean isFirefox()
+		{
+			return isBrowser(Browser.FIREFOX);
+		}
+
+
+		@Override
+		public boolean isInternetExplorer()
+		{
+			return isBrowser(Browser.IE);
+		}
+
+
+		@Override
+		public boolean isEdge()
+		{
+			return isBrowser(Browser.EDGE);
+		}
+
+
+		@Override
+		public boolean isSafari()
+		{
+			return isBrowser(Browser.SAFARI);
+		}
+
+
+		@Override
+		public boolean isOpera()
+		{
+			return isBrowser(Browser.OPERA);
+		}
+
+
+		private boolean isBrowser(final Browser test)
+		{
+			final Browser browser = this.userAgent.getBrowser();
+			return browser == test || browser.getGroup() == test;
+		}
+
+
+		@Override
+		public int getScreenHeight()
+		{
+			return this.webBrowser.getScreenHeight();
+		}
+		
+		
+		@Override
+		public int getScreenWidth()
+		{
+			return this.webBrowser.getScreenWidth();
+		}
+
+
+		@Override
+		public String getAddress()
+		{
+			return this.webBrowser.getAddress();
+		}
+		
+		
+		@Override
+		public Locale getLocale()
+		{
+			return this.webBrowser.getLocale();
+		}
+		
+		
+		@Override
+		public int getTimezoneOffset()
+		{
+			return this.webBrowser.getTimezoneOffset();
+		}
+
+
+		@Override
+		public int getRawTimezoneOffset()
+		{
+			return this.webBrowser.getRawTimezoneOffset();
+		}
+		
+		
+		@Override
+		public int getDSTSavings()
+		{
+			return this.webBrowser.getDSTSavings();
+		}
 	}
 }
