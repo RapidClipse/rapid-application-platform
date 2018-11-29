@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.util;
+package software.xdev.rap.server;
 
 
 import java.lang.annotation.Annotation;

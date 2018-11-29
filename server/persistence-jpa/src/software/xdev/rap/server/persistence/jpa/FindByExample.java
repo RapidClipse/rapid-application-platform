@@ -68,7 +68,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
-import software.xdev.rap.server.util.ReflectionUtils;
+import software.xdev.rap.server.ReflectionUtils;
 
 
 /**
