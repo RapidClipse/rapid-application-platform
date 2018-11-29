@@ -18,13 +18,15 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.net;
 
 
 import org.jsoup.nodes.Element;
 
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
+
+import software.xdev.rap.server.Rap;
 
 
 /**

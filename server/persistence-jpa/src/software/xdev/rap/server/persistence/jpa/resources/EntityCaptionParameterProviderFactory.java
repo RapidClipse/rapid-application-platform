@@ -18,43 +18,42 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.concurrent;
+package software.xdev.rap.server.persistence.jpa.resources;
 
 
-import software.xdev.rap.server.util.ServiceLoader;
+import software.xdev.rap.server.persistence.jpa.Jpa;
+import software.xdev.rap.server.resources.CaptionParameterProvider;
+import software.xdev.rap.server.resources.CaptionParameterProviderFactory;
 
 
 /**
  * @author XDEV Software
  *
  */
-public abstract class AccessWrapper
+public class EntityCaptionParameterProviderFactory implements CaptionParameterProviderFactory
 {
-	public static interface Participant
+	private CaptionParameterProvider captionParameterProvider;
+	
+	
+	public EntityCaptionParameterProviderFactory()
 	{
-		public void before();
-
-
-		public void after();
+		super();
 	}
-
-	private static ServiceLoader<Participant> serviceLoader = ServiceLoader.For(Participant.class);
-
-
-	private static Iterable<Participant> participants()
+	
+	
+	@Override
+	public CaptionParameterProvider getParameterProvider(final Object element)
 	{
-		return serviceLoader.services();
-	}
-
-
-	protected void before()
-	{
-		participants().forEach(Participant::before);
-	}
-
-
-	protected void after()
-	{
-		participants().forEach(Participant::after);
+		if(Jpa.isManaged(element.getClass()))
+		{
+			if(this.captionParameterProvider == null)
+			{
+				this.captionParameterProvider = new EntityCaptionParameterProvider();
+			}
+			
+			return this.captionParameterProvider;
+		}
+		
+		return null;
 	}
 }

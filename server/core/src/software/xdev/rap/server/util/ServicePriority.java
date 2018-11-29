@@ -18,23 +18,30 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.util;
 
 
-import com.vaadin.flow.server.VaadinRequest;
-import com.vaadin.flow.server.VaadinSession;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
+ *
  * @author XDEV Software
  *
+ * @see ServiceLoader
+ *
  */
-public class ClientInfoExtension implements RapServletService.Extension
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface ServicePriority
 {
-	@Override
-	public void sessionCreated(final RapServletService service, final VaadinSession session,
-			final VaadinRequest request)
-	{
-		session.setAttribute(ClientInfo.class,ClientInfo.New(request));
-	}
+	public final static int	MIN		= Integer.MIN_VALUE;
+	public final static int	DEFAULT	= 0;
+	public final static int	MAX		= Integer.MAX_VALUE;
+	
+	
+	public int value() default DEFAULT;
 }

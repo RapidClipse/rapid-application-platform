@@ -30,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 import com.vaadin.flow.server.VaadinSession;
 
 import software.xdev.rap.server.concurrent.RapExecutorService;
+import software.xdev.rap.server.net.ContentSecurityPolicy;
 
 
 /**

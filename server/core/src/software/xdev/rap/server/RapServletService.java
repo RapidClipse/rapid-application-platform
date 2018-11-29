@@ -25,6 +25,9 @@ import com.vaadin.flow.function.DeploymentConfiguration;
 import com.vaadin.flow.server.ServiceException;
 import com.vaadin.flow.server.ServletHelper;
 import com.vaadin.flow.server.ServletHelper.RequestType;
+
+import software.xdev.rap.server.util.ServiceLoader;
+
 import com.vaadin.flow.server.SessionExpiredException;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinResponse;

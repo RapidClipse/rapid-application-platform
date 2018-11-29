@@ -18,43 +18,44 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.concurrent;
+package software.xdev.rap.server.resources;
 
 
-import software.xdev.rap.server.util.ServiceLoader;
+import software.xdev.rap.server.util.ServicePriority;
 
 
 /**
  * @author XDEV Software
  *
  */
-public abstract class AccessWrapper
+@FunctionalInterface
+public interface ClassCaptionResolverFactory
 {
-	public static interface Participant
+	public ClassCaptionResolver getClassCaptionResolver(Class<?> clazz);
+	
+	
+	
+	@ServicePriority(ServicePriority.MIN)
+	public static class BeanClassCaptionResolverFactory implements ClassCaptionResolverFactory
 	{
-		public void before();
-
-
-		public void after();
-	}
-
-	private static ServiceLoader<Participant> serviceLoader = ServiceLoader.For(Participant.class);
-
-
-	private static Iterable<Participant> participants()
-	{
-		return serviceLoader.services();
-	}
-
-
-	protected void before()
-	{
-		participants().forEach(Participant::before);
-	}
-
-
-	protected void after()
-	{
-		participants().forEach(Participant::after);
+		private ClassCaptionResolver classCaptionResolver;
+		
+		
+		public BeanClassCaptionResolverFactory()
+		{
+			super();
+		}
+		
+		
+		@Override
+		public ClassCaptionResolver getClassCaptionResolver(final Class<?> clazz)
+		{
+			if(this.classCaptionResolver == null)
+			{
+				this.classCaptionResolver = new ClassCaptionResolver.BeanClassCaptionResolver();
+			}
+			
+			return this.classCaptionResolver;
+		}
 	}
 }

@@ -18,28 +18,42 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.persistence.jpa.resources;
 
 
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
+import software.xdev.rap.server.persistence.jpa.Jpa;
+import software.xdev.rap.server.resources.ClassCaptionResolver;
+import software.xdev.rap.server.resources.ClassCaptionResolverFactory;
 
 
 /**
- *
  * @author XDEV Software
  *
- * @see ServiceLoader
- *
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface ServicePriority
+public class EntityClassCaptionResolverFactory implements ClassCaptionResolverFactory
 {
-	public final static int DEFAULT = 0;
-
-
-	public int value() default DEFAULT;
+	private ClassCaptionResolver classCaptionResolver;
+	
+	
+	public EntityClassCaptionResolverFactory()
+	{
+		super();
+	}
+	
+	
+	@Override
+	public ClassCaptionResolver getClassCaptionResolver(final Class<?> clazz)
+	{
+		if(Jpa.isManaged(clazz))
+		{
+			if(this.classCaptionResolver == null)
+			{
+				this.classCaptionResolver = new EntityClassCaptionResolver();
+			}
+			
+			return this.classCaptionResolver;
+		}
+		
+		return null;
+	}
 }

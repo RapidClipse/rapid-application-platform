@@ -37,7 +37,7 @@ import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
 
-import software.xdev.rap.server.ReflectionUtils;
+import software.xdev.rap.server.util.ReflectionUtils;
 
 
 /**

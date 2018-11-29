@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.net;
 
 
 import java.io.IOException;
@@ -26,6 +26,8 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import software.xdev.rap.server.RapServlet;
 
 
 /**
@@ -41,8 +43,8 @@ public class CorsExtension implements RapServlet.Extension
 	{
 		super();
 	}
-	
-	
+
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -59,20 +61,20 @@ public class CorsExtension implements RapServlet.Extension
 			{
 				response.addHeader("Access-Control-Allow-Origin",origin);
 				response.setHeader("Allow","GET, HEAD, POST, PUT, DELETE,TRACE,OPTIONS");
-				
+
 				// allow the requested method
 				final String method = request.getHeader("Access-Control-Request-Method");
 				response.addHeader("Access-Control-Allow-Methods",method);
-				
+
 				// allow the requested headers
 				final String headers = request.getHeader("Access-Control-Request-Headers");
 				response.addHeader("Access-Control-Allow-Headers",headers);
-				
+
 				response.addHeader("Access-Control-Allow-Credentials","true");
 				response.setContentType("text/plain");
 				response.setCharacterEncoding("utf-8");
 				response.getWriter().flush();
-				
+
 				// end of response
 				return true;
 			}
@@ -83,7 +85,7 @@ public class CorsExtension implements RapServlet.Extension
 				response.addHeader("Access-Control-Allow-Credentials","true");
 			}
 		}
-		
+
 		return false;
 	}
 }

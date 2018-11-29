@@ -18,43 +18,35 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.concurrent;
+package software.xdev.rap.server.net;
 
 
-import software.xdev.rap.server.util.ServiceLoader;
+import javax.servlet.ServletException;
+
+import software.xdev.rap.server.RapServlet;
 
 
 /**
  * @author XDEV Software
  *
  */
-public abstract class AccessWrapper
+public class CookiesExtension implements RapServlet.Extension
 {
-	public static interface Participant
+	/**
+	 *
+	 */
+	public CookiesExtension()
 	{
-		public void before();
-
-
-		public void after();
-	}
-
-	private static ServiceLoader<Participant> serviceLoader = ServiceLoader.For(Participant.class);
-
-
-	private static Iterable<Participant> participants()
-	{
-		return serviceLoader.services();
+		super();
 	}
 
 
-	protected void before()
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void servletInitialized(final RapServlet servlet) throws ServletException
 	{
-		participants().forEach(Participant::before);
-	}
-
-
-	protected void after()
-	{
-		participants().forEach(Participant::after);
+		servlet.getService().addSessionInitListener(event -> Cookies.initFor(event.getSession()));
 	}
 }

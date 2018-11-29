@@ -31,6 +31,8 @@ import com.vaadin.flow.function.DeploymentConfiguration;
 import com.vaadin.flow.server.ServiceException;
 import com.vaadin.flow.server.VaadinServlet;
 
+import software.xdev.rap.server.util.ServiceLoader;
+
 
 /**
  * @author XDEV Software

@@ -18,33 +18,25 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server;
+package software.xdev.rap.server.net;
 
 
-import javax.servlet.ServletException;
+import com.vaadin.flow.server.VaadinRequest;
+import com.vaadin.flow.server.VaadinSession;
+
+import software.xdev.rap.server.RapServletService;
 
 
 /**
  * @author XDEV Software
  *
  */
-public class CookiesExtension implements RapServlet.Extension
+public class ClientInfoExtension implements RapServletService.Extension
 {
-	/**
-	 *
-	 */
-	public CookiesExtension()
-	{
-		super();
-	}
-	
-	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
-	public void servletInitialized(final RapServlet servlet) throws ServletException
+	public void sessionCreated(final RapServletService service, final VaadinSession session,
+			final VaadinRequest request)
 	{
-		servlet.getService().addSessionInitListener(event -> Cookies.initFor(event.getSession()));
+		session.setAttribute(ClientInfo.class,ClientInfo.New(request));
 	}
 }
