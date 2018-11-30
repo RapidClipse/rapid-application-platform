@@ -35,7 +35,6 @@ import software.xdev.rap.server.RapServlet;
 
 /**
  * @author XDEV Software
- * @since 4.0
  */
 public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 {
@@ -47,17 +46,17 @@ public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 			installIfNeeded();
 		}
 	}
-	
+
 	private static boolean installed = false;
-
-
+	
+	
 	public static void installIfNeeded()
 	{
 		if(installed)
 		{
 			return;
 		}
-
+		
 		try
 		{
 			new URL("classpath:test").openConnection();
@@ -71,22 +70,22 @@ public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 		{
 		}
 	}
-	
-	
+
+
 	public static void install()
 	{
 		if(installed)
 		{
 			return;
 		}
-
+		
 		try
 		{
 			final Field field = URL.class.getDeclaredField("factory");
 			field.setAccessible(true);
 			final URLStreamHandlerFactory factory = (URLStreamHandlerFactory)field.get(null);
 			field.set(null,new ClasspathUrlStreamHandlerFactory(factory));
-
+			
 			installed = true;
 		}
 		catch(NoSuchFieldException | SecurityException | IllegalArgumentException
@@ -95,18 +94,18 @@ public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 			throw new RuntimeException(e);
 		}
 	}
-
+	
 	private final URLStreamHandlerFactory	delegate;
 	private final ClasspathUrlStreamHandler	classpathURLStreamHandler	= new ClasspathUrlStreamHandler();
-
-
+	
+	
 	public ClasspathUrlStreamHandlerFactory(final URLStreamHandlerFactory delegate)
 	{
 		super();
 		this.delegate = delegate;
 	}
-
-
+	
+	
 	@Override
 	public URLStreamHandler createURLStreamHandler(final String protocol)
 	{
@@ -114,12 +113,12 @@ public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 		{
 			return this.classpathURLStreamHandler;
 		}
-
+		
 		if(this.delegate != null)
 		{
 			return this.delegate.createURLStreamHandler(protocol);
 		}
-
+		
 		return null;
 	}
 }

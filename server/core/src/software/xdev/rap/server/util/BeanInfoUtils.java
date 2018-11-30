@@ -29,7 +29,6 @@ import java.util.Arrays;
 
 /**
  * @author XDEV Software
- * @since 3.0
  */
 public final class BeanInfoUtils
 {
@@ -39,7 +38,7 @@ public final class BeanInfoUtils
 		try
 		{
 			BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
-			
+
 			final String[] parts = propertyPath.split("\\.");
 			for(int i = 0; i < parts.length - 1; i++)
 			{
@@ -56,7 +55,7 @@ public final class BeanInfoUtils
 				}
 				beanInfo = Introspector.getBeanInfo(beanClass);
 			}
-			
+
 			return getPropertyDescriptor(beanInfo,parts[parts.length - 1]);
 		}
 		catch(final Exception e)
@@ -64,16 +63,16 @@ public final class BeanInfoUtils
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
+
+
 	public static PropertyDescriptor getPropertyDescriptor(final BeanInfo beanInfo,
 			final String name)
 	{
 		return Arrays.stream(beanInfo.getPropertyDescriptors())
 				.filter(d -> d.getName().equals(name)).findFirst().orElse(null);
 	}
-
-
+	
+	
 	private BeanInfoUtils()
 	{
 		throw new Error();

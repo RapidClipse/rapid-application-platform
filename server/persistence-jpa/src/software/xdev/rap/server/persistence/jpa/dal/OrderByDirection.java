@@ -40,7 +40,6 @@ package software.xdev.rap.server.persistence.jpa.dal;
 /**
  *
  * @author XDEV Software
- * @since 3.0
  *
  */
 public enum OrderByDirection

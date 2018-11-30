@@ -35,7 +35,6 @@ package software.xdev.rap.security.authentication;
  * retrieve the last used login credentials.
  *
  * @author XDEV Software
- * @since 3.1
  */
 public interface AuthenticationMemoizer<C>
 {
@@ -46,8 +45,8 @@ public interface AuthenticationMemoizer<C>
 	 *            the credentials to be remembered
 	 */
 	public void remember(C credentials);
-	
-	
+
+
 	/**
 	 * Forgets credentials. Best used after a successful logout.
 	 *
@@ -55,8 +54,8 @@ public interface AuthenticationMemoizer<C>
 	 *            the credentials to forget
 	 */
 	public void forget(C credentials);
-	
-	
+
+
 	/**
 	 * Retrieves the last remembered credentials.
 	 *

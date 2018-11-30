@@ -42,7 +42,6 @@ package software.xdev.rap.server.persistence.jpa.dal;
  * maps the kind of search you can do in SQL.
  *
  * @author XDEV Software
- * @since 3.0
  */
 public enum SearchMode
 {
@@ -66,22 +65,22 @@ public enum SearchMode
 	 * Activate LIKE search and add a '%' suffix before searching.
 	 */
 	ENDING_LIKE("el");
-	
+
 	private final String code;
-	
-	
+
+
 	SearchMode(final String code)
 	{
 		this.code = code;
 	}
-	
-	
+
+
 	public String getCode()
 	{
 		return this.code;
 	}
-	
-	
+
+
 	public static final SearchMode convert(final String code)
 	{
 		for(final SearchMode searchMode : SearchMode.values())
@@ -91,7 +90,7 @@ public enum SearchMode
 				return searchMode;
 			}
 		}
-		
+
 		return EQUALS; // default
 	}
 }

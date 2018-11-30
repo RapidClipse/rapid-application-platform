@@ -29,8 +29,6 @@ import java.util.concurrent.Callable;
  * services.
  *
  * @author XDEV Software
- *
- * @since 1.2
  */
 public class CallableAccessWrapper<V> extends AccessWrapper implements Callable<V>
 {
@@ -38,21 +36,21 @@ public class CallableAccessWrapper<V> extends AccessWrapper implements Callable<
 	{
 		return new CallableAccessWrapper<>(callable).call();
 	}
-	
+
 	private final Callable<V> callable;
-	
-	
+
+
 	public CallableAccessWrapper(final Callable<V> callable)
 	{
 		this.callable = callable;
 	}
-	
-	
+
+
 	@Override
 	public V call() throws Exception
 	{
 		before();
-		
+
 		try
 		{
 			return this.callable.call();

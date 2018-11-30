@@ -28,7 +28,6 @@ import com.vaadin.flow.router.BeforeEvent;
  * Handler which gets called when an unauthorized navigation request happens.
  *
  * @author XDEV Software
- * @since 3.0
  */
 @FunctionalInterface
 public interface UnauthorizedNavigationRequestHandler
@@ -41,15 +40,15 @@ public interface UnauthorizedNavigationRequestHandler
 	 * @param event
 	 */
 	public void handle(BeforeEvent event);
-
-
+	
+	
 	public static UnauthorizedNavigationRequestHandler Default()
 	{
 		return new Default();
 	}
-
-
-
+	
+	
+	
 	public static class Default implements UnauthorizedNavigationRequestHandler
 	{
 		@Override

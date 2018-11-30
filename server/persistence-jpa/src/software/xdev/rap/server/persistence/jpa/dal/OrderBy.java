@@ -34,53 +34,52 @@ import javax.persistence.metamodel.Attribute;
  * Holder class for search ordering used by the {@link SearchParameters}.
  *
  * @author XDEV Software
- * @since 3.0
  */
 public class OrderBy implements Serializable
 {
 	private static final long	serialVersionUID	= 1L;
 	private final PathHolder	pathHolder;
 	private OrderByDirection	direction			= ASC;
-	
-	
+
+
 	public OrderBy(final OrderByDirection direction, final Attribute<?, ?>... attributes)
 	{
 		this.direction = direction;
 		this.pathHolder = new PathHolder(attributes);
 	}
-	
-	
+
+
 	public OrderBy(final OrderByDirection direction, final String path, final Class<?> from)
 	{
 		this.direction = direction;
 		this.pathHolder = new PathHolder(path,from);
 	}
-	
-	
+
+
 	public List<Attribute<?, ?>> getAttributes()
 	{
 		return this.pathHolder.getAttributes();
 	}
-	
-	
+
+
 	public String getPath()
 	{
 		return this.pathHolder.getPath();
 	}
-	
-	
+
+
 	public OrderByDirection getDirection()
 	{
 		return this.direction;
 	}
-	
-	
+
+
 	public boolean isOrderDesc()
 	{
 		return DESC == this.direction;
 	}
-	
-	
+
+
 	@Override
 	public int hashCode()
 	{
@@ -89,8 +88,8 @@ public class OrderBy implements Serializable
 		result = prime * result + ((this.pathHolder == null) ? 0 : this.pathHolder.hashCode());
 		return result;
 	}
-	
-	
+
+
 	@Override
 	public boolean equals(final Object obj)
 	{

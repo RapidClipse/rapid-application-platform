@@ -26,7 +26,6 @@ import software.xdev.rap.security.util.PasswordHasher;
 
 /**
  * @author XDEV Software
- * @since 3.1
  *
  */
 public class MD5HashConverter extends AbstractHashConverter

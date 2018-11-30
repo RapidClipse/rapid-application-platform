@@ -54,7 +54,6 @@ import software.xdev.rap.server.persistence.jpa.Jpa;
  * {@link TermSelector} and {@link SearchParameters}.
  *
  * @author XDEV Software
- * @since 3.0
  */
 public class PathHolder implements Serializable
 {
@@ -62,14 +61,14 @@ public class PathHolder implements Serializable
 	private final String					path;
 	private final Class<?>					from;
 	private transient List<Attribute<?, ?>>	attributes;
-
-
+	
+	
 	public PathHolder(final Attribute<?, ?>... attributes)
 	{
 		this(Arrays.asList(attributes));
 	}
-
-
+	
+	
 	public PathHolder(final List<Attribute<?, ?>> attributes)
 	{
 		Jpa.verifyPath(attributes);
@@ -77,8 +76,8 @@ public class PathHolder implements Serializable
 		this.path = Jpa.toPath(attributes);
 		this.from = attributes.get(0).getDeclaringType().getJavaType();
 	}
-
-
+	
+	
 	public PathHolder(final String path, final Class<?> from)
 	{
 		this.path = path;
@@ -88,8 +87,8 @@ public class PathHolder implements Serializable
 			throw new IllegalArgumentException();
 		}
 	}
-
-
+	
+	
 	public List<Attribute<?, ?>> getAttributes()
 	{
 		if(this.attributes == null)
@@ -98,14 +97,14 @@ public class PathHolder implements Serializable
 		}
 		return this.attributes;
 	}
-
-
+	
+	
 	public String getPath()
 	{
 		return this.path;
 	}
-
-
+	
+	
 	@Override
 	public int hashCode()
 	{
@@ -114,8 +113,8 @@ public class PathHolder implements Serializable
 		result = prime * result + ((this.path == null) ? 0 : this.path.hashCode());
 		return result;
 	}
-
-
+	
+	
 	@Override
 	public boolean equals(final Object obj)
 	{
@@ -145,5 +144,5 @@ public class PathHolder implements Serializable
 		}
 		return true;
 	}
-
+	
 }

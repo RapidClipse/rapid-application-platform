@@ -255,9 +255,6 @@ public final class Jpa
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static List<Attribute<?, ?>> resolveAttributes(final Class<?> entityClass,
 			final String propertyPath)
 	{
@@ -299,18 +296,12 @@ public final class Jpa
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static void verifyPath(final Attribute<?, ?>... path)
 	{
 		verifyPath(Arrays.asList(path));
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	@SuppressWarnings("rawtypes")
 	public static void verifyPath(final List<Attribute<?, ?>> path)
 	{
@@ -336,18 +327,12 @@ public final class Jpa
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static String toPath(final List<Attribute<?, ?>> attributes)
 	{
 		return attributes.stream().map(Attribute::getName).collect(Collectors.joining("."));
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static Attribute<?, ?> getIdAttribute(final Class<?> entityClass)
 	{
 		final ManagedType<?> managedType = getManagedType(entityClass);
@@ -368,9 +353,6 @@ public final class Jpa
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static Attribute<?, ?> getEmbeddedIdAttribute(final Class<?> entityClass)
 	{
 		final ManagedType<?> managedType = getManagedType(entityClass);
@@ -389,11 +371,8 @@ public final class Jpa
 
 		return null;
 	}
-	
-	
-	/**
-	 * @since 3.0
-	 */
+
+
 	public static <T, A> SingularAttribute<? super T, A> singularAttribute(
 			final ManagedType<? super T> managedType, final Attribute<? super T, A> attribute)
 	{
@@ -401,9 +380,6 @@ public final class Jpa
 	}
 
 
-	/**
-	 * @since 3.0
-	 */
 	public static <T> SingularAttribute<? super T, String> stringAttribute(
 			final ManagedType<? super T> managedType, final Attribute<? super T, ?> attribute)
 	{
@@ -501,9 +477,6 @@ public final class Jpa
 	}
 	
 	
-	/**
-	 * @since 4.0
-	 */
 	public static void applyCacheHints(final TypedQuery<?> query, final CacheableQuery.Kind kind,
 			final Class<?> managedType)
 	{
@@ -512,9 +485,6 @@ public final class Jpa
 	}
 	
 	
-	/**
-	 * @since 4.0
-	 */
 	public static void applyCacheHints(final TypedQuery<?> typedQuery,
 			final CacheableQuery cacheableQuery, final String persistenceUnit)
 	{

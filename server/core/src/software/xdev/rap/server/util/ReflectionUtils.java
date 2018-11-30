@@ -41,15 +41,11 @@ public final class ReflectionUtils
 				return field;
 			}
 		}
-
+		
 		return null;
 	}
-
-
-	/**
-	 *
-	 * @since 3.0
-	 */
+	
+	
 	public static Object getMemberValue(final Object obj, final Member member)
 	{
 		if(member instanceof Field)
@@ -95,11 +91,11 @@ public final class ReflectionUtils
 				method.setAccessible(accessible);
 			}
 		}
-
+		
 		return null;
 	}
-	
-	
+
+
 	private ReflectionUtils()
 	{
 		throw new Error();

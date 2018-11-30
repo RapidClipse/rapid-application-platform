@@ -29,7 +29,6 @@ import java.lang.annotation.Target;
 
 /**
  * @author XDEV Software
- * @since 4.0
  *
  */
 @Target(ElementType.TYPE)

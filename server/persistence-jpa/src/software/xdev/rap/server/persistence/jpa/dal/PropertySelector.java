@@ -51,7 +51,6 @@ import javax.persistence.metamodel.Attribute;
  * values.
  *
  * @author XDEV Software
- * @since 3.0
  */
 public class PropertySelector<E, F> implements Serializable
 {
@@ -62,8 +61,8 @@ public class PropertySelector<E, F> implements Serializable
 	{
 		return new PropertySelector<E, F>(fields);
 	}
-	
-	
+
+
 	/*
 	 * PropertySelector builder
 	 */
@@ -72,8 +71,8 @@ public class PropertySelector<E, F> implements Serializable
 	{
 		return new PropertySelector<E, F>(path,from);
 	}
-	
-	
+
+
 	/*
 	 * PropertySelector builder
 	 */
@@ -83,9 +82,9 @@ public class PropertySelector<E, F> implements Serializable
 		final PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
 		return ps.orMode(orMode);
 	}
-	
+
 	private static final long	serialVersionUID	= 1L;
-	
+
 	private final PathHolder	pathHolder;
 	private List<F>				selected			= new ArrayList<>();
 	private SearchMode			searchMode;								// for
@@ -94,45 +93,45 @@ public class PropertySelector<E, F> implements Serializable
 																		// only.
 	private Boolean				notIncludingNull;
 	private boolean				orMode				= true;
-	
-	
+
+
 	public PropertySelector(final Attribute<?, ?>... attributes)
 	{
 		this.pathHolder = new PathHolder(attributes);
 	}
-	
-	
+
+
 	public PropertySelector(final String path, final Class<E> from)
 	{
 		this.pathHolder = new PathHolder(path,from);
 	}
-	
-	
+
+
 	public List<Attribute<?, ?>> getAttributes()
 	{
 		return this.pathHolder.getAttributes();
 	}
-	
-	
+
+
 	public boolean isNotIncludingNullSet()
 	{
 		return this.notIncludingNull != null;
 	}
-	
-	
+
+
 	public Boolean isNotIncludingNull()
 	{
 		return this.notIncludingNull;
 	}
-	
-	
+
+
 	public PropertySelector<E, F> withoutNull()
 	{
 		this.notIncludingNull = true;
 		return this;
 	}
-	
-	
+
+
 	/*
 	 * Get the possible candidates for property.
 	 */
@@ -140,15 +139,15 @@ public class PropertySelector<E, F> implements Serializable
 	{
 		return this.selected;
 	}
-	
-	
+
+
 	public PropertySelector<E, F> add(final F object)
 	{
 		this.selected.add(object);
 		return this;
 	}
-	
-	
+
+
 	/*
 	 * Set the possible candidates for property.
 	 */
@@ -156,22 +155,22 @@ public class PropertySelector<E, F> implements Serializable
 	{
 		this.selected = new ArrayList<>(selected);
 	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
 	public PropertySelector<E, F> selected(final F... selected)
 	{
 		setSelected(Arrays.asList(selected));
 		return this;
 	}
-	
-	
+
+
 	public boolean isNotEmpty()
 	{
 		return this.selected != null && !this.selected.isEmpty();
 	}
-	
-	
+
+
 	public void clearSelected()
 	{
 		if(this.selected != null)
@@ -179,50 +178,50 @@ public class PropertySelector<E, F> implements Serializable
 			this.selected.clear();
 		}
 	}
-	
-	
+
+
 	public void setValue(final F value)
 	{
 		setSelected(Arrays.asList(value));
 	}
-	
-	
+
+
 	public F getValue()
 	{
 		return isNotEmpty() ? this.selected.get(0) : null;
 	}
-	
-	
+
+
 	public boolean isBoolean()
 	{
 		return isType(Boolean.class);
 	}
-	
-	
+
+
 	public boolean isString()
 	{
 		return isType(String.class);
 	}
-	
-	
+
+
 	public boolean isNumber()
 	{
 		return isType(Number.class);
 	}
-	
-	
+
+
 	public boolean isType(final Class<?> type)
 	{
 		return type.isAssignableFrom(getAttributes().get(getAttributes().size() - 1).getJavaType());
 	}
-	
-	
+
+
 	public SearchMode getSearchMode()
 	{
 		return this.searchMode;
 	}
-	
-	
+
+
 	/**
 	 * In case, the field's type is a String, you can set a searchMode to use.
 	 * It is null by default.
@@ -231,27 +230,27 @@ public class PropertySelector<E, F> implements Serializable
 	{
 		this.searchMode = searchMode;
 	}
-	
-	
+
+
 	public PropertySelector<E, F> searchMode(final SearchMode searchMode)
 	{
 		setSearchMode(searchMode);
 		return this;
 	}
-	
-	
+
+
 	public boolean isOrMode()
 	{
 		return this.orMode;
 	}
-	
-	
+
+
 	public void setOrMode(final boolean orMode)
 	{
 		this.orMode = orMode;
 	}
-	
-	
+
+
 	public PropertySelector<E, F> orMode(final boolean orMode)
 	{
 		setOrMode(orMode);

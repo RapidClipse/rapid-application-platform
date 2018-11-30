@@ -30,7 +30,6 @@ import com.vaadin.flow.data.converter.Converter;
 
 /**
  * @author XDEV Software
- * @since 3.1
  */
 public class StringToByteArrayConverter implements Converter<String, byte[]>
 {
@@ -41,11 +40,11 @@ public class StringToByteArrayConverter implements Converter<String, byte[]>
 		{
 			return Result.ok(value.getBytes(StandardCharsets.UTF_8));
 		}
-
+		
 		return Result.ok(null);
 	}
-
-
+	
+	
 	@Override
 	public String convertToPresentation(final byte[] value, final ValueContext context)
 	{
@@ -53,7 +52,7 @@ public class StringToByteArrayConverter implements Converter<String, byte[]>
 		{
 			return new String(value,StandardCharsets.UTF_8);
 		}
-
+		
 		return null;
 	}
 }

@@ -26,8 +26,6 @@ package software.xdev.rap.server.concurrent;
  * services.
  *
  * @author XDEV Software
- *
- * @since 1.3
  */
 public class RunnableAccessWrapper extends AccessWrapper implements Runnable
 {
@@ -35,21 +33,21 @@ public class RunnableAccessWrapper extends AccessWrapper implements Runnable
 	{
 		new RunnableAccessWrapper(runnable).run();
 	}
-
+	
 	private final Runnable delegate;
-
-
+	
+	
 	public RunnableAccessWrapper(final Runnable delegate)
 	{
 		this.delegate = delegate;
 	}
-
-
+	
+	
 	@Override
 	public void run()
 	{
 		before();
-
+		
 		try
 		{
 			this.delegate.run();

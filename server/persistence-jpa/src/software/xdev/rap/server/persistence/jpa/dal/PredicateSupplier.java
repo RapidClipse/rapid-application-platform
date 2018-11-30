@@ -45,7 +45,6 @@ import javax.persistence.criteria.Root;
 
 /**
  * @author XDEV Software
- * @since 3.0
  *
  */
 public interface PredicateSupplier

@@ -26,7 +26,6 @@ import software.xdev.rap.security.util.PasswordHasher;
 
 /**
  * @author XDEV Software
- * @since 3.1
  *
  */
 public class PBKDF2WithHmacSHA1HashConverter extends AbstractHashConverter

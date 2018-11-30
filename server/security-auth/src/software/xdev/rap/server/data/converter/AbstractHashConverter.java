@@ -32,22 +32,21 @@ import software.xdev.rap.security.util.PasswordHasher;
 
 /**
  * @author XDEV Software
- * @since 3.1
  */
 public class AbstractHashConverter implements Converter<String, String>
 {
 	private final Supplier<PasswordHasher>	passwordHasherSupplier;
 	private final int						hashLength;
-
-
+	
+	
 	protected AbstractHashConverter(final Supplier<PasswordHasher> passwordHasherSupplier,
 			final int hashLength)
 	{
 		this.passwordHasherSupplier = passwordHasherSupplier;
 		this.hashLength = hashLength;
 	}
-
-
+	
+	
 	@Override
 	public Result<String> convertToModel(final String value, final ValueContext context)
 	{
@@ -55,26 +54,26 @@ public class AbstractHashConverter implements Converter<String, String>
 		{
 			return Result.ok(null);
 		}
-
+		
 		final byte[] bytes = value.getBytes();
-
+		
 		if(bytes.length == this.hashLength)
 		{
 			return Result.ok(value);
 		}
-		
+
 		return Result.ok(Hex.encodeToString(this.passwordHasherSupplier.get().hashPassword(bytes)));
 	}
-
-
+	
+	
 	@Override
 	public String convertToPresentation(final String value, final ValueContext context)
 	{
 		return value;
 	}
-
-
-
+	
+	
+	
 	static class Hex
 	{
 		/**
@@ -82,8 +81,8 @@ public class AbstractHashConverter implements Converter<String, String>
 		 */
 		private static final char[] DIGITS = {'0','1','2','3','4','5','6','7','8','9','a','b','c',
 				'd','e','f'};
-
-
+		
+		
 		/**
 		 * Encodes the specified byte array to a character array and then
 		 * returns that character array as a String.
@@ -97,8 +96,8 @@ public class AbstractHashConverter implements Converter<String, String>
 		{
 			return new String(encode(bytes));
 		}
-
-
+		
+		
 		/**
 		 * Converts an array of bytes into an array of characters representing
 		 * the hexadecimal values of each byte in order. The returned array will
@@ -112,16 +111,16 @@ public class AbstractHashConverter implements Converter<String, String>
 		public static char[] encode(final byte[] data)
 		{
 			final int l = data.length;
-
+			
 			final char[] out = new char[l << 1];
-
+			
 			// two characters form the hex value.
 			for(int i = 0, j = 0; i < l; i++)
 			{
 				out[j++] = DIGITS[(0xF0 & data[i]) >>> 4];
 				out[j++] = DIGITS[0x0F & data[i]];
 			}
-
+			
 			return out;
 		}
 	}

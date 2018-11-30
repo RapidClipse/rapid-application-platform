@@ -32,7 +32,6 @@ import javax.persistence.CacheStoreMode;
 
 /**
  * @author XDEV Software
- * @since 4.0
  *
  */
 @Target(ElementType.TYPE)
@@ -43,19 +42,19 @@ public @interface CacheableQuery
 	{
 		FIND_ALL, REMOVE_BY_ID, LAZY_QUERY_CONTAINER
 	}
-
-
+	
+	
 	boolean cache() default true;
-
-
+	
+	
 	Kind kind();
-
-
+	
+	
 	String region() default "";
-
-
+	
+	
 	CacheStoreMode storeMode() default CacheStoreMode.USE;
-
-
+	
+	
 	CacheRetrieveMode retrieveMode() default CacheRetrieveMode.USE;
 }
