@@ -33,7 +33,7 @@
 	<name>XDEV Rapid Application Platform - Server - Security - Authentication and Authorization</name>
 
 	<properties>
-		<rootDir>../../..</rootDir>
+		<rootDir>../..</rootDir>
 	</properties>
 
 	<dependencies>

@@ -1,23 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
- - Copyright (C) 2013-2018 by XDEV Software, All Rights Reserved.
- -
- - This program is free software: you can redistribute it and/or modify
- - it under the terms of the GNU Affero General Public License as
- - published by the Free Software Foundation, either version 3 of the
- - License, or (at your option) any later version.
- -
- - This program is distributed in the hope that it will be useful,
- - but WITHOUT ANY WARRANTY; without even the implied warranty of
- - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- - GNU Affero General Public License for more details.
- -
- - You should have received a copy of the GNU Affero General Public License
- - along with this program. If not, see <http://www.gnu.org/licenses/>.
- -->
+<!-- - Copyright (C) 2013-2018 by XDEV Software, All Rights Reserved. - - 
+	This program is free software: you can redistribute it and/or modify - it 
+	under the terms of the GNU Affero General Public License as - published by 
+	the Free Software Foundation, either version 3 of the - License, or (at your 
+	option) any later version. - - This program is distributed in the hope that 
+	it will be useful, - but WITHOUT ANY WARRANTY; without even the implied warranty 
+	of - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the - GNU Affero 
+	General Public License for more details. - - You should have received a copy 
+	of the GNU Affero General Public License - along with this program. If not, 
+	see <http://www.gnu.org/licenses/>. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
 	<modelVersion>4.0.0</modelVersion>
@@ -64,13 +59,16 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<rootDir>..</rootDir>
+		<rootDir>./</rootDir>
 	</properties>
-	
+
 	<modules>
 		<module>security-auth</module>
+		<module>security-auth-ldap</module>
 		<module>server/core</module>
 		<module>server/persistence-jpa</module>
+		<module>server/security-auth</module>
+		<module>server/security-auth-jpa</module>
 	</modules>
 
 	<distributionManagement>
@@ -232,8 +230,11 @@
 						</goals>
 						<configuration>
 							<target name="prepend license header">
-								<taskdef name="licenseprepender" classname="anttasks.LicenseTextPrepender" classpath="${rootDir}/build/license/license-prepender.jar" />
-								<licenseprepender inputfile="${rootDir}/build/license/header.txt" srcdir="src" />
+								<taskdef name="licenseprepender"
+									classname="anttasks.LicenseTextPrepender"
+									classpath="${rootDir}/build/license/license-prepender.jar" />
+								<licenseprepender
+									inputfile="${rootDir}/build/license/header.txt" srcdir="src" />
 							</target>
 						</configuration>
 					</execution>
@@ -411,5 +412,5 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	
+
 </project>

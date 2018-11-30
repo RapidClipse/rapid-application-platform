@@ -30,7 +30,7 @@
 	<name>XDEV Rapid Application Platform - Security - Authentication and Authorization - LDAP</name>
 
 	<properties>
-		<rootDir>../..</rootDir>
+		<rootDir>..</rootDir>
 	</properties>
 
 	<dependencies>
