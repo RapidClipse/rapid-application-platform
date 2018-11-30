@@ -24,14 +24,26 @@
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>rap-server</artifactId>
-	<packaging>pom</packaging>
+	<artifactId>rap-security-auth-ldap</artifactId>
+	<packaging>jar</packaging>
 
-	<name>XDEV Rapid Application Platform - Server</name>
-	
+	<name>XDEV Rapid Application Platform - Security - Authentication and Authorization - LDAP</name>
+
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<rootDir>..</rootDir>
+		<rootDir>../..</rootDir>
 	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>rap-security-auth</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.shiro</groupId>
+			<artifactId>shiro-core</artifactId>
+			<version>1.4.0</version>
+		</dependency>
+	</dependencies>
 
 </project>

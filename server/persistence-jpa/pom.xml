@@ -33,7 +33,7 @@
 	<name>XDEV Rapid Application Platform - Server - Persistence - JPA</name>
 
 	<properties>
-		<rootDir>../..</rootDir>
+		<rootDir>../../..</rootDir>
 		<hibernateVersion>5.2.17.Final</hibernateVersion>
 	</properties>
 

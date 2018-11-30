@@ -30,7 +30,9 @@ import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.router.QueryParameters;
+import com.vaadin.flow.router.RouteData;
 
 
 /**
@@ -39,21 +41,50 @@ import com.vaadin.flow.router.QueryParameters;
  */
 public interface Navigation
 {
-	public static Navigation To(final Class<? extends Component> targetType)
+	public static Navigation To(final Class<?> targetType)
 	{
 		return To(UI.getCurrent(),targetType);
 	}
 	
 	
-	public static Navigation To(final UI ui, final Class<? extends Component> targetType)
+	public static Navigation To(final UI ui, final Class<?> targetType)
 	{
-		return new Implementation(ui,targetType);
+		return new Implementation(ui,findComponentTargetType(ui,targetType));
+	}
+	
+	
+	public static void navigateTo(final Class<?> targetType)
+	{
+		To(targetType).navigate();
 	}
 
 
-	public static void navigateTo(final Class<? extends Component> targetType)
+	public static void rerouteTo(final BeforeEvent event, final Class<?> targetType)
 	{
-		To(targetType).navigate();
+		rerouteTo(event,UI.getCurrent(),targetType);
+	}
+
+
+	public static void rerouteTo(final BeforeEvent event, final UI ui, final Class<?> targetType)
+	{
+		event.rerouteTo(findComponentTargetType(ui,targetType));
+	}
+	
+	
+	public static Class<? extends Component> findComponentTargetType(final UI ui,
+			final Class<?> targetType)
+	{
+		final RouteData targetRoute = ui.getRouter().getRoutes().stream()
+				.filter(data -> targetType.equals(data.getNavigationTarget())).findAny()
+				.orElse(ui.getRouter().getRoutes().stream()
+						.filter(data -> targetType.isAssignableFrom(data.getNavigationTarget()))
+						.findAny().orElse(null));
+		if(targetRoute != null)
+		{
+			return targetRoute.getNavigationTarget();
+		}
+
+		throw new NavigationException("No route found for: " + targetType.getCanonicalName());
 	}
 	
 	

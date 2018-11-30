@@ -23,15 +23,14 @@
 		<version>1.0.0-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
+	
+	<artifactId>rap-security-auth</artifactId>
+	<packaging>jar</packaging>
 
-	<artifactId>rap-server</artifactId>
-	<packaging>pom</packaging>
-
-	<name>XDEV Rapid Application Platform - Server</name>
+	<name>XDEV Rapid Application Platform - Security - Authentication and Authorization</name>
 	
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<rootDir>..</rootDir>
+		<rootDir>../..</rootDir>
 	</properties>
 
 </project>
