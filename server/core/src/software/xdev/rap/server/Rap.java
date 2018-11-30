@@ -24,6 +24,9 @@ package software.xdev.rap.server;
 import java.util.function.Supplier;
 
 import javax.servlet.ServletContext;
+import javax.servlet.ServletContextEvent;
+import javax.servlet.ServletContextListener;
+import javax.servlet.annotation.WebListener;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -41,8 +44,8 @@ public final class Rap
 {
 	private static RapExecutorService		executorService;
 	private static ContentSecurityPolicy	contentSecurityPolicy;
-	
-	
+
+
 	/**
 	 * @return the executorService
 	 */
@@ -55,8 +58,8 @@ public final class Rap
 		}
 		return executorService;
 	}
-	
-	
+
+
 	private static RapExecutorService createXdevExecutorService(final ServletContext context)
 	{
 		final String className = context
@@ -74,11 +77,11 @@ public final class Rap
 				throw new RuntimeException(t);
 			}
 		}
-		
+
 		return new RapExecutorService.Implementation(context);
 	}
-	
-	
+
+
 	/**
 	 * @return the contentSecurityPolicy
 	 */
@@ -86,8 +89,8 @@ public final class Rap
 	{
 		return contentSecurityPolicy;
 	}
-	
-	
+
+
 	/**
 	 * @param contentSecurityPolicy
 	 *            the contentSecurityPolicy to set
@@ -96,8 +99,8 @@ public final class Rap
 	{
 		Rap.contentSecurityPolicy = contentSecurityPolicy;
 	}
-	
-	
+
+
 	public static <T> T sessionBoundInstance(final Class<T> type, final Supplier<T> instantiator)
 	{
 		final VaadinSession session = VaadinSession.getCurrent();
@@ -115,6 +118,28 @@ public final class Rap
 	}
 	
 	
+	
+	@WebListener
+	public static class ContextListener implements ServletContextListener
+	{
+		@Override
+		public void contextInitialized(final ServletContextEvent sce)
+		{
+		}
+		
+		
+		@Override
+		public void contextDestroyed(final ServletContextEvent sce)
+		{
+			if(Rap.executorService != null)
+			{
+				Rap.executorService.shutdown();
+				Rap.executorService = null;
+			}
+		}
+	}
+
+
 	private Rap()
 	{
 		throw new Error();

@@ -31,20 +31,14 @@ import software.xdev.rap.server.RapServletService;
  * @author XDEV Software
  *
  */
-public class ConversationExtension implements RapServletService.Extension
+public class JpaServletServiceExtension implements RapServletService.Extension
 {
-	/**
-	 *
-	 */
-	public ConversationExtension()
+	public JpaServletServiceExtension()
 	{
 		super();
 	}
 	
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void sessionCreated(final RapServletService service, final VaadinSession session,
 			final VaadinRequest request)
@@ -53,9 +47,6 @@ public class ConversationExtension implements RapServletService.Extension
 	}
 	
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onRequestStart(final RapServletService service, final VaadinSession session)
 	{
@@ -72,9 +63,6 @@ public class ConversationExtension implements RapServletService.Extension
 	}
 	
 	
-	/**
-	 * {@inheritDoc}
-	 */
 	@Override
 	public void onRequestEnd(final RapServletService service, final VaadinSession session)
 	{

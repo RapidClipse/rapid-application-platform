@@ -24,16 +24,21 @@ package software.xdev.rap.server.navigation;
 import static java.util.Objects.requireNonNull;
 import static software.xdev.rap.server.Rap.sessionBoundInstance;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.function.BiFunction;
+import java.util.function.BiPredicate;
+
+import software.xdev.rap.server.util.ServiceLoader;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface NavigationParameterRegistry
+public interface NavigationParameterRegistry extends Serializable
 {
 	public String put(final NavigationParameters parameters);
 
@@ -50,7 +55,8 @@ public interface NavigationParameterRegistry
 
 	public static class Implementation implements NavigationParameterRegistry
 	{
-		private final Map<String, NavigationParameters> map = new HashMap<>();
+		private final Map<String, NavigationParameters>						map	= new HashMap<>();
+		private transient ServiceLoader<NavigationParameterValueHandler>	valueHandlers;
 
 
 		public Implementation()
@@ -64,13 +70,10 @@ public interface NavigationParameterRegistry
 		{
 			requireNonNull(parameters);
 
-			String id = null;
-			while(id == null || this.map.containsKey(id))
-			{
-				id = UUID.randomUUID().toString();
-			}
+			final String id = getNewId();
 
-			this.map.put(id,parameters);
+			this.map.put(id,transform(parameters,NavigationParameterValueHandler::handlesPut,
+					NavigationParameterValueHandler::put));
 
 			return id;
 		}
@@ -79,7 +82,53 @@ public interface NavigationParameterRegistry
 		@Override
 		public synchronized NavigationParameters get(final String id)
 		{
-			return this.map.get(id);
+			final NavigationParameters parameters = this.map.get(id);
+			if(parameters == null)
+			{
+				throw new NavigationException("Navigation state not found: " + id);
+			}
+
+			return transform(parameters,NavigationParameterValueHandler::handlesGet,
+					NavigationParameterValueHandler::get);
+		}
+		
+		
+		protected String getNewId()
+		{
+			String id;
+			do
+			{
+				id = UUID.randomUUID().toString();
+			}
+			while(this.map.containsKey(id));
+			
+			return id;
+		}
+
+
+		protected NavigationParameters transform(final NavigationParameters parameters,
+				final BiPredicate<NavigationParameterValueHandler, Object> predicate,
+				final BiFunction<NavigationParameterValueHandler, Object, Object> logic)
+		{
+			if(this.valueHandlers == null)
+			{
+				this.valueHandlers = ServiceLoader.For(NavigationParameterValueHandler.class);
+			}
+			
+			final Map<String, Object> transformed = new HashMap<>();
+			
+			for(final String name : parameters.names())
+			{
+				final Object value = parameters.value(name);
+				
+				final Object transformedValue = this.valueHandlers.servicesStream()
+						.filter(handler -> predicate.test(handler,value))
+						.map(handler -> logic.apply(handler,value)).findFirst().orElse(value);
+				
+				transformed.put(name,transformedValue);
+			}
+			
+			return NavigationParameters.New(transformed);
 		}
 	}
 }
