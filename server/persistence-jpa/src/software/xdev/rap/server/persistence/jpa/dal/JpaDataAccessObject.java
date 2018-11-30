@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.persistence.jpa;
+package software.xdev.rap.server.persistence.jpa.dal;
 
 
 import java.io.Serializable;
@@ -37,6 +37,7 @@ import org.hibernate.LockMode;
 import org.hibernate.LockOptions;
 import org.hibernate.Session;
 
+import software.xdev.rap.server.persistence.jpa.Jpa;
 import software.xdev.rap.server.util.ReflectionUtils;
 
 
@@ -56,26 +57,26 @@ import software.xdev.rap.server.util.ReflectionUtils;
 public class JpaDataAccessObject<T, ID extends Serializable> implements DataAccessObject<T, ID>
 {
 	private final Class<T> persistentClass;
-
-
+	
+	
 	public JpaDataAccessObject(final Class<T> persistentClass)
 	{
 		this.persistentClass = Objects.requireNonNull(persistentClass);
 	}
-
-
+	
+	
 	protected Class<T> persistentClass()
 	{
 		return this.persistentClass;
 	}
-
-
+	
+	
 	protected EntityManager em()
 	{
 		return Jpa.getEntityManager(this.persistentClass);
 	}
-
-
+	
+	
 	protected Attribute<?, ?> idAttribute()
 	{
 		Attribute<?, ?> idAttribute = Jpa.getIdAttribute(this.persistentClass);
@@ -85,57 +86,57 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return idAttribute;
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	protected ID id(final T entity)
 	{
 		return (ID)ReflectionUtils.getMemberValue(entity,idAttribute().getJavaMember());
 	}
-
-
+	
+	
 	protected void applyCacheHints(final TypedQuery<?> typedQuery, final CacheableQuery.Kind kind)
 	{
 		Jpa.applyCacheHints(typedQuery,kind,this.persistentClass);
 	}
-
-
+	
+	
 	@Override
 	public void beginTransaction()
 	{
 		em().getTransaction().begin();
 	}
-
-
+	
+	
 	@Override
 	public void rollback()
 	{
 		em().getTransaction().rollback();
 	}
-
-
+	
+	
 	@Override
 	public void commit()
 	{
 		em().getTransaction().commit();
 	}
-
-
+	
+	
 	@Override
 	public CriteriaQuery<T> buildCriteriaQuery(final Class<T> exampleType)
 	{
 		final CriteriaBuilder cb = em().getCriteriaBuilder();
 		return cb.createQuery(exampleType);
 	}
-
-
+	
+	
 	@Override
 	public T find(final ID id)
 	{
 		return em().find(this.persistentClass,id);
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] find(final ID... ids)
@@ -147,8 +148,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return array;
 	}
-
-
+	
+	
 	@Override
 	public List<T> findAll()
 	{
@@ -160,15 +161,15 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		applyCacheHints(typedQuery,CacheableQuery.Kind.FIND_ALL);
 		return typedQuery.getResultList();
 	}
-
-
+	
+	
 	@Override
 	public void flush()
 	{
 		em().flush();
 	}
-
-
+	
+	
 	@Override
 	public T reattach(final T object)
 	{
@@ -180,15 +181,15 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return object;
 	}
-
-
+	
+	
 	@Override
 	public T getReference(final ID id)
 	{
 		return em().getReference(this.persistentClass,id);
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] getReferences(final ID... ids)
@@ -200,15 +201,15 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return array;
 	}
-
-
+	
+	
 	@Override
 	public boolean isAttached(final T entity)
 	{
 		return em().contains(entity);
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void refresh(final T... entities)
@@ -219,8 +220,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 			entityManager.refresh(entity);
 		}
 	}
-
-
+	
+	
 	@Override
 	public boolean remove(final T entity)
 	{
@@ -239,8 +240,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return false;
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void remove(final T... entities)
@@ -250,8 +251,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 			remove(entity);
 		}
 	}
-
-
+	
+	
 	@Override
 	public boolean removeById(final ID id)
 	{
@@ -273,8 +274,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return false;
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public void removeByIds(final ID... ids)
@@ -284,15 +285,15 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 			removeById(id);
 		}
 	}
-
-
+	
+	
 	@Override
 	public T merge(final T entity)
 	{
 		return em().merge(entity);
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] merge(final T... entities)
@@ -304,15 +305,15 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return array;
 	}
-
-
+	
+	
 	@Override
 	public final void persist(final T entity)
 	{
 		em().persist(entity);
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public final void persist(final T... entities)
@@ -322,8 +323,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 			persist(entity);
 		}
 	}
-
-
+	
+	
 	@Override
 	public T save(final T entity)
 	{
@@ -352,8 +353,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 			return merge(entity);
 		}
 	}
-
-
+	
+	
 	private boolean validId(final Serializable id)
 	{
 		if(id == null)
@@ -370,8 +371,8 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return true;
 	}
-
-
+	
+	
 	@Override
 	@SuppressWarnings("unchecked")
 	public T[] save(final T... entities)
@@ -383,37 +384,37 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 		}
 		return array;
 	}
-
-
+	
+	
 	@Override
 	public boolean contains(final Object entity)
 	{
 		return em().contains(entity);
 	}
-
-
+	
+	
 	@Override
 	public List<T> findByExample(final T entity)
 	{
 		return findByExample(entity,new SearchParameters());
 	}
-
-
+	
+	
 	@Override
 	public List<T> findByExample(final T entity, final SearchParameters searchParameters)
 	{
 		return new FindByExample<T>(this.persistentClass,em(),searchParameters)
 				.findByExample(entity);
 	}
-
-
+	
+	
 	@Override
 	public int countByExample(final T entity)
 	{
 		return countByExample(entity,new SearchParameters());
 	}
-
-
+	
+	
 	@Override
 	public int countByExample(final T entity, final SearchParameters searchParameters)
 	{

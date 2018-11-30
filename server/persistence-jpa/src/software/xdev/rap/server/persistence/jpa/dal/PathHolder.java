@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.persistence.jpa;
+package software.xdev.rap.server.persistence.jpa.dal;
 
 
 /*
@@ -45,6 +45,8 @@ import java.util.List;
 import javax.persistence.metamodel.Attribute;
 
 import org.hibernate.criterion.Example.PropertySelector;
+
+import software.xdev.rap.server.persistence.jpa.Jpa;
 
 
 /**

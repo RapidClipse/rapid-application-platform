@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package software.xdev.rap.server.persistence.jpa;
+package software.xdev.rap.server.persistence.jpa.dal;
 
 
 import java.lang.annotation.ElementType;

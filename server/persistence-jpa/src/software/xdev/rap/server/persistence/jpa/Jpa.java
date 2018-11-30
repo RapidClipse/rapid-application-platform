@@ -64,6 +64,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
 import software.xdev.rap.server.RapServlet;
+import software.xdev.rap.server.persistence.jpa.dal.CacheableQueries;
+import software.xdev.rap.server.persistence.jpa.dal.CacheableQuery;
+import software.xdev.rap.server.persistence.jpa.dal.DAO;
+import software.xdev.rap.server.persistence.jpa.dal.DataAccessObject;
 import software.xdev.rap.server.util.ReflectionUtils;
 import software.xdev.rap.server.util.SoftCache;
 
