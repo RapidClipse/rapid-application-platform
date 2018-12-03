@@ -28,10 +28,9 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.function.BiFunction;
-import java.util.function.BiPredicate;
+import java.util.function.Function;
 
-import software.xdev.rap.server.util.ServiceLoader;
+import software.xdev.rap.server.data.ValueTransfer;
 
 
 /**
@@ -55,8 +54,7 @@ public interface NavigationParameterRegistry extends Serializable
 
 	public static class Implementation implements NavigationParameterRegistry
 	{
-		private final Map<String, NavigationParameters>						map	= new HashMap<>();
-		private transient ServiceLoader<NavigationParameterValueHandler>	valueHandlers;
+		private final Map<String, NavigationParameters> map = new HashMap<>();
 
 
 		public Implementation()
@@ -72,8 +70,7 @@ public interface NavigationParameterRegistry extends Serializable
 
 			final String id = getNewId();
 
-			this.map.put(id,transform(parameters,NavigationParameterValueHandler::handlesPut,
-					NavigationParameterValueHandler::put));
+			this.map.put(id,transform(parameters,ValueTransfer::put));
 
 			return id;
 		}
@@ -88,8 +85,7 @@ public interface NavigationParameterRegistry extends Serializable
 				throw new NavigationException("Navigation state not found: " + id);
 			}
 
-			return transform(parameters,NavigationParameterValueHandler::handlesGet,
-					NavigationParameterValueHandler::get);
+			return transform(parameters,ValueTransfer::get);
 		}
 		
 		
@@ -107,24 +103,14 @@ public interface NavigationParameterRegistry extends Serializable
 
 
 		protected NavigationParameters transform(final NavigationParameters parameters,
-				final BiPredicate<NavigationParameterValueHandler, Object> predicate,
-				final BiFunction<NavigationParameterValueHandler, Object, Object> logic)
+				final Function<Object, Object> logic)
 		{
-			if(this.valueHandlers == null)
-			{
-				this.valueHandlers = ServiceLoader.For(NavigationParameterValueHandler.class);
-			}
-			
 			final Map<String, Object> transformed = new HashMap<>();
 			
 			for(final String name : parameters.names())
 			{
 				final Object value = parameters.value(name);
-				
-				final Object transformedValue = this.valueHandlers.servicesStream()
-						.filter(handler -> predicate.test(handler,value))
-						.map(handler -> logic.apply(handler,value)).findFirst().orElse(value);
-				
+				final Object transformedValue = logic.apply(value);
 				transformed.put(name,transformedValue);
 			}
 			
