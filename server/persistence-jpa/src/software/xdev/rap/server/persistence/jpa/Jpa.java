@@ -30,6 +30,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 import javax.persistence.Embeddable;
@@ -42,6 +43,7 @@ import javax.persistence.SharedCacheMode;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Fetch;
 import javax.persistence.criteria.FetchParent;
 import javax.persistence.criteria.From;
@@ -50,6 +52,7 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.criteria.Selection;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
@@ -80,13 +83,18 @@ public final class Jpa
 {
 	private final static String											HINT_CACHE_STORE_MODE		= "javax.persistence.cache.storeMode";
 	private final static String											HINT_CACHE_RETRIEVE_MODE	= "javax.persistence.cache.retrieveMode";
-	
+
+	public final static String											PROPERTY_SEPARATOR			= ".";
+
 	private static PersistenceManager									persistenceManager;
+
 	private static SessionStrategyProvider								sessionStrategyProvider;
-	
-	private static final SoftCache<Class<?>, DataAccessObject<?, ?>>	daoCache					= new SoftCache<>();
-	
-	
+
+	private final static SoftCache<Class<?>, DataAccessObject<?, ?>>	daoCache					= new SoftCache<>();
+
+	private final static AtomicLong										aliasCounter				= new AtomicLong();
+
+
 	/**
 	 * @return the persistenceManager
 	 */
@@ -97,11 +105,11 @@ public final class Jpa
 			persistenceManager = createPersistenceManager(
 					RapServlet.getRapServlet().getServletContext());
 		}
-		
+
 		return persistenceManager;
 	}
-	
-	
+
+
 	private static PersistenceManager createPersistenceManager(final ServletContext context)
 	{
 		final String className = context
@@ -119,11 +127,11 @@ public final class Jpa
 				throw new RuntimeException(t);
 			}
 		}
-		
+
 		return new PersistenceManager.Implementation(context);
 	}
-	
-	
+
+
 	/**
 	 * @return the sessionStrategyProvider
 	 */
@@ -134,11 +142,11 @@ public final class Jpa
 			sessionStrategyProvider = createSessionStrategyProvider(
 					RapServlet.getRapServlet().getServletContext());
 		}
-		
+
 		return sessionStrategyProvider;
 	}
-	
-	
+
+
 	private static SessionStrategyProvider createSessionStrategyProvider(
 			final ServletContext context)
 	{
@@ -160,8 +168,8 @@ public final class Jpa
 
 		return new SessionStrategyProvider.Implementation();
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param managedType
@@ -174,11 +182,11 @@ public final class Jpa
 		{
 			return persistenceManager.getPersistenceUnit(managedType);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param managedType
@@ -191,11 +199,11 @@ public final class Jpa
 		{
 			return getEntityManager(persistenceUnit);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param persistenceUnit
@@ -212,11 +220,11 @@ public final class Jpa
 				return conversationable.getEntityManager();
 			}
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
 	/**
 	 *
 	 * @param managedType
@@ -229,11 +237,196 @@ public final class Jpa
 		{
 			return entityManager.getCriteriaBuilder().createQuery(managedType);
 		}
-		
+
 		return null;
 	}
-	
-	
+
+
+	public static <T> Long count(final CriteriaQuery<T> criteria, final EntityManager entityManager)
+	{
+		return entityManager.createQuery(countCriteria(criteria,entityManager)).getSingleResult();
+	}
+
+
+	public static <T> CriteriaQuery<Long> countCriteria(final CriteriaQuery<T> criteria,
+			final EntityManager entityManager)
+	{
+		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		final CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
+		copyCriteriaWithoutSelectionAndOrder(criteria,countCriteria,false);
+
+		Expression<Long> countExpression;
+
+		if(criteria.isDistinct())
+		{
+			countExpression = builder
+					.countDistinct(findRoot(countCriteria,criteria.getResultType()));
+		}
+		else
+		{
+			countExpression = builder.count(findRoot(countCriteria,criteria.getResultType()));
+		}
+
+		return countCriteria.select(countExpression);
+	}
+
+
+	public static <T> void copyCriteria(final CriteriaQuery<T> from, final CriteriaQuery<T> to)
+	{
+		copyCriteriaWithoutSelection(from,to);
+		to.select(from.getSelection());
+	}
+
+
+	public static void copyCriteriaWithoutSelection(final CriteriaQuery<?> from,
+			final CriteriaQuery<?> to)
+	{
+		copyCriteriaWithoutSelectionAndOrder(from,to,true);
+		to.orderBy(from.getOrderList());
+	}
+
+
+	public static void copyCriteriaWithoutSelectionAndOrder(final CriteriaQuery<?> from,
+			final CriteriaQuery<?> to, final boolean copyFetches)
+	{
+		for(final Root<?> root : from.getRoots())
+		{
+			final Root<?> dest = to.from(root.getJavaType());
+			dest.alias(getOrCreateAlias(root));
+			copyJoins(root,dest);
+			if(copyFetches)
+			{
+				copyFetches(root,dest);
+			}
+		}
+
+		to.groupBy(from.getGroupList());
+		to.distinct(from.isDistinct());
+
+		if(from.getGroupRestriction() != null)
+		{
+			to.having(from.getGroupRestriction());
+		}
+
+		final Predicate predicate = from.getRestriction();
+		if(predicate != null)
+		{
+			to.where(predicate);
+		}
+	}
+
+
+	public static <T> Root<T> findRoot(final CriteriaQuery<?> query, final Class<T> clazz)
+	{
+		for(final Root<?> r : query.getRoots())
+		{
+			if(clazz.equals(r.getJavaType()))
+			{
+				return (Root<T>)r.as(clazz);
+			}
+		}
+		return null;
+	}
+
+
+	public static <T> String getOrCreateAlias(final Selection<T> selection)
+	{
+		String alias = selection.getAlias();
+		if(alias == null)
+		{
+			alias = "__generatedAlias" + aliasCounter.incrementAndGet();
+			selection.alias(alias);
+		}
+		return alias;
+	}
+
+
+	public static void copyJoins(final From<?, ?> from, final From<?, ?> to)
+	{
+		for(final Join<?, ?> j : from.getJoins())
+		{
+			final Join<?, ?> toJoin = to.join(j.getAttribute().getName(),j.getJoinType());
+			toJoin.alias(getOrCreateAlias(j));
+
+			copyJoins(j,toJoin);
+		}
+	}
+
+
+	public static void copyFetches(final From<?, ?> from, final From<?, ?> to)
+	{
+		for(final Fetch<?, ?> f : from.getFetches())
+		{
+			final Fetch<?, ?> toFetch = to.fetch(f.getAttribute().getName());
+			copyFetches(f,toFetch);
+		}
+	}
+
+
+	public static void copyFetches(final Fetch<?, ?> from, final Fetch<?, ?> to)
+	{
+		for(final Fetch<?, ?> f : from.getFetches())
+		{
+			final Fetch<?, ?> toFetch = to.fetch(f.getAttribute().getName());
+			copyFetches(f,toFetch);
+		}
+	}
+
+
+	public static Predicate andPredicate(final CriteriaBuilder builder,
+			final Predicate... predicatesNullAllowed)
+	{
+		return andPredicate(builder,Arrays.asList(predicatesNullAllowed));
+	}
+
+
+	public static Predicate andPredicate(final CriteriaBuilder builder,
+			final Collection<Predicate> predicatesNullAllowed)
+	{
+		final List<Predicate> predicates = predicatesNullAllowed.stream().filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		if(predicates == null || predicates.isEmpty())
+		{
+			return null;
+		}
+		else if(predicates.size() == 1)
+		{
+			return predicates.get(0);
+		}
+		else
+		{
+			return builder.and(predicates.toArray(new Predicate[predicates.size()]));
+		}
+	}
+
+
+	public static Predicate orPredicate(final CriteriaBuilder builder,
+			final Predicate... predicatesNullAllowed)
+	{
+		return orPredicate(builder,Arrays.asList(predicatesNullAllowed));
+	}
+
+
+	public static Predicate orPredicate(final CriteriaBuilder builder,
+			final Collection<Predicate> predicatesNullAllowed)
+	{
+		final List<Predicate> predicates = predicatesNullAllowed.stream().filter(Objects::nonNull)
+				.collect(Collectors.toList());
+		if(predicates == null || predicates.isEmpty())
+		{
+			return null;
+		}
+		else if(predicates.size() == 1)
+		{
+			return predicates.get(0);
+		}
+		else
+		{
+			return builder.or(predicates.toArray(new Predicate[predicates.size()]));
+		}
+	}
+
+
 	public static <C> ManagedType<C> getManagedType(final Class<C> entityClass)
 	{
 		final EntityManager entityManager = getEntityManager(entityClass);
@@ -387,62 +580,15 @@ public final class Jpa
 	}
 
 
-	public static Predicate andPredicate(final CriteriaBuilder builder,
-			final Predicate... predicatesNullAllowed)
+	public static <E, F> Path<F> getPath(final Root<E> root, final Attribute<?, ?>... attributes)
 	{
-		return andPredicate(builder,Arrays.asList(predicatesNullAllowed));
+		return getPath(root,Arrays.asList(attributes));
 	}
-	
-	
-	public static Predicate andPredicate(final CriteriaBuilder builder,
-			final Collection<Predicate> predicatesNullAllowed)
-	{
-		final List<Predicate> predicates = predicatesNullAllowed.stream().filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		if(predicates == null || predicates.isEmpty())
-		{
-			return null;
-		}
-		else if(predicates.size() == 1)
-		{
-			return predicates.get(0);
-		}
-		else
-		{
-			return builder.and(predicates.toArray(new Predicate[predicates.size()]));
-		}
-	}
-	
-	
-	public static Predicate orPredicate(final CriteriaBuilder builder,
-			final Predicate... predicatesNullAllowed)
-	{
-		return orPredicate(builder,Arrays.asList(predicatesNullAllowed));
-	}
-	
-	
-	public static Predicate orPredicate(final CriteriaBuilder builder,
-			final Collection<Predicate> predicatesNullAllowed)
-	{
-		final List<Predicate> predicates = predicatesNullAllowed.stream().filter(Objects::nonNull)
-				.collect(Collectors.toList());
-		if(predicates == null || predicates.isEmpty())
-		{
-			return null;
-		}
-		else if(predicates.size() == 1)
-		{
-			return predicates.get(0);
-		}
-		else
-		{
-			return builder.or(predicates.toArray(new Predicate[predicates.size()]));
-		}
-	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
-	public static <E, F> Path<F> getPath(final Root<E> root, final List<Attribute<?, ?>> attributes)
+	public static <E, F> Path<F> getPath(final Root<E> root,
+			final Iterable<Attribute<?, ?>> attributes)
 	{
 		Path<?> path = root;
 		for(final Attribute<?, ?> attribute : attributes)
@@ -475,160 +621,21 @@ public final class Jpa
 		}
 		return (Path<F>)path;
 	}
-	
-	
-	public static void applyCacheHints(final TypedQuery<?> query, final CacheableQuery.Kind kind,
-			final Class<?> managedType)
-	{
-		applyCacheHints(query,getCacheableQueryAnnotation(managedType,kind),
-				getPersistenceUnit(managedType));
-	}
-	
-	
-	public static void applyCacheHints(final TypedQuery<?> typedQuery,
-			final CacheableQuery cacheableQuery, final String persistenceUnit)
-	{
-		boolean cacheable = false;
-		
-		final SharedCacheMode queryCacheMode = getPersistenceManager()
-				.getQueryCacheMode(persistenceUnit);
-		switch(queryCacheMode)
-		{
-			case ALL:
-				cacheable = true;
-			break;
-		
-			case NONE:
-			case UNSPECIFIED:
-				cacheable = false;
-			break;
-		
-			case DISABLE_SELECTIVE:
-				if(cacheableQuery != null)
-				{
-					cacheable = cacheableQuery.cache();
-				}
-				else
-				{
-					cacheable = true;
-				}
-			break;
-		
-			case ENABLE_SELECTIVE:
-				if(cacheableQuery != null)
-				{
-					cacheable = cacheableQuery.cache();
-				}
-				else
-				{
-					cacheable = false;
-				}
-			break;
-		}
-		
-		typedQuery.setHint(QueryHints.CACHEABLE,cacheable);
-		
-		if(cacheable && cacheableQuery != null)
-		{
-			final String region = cacheableQuery.region();
-			if(!StringUtils.isBlank(region))
-			{
-				typedQuery.setHint(QueryHints.CACHE_REGION,region);
-			}
-			
-			typedQuery.setHint(HINT_CACHE_STORE_MODE,cacheableQuery.storeMode());
-			typedQuery.setHint(HINT_CACHE_RETRIEVE_MODE,cacheableQuery.retrieveMode());
-		}
-	}
-	
-	
-	public static void reattachIfManaged(final Object bean)
-	{
-		if(isManaged(bean.getClass()))
-		{
-			getDao(bean).reattach(bean);
-		}
-	}
-	
-	
-	public static <D extends DataAccessObject<?, ?>> D getDao(final Class<D> daoType)
-			throws RuntimeException
-	{
-		synchronized(daoCache)
-		{
-			@SuppressWarnings("unchecked")
-			D dao = (D)daoCache.get(daoType);
-			
-			if(dao == null)
-			{
-				try
-				{
-					dao = daoType.newInstance();
-					daoCache.put(daoType,dao);
-				}
-				catch(InstantiationException | IllegalAccessException e)
-				{
-					throw new RuntimeException(e);
-				}
-			}
-			
-			return dao;
-		}
-	}
-	
-	
+
+
 	@SuppressWarnings("unchecked")
-	public static <T, I extends Serializable> DataAccessObject<T, I> getDao(final T entity)
-			throws RuntimeException
+	public static <T> Path<T> getPath(final Path<?> path, final String propertyPath)
 	{
-		return (DataAccessObject<T, I>)getDaoByEntityType(entity.getClass());
+		if(StringUtils.isEmpty(propertyPath))
+		{
+			return (Path<T>)path;
+		}
+
+		final String name = StringUtils.substringBefore(propertyPath,PROPERTY_SEPARATOR);
+		return getPath(path.get(name),StringUtils.substringAfter(propertyPath,PROPERTY_SEPARATOR));
 	}
-	
-	
-	@SuppressWarnings("unchecked")
-	public static <T, I extends Serializable> DataAccessObject<T, I> getDaoByEntityType(
-			final Class<T> entity) throws RuntimeException
-	{
-		final DAO dao = entity.getAnnotation(DAO.class);
-		if(dao == null)
-		{
-			throw new RuntimeException("Not an entity");
-		}
-		
-		return (DataAccessObject<T, I>)getDao(dao.value());
-	}
-	
-	
-	public static CacheableQuery getCacheableQueryAnnotation(final Class<?> clazz,
-			final CacheableQuery.Kind kind)
-	{
-		CacheableQuery cacheableQuery = clazz.getAnnotation(CacheableQuery.class);
-		if(cacheableQuery != null && kind.equals(cacheableQuery.kind()))
-		{
-			return cacheableQuery;
-		}
-		
-		final CacheableQueries cacheableQueries = clazz.getAnnotation(CacheableQueries.class);
-		if(cacheableQueries != null)
-		{
-			cacheableQuery = Arrays.stream(cacheableQueries.value())
-					.filter(query -> kind.equals(query.kind())).findAny().orElse(null);
-			if(cacheableQuery != null)
-			{
-				return cacheableQuery;
-			}
-		}
-		
-		final Class<?> superclass = clazz.getSuperclass();
-		if(superclass != null)
-		{
-			return getCacheableQueryAnnotation(superclass,kind);
-		}
-		
-		return null;
-	}
-	
-	
+
+
 	public static String getEntityIdAttributeName(final Class<?> entityType)
 	{
 		final SingularAttribute<? extends Object, ?> idAttribute = getEntityIdAttribute(entityType);
@@ -664,8 +671,160 @@ public final class Jpa
 				.map(SingularAttribute.class::cast).filter(SingularAttribute::isId).findFirst()
 				.orElse(null);
 	}
-	
-	
+
+
+	public static void applyCacheHints(final TypedQuery<?> query, final CacheableQuery.Kind kind,
+			final Class<?> managedType)
+	{
+		applyCacheHints(query,getCacheableQueryAnnotation(managedType,kind),
+				getPersistenceUnit(managedType));
+	}
+
+
+	public static void applyCacheHints(final TypedQuery<?> typedQuery,
+			final CacheableQuery cacheableQuery, final String persistenceUnit)
+	{
+		boolean cacheable = false;
+
+		final SharedCacheMode queryCacheMode = getPersistenceManager()
+				.getQueryCacheMode(persistenceUnit);
+		switch(queryCacheMode)
+		{
+			case ALL:
+				cacheable = true;
+			break;
+
+			case NONE:
+			case UNSPECIFIED:
+				cacheable = false;
+			break;
+
+			case DISABLE_SELECTIVE:
+				if(cacheableQuery != null)
+				{
+					cacheable = cacheableQuery.cache();
+				}
+				else
+				{
+					cacheable = true;
+				}
+			break;
+
+			case ENABLE_SELECTIVE:
+				if(cacheableQuery != null)
+				{
+					cacheable = cacheableQuery.cache();
+				}
+				else
+				{
+					cacheable = false;
+				}
+			break;
+		}
+
+		typedQuery.setHint(QueryHints.CACHEABLE,cacheable);
+
+		if(cacheable && cacheableQuery != null)
+		{
+			final String region = cacheableQuery.region();
+			if(!StringUtils.isBlank(region))
+			{
+				typedQuery.setHint(QueryHints.CACHE_REGION,region);
+			}
+
+			typedQuery.setHint(HINT_CACHE_STORE_MODE,cacheableQuery.storeMode());
+			typedQuery.setHint(HINT_CACHE_RETRIEVE_MODE,cacheableQuery.retrieveMode());
+		}
+	}
+
+
+	public static void reattachIfManaged(final Object bean)
+	{
+		if(isManaged(bean.getClass()))
+		{
+			getDao(bean).reattach(bean);
+		}
+	}
+
+
+	public static <D extends DataAccessObject<?, ?>> D getDao(final Class<D> daoType)
+			throws RuntimeException
+	{
+		synchronized(daoCache)
+		{
+			@SuppressWarnings("unchecked")
+			D dao = (D)daoCache.get(daoType);
+
+			if(dao == null)
+			{
+				try
+				{
+					dao = daoType.newInstance();
+					daoCache.put(daoType,dao);
+				}
+				catch(InstantiationException | IllegalAccessException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+
+			return dao;
+		}
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public static <T, I extends Serializable> DataAccessObject<T, I> getDao(final T entity)
+			throws RuntimeException
+	{
+		return (DataAccessObject<T, I>)getDaoByEntityType(entity.getClass());
+	}
+
+
+	@SuppressWarnings("unchecked")
+	public static <T, I extends Serializable> DataAccessObject<T, I> getDaoByEntityType(
+			final Class<T> entity) throws RuntimeException
+	{
+		final DAO dao = entity.getAnnotation(DAO.class);
+		if(dao == null)
+		{
+			throw new RuntimeException("Not an entity");
+		}
+
+		return (DataAccessObject<T, I>)getDao(dao.value());
+	}
+
+
+	public static CacheableQuery getCacheableQueryAnnotation(final Class<?> clazz,
+			final CacheableQuery.Kind kind)
+	{
+		CacheableQuery cacheableQuery = clazz.getAnnotation(CacheableQuery.class);
+		if(cacheableQuery != null && kind.equals(cacheableQuery.kind()))
+		{
+			return cacheableQuery;
+		}
+
+		final CacheableQueries cacheableQueries = clazz.getAnnotation(CacheableQueries.class);
+		if(cacheableQueries != null)
+		{
+			cacheableQuery = Arrays.stream(cacheableQueries.value())
+					.filter(query -> kind.equals(query.kind())).findAny().orElse(null);
+			if(cacheableQuery != null)
+			{
+				return cacheableQuery;
+			}
+		}
+
+		final Class<?> superclass = clazz.getSuperclass();
+		if(superclass != null)
+		{
+			return getCacheableQueryAnnotation(superclass,kind);
+		}
+
+		return null;
+	}
+
+
 	public static void preload(final Object bean, final String... requiredProperties)
 	{
 		for(final String property : requiredProperties)
@@ -781,8 +940,8 @@ public final class Jpa
 			}
 		}
 	}
-	
-	
+
+
 	private Jpa()
 	{
 		throw new Error();
