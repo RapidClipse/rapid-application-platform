@@ -40,21 +40,21 @@ public @interface CacheableQuery
 {
 	public static enum Kind
 	{
-		FIND_ALL, REMOVE_BY_ID, LAZY_QUERY_CONTAINER
+		FIND_ALL, REMOVE_BY_ID
 	}
-	
-	
+
+
 	boolean cache() default true;
-	
-	
+
+
 	Kind kind();
-	
-	
+
+
 	String region() default "";
-	
-	
+
+
 	CacheStoreMode storeMode() default CacheStoreMode.USE;
-	
-	
+
+
 	CacheRetrieveMode retrieveMode() default CacheRetrieveMode.USE;
 }
