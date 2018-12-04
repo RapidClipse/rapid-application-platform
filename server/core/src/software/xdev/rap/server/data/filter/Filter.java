@@ -30,8 +30,6 @@ import software.xdev.rap.server.data.filter.Comparison.GreaterEquals;
 import software.xdev.rap.server.data.filter.Comparison.Less;
 import software.xdev.rap.server.data.filter.Comparison.LessEquals;
 import software.xdev.rap.server.data.filter.Comparison.StringComparison;
-import software.xdev.rap.server.data.filter.Connector.And;
-import software.xdev.rap.server.data.filter.Connector.Or;
 
 
 /**
@@ -40,100 +38,100 @@ import software.xdev.rap.server.data.filter.Connector.Or;
  */
 public interface Filter extends Serializable
 {
-	public default And and(final Filter other)
+	public default Composite and(final Filter other)
 	{
-		return new And.Implementation(this,other);
+		return new Composite.Implementation(Composite.Connector.AND,this,other);
 	}
-
-
-	public default Or or(final Filter other)
+	
+	
+	public default Composite or(final Filter other)
 	{
-		return new Or.Implementation(this,other);
+		return new Composite.Implementation(Composite.Connector.OR,this,other);
 	}
-
-
+	
+	
 	@SafeVarargs
-	public static And And(final Filter... filters)
+	public static Composite And(final Filter... filters)
 	{
-		return new And.Implementation(filters);
+		return new Composite.Implementation(Composite.Connector.AND,filters);
 	}
-
-
-	public static And And(final List<Filter> filters)
+	
+	
+	public static Composite And(final List<Filter> filters)
 	{
-		return new And.Implementation(filters);
+		return new Composite.Implementation(Composite.Connector.AND,filters);
 	}
-
-
+	
+	
 	@SafeVarargs
-	public static Or Or(final Filter... filters)
+	public static Composite Or(final Filter... filters)
 	{
-		return new Or.Implementation(filters);
+		return new Composite.Implementation(Composite.Connector.OR,filters);
 	}
-
-
-	public static Or Or(final List<Filter> filters)
+	
+	
+	public static Composite Or(final List<Filter> filters)
 	{
-		return new Or.Implementation(filters);
+		return new Composite.Implementation(Composite.Connector.OR,filters);
 	}
-
-
+	
+	
 	public static Not Not(final Filter filter)
 	{
 		return new Not.Implementation(filter);
 	}
-	
-	
+
+
 	public static IsNull IsNull(final Object identifier)
 	{
 		return new IsNull.Implementation(identifier);
 	}
-	
-	
+
+
 	public static Equals Equals(final Object identifier, final Comparable<?> value)
 	{
 		return new Equals.Implementation(identifier,value);
 	}
-	
-	
+
+
 	public static Greater Greater(final Object identifier, final Comparable<?> value)
 	{
 		return new Greater.Implementation(identifier,value);
 	}
-	
-	
+
+
 	public static GreaterEquals GreaterEquals(final Object identifier, final Comparable<?> value)
 	{
 		return new GreaterEquals.Implementation(identifier,value);
 	}
-	
-	
+
+
 	public static Less Less(final Object identifier, final Comparable<?> value)
 	{
 		return new Less.Implementation(identifier,value);
 	}
-	
-	
+
+
 	public static LessEquals LessEquals(final Object identifier, final Comparable<?> value)
 	{
 		return new LessEquals.Implementation(identifier,value);
 	}
-
-
+	
+	
 	public static StringComparison StringComparison(final Object identifier, final String value,
 			final boolean caseSensitive)
 	{
 		return new StringComparison.Implementation(identifier,value,caseSensitive);
 	}
-
-
+	
+	
 	public static StringComparison StringComparison(final Object identifier, final String value,
 			final boolean caseSensitive, final List<Character> wildcards)
 	{
 		return new StringComparison.Implementation(identifier,value,caseSensitive,wildcards);
 	}
-
-
+	
+	
 	public static Between Between(final Object identifier, final Comparable<?> start,
 			final Comparable<?> end)
 	{

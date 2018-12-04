@@ -30,78 +30,57 @@ import java.util.List;
  * @author XDEV Software
  *
  */
-public interface Connector extends Filter
+public interface Composite extends Filter
 {
-	public List<Filter> filters();
-
-
-
-	public static abstract class Abstract implements Connector
+	public static enum Connector
 	{
-		private final List<Filter> filters;
+		AND, OR
+	}
 
 
+	public Connector connector();
+
+
+	public List<Filter> filters();
+	
+	
+	
+	public static class Implementation implements Composite
+	{
+		private final Connector		connector;
+		private final List<Filter>	filters;
+		
+		
 		@SafeVarargs
-		public Abstract(final Filter... filters)
-		{
-			super();
-
-			this.filters = Arrays.asList(filters);
-		}
-		
-		
-		public Abstract(final List<Filter> filters)
+		public Implementation(final Connector connector, final Filter... filters)
 		{
 			super();
 			
-			this.filters = Collections.unmodifiableList(filters);
+			this.connector = connector;
+			this.filters = Arrays.asList(filters);
 		}
 
 
+		public Implementation(final Connector connector, final List<Filter> filters)
+		{
+			super();
+			
+			this.connector = connector;
+			this.filters = Collections.unmodifiableList(filters);
+		}
+		
+		
+		@Override
+		public Connector connector()
+		{
+			return this.connector;
+		}
+		
+		
 		@Override
 		public List<Filter> filters()
 		{
 			return this.filters;
-		}
-	}
-
-
-
-	public static interface And extends Connector
-	{
-		public static class Implementation extends Abstract implements And
-		{
-			@SafeVarargs
-			public Implementation(final Filter... filters)
-			{
-				super(filters);
-			}
-
-
-			public Implementation(final List<Filter> filters)
-			{
-				super(filters);
-			}
-		}
-	}
-
-
-
-	public static interface Or extends Connector
-	{
-		public static class Implementation extends Abstract implements Or
-		{
-			@SafeVarargs
-			public Implementation(final Filter... filters)
-			{
-				super(filters);
-			}
-
-
-			public Implementation(final List<Filter> filters)
-			{
-				super(filters);
-			}
 		}
 	}
 }

@@ -37,8 +37,7 @@ import software.xdev.rap.server.data.filter.Comparison.GreaterEquals;
 import software.xdev.rap.server.data.filter.Comparison.Less;
 import software.xdev.rap.server.data.filter.Comparison.LessEquals;
 import software.xdev.rap.server.data.filter.Comparison.StringComparison;
-import software.xdev.rap.server.data.filter.Connector.And;
-import software.xdev.rap.server.data.filter.Connector.Or;
+import software.xdev.rap.server.data.filter.Composite.Connector;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 
 
@@ -81,16 +80,16 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 	{
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 
-		if(filter instanceof Connector)
+		if(filter instanceof Composite)
 		{
-			final Connector connector = (Connector)filter;
-			final Predicate[] predicates = connector.filters().stream()
+			final Composite composite = (Composite)filter;
+			final Predicate[] predicates = composite.filters().stream()
 					.map(f -> convert(f,entityManager)).toArray(Predicate[]::new);
-			if(connector instanceof And)
+			if(composite.connector() == Connector.AND)
 			{
 				return criteriaBuilder.and(predicates);
 			}
-			if(connector instanceof Or)
+			if(composite.connector() == Connector.OR)
 			{
 				return criteriaBuilder.or(predicates);
 			}
