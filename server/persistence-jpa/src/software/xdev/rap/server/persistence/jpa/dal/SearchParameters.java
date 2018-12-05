@@ -39,7 +39,6 @@ package software.xdev.rap.server.persistence.jpa.dal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -48,6 +47,8 @@ import java.util.stream.Collectors;
 import javax.persistence.CacheRetrieveMode;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.metamodel.Attribute;
+
+import software.xdev.rap.server.persistence.jpa.AttributeChain;
 
 
 /**
@@ -638,7 +639,7 @@ public class SearchParameters implements Serializable
 	 * Returns the attributes (x-to-one association) which must be fetched with
 	 * a left join.
 	 */
-	public List<List<Attribute<?, ?>>> getFetches()
+	public List<AttributeChain> getFetches()
 	{
 		return this.fetches.stream().map(PathHolder::getAttributes).collect(Collectors.toList());
 	}
@@ -656,13 +657,13 @@ public class SearchParameters implements Serializable
 	 */
 	public void addFetch(final Attribute<?, ?>... attributes)
 	{
-		addFetch(Arrays.asList(attributes));
+		this.fetches.add(new PathHolder(new AttributeChain(attributes)));
 	}
 
 
-	public void addFetch(final List<Attribute<?, ?>> attributes)
+	public void addFetch(final List<? extends Attribute<?, ?>> attributes)
 	{
-		this.fetches.add(new PathHolder(attributes));
+		this.fetches.add(new PathHolder(new AttributeChain(attributes)));
 	}
 
 
@@ -671,7 +672,7 @@ public class SearchParameters implements Serializable
 	 */
 	public SearchParameters fetch(final Attribute<?, ?>... attributes)
 	{
-		fetch(Arrays.asList(attributes));
+		addFetch(attributes);
 		return this;
 	}
 
@@ -679,7 +680,7 @@ public class SearchParameters implements Serializable
 	/**
 	 * Fluently set the fetch attribute
 	 */
-	public SearchParameters fetch(final List<Attribute<?, ?>> attributes)
+	public SearchParameters fetch(final List<? extends Attribute<?, ?>> attributes)
 	{
 		addFetch(attributes);
 		return this;

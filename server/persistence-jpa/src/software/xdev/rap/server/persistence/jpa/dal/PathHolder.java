@@ -38,14 +38,10 @@ package software.xdev.rap.server.persistence.jpa.dal;
  */
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import javax.persistence.metamodel.Attribute;
 
 import org.hibernate.criterion.Example.PropertySelector;
 
+import software.xdev.rap.server.persistence.jpa.AttributeChain;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 
 
@@ -57,24 +53,22 @@ import software.xdev.rap.server.persistence.jpa.Jpa;
  */
 public class PathHolder implements Serializable
 {
-	private static final long				serialVersionUID	= 1L;
-	private final String					path;
-	private final Class<?>					from;
-	private transient List<Attribute<?, ?>>	attributes;
-
-
-	public PathHolder(final Attribute<?, ?>... attributes)
+	private static final long			serialVersionUID	= 1L;
+	private final String				path;
+	private final Class<?>				from;
+	private transient AttributeChain	attributeChain;
+	
+	
+	public PathHolder(final AttributeChain attributeChain)
 	{
-		this(Arrays.asList(attributes));
-	}
+		if(!attributeChain.verify())
+		{
+			throw new IllegalArgumentException("Invalid attribute chain");
+		}
 
-
-	public PathHolder(final List<Attribute<?, ?>> attributes)
-	{
-		Jpa.verifyPath(attributes);
-		this.attributes = new ArrayList<>(attributes);
-		this.path = Jpa.toPath(attributes);
-		this.from = attributes.get(0).getDeclaringType().getJavaType();
+		this.attributeChain = attributeChain;
+		this.path = attributeChain.path();
+		this.from = attributeChain.first().getDeclaringType().getJavaType();
 	}
 
 
@@ -89,13 +83,13 @@ public class PathHolder implements Serializable
 	}
 
 
-	public List<Attribute<?, ?>> getAttributes()
+	public AttributeChain getAttributes()
 	{
-		if(this.attributes == null)
+		if(this.attributeChain == null)
 		{
-			this.attributes = Jpa.resolveAttributeChain(this.from,this.path);
+			this.attributeChain = Jpa.resolveAttributeChain(this.from,this.path);
 		}
-		return this.attributes;
+		return this.attributeChain;
 	}
 
 

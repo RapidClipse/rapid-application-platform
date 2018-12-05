@@ -38,6 +38,7 @@ import software.xdev.rap.server.data.filter.Comparison.Less;
 import software.xdev.rap.server.data.filter.Comparison.LessEquals;
 import software.xdev.rap.server.data.filter.Comparison.StringComparison;
 import software.xdev.rap.server.data.filter.Composite.Connector;
+import software.xdev.rap.server.persistence.jpa.AttributeChain;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 
 
@@ -189,13 +190,21 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 	private Path<?> getPath(final Object identifier)
 	{
 		Path<?> path = null;
-		if(path instanceof Attribute)
+		if(identifier instanceof Attribute)
 		{
-			path = Jpa.getPath(this.root,(Attribute)identifier);
+			path = Jpa.resolvePath(this.root,(Attribute)identifier);
+		}
+		else if(identifier instanceof Attribute[])
+		{
+			path = Jpa.resolvePath(this.root,(Attribute[])identifier);
+		}
+		else if(identifier instanceof AttributeChain)
+		{
+			path = Jpa.resolvePath(this.root,((AttributeChain)identifier).attributes());
 		}
 		else
 		{
-			path = Jpa.getPath(path,identifier.toString());
+			path = Jpa.resolvePath(this.root,identifier.toString());
 		}
 
 		if(path == null)

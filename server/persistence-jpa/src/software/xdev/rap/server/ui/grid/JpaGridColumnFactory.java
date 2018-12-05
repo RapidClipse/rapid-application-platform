@@ -21,13 +21,16 @@
 package software.xdev.rap.server.ui.grid;
 
 
-import static software.xdev.rap.server.Rap.notEmpty;
+import static java.util.Objects.requireNonNull;
+
+import java.util.Collection;
 
 import javax.persistence.metamodel.Attribute;
 
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;
 
+import software.xdev.rap.server.persistence.jpa.AttributeChain;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 import software.xdev.rap.server.resources.CaptionUtils;
 
@@ -40,7 +43,20 @@ public interface JpaGridColumnFactory
 {
 	public static JpaGridColumnFactory For(final Attribute<?, ?>... attributeChain)
 	{
-		return new Implementation(attributeChain);
+		return new Implementation(new AttributeChain(attributeChain));
+	}
+	
+	
+	public static JpaGridColumnFactory For(
+			final Collection<? extends Attribute<?, ?>> attributeChain)
+	{
+		return new Implementation(new AttributeChain(attributeChain));
+	}
+	
+	
+	public static JpaGridColumnFactory For(final AttributeChain attributeChain)
+	{
+		return new Implementation(attributeChain.clone());
 	}
 	
 	
@@ -50,22 +66,22 @@ public interface JpaGridColumnFactory
 	
 	public static class Implementation implements JpaGridColumnFactory
 	{
-		private final Attribute<?, ?>[] attributeChain;
+		private final AttributeChain attributeChain;
 		
 		
-		public Implementation(final Attribute<?, ?>[] attributeChain)
+		public Implementation(final AttributeChain attributeChain)
 		{
 			super();
 			
-			this.attributeChain = notEmpty(attributeChain);
+			this.attributeChain = requireNonNull(attributeChain);
 		}
 		
 		
 		@Override
 		public <T> Column<T> addTo(final Grid<T> grid)
 		{
-			final Attribute<?, ?>[] attributeChain = this.attributeChain;
-			final Attribute<?, ?> attribute = attributeChain[attributeChain.length - 1];
+			final AttributeChain attributeChain = this.attributeChain;
+			final Attribute<?, ?> attribute = attributeChain.last();
 			
 			return grid.addColumn(entity -> Jpa.resolveValue(entity,attributeChain))
 					.setHeader(CaptionUtils.resolveCaption(

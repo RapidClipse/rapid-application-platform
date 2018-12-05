@@ -68,6 +68,7 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
+import software.xdev.rap.server.persistence.jpa.AttributeChain;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 import software.xdev.rap.server.util.ReflectionUtils;
 
@@ -78,12 +79,12 @@ import software.xdev.rap.server.util.ReflectionUtils;
 class FindByExample<E>
 {
 	private final static Logger		logger	= Logger.getLogger(FindByExample.class.getName());
-	
+
 	private final Class<E>			persistentClass;
 	private final EntityManager		entityManager;
 	private final SearchParameters	searchParameters;
-
-
+	
+	
 	public FindByExample(final Class<E> persistentClass, final EntityManager entityManager,
 			final SearchParameters searchParameters)
 	{
@@ -91,44 +92,44 @@ class FindByExample<E>
 		this.entityManager = entityManager;
 		this.searchParameters = searchParameters;
 	}
-
-
+	
+	
 	public List<E> findByExample(final E entity)
 	{
 		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<E> criteriaQuery = builder.createQuery(this.persistentClass);
-
+		
 		if(this.searchParameters.getDistinct())
 		{
 			criteriaQuery.distinct(true);
 		}
-
+		
 		final Root<E> root = criteriaQuery.from(this.persistentClass);
-
+		
 		final Predicate predicate = getPredicate(criteriaQuery,root,builder,entity);
 		if(predicate != null)
 		{
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-
+		
 		fetches(root);
-
+		
 		criteriaQuery.orderBy(buildJpaOrders(this.searchParameters.getOrders(),root,builder));
-
+		
 		final TypedQuery<E> typedQuery = this.entityManager.createQuery(criteriaQuery);
 		applyCacheHints(typedQuery);
 		applyPagination(typedQuery);
 		return typedQuery.getResultList();
 	}
-
-
+	
+	
 	public int countByExample(final E entity)
 	{
 		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
 		final Root<E> root = criteriaQuery.from(this.persistentClass);
-		
+
 		if(this.searchParameters.getDistinct())
 		{
 			criteriaQuery = criteriaQuery.select(builder.countDistinct(root));
@@ -137,23 +138,23 @@ class FindByExample<E>
 		{
 			criteriaQuery = criteriaQuery.select(builder.count(root));
 		}
-		
+
 		// predicate
 		final Predicate predicate = getPredicate(criteriaQuery,root,builder,entity);
 		if(predicate != null)
 		{
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-		
+
 		// construct order by to fetch or joins if needed
 		buildJpaOrders(this.searchParameters.getOrders(),root,builder);
-		
+
 		final TypedQuery<Long> typedQuery = this.entityManager.createQuery(criteriaQuery);
 		applyCacheHints(typedQuery);
 		return typedQuery.getSingleResult().intValue();
 	}
-
-
+	
+	
 	private Predicate getPredicate(final CriteriaQuery<?> criteriaQuery, final Root<E> root,
 			final CriteriaBuilder builder, final E entity)
 	{
@@ -161,8 +162,8 @@ class FindByExample<E>
 				bySearchPredicate(root,builder,entity), //
 				byPredicate(criteriaQuery,root,builder,entity));
 	}
-
-
+	
+	
 	private Predicate bySearchPredicate(final Root<E> root, final CriteriaBuilder builder,
 			final E entity)
 	{
@@ -171,15 +172,15 @@ class FindByExample<E>
 				byExample(root,builder,entity), //
 				byPattern(root,builder,this.persistentClass));
 	}
-
-
+	
+	
 	private Predicate concatPredicate(final CriteriaBuilder builder,
 			final Predicate... predicatesNullAllowed)
 	{
 		return concatPredicate(builder,Arrays.asList(predicatesNullAllowed));
 	}
-
-
+	
+	
 	private Predicate concatPredicate(final CriteriaBuilder builder,
 			final Collection<Predicate> predicatesNullAllowed)
 	{
@@ -192,8 +193,8 @@ class FindByExample<E>
 			return Jpa.orPredicate(builder,predicatesNullAllowed);
 		}
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private Predicate byRanges(final Root<E> root, final CriteriaBuilder builder)
 	{
@@ -211,16 +212,16 @@ class FindByExample<E>
 				}
 			}
 		}
-
+		
 		return concatPredicate(builder,predicates);
 	}
-
-
+	
+	
 	private <D extends Comparable<? super D>> Predicate buildRangePredicate(final Range<E, D> range,
 			final Root<E> root, final CriteriaBuilder builder)
 	{
 		Predicate rangePredicate = null;
-		final Path<D> path = Jpa.getPath(root,range.getAttributes());
+		final Path<D> path = Jpa.resolvePath(root,range.getAttributes());
 		if(range.isBetween())
 		{
 			rangePredicate = builder.between(path,range.getFrom(),range.getTo());
@@ -233,7 +234,7 @@ class FindByExample<E>
 		{
 			rangePredicate = builder.lessThanOrEqualTo(path,range.getTo());
 		}
-
+		
 		if(rangePredicate != null)
 		{
 			if(!range.isIncludeNullSet() || range.getIncludeNull() == Boolean.FALSE)
@@ -259,13 +260,13 @@ class FindByExample<E>
 		}
 		return null;
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private Predicate byPropertySelectors(final Root<E> root, final CriteriaBuilder builder)
 	{
 		final List<Predicate> predicates = new ArrayList<>();
-
+		
 		for(final PropertySelector<?, ?> selector : this.searchParameters.getProperties())
 		{
 			if(selector.isBoolean())
@@ -285,18 +286,18 @@ class FindByExample<E>
 		}
 		return concatPredicate(builder,predicates);
 	}
-
-
+	
+	
 	private void byBooleanSelector(final Root<E> root, final CriteriaBuilder builder,
 			final List<Predicate> predicates, final PropertySelector<? super E, Boolean> selector)
 	{
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-
+			
 			for(final Boolean selection : selector.getSelected())
 			{
-				final Path<Boolean> path = Jpa.getPath(root,selector.getAttributes());
+				final Path<Boolean> path = Jpa.resolvePath(root,selector.getAttributes());
 				if(selection == null)
 				{
 					selectorPredicates.add(builder.isNull(path));
@@ -317,18 +318,18 @@ class FindByExample<E>
 			}
 		}
 	}
-
-
+	
+	
 	private void byStringSelector(final Root<E> root, final CriteriaBuilder builder,
 			final List<Predicate> predicates, final PropertySelector<? super E, String> selector)
 	{
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-
+			
 			for(final String selection : selector.getSelected())
 			{
-				final Path<String> path = Jpa.getPath(root,selector.getAttributes());
+				final Path<String> path = Jpa.resolvePath(root,selector.getAttributes());
 				selectorPredicates
 						.add(stringPredicate(path,selection,selector.getSearchMode(),builder));
 			}
@@ -342,15 +343,15 @@ class FindByExample<E>
 			}
 		}
 	}
-
-
+	
+	
 	private Predicate stringPredicate(final Expression<String> path, final Object attrValue,
 			final CriteriaBuilder builder)
 	{
 		return stringPredicate(path,attrValue,null,builder);
 	}
-
-
+	
+	
 	private Predicate stringPredicate(Expression<String> path, Object attrValue,
 			final SearchMode searchMode, final CriteriaBuilder builder)
 	{
@@ -359,7 +360,7 @@ class FindByExample<E>
 			path = builder.lower(path);
 			attrValue = ((String)attrValue).toLowerCase();
 		}
-
+		
 		switch(searchMode != null ? searchMode : this.searchParameters.getSearchMode())
 		{
 			case EQUALS:
@@ -378,8 +379,8 @@ class FindByExample<E>
 				throw new IllegalStateException("expecting a search mode!");
 		}
 	}
-
-
+	
+	
 	private void byObjectSelector(final Root<E> root, final CriteriaBuilder builder,
 			final List<Predicate> predicates, final PropertySelector<? super E, ?> selector)
 	{
@@ -396,16 +397,16 @@ class FindByExample<E>
 		}
 		else if(selector.isNotIncludingNullSet())
 		{
-			predicates.add(builder.isNotNull(Jpa.getPath(root,selector.getAttributes())));
+			predicates.add(builder.isNotNull(Jpa.resolvePath(root,selector.getAttributes())));
 		}
 	}
-
-
+	
+	
 	private void byObjectOrModeSelector(final Root<E> root, final CriteriaBuilder builder,
 			final List<Predicate> predicates, final PropertySelector<? super E, ?> selector)
 	{
 		final List<Predicate> selectorPredicates = new ArrayList<>();
-		final Path<?> path = Jpa.getPath(root,selector.getAttributes());
+		final Path<?> path = Jpa.resolvePath(root,selector.getAttributes());
 		List<?> selected = selector.getSelected();
 		if(selected.contains(null))
 		{
@@ -419,8 +420,8 @@ class FindByExample<E>
 		}
 		predicates.add(Jpa.orPredicate(builder,selectorPredicates));
 	}
-
-
+	
+	
 	private void byObjectAndModeSelector(final Root<E> root, final CriteriaBuilder builder,
 			final List<Predicate> predicates, final PropertySelector<? super E, ?> selector)
 	{
@@ -430,17 +431,17 @@ class FindByExample<E>
 		{
 			selected = new ArrayList<>(selector.getSelected());
 			selected.remove(null);
-			selectorPredicates.add(builder.isNull(Jpa.getPath(root,selector.getAttributes())));
+			selectorPredicates.add(builder.isNull(Jpa.resolvePath(root,selector.getAttributes())));
 		}
 		for(final Object selection : selected)
 		{
-			final Path<?> path = Jpa.getPath(root,selector.getAttributes());
+			final Path<?> path = Jpa.resolvePath(root,selector.getAttributes());
 			selectorPredicates.add(builder.equal(path,selection));
 		}
 		predicates.add(Jpa.andPredicate(builder,selectorPredicates));
 	}
-
-
+	
+	
 	private Predicate byPredicate(final CriteriaQuery<?> criteriaQuery, final Root<E> root,
 			final CriteriaBuilder builder, final E entity)
 	{
@@ -450,21 +451,21 @@ class FindByExample<E>
 		{
 			return mandatoryPredicateSupplier.getPredicate(criteriaQuery,root,builder,entity);
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	private Predicate byExample(final Root<E> root, final CriteriaBuilder builder, final E entity)
 	{
 		if(entity == null)
 		{
 			return null;
 		}
-
+		
 		final Class<E> type = root.getModel().getBindableJavaType();
 		final ManagedType<E> mt = this.entityManager.getMetamodel().entity(type);
-
+		
 		final List<Predicate> predicates = new ArrayList<>();
 		predicates.addAll(byExample(mt,root,entity,builder));
 		predicates.addAll(byExampleOnCompositePk(root,entity,builder));
@@ -472,8 +473,8 @@ class FindByExample<E>
 		predicates.addAll(byExampleOnXToMany(mt,root,entity,builder));
 		return concatPredicate(builder,predicates);
 	}
-
-
+	
+	
 	private List<Predicate> byExampleOnCompositePk(final Root<E> root, final E entity,
 			final CriteriaBuilder builder)
 	{
@@ -491,8 +492,8 @@ class FindByExample<E>
 					byExampleOnEmbeddable(root.get(embeddedIdAttribute.getName()),id,builder));
 		}
 	}
-
-
+	
+	
 	private <EID> Predicate byExampleOnEmbeddable(final Path<EID> embeddablePath,
 			final EID embeddableValue, final CriteriaBuilder builder)
 	{
@@ -500,14 +501,14 @@ class FindByExample<E>
 		{
 			return null;
 		}
-
+		
 		final Class<EID> type = embeddablePath.getModel().getBindableJavaType();
 		final ManagedType<EID> mt = this.entityManager.getMetamodel().embeddable(type);
-
+		
 		return Jpa.andPredicate(builder,byExample(mt,embeddablePath,embeddableValue,builder));
 	}
-
-
+	
+	
 	/*
 	 * Add a predicate for each simple property whose value is not null.
 	 */
@@ -524,7 +525,7 @@ class FindByExample<E>
 			{
 				continue;
 			}
-
+			
 			final Object attrValue = ReflectionUtils.getMemberValue(mtValue,attr.getJavaMember());
 			if(attrValue != null)
 			{
@@ -545,8 +546,8 @@ class FindByExample<E>
 		}
 		return predicates;
 	}
-
-
+	
+	
 	/*
 	 * Invoke byExample method for each not null x-to-one association when their
 	 * pk is not set. This allows you to search entities based on an associated
@@ -583,8 +584,8 @@ class FindByExample<E>
 		}
 		return predicates;
 	}
-
-
+	
+	
 	private Object getIdValue(final Object entity)
 	{
 		final Attribute<?, ?> idAttribute = Jpa.getIdAttribute(entity.getClass());
@@ -594,8 +595,8 @@ class FindByExample<E>
 		}
 		return null;
 	}
-
-
+	
+	
 	/*
 	 * Construct a join predicate on collection (eg many to many, List)
 	 */
@@ -634,8 +635,8 @@ class FindByExample<E>
 		}
 		return predicates;
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private Predicate byPattern(final Root<E> root, final CriteriaBuilder builder,
 			final Class<E> type)
@@ -644,11 +645,11 @@ class FindByExample<E>
 		{
 			return null;
 		}
-
+		
 		final List<Predicate> predicates = new ArrayList<>();
 		final EntityType<E> entity = this.entityManager.getMetamodel().entity(type);
 		final String pattern = this.searchParameters.getSearchPattern();
-
+		
 		for(final SingularAttribute<? super E, ?> attr : entity.getSingularAttributes())
 		{
 			if(attr.getPersistentAttributeType() == PersistentAttributeType.MANY_TO_ONE
@@ -656,7 +657,7 @@ class FindByExample<E>
 			{
 				continue;
 			}
-
+			
 			if(attr.getJavaType() == String.class)
 			{
 				predicates.add(stringPredicate(
@@ -664,23 +665,23 @@ class FindByExample<E>
 						builder));
 			}
 		}
-
+		
 		return Jpa.orPredicate(builder,predicates);
 	}
-
-
+	
+	
 	@SuppressWarnings({"unchecked","rawtypes"})
 	private void fetches(final Root<E> root)
 	{
-		for(final List<Attribute<?, ?>> args : this.searchParameters.getFetches())
+		for(final AttributeChain chain : this.searchParameters.getFetches())
 		{
 			FetchParent<?, ?> from = root;
-			for(final Attribute<?, ?> arg : args)
+			for(final Attribute<?, ?> attribute : chain)
 			{
 				boolean found = false;
 				for(final Fetch<?, ?> fetch : from.getFetches())
 				{
-					if(arg.equals(fetch.getAttribute()))
+					if(attribute.equals(fetch.getAttribute()))
 					{
 						from = fetch;
 						found = true;
@@ -689,39 +690,39 @@ class FindByExample<E>
 				}
 				if(!found)
 				{
-					if(arg instanceof PluralAttribute)
+					if(attribute instanceof PluralAttribute)
 					{
-						from = from.fetch((PluralAttribute)arg,JoinType.LEFT);
+						from = from.fetch((PluralAttribute)attribute,JoinType.LEFT);
 					}
 					else
 					{
-						from = from.fetch((SingularAttribute)arg,JoinType.LEFT);
+						from = from.fetch((SingularAttribute)attribute,JoinType.LEFT);
 					}
 				}
 			}
 		}
 	}
-
-
+	
+	
 	private List<Order> buildJpaOrders(final Iterable<OrderBy> orders, final Root<E> root,
 			final CriteriaBuilder builder)
 	{
 		final List<Order> jpaOrders = new ArrayList<>();
 		for(final OrderBy ob : orders)
 		{
-			final Path<?> path = Jpa.getPath(root,ob.getAttributes());
+			final Path<?> path = Jpa.resolvePath(root,ob.getAttributes());
 			jpaOrders.add(ob.isOrderDesc() ? builder.desc(path) : builder.asc(path));
 		}
 		return jpaOrders;
 	}
-
-
+	
+	
 	private void applyCacheHints(final TypedQuery<?> typedQuery)
 	{
 		if(this.searchParameters.isCacheable())
 		{
 			typedQuery.setHint(QueryHints.CACHEABLE,true);
-
+			
 			if(this.searchParameters.hasCacheRegion())
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION,this.searchParameters.getCacheRegion());
@@ -730,13 +731,13 @@ class FindByExample<E>
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION,this.persistentClass.getCanonicalName());
 			}
-			
+
 			if(this.searchParameters.hasCacheStoreMode())
 			{
 				typedQuery.setHint("javax.persistence.cache.storeMode",
 						this.searchParameters.getCacheStoreMode());
 			}
-			
+
 			if(this.searchParameters.hasCacheRetrieveMode())
 			{
 				typedQuery.setHint("javax.persistence.cache.retrieveMode",
@@ -744,8 +745,8 @@ class FindByExample<E>
 			}
 		}
 	}
-
-
+	
+	
 	private void applyPagination(final Query query)
 	{
 		if(this.searchParameters.getFirst() > 0)

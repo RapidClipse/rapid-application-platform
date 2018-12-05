@@ -137,7 +137,7 @@ public class CriteriaDataProviderCallback<T>
 			final List<Order> orders = new ArrayList<>();
 			for(final QuerySortOrder sortOrder : sortOrders)
 			{
-				final Path<?> path = Jpa.getPath(root,sortOrder.getSorted());
+				final Path<?> path = Jpa.resolvePath(root,sortOrder.getSorted());
 				if(path != null)
 				{
 					if(sortOrder.getDirection() == SortDirection.ASCENDING)
