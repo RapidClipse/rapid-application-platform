@@ -136,8 +136,7 @@ public class RapServletService extends VaadinServletService
 	{
 		super.requestStart(request,response);
 
-		if("POST".equalsIgnoreCase(request.getMethod())
-				&& !ServletHelper.isRequestType(request,RequestType.HEARTBEAT))
+		if(!ServletHelper.isRequestType(request,RequestType.HEARTBEAT))
 		{
 			try
 			{
