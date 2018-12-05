@@ -22,7 +22,6 @@ package software.xdev.rap.server.resources;
 
 
 import software.xdev.rap.server.persistence.jpa.Jpa;
-import software.xdev.rap.server.resources.CaptionParameterProvider;
 
 
 /**
@@ -35,11 +34,11 @@ public class EntityCaptionParameterProvider implements CaptionParameterProvider
 	{
 		super();
 	}
-	
-	
+
+
 	@Override
 	public String getParameterValue(final Object element, final String parameterName)
 	{
-		return String.valueOf(Jpa.resolveAttributeValue(element,parameterName));
+		return String.valueOf(Jpa.resolveValue(element,parameterName));
 	}
 }

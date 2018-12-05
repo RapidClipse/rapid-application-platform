@@ -55,7 +55,6 @@ import javax.persistence.criteria.Root;
 import javax.persistence.criteria.Selection;
 import javax.persistence.metamodel.Attribute;
 import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.Metamodel;
 import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.servlet.ServletContext;
@@ -83,18 +82,18 @@ public final class Jpa
 {
 	private final static String											HINT_CACHE_STORE_MODE		= "javax.persistence.cache.storeMode";
 	private final static String											HINT_CACHE_RETRIEVE_MODE	= "javax.persistence.cache.retrieveMode";
-
+	
 	public final static String											PROPERTY_SEPARATOR			= ".";
-
+	
 	private static PersistenceManager									persistenceManager;
-
+	
 	private static SessionStrategyProvider								sessionStrategyProvider;
-
+	
 	private final static SoftCache<Class<?>, DataAccessObject<?, ?>>	daoCache					= new SoftCache<>();
-
+	
 	private final static AtomicLong										aliasCounter				= new AtomicLong();
-
-
+	
+	
 	/**
 	 * @return the persistenceManager
 	 */
@@ -105,11 +104,11 @@ public final class Jpa
 			persistenceManager = createPersistenceManager(
 					RapServlet.getRapServlet().getServletContext());
 		}
-
+		
 		return persistenceManager;
 	}
-
-
+	
+	
 	private static PersistenceManager createPersistenceManager(final ServletContext context)
 	{
 		final String className = context
@@ -127,11 +126,11 @@ public final class Jpa
 				throw new RuntimeException(t);
 			}
 		}
-
+		
 		return new PersistenceManager.Implementation(context);
 	}
-
-
+	
+	
 	/**
 	 * @return the sessionStrategyProvider
 	 */
@@ -142,11 +141,11 @@ public final class Jpa
 			sessionStrategyProvider = createSessionStrategyProvider(
 					RapServlet.getRapServlet().getServletContext());
 		}
-
+		
 		return sessionStrategyProvider;
 	}
-
-
+	
+	
 	private static SessionStrategyProvider createSessionStrategyProvider(
 			final ServletContext context)
 	{
@@ -165,11 +164,11 @@ public final class Jpa
 				throw new RuntimeException(t);
 			}
 		}
-
+		
 		return new SessionStrategyProvider.Implementation();
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param managedType
@@ -182,11 +181,11 @@ public final class Jpa
 		{
 			return persistenceManager.getPersistenceUnit(managedType);
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param managedType
@@ -199,11 +198,11 @@ public final class Jpa
 		{
 			return getEntityManager(persistenceUnit);
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param persistenceUnit
@@ -220,11 +219,11 @@ public final class Jpa
 				return conversationable.getEntityManager();
 			}
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param managedType
@@ -237,26 +236,26 @@ public final class Jpa
 		{
 			return entityManager.getCriteriaBuilder().createQuery(managedType);
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	public static <T> Long count(final CriteriaQuery<T> criteria, final EntityManager entityManager)
 	{
 		return entityManager.createQuery(countCriteria(criteria,entityManager)).getSingleResult();
 	}
-
-
+	
+	
 	public static <T> CriteriaQuery<Long> countCriteria(final CriteriaQuery<T> criteria,
 			final EntityManager entityManager)
 	{
 		final CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		final CriteriaQuery<Long> countCriteria = builder.createQuery(Long.class);
 		copyCriteriaWithoutSelectionAndOrder(criteria,countCriteria,false);
-
+		
 		Expression<Long> countExpression;
-
+		
 		if(criteria.isDistinct())
 		{
 			countExpression = builder
@@ -266,26 +265,26 @@ public final class Jpa
 		{
 			countExpression = builder.count(findRoot(countCriteria,criteria.getResultType()));
 		}
-
+		
 		return countCriteria.select(countExpression);
 	}
-
-
+	
+	
 	public static <T> void copyCriteria(final CriteriaQuery<T> from, final CriteriaQuery<T> to)
 	{
 		copyCriteriaWithoutSelection(from,to);
 		to.select(from.getSelection());
 	}
-
-
+	
+	
 	public static void copyCriteriaWithoutSelection(final CriteriaQuery<?> from,
 			final CriteriaQuery<?> to)
 	{
 		copyCriteriaWithoutSelectionAndOrder(from,to,true);
 		to.orderBy(from.getOrderList());
 	}
-
-
+	
+	
 	public static void copyCriteriaWithoutSelectionAndOrder(final CriteriaQuery<?> from,
 			final CriteriaQuery<?> to, final boolean copyFetches)
 	{
@@ -299,23 +298,23 @@ public final class Jpa
 				copyFetches(root,dest);
 			}
 		}
-
+		
 		to.groupBy(from.getGroupList());
 		to.distinct(from.isDistinct());
-
+		
 		if(from.getGroupRestriction() != null)
 		{
 			to.having(from.getGroupRestriction());
 		}
-
+		
 		final Predicate predicate = from.getRestriction();
 		if(predicate != null)
 		{
 			to.where(predicate);
 		}
 	}
-
-
+	
+	
 	public static <T> Root<T> findRoot(final CriteriaQuery<?> query, final Class<T> clazz)
 	{
 		for(final Root<?> r : query.getRoots())
@@ -327,8 +326,8 @@ public final class Jpa
 		}
 		return null;
 	}
-
-
+	
+	
 	public static <T> String getOrCreateAlias(final Selection<T> selection)
 	{
 		String alias = selection.getAlias();
@@ -339,20 +338,20 @@ public final class Jpa
 		}
 		return alias;
 	}
-
-
+	
+	
 	public static void copyJoins(final From<?, ?> from, final From<?, ?> to)
 	{
 		for(final Join<?, ?> j : from.getJoins())
 		{
 			final Join<?, ?> toJoin = to.join(j.getAttribute().getName(),j.getJoinType());
 			toJoin.alias(getOrCreateAlias(j));
-
+			
 			copyJoins(j,toJoin);
 		}
 	}
-
-
+	
+	
 	public static void copyFetches(final From<?, ?> from, final From<?, ?> to)
 	{
 		for(final Fetch<?, ?> f : from.getFetches())
@@ -361,8 +360,8 @@ public final class Jpa
 			copyFetches(f,toFetch);
 		}
 	}
-
-
+	
+	
 	public static void copyFetches(final Fetch<?, ?> from, final Fetch<?, ?> to)
 	{
 		for(final Fetch<?, ?> f : from.getFetches())
@@ -371,15 +370,15 @@ public final class Jpa
 			copyFetches(f,toFetch);
 		}
 	}
-
-
+	
+	
 	public static Predicate andPredicate(final CriteriaBuilder builder,
 			final Predicate... predicatesNullAllowed)
 	{
 		return andPredicate(builder,Arrays.asList(predicatesNullAllowed));
 	}
-
-
+	
+	
 	public static Predicate andPredicate(final CriteriaBuilder builder,
 			final Collection<Predicate> predicatesNullAllowed)
 	{
@@ -398,15 +397,15 @@ public final class Jpa
 			return builder.and(predicates.toArray(new Predicate[predicates.size()]));
 		}
 	}
-
-
+	
+	
 	public static Predicate orPredicate(final CriteriaBuilder builder,
 			final Predicate... predicatesNullAllowed)
 	{
 		return orPredicate(builder,Arrays.asList(predicatesNullAllowed));
 	}
-
-
+	
+	
 	public static Predicate orPredicate(final CriteriaBuilder builder,
 			final Collection<Predicate> predicatesNullAllowed)
 	{
@@ -425,8 +424,8 @@ public final class Jpa
 			return builder.or(predicates.toArray(new Predicate[predicates.size()]));
 		}
 	}
-
-
+	
+	
 	public static <C> ManagedType<C> getManagedType(final Class<C> entityClass)
 	{
 		final EntityManager entityManager = getEntityManager(entityClass);
@@ -434,67 +433,59 @@ public final class Jpa
 		{
 			throw new IllegalArgumentException("Not an entity class: " + entityClass.getName());
 		}
-
+		
 		return entityManager.getMetamodel().managedType(entityClass);
 	}
-
-
+	
+	
 	public static Attribute<?, ?> resolveAttribute(final Class<?> entityClass,
 			final String propertyPath)
 	{
-		final List<Attribute<?, ?>> attributes = resolveAttributes(entityClass,propertyPath);
+		final List<Attribute<?, ?>> attributes = resolveAttributeChain(entityClass,propertyPath);
 		return attributes == null || attributes.isEmpty() ? null
 				: attributes.get(attributes.size() - 1);
 	}
-
-
-	public static List<Attribute<?, ?>> resolveAttributes(final Class<?> entityClass,
+	
+	
+	public static List<Attribute<?, ?>> resolveAttributeChain(final Class<?> entityClass,
 			final String propertyPath)
 	{
-		try
+		final List<Attribute<?, ?>> attributes = new ArrayList<>();
+		
+		Class<?> current = entityClass;
+		
+		for(final String name : propertyPath.split("\\" + PROPERTY_SEPARATOR))
 		{
-			final List<Attribute<?, ?>> attributes = new ArrayList<>();
-
-			Class<?> current = entityClass;
-
-			for(final String pathItem : propertyPath.split("\\."))
+			final Attribute<?, ?> attribute = getManagedType(current).getAttribute(name);
+			attributes.add(attribute);
+			if(attribute instanceof PluralAttribute)
 			{
-				final Attribute<?, ?> attribute = getManagedType(current).getAttribute(pathItem);
-				attributes.add(attribute);
-				if(attribute instanceof PluralAttribute)
-				{
-					current = ((PluralAttribute<?, ?, ?>)attribute).getElementType().getJavaType();
-				}
-				else
-				{
-					current = attribute.getJavaType();
-				}
+				current = ((PluralAttribute<?, ?, ?>)attribute).getElementType().getJavaType();
 			}
-
-			return attributes;
+			else
+			{
+				current = attribute.getJavaType();
+			}
 		}
-		catch(final IllegalArgumentException e)
-		{
-			// attribute not found or not a managed type, XWS-870
-			return null;
-		}
+		
+		return attributes;
 	}
-
-
+	
+	
 	public static boolean isManaged(final Class<?> clazz)
 	{
 		return clazz.getAnnotation(Entity.class) != null
 				|| clazz.getAnnotation(Embeddable.class) != null
 				|| clazz.getAnnotation(MappedSuperclass.class) != null;
 	}
-
-
+	
+	
 	public static void verifyPath(final Attribute<?, ?>... path)
 	{
 		verifyPath(Arrays.asList(path));
 	}
-
-
+	
+	
 	@SuppressWarnings("rawtypes")
 	public static void verifyPath(final List<Attribute<?, ?>> path)
 	{
@@ -518,14 +509,14 @@ public final class Jpa
 			from = attribute.getJavaType();
 		}
 	}
-
-
+	
+	
 	public static String toPath(final List<Attribute<?, ?>> attributes)
 	{
 		return attributes.stream().map(Attribute::getName).collect(Collectors.joining("."));
 	}
-
-
+	
+	
 	public static Attribute<?, ?> getIdAttribute(final Class<?> entityClass)
 	{
 		final ManagedType<?> managedType = getManagedType(entityClass);
@@ -541,11 +532,11 @@ public final class Jpa
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	public static Attribute<?, ?> getEmbeddedIdAttribute(final Class<?> entityClass)
 	{
 		final ManagedType<?> managedType = getManagedType(entityClass);
@@ -561,31 +552,31 @@ public final class Jpa
 				}
 			}
 		}
-
+		
 		return null;
 	}
-
-
+	
+	
 	public static <T, A> SingularAttribute<? super T, A> singularAttribute(
 			final ManagedType<? super T> managedType, final Attribute<? super T, A> attribute)
 	{
 		return managedType.getSingularAttribute(attribute.getName(),attribute.getJavaType());
 	}
-
-
+	
+	
 	public static <T> SingularAttribute<? super T, String> stringAttribute(
 			final ManagedType<? super T> managedType, final Attribute<? super T, ?> attribute)
 	{
 		return managedType.getSingularAttribute(attribute.getName(),String.class);
 	}
-
-
+	
+	
 	public static <E, F> Path<F> getPath(final Root<E> root, final Attribute<?, ?>... attributes)
 	{
 		return getPath(root,Arrays.asList(attributes));
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	public static <E, F> Path<F> getPath(final Root<E> root,
 			final Iterable<Attribute<?, ?>> attributes)
@@ -621,8 +612,8 @@ public final class Jpa
 		}
 		return (Path<F>)path;
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	public static <T> Path<T> getPath(final Path<?> path, final String propertyPath)
 	{
@@ -630,19 +621,19 @@ public final class Jpa
 		{
 			return (Path<T>)path;
 		}
-
+		
 		final String name = StringUtils.substringBefore(propertyPath,PROPERTY_SEPARATOR);
 		return getPath(path.get(name),StringUtils.substringAfter(propertyPath,PROPERTY_SEPARATOR));
 	}
-
-
+	
+	
 	public static String getEntityIdAttributeName(final Class<?> entityType)
 	{
 		final SingularAttribute<? extends Object, ?> idAttribute = getEntityIdAttribute(entityType);
 		return idAttribute != null ? idAttribute.getName() : null;
 	}
-
-
+	
+	
 	public static Object getEntityIdAttributeValue(final Object entity)
 	{
 		final SingularAttribute<? extends Object, ?> idAttribute = getEntityIdAttribute(
@@ -650,8 +641,8 @@ public final class Jpa
 		return Optional.ofNullable(idAttribute).map(a -> a.getJavaMember())
 				.map(m -> ReflectionUtils.getMemberValue(entity,m)).orElse(null);
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private static <C> SingularAttribute<C, ?> getEntityIdAttribute(final Class<C> entityClass)
 	{
@@ -660,32 +651,32 @@ public final class Jpa
 		{
 			throw new IllegalArgumentException("Not an entity class: " + entityClass.getName());
 		}
-
+		
 		final ManagedType<C> managedType = entityManager.getMetamodel().managedType(entityClass);
 		if(managedType == null)
 		{
 			throw new IllegalArgumentException("Not an entity class: " + entityClass.getName());
 		}
-
+		
 		return managedType.getAttributes().stream().filter(SingularAttribute.class::isInstance)
 				.map(SingularAttribute.class::cast).filter(SingularAttribute::isId).findFirst()
 				.orElse(null);
 	}
-
-
+	
+	
 	public static void applyCacheHints(final TypedQuery<?> query, final CacheableQuery.Kind kind,
 			final Class<?> managedType)
 	{
 		applyCacheHints(query,getCacheableQueryAnnotation(managedType,kind),
 				getPersistenceUnit(managedType));
 	}
-
-
+	
+	
 	public static void applyCacheHints(final TypedQuery<?> typedQuery,
 			final CacheableQuery cacheableQuery, final String persistenceUnit)
 	{
 		boolean cacheable = false;
-
+		
 		final SharedCacheMode queryCacheMode = getPersistenceManager()
 				.getQueryCacheMode(persistenceUnit);
 		switch(queryCacheMode)
@@ -693,12 +684,12 @@ public final class Jpa
 			case ALL:
 				cacheable = true;
 			break;
-
+		
 			case NONE:
 			case UNSPECIFIED:
 				cacheable = false;
 			break;
-
+		
 			case DISABLE_SELECTIVE:
 				if(cacheableQuery != null)
 				{
@@ -709,7 +700,7 @@ public final class Jpa
 					cacheable = true;
 				}
 			break;
-
+		
 			case ENABLE_SELECTIVE:
 				if(cacheableQuery != null)
 				{
@@ -721,9 +712,9 @@ public final class Jpa
 				}
 			break;
 		}
-
+		
 		typedQuery.setHint(QueryHints.CACHEABLE,cacheable);
-
+		
 		if(cacheable && cacheableQuery != null)
 		{
 			final String region = cacheableQuery.region();
@@ -731,13 +722,13 @@ public final class Jpa
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION,region);
 			}
-
+			
 			typedQuery.setHint(HINT_CACHE_STORE_MODE,cacheableQuery.storeMode());
 			typedQuery.setHint(HINT_CACHE_RETRIEVE_MODE,cacheableQuery.retrieveMode());
 		}
 	}
-
-
+	
+	
 	public static void reattachIfManaged(final Object bean)
 	{
 		if(isManaged(bean.getClass()))
@@ -745,8 +736,8 @@ public final class Jpa
 			getDao(bean).reattach(bean);
 		}
 	}
-
-
+	
+	
 	public static <D extends DataAccessObject<?, ?>> D getDao(final Class<D> daoType)
 			throws RuntimeException
 	{
@@ -754,7 +745,7 @@ public final class Jpa
 		{
 			@SuppressWarnings("unchecked")
 			D dao = (D)daoCache.get(daoType);
-
+			
 			if(dao == null)
 			{
 				try
@@ -767,20 +758,20 @@ public final class Jpa
 					throw new RuntimeException(e);
 				}
 			}
-
+			
 			return dao;
 		}
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	public static <T, I extends Serializable> DataAccessObject<T, I> getDao(final T entity)
 			throws RuntimeException
 	{
 		return (DataAccessObject<T, I>)getDaoByEntityType(entity.getClass());
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	public static <T, I extends Serializable> DataAccessObject<T, I> getDaoByEntityType(
 			final Class<T> entity) throws RuntimeException
@@ -790,11 +781,11 @@ public final class Jpa
 		{
 			throw new RuntimeException("Not an entity");
 		}
-
+		
 		return (DataAccessObject<T, I>)getDao(dao.value());
 	}
-
-
+	
+	
 	public static CacheableQuery getCacheableQueryAnnotation(final Class<?> clazz,
 			final CacheableQuery.Kind kind)
 	{
@@ -803,7 +794,7 @@ public final class Jpa
 		{
 			return cacheableQuery;
 		}
-
+		
 		final CacheableQueries cacheableQueries = clazz.getAnnotation(CacheableQueries.class);
 		if(cacheableQueries != null)
 		{
@@ -814,22 +805,22 @@ public final class Jpa
 				return cacheableQuery;
 			}
 		}
-
+		
 		final Class<?> superclass = clazz.getSuperclass();
 		if(superclass != null)
 		{
 			return getCacheableQueryAnnotation(superclass,kind);
 		}
-
+		
 		return null;
 	}
-
-
-	public static void preload(final Object bean, final String... requiredProperties)
+	
+	
+	public static void preload(final Object entity, final String... requiredProperties)
 	{
 		for(final String property : requiredProperties)
 		{
-			final Object propertyValue = resolveAttributeValue(bean,property);
+			final Object propertyValue = resolveValue(entity,property);
 			if(propertyValue != null)
 			{
 				// force eager loading
@@ -851,76 +842,49 @@ public final class Jpa
 			}
 		}
 	}
-
-
-	public static Object resolveAttributeValue(Object managedObject, final String propertyPath)
+	
+	
+	public static String toPropertyPath(final Attribute<?, ?>... attributeChain)
 	{
-		final EntityManager entityManager = getEntityManager(managedObject.getClass());
-		if(entityManager == null)
-		{
-			return null;
-		}
-
-		Object propertyValue = null;
-
-		final Metamodel metamodel = entityManager.getMetamodel();
-		ManagedType<?> managedType = null;
-
-		final String[] parts = propertyPath.split("\\.");
-		for(int i = 0; i < parts.length; i++)
-		{
-			Class<?> managedClass = managedObject.getClass();
-			try
-			{
-				managedType = metamodel.managedType(managedClass);
-			}
-			catch(final IllegalArgumentException e)
-			{
-				// not a managed type, XWS-870
-				return null;
-			}
-
-			final String name = parts[i];
-			Attribute<?, ?> attribute = null;
-			try
-			{
-				attribute = managedType.getAttribute(name);
-			}
-			catch(final IllegalArgumentException e)
-			{
-				// attribute not found, XWS-870
-				return null;
-			}
-			managedClass = attribute.getJavaType();
-			if(managedClass == null)
-			{
-				return null;
-			}
-			if(isManaged(managedClass))
-			{
-				try
-				{
-					managedType = metamodel.managedType(managedClass);
-				}
-				catch(final IllegalArgumentException e)
-				{
-					// not a managed type, XWS-870
-					return null;
-				}
-			}
-
-			propertyValue = ReflectionUtils.getMemberValue(managedObject,attribute.getJavaMember());
-			if(propertyValue != null && isManaged(propertyValue.getClass()))
-			{
-				managedObject = propertyValue;
-			}
-		}
-
-		return propertyValue;
+		return Arrays.stream(attributeChain).map(Attribute::getName)
+				.collect(Collectors.joining(PROPERTY_SEPARATOR));
 	}
-
-
-
+	
+	
+	public static <T> T resolveValue(final Object entity, final String propertyPath)
+	{
+		return resolveValue(entity,resolveAttributeChain(entity.getClass(),propertyPath));
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static <T> T resolveValue(final Object entity, final Attribute<?, ?>... attributeChain)
+	{
+		return (T)resolveValue(entity,Arrays.asList(attributeChain));
+	}
+	
+	
+	@SuppressWarnings({"rawtypes","unchecked"})
+	public static <T> T resolveValue(final Object entity,
+			final Iterable<Attribute<?, ?>> attributeChain)
+	{
+		Object current = entity;
+		for(final Attribute attribute : attributeChain)
+		{
+			current = resolveValue(current,attribute);
+		}
+		return (T)current;
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static <X, Y> Y resolveValue(final X entity, final Attribute<X, Y> attribute)
+	{
+		return (Y)ReflectionUtils.getMemberValue(entity,attribute.getJavaMember());
+	}
+	
+	
+	
 	@WebListener
 	public static class ContextListener implements ServletContextListener
 	{
@@ -928,8 +892,8 @@ public final class Jpa
 		public void contextInitialized(final ServletContextEvent sce)
 		{
 		}
-
-
+		
+		
 		@Override
 		public void contextDestroyed(final ServletContextEvent sce)
 		{
@@ -940,8 +904,8 @@ public final class Jpa
 			}
 		}
 	}
-
-
+	
+	
 	private Jpa()
 	{
 		throw new Error();
