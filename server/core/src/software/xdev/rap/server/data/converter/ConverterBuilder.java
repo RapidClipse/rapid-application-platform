@@ -21,6 +21,8 @@
 package software.xdev.rap.server.data.converter;
 
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DateFormat;
 import java.text.DateFormatSymbols;
@@ -48,7 +50,7 @@ import com.vaadin.flow.data.converter.StringToLongConverter;
  * @author XDEV Software
  *
  */
-public abstract class ConverterBuilder
+public abstract class ConverterBuilder<PRESENTATION, MODEL>
 {
 	private static enum ConverterType
 	{
@@ -73,51 +75,92 @@ public abstract class ConverterBuilder
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToByte()
+	@SuppressWarnings("unchecked")
+	public static <MODEL extends Number> StringToNumberConverterBuilder<MODEL> stringToNumber(
+			final Class<MODEL> clazz)
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_BYTE);
+		if(Byte.class.equals(clazz) || byte.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToByte();
+		}
+		if(Short.class.equals(clazz) || short.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToShort();
+		}
+		if(Integer.class.equals(clazz) || int.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToInteger();
+		}
+		if(Long.class.equals(clazz) || long.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToLong();
+		}
+		if(BigInteger.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToBigInteger();
+		}
+		if(Float.class.equals(clazz) || float.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToFloat();
+		}
+		if(Double.class.equals(clazz) || double.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToDouble();
+		}
+		if(BigDecimal.class.equals(clazz))
+		{
+			return (StringToNumberConverterBuilder<MODEL>)stringToBigDecimal();
+		}
+		
+		throw new IllegalArgumentException("Unsupported number type: " + clazz);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToShort()
+	public static StringToNumberConverterBuilder<Byte> stringToByte()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_SHORT);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BYTE);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToInteger()
+	public static StringToNumberConverterBuilder<Short> stringToShort()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_INTEGER);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_SHORT);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToLong()
+	public static StringToNumberConverterBuilder<Integer> stringToInteger()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_LONG);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_INTEGER);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToBigInteger()
+	public static StringToNumberConverterBuilder<Long> stringToLong()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_BIG_INTEGER);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_LONG);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToFloat()
+	public static StringToNumberConverterBuilder<BigInteger> stringToBigInteger()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_FLOAT);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BIG_INTEGER);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToDouble()
+	public static StringToNumberConverterBuilder<Float> stringToFloat()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_DOUBLE);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_FLOAT);
 	}
 	
 	
-	public static StringToNumberConverterBuilder stringToBigDecimal()
+	public static StringToNumberConverterBuilder<Double> stringToDouble()
 	{
-		return new StringToNumberConverterBuilder(ConverterType.STRING_TO_BIG_DECIMAL);
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_DOUBLE);
+	}
+	
+	
+	public static StringToNumberConverterBuilder<BigDecimal> stringToBigDecimal()
+	{
+		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BIG_DECIMAL);
 	}
 	
 	
@@ -133,7 +176,7 @@ public abstract class ConverterBuilder
 	}
 	
 	
-	public abstract Converter<?, ?> build();
+	public abstract Converter<PRESENTATION, MODEL> build();
 	
 	
 	private static Locale getLocale(final Locale thisLocale, final Locale localeParam)
@@ -154,7 +197,8 @@ public abstract class ConverterBuilder
 	
 	
 	
-	public static class StringToNumberConverterBuilder extends ConverterBuilder
+	public static class StringToNumberConverterBuilder<MODEL extends Number>
+			extends ConverterBuilder<String, MODEL>
 	{
 		private static enum FormatType
 		{
@@ -210,14 +254,14 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder errorMessage(final String errorMessage)
+		public StringToNumberConverterBuilder<MODEL> errorMessage(final String errorMessage)
 		{
 			this.errorMessageProvider = context -> errorMessage;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder errorMessageProvider(
+		public StringToNumberConverterBuilder<MODEL> errorMessageProvider(
 				final ErrorMessageProvider errorMessageProvider)
 		{
 			this.errorMessageProvider = errorMessageProvider;
@@ -225,63 +269,67 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder locale(final Locale locale)
+		public StringToNumberConverterBuilder<MODEL> locale(final Locale locale)
 		{
 			this.locale = locale;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder currency()
+		public StringToNumberConverterBuilder<MODEL> currency()
 		{
 			this.formatType = FormatType.CURRENCY;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder percent()
+		public StringToNumberConverterBuilder<MODEL> percent()
 		{
 			this.formatType = FormatType.PERCENT;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder groupingUsed(final boolean groupingUsed)
+		public StringToNumberConverterBuilder<MODEL> groupingUsed(final boolean groupingUsed)
 		{
 			this.groupingUsed = groupingUsed;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder maximumIntegerDigits(final int maximumIntegerDigits)
+		public StringToNumberConverterBuilder<MODEL> maximumIntegerDigits(
+				final int maximumIntegerDigits)
 		{
 			this.maximumIntegerDigits = maximumIntegerDigits;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder minimumIntegerDigits(final int minimumIntegerDigits)
+		public StringToNumberConverterBuilder<MODEL> minimumIntegerDigits(
+				final int minimumIntegerDigits)
 		{
 			this.minimumIntegerDigits = minimumIntegerDigits;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder maximumFractionDigits(final int maximumFractionDigits)
+		public StringToNumberConverterBuilder<MODEL> maximumFractionDigits(
+				final int maximumFractionDigits)
 		{
 			this.maximumFractionDigits = maximumFractionDigits;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder minimumFractionDigits(final int minimumFractionDigits)
+		public StringToNumberConverterBuilder<MODEL> minimumFractionDigits(
+				final int minimumFractionDigits)
 		{
 			this.minimumFractionDigits = minimumFractionDigits;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder currency(final Currency currency)
+		public StringToNumberConverterBuilder<MODEL> currency(final Currency currency)
 		{
 			currency(); // set to currency format
 			this.currency = currency;
@@ -289,7 +337,7 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder currencySymbol(final String currencySymbol)
+		public StringToNumberConverterBuilder<MODEL> currencySymbol(final String currencySymbol)
 		{
 			currency(); // set to currency format
 			this.currencySymbol = currencySymbol;
@@ -297,7 +345,7 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder decimalFormatSymbols(
+		public StringToNumberConverterBuilder<MODEL> decimalFormatSymbols(
 				final DecimalFormatSymbols decimalFormatSymbols)
 		{
 			this.decimalFormatSymbols = decimalFormatSymbols;
@@ -305,14 +353,14 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder roundingMode(final RoundingMode roundingMode)
+		public StringToNumberConverterBuilder<MODEL> roundingMode(final RoundingMode roundingMode)
 		{
 			this.roundingMode = roundingMode;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder decimalSeparatorAlwaysShown(
+		public StringToNumberConverterBuilder<MODEL> decimalSeparatorAlwaysShown(
 				final boolean decimalSeparatorAlwaysShown)
 		{
 			this.decimalSeparatorAlwaysShown = decimalSeparatorAlwaysShown;
@@ -320,56 +368,58 @@ public abstract class ConverterBuilder
 		}
 		
 		
-		public StringToNumberConverterBuilder groupingSize(final int groupingSize)
+		public StringToNumberConverterBuilder<MODEL> groupingSize(final int groupingSize)
 		{
 			this.groupingSize = groupingSize;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder multiplier(final int multiplier)
+		public StringToNumberConverterBuilder<MODEL> multiplier(final int multiplier)
 		{
 			this.multiplier = multiplier;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder negativePrefix(final String negativePrefix)
+		public StringToNumberConverterBuilder<MODEL> negativePrefix(final String negativePrefix)
 		{
 			this.negativePrefix = negativePrefix;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder negativeSuffix(final String negativeSuffix)
+		public StringToNumberConverterBuilder<MODEL> negativeSuffix(final String negativeSuffix)
 		{
 			this.negativeSuffix = negativeSuffix;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder positivePrefix(final String positivePrefix)
+		public StringToNumberConverterBuilder<MODEL> positivePrefix(final String positivePrefix)
 		{
 			this.positivePrefix = positivePrefix;
 			return this;
 		}
 		
 		
-		public StringToNumberConverterBuilder positiveSuffix(final String positiveSuffix)
+		public StringToNumberConverterBuilder<MODEL> positiveSuffix(final String positiveSuffix)
 		{
 			this.positiveSuffix = positiveSuffix;
 			return this;
 		}
 		
 		
+		@SuppressWarnings("unchecked")
 		@Override
-		public Converter<String, ? extends Number> build()
+		public Converter<String, MODEL> build()
 		{
 			switch(this.type)
 			{
 				case STRING_TO_BYTE:
 				{
-					return new StringToByteConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToByteConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -381,7 +431,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_SHORT:
 				{
-					return new StringToShortConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToShortConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -393,7 +444,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_INTEGER:
 				{
-					return new StringToIntegerConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToIntegerConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -405,7 +457,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_LONG:
 				{
-					return new StringToLongConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToLongConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -417,7 +470,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_BIG_INTEGER:
 				{
-					return new StringToBigIntegerConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToBigIntegerConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -435,7 +489,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_FLOAT:
 				{
-					return new StringToFloatConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToFloatConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -447,7 +502,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_DOUBLE:
 				{
-					return new StringToDoubleConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToDoubleConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -459,7 +515,8 @@ public abstract class ConverterBuilder
 				
 				case STRING_TO_BIG_DECIMAL:
 				{
-					return new StringToBigDecimalConverter(null,this.errorMessageProvider)
+					return (Converter<String, MODEL>)new StringToBigDecimalConverter(null,
+							this.errorMessageProvider)
 					{
 						@Override
 						protected NumberFormat getFormat(final Locale locale)
@@ -583,7 +640,7 @@ public abstract class ConverterBuilder
 	
 	
 	
-	public static class StringToBooleanConverterBuilder extends ConverterBuilder
+	public static class StringToBooleanConverterBuilder extends ConverterBuilder<String, Boolean>
 	{
 		private ErrorMessageProvider	errorMessageProvider	= context -> "Conversion error";
 		
@@ -636,7 +693,7 @@ public abstract class ConverterBuilder
 	
 	
 	
-	public static class StringToDateConverterBuilder extends ConverterBuilder
+	public static class StringToDateConverterBuilder extends ConverterBuilder<String, Date>
 	{
 		private Locale				locale;
 		private boolean				date		= true;
