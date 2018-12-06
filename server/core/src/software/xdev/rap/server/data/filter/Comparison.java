@@ -33,57 +33,82 @@ import java.util.List;
 public interface Comparison extends Filter
 {
 	public Object identifier();
-
-
-	public Comparable<?> value();
-
-
-
+	
+	
+	public Object value();
+	
+	
+	
 	public static abstract class Abstract implements Comparison
 	{
-		private final Object		identifier;
-		private final Comparable<?>	value;
-
-
-		public Abstract(final Object identifier, final Comparable<?> value)
+		private final Object	identifier;
+		private final Object	value;
+		
+		
+		public Abstract(final Object identifier, final Object value)
 		{
 			super();
-
+			
 			this.identifier = identifier;
 			this.value = value;
 		}
-
-
+		
+		
 		@Override
 		public Object identifier()
 		{
 			return this.identifier;
 		}
-
-
+		
+		
 		@Override
-		public Comparable<?> value()
+		public Object value()
 		{
 			return this.value;
 		}
 	}
-
-
-
+	
+	
+	
 	public static interface Equals extends Comparison
 	{
 		public static class Implementation extends Abstract implements Equals
 		{
-			public Implementation(final Object identifier, final Comparable<?> value)
+			public Implementation(final Object identifier, final Object value)
 			{
 				super(identifier,value);
 			}
 		}
 	}
+	
+	
+	
+	public static interface SizeComparison extends Comparison
+	{
+		@Override
+		public Comparable<?> value();
+		
+		
+		
+		public static class Abstract extends Comparison.Abstract implements SizeComparison
+		{
+			public Abstract(final Object identifier, final Comparable<?> value)
+			{
+				super(identifier,value);
+			}
 
 
-
-	public static interface Greater extends Comparison
+			@Override
+			public Comparable<?> value()
+			{
+				return (Comparable<?>)super.value();
+			}
+		}
+	}
+	
+	
+	
+	public static interface Greater extends SizeComparison
 	{
 		public static class Implementation extends Abstract implements Greater
 		{
@@ -93,10 +118,10 @@ public interface Comparison extends Filter
 			}
 		}
 	}
-
-
-
-	public static interface GreaterEquals extends Comparison
+	
+	
+	
+	public static interface GreaterEquals extends SizeComparison
 	{
 		public static class Implementation extends Abstract implements GreaterEquals
 		{
@@ -106,10 +131,10 @@ public interface Comparison extends Filter
 			}
 		}
 	}
-
-
-
-	public static interface Less extends Comparison
+	
+	
+	
+	public static interface Less extends SizeComparison
 	{
 		public static class Implementation extends Abstract implements Less
 		{
@@ -119,10 +144,10 @@ public interface Comparison extends Filter
 			}
 		}
 	}
-
-
-
-	public static interface LessEquals extends Comparison
+	
+	
+	
+	public static interface LessEquals extends SizeComparison
 	{
 		public static class Implementation extends Abstract implements LessEquals
 		{
@@ -132,39 +157,39 @@ public interface Comparison extends Filter
 			}
 		}
 	}
-
-
-
+	
+	
+	
 	public static interface StringComparison extends Comparison
 	{
 		public final static List<Character> DEFAULT_WILDCARDS = Collections
 				.unmodifiableList(Arrays.asList('*','%'));
-
-
+		
+		
 		@Override
 		public String value();
-
-
+		
+		
 		public boolean caseSensitive();
-
-
+		
+		
 		public List<Character> wildcards();
-
-
-
+		
+		
+		
 		public static class Implementation extends Abstract implements StringComparison
 		{
 			private final boolean			caseSensitive;
 			private final List<Character>	wildcards;
-
-
+			
+			
 			public Implementation(final Object identifier, final String value,
 					final boolean caseSensitive)
 			{
 				this(identifier,value,caseSensitive,DEFAULT_WILDCARDS);
 			}
-
-
+			
+			
 			public Implementation(final Object identifier, final String value,
 					final boolean caseSensitive, final List<Character> wildcards)
 			{
@@ -172,22 +197,22 @@ public interface Comparison extends Filter
 				this.caseSensitive = caseSensitive;
 				this.wildcards = Collections.unmodifiableList(wildcards);
 			}
-
-
+			
+			
 			@Override
 			public String value()
 			{
 				return (String)super.value();
 			}
-
-
+			
+			
 			@Override
 			public boolean caseSensitive()
 			{
 				return this.caseSensitive;
 			}
-
-
+			
+			
 			@Override
 			public List<Character> wildcards()
 			{

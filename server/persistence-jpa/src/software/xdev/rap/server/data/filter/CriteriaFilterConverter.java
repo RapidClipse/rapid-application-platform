@@ -36,6 +36,7 @@ import software.xdev.rap.server.data.filter.Comparison.Greater;
 import software.xdev.rap.server.data.filter.Comparison.GreaterEquals;
 import software.xdev.rap.server.data.filter.Comparison.Less;
 import software.xdev.rap.server.data.filter.Comparison.LessEquals;
+import software.xdev.rap.server.data.filter.Comparison.SizeComparison;
 import software.xdev.rap.server.data.filter.Comparison.StringComparison;
 import software.xdev.rap.server.data.filter.Composite.Connector;
 import software.xdev.rap.server.persistence.jpa.AttributeChain;
@@ -50,37 +51,37 @@ import software.xdev.rap.server.persistence.jpa.Jpa;
 public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 {
 	private final static char		CRITERIA_WILDCARD	= '%';
-
+	
 	private final CriteriaQuery<T>	criteria;
 	private final Root<T>			root;
-
-
+	
+	
 	public CriteriaFilterConverter(final CriteriaQuery<T> criteria)
 	{
 		super();
-
-		this.criteria = criteria;
 		
+		this.criteria = criteria;
+
 		this.root = Jpa.findRoot(criteria,criteria.getResultType());
 		if(this.root == null)
 		{
 			throw new IllegalArgumentException("Unsupported criteria");
 		}
 	}
-
-
+	
+	
 	@Override
 	public Predicate convert(final Filter filter)
 	{
 		return convert(filter,Jpa.getEntityManager(this.criteria.getResultType()));
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
 	private Predicate convert(final Filter filter, final EntityManager entityManager)
 	{
 		final CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
-
+		
 		if(filter instanceof Composite)
 		{
 			final Composite composite = (Composite)filter;
@@ -95,12 +96,36 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 				return criteriaBuilder.or(predicates);
 			}
 		}
+		
+		if(filter instanceof SizeComparison)
+		{
+			final SizeComparison comparison = (SizeComparison)filter;
+			final Path identifier = getPath(comparison.identifier());
+			final Comparable value = comparison.value();
+
+			if(filter instanceof Greater)
+			{
+				return criteriaBuilder.greaterThan(identifier,value);
+			}
+			if(filter instanceof GreaterEquals)
+			{
+				return criteriaBuilder.greaterThanOrEqualTo(identifier,value);
+			}
+			if(filter instanceof Less)
+			{
+				return criteriaBuilder.lessThan(identifier,value);
+			}
+			if(filter instanceof LessEquals)
+			{
+				return criteriaBuilder.lessThanOrEqualTo(identifier,value);
+			}
+		}
 
 		if(filter instanceof Comparison)
 		{
 			final Comparison comparison = (Comparison)filter;
 			final Path identifier = getPath(comparison.identifier());
-			final Comparable value = comparison.value();
+			final Object value = comparison.value();
 
 			if(filter instanceof Equals)
 			{
@@ -122,22 +147,7 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 					return criteriaBuilder.equal(identifier,value);
 				}
 			}
-			if(filter instanceof Greater)
-			{
-				return criteriaBuilder.greaterThan(identifier,value);
-			}
-			if(filter instanceof GreaterEquals)
-			{
-				return criteriaBuilder.greaterThanOrEqualTo(identifier,value);
-			}
-			if(filter instanceof Less)
-			{
-				return criteriaBuilder.lessThan(identifier,value);
-			}
-			if(filter instanceof LessEquals)
-			{
-				return criteriaBuilder.lessThanOrEqualTo(identifier,value);
-			}
+
 			if(filter instanceof StringComparison)
 			{
 				final StringComparison stringComparison = (StringComparison)filter;
@@ -160,7 +170,7 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 				}
 			}
 		}
-
+		
 		if(filter instanceof Between)
 		{
 			final Between between = (Between)filter;
@@ -169,24 +179,24 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 			final Comparable end = between.end();
 			return criteriaBuilder.between(identifier,start,end);
 		}
-
+		
 		if(filter instanceof IsNull)
 		{
 			final IsNull isNull = (IsNull)filter;
 			final Path identifier = getPath(isNull.identifier());
 			return criteriaBuilder.isNull(identifier);
 		}
-
+		
 		if(filter instanceof Not)
 		{
 			final Not not = (Not)filter;
 			return criteriaBuilder.not(convert(not.filter(),entityManager));
 		}
-
+		
 		throw new IllegalArgumentException(filter.toString());
 	}
-
-
+	
+	
 	private Path<?> getPath(final Object identifier)
 	{
 		Path<?> path = null;
@@ -206,12 +216,12 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 		{
 			path = Jpa.resolvePath(this.root,identifier.toString());
 		}
-
+		
 		if(path == null)
 		{
 			throw new IllegalArgumentException("Path not found for: " + identifier.toString());
 		}
-
+		
 		return path;
 	}
 }
