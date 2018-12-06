@@ -37,7 +37,8 @@ public class JPAAuthenticator
 		implements Authenticator<CredentialsUsernamePassword, CredentialsUsernamePassword>
 {
 	private final Class<? extends CredentialsUsernamePassword>	authenticationEntityType;
-	private PasswordHasher										passwordHasher	= new PasswordHasher.SHA2();
+	private PasswordHasher										passwordHasher	= PasswordHasher
+			.Sha2();
 
 
 	/**

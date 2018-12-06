@@ -161,6 +161,48 @@ public final class Rap
 	}
 	
 	
+	public static Class<?> wrapperType(final Class<?> primitive)
+	{
+		if(primitive.isPrimitive())
+		{
+			if(primitive == int.class)
+			{
+				return Integer.class;
+			}
+			if(primitive == double.class)
+			{
+				return Double.class;
+			}
+			if(primitive == boolean.class)
+			{
+				return Boolean.class;
+			}
+			if(primitive == float.class)
+			{
+				return Float.class;
+			}
+			if(primitive == byte.class)
+			{
+				return Byte.class;
+			}
+			if(primitive == long.class)
+			{
+				return Long.class;
+			}
+			if(primitive == short.class)
+			{
+				return Short.class;
+			}
+			if(primitive == char.class)
+			{
+				return Character.class;
+			}
+		}
+		
+		throw new IllegalArgumentException();
+	}
+	
+	
 	
 	@WebListener
 	public static class ContextListener implements ServletContextListener

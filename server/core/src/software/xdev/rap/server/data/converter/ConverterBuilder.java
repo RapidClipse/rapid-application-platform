@@ -30,6 +30,18 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.OffsetTime;
+import java.time.Year;
+import java.time.YearMonth;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.format.FormatStyle;
+import java.time.temporal.Temporal;
 import java.util.Currency;
 import java.util.Date;
 import java.util.Locale;
@@ -39,7 +51,6 @@ import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToBigIntegerConverter;
 import com.vaadin.flow.data.converter.StringToBooleanConverter;
-import com.vaadin.flow.data.converter.StringToDateConverter;
 import com.vaadin.flow.data.converter.StringToDoubleConverter;
 import com.vaadin.flow.data.converter.StringToFloatConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
@@ -50,29 +61,9 @@ import com.vaadin.flow.data.converter.StringToLongConverter;
  * @author XDEV Software
  *
  */
-public abstract class ConverterBuilder<PRESENTATION, MODEL>
+public interface ConverterBuilder<PRESENTATION, MODEL>
 {
-	private static enum ConverterType
-	{
-		STRING_TO_BYTE,
-		STRING_TO_SHORT,
-		STRING_TO_INTEGER,
-		STRING_TO_LONG,
-		STRING_TO_BIG_INTEGER,
-		STRING_TO_FLOAT,
-		STRING_TO_DOUBLE,
-		STRING_TO_BIG_DECIMAL,
-		STRING_TO_BOOLEAN,
-		STRING_TO_DATE
-	}
-	
-	protected final ConverterType type;
-	
-	
-	ConverterBuilder(final ConverterType type)
-	{
-		this.type = type;
-	}
+	public Converter<PRESENTATION, MODEL> build();
 	
 	
 	@SuppressWarnings("unchecked")
@@ -81,175 +72,303 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 	{
 		if(Byte.class.equals(clazz) || byte.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToByte();
+			return (StringToNumberConverterBuilder<MODEL>)StringToByte();
 		}
 		if(Short.class.equals(clazz) || short.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToShort();
+			return (StringToNumberConverterBuilder<MODEL>)StringToShort();
 		}
 		if(Integer.class.equals(clazz) || int.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToInteger();
+			return (StringToNumberConverterBuilder<MODEL>)StringToInteger();
 		}
 		if(Long.class.equals(clazz) || long.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToLong();
+			return (StringToNumberConverterBuilder<MODEL>)StringToLong();
 		}
 		if(BigInteger.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToBigInteger();
+			return (StringToNumberConverterBuilder<MODEL>)StringToBigInteger();
 		}
 		if(Float.class.equals(clazz) || float.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToFloat();
+			return (StringToNumberConverterBuilder<MODEL>)StringToFloat();
 		}
 		if(Double.class.equals(clazz) || double.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToDouble();
+			return (StringToNumberConverterBuilder<MODEL>)StringToDouble();
 		}
 		if(BigDecimal.class.equals(clazz))
 		{
-			return (StringToNumberConverterBuilder<MODEL>)stringToBigDecimal();
+			return (StringToNumberConverterBuilder<MODEL>)StringToBigDecimal();
 		}
 		
 		throw new IllegalArgumentException("Unsupported number type: " + clazz);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Byte> stringToByte()
+	public static StringToNumberConverterBuilder<Byte> StringToByte()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BYTE);
+		return new StringToNumberConverterBuilder<>(Byte.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Short> stringToShort()
+	public static StringToNumberConverterBuilder<Short> StringToShort()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_SHORT);
+		return new StringToNumberConverterBuilder<>(Short.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Integer> stringToInteger()
+	public static StringToNumberConverterBuilder<Integer> StringToInteger()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_INTEGER);
+		return new StringToNumberConverterBuilder<>(Integer.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Long> stringToLong()
+	public static StringToNumberConverterBuilder<Long> StringToLong()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_LONG);
+		return new StringToNumberConverterBuilder<>(Long.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<BigInteger> stringToBigInteger()
+	public static StringToNumberConverterBuilder<BigInteger> StringToBigInteger()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BIG_INTEGER);
+		return new StringToNumberConverterBuilder<>(Integer.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Float> stringToFloat()
+	public static StringToNumberConverterBuilder<Float> StringToFloat()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_FLOAT);
+		return new StringToNumberConverterBuilder<>(Float.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<Double> stringToDouble()
+	public static StringToNumberConverterBuilder<Double> StringToDouble()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_DOUBLE);
+		return new StringToNumberConverterBuilder<>(Double.class);
 	}
 	
 	
-	public static StringToNumberConverterBuilder<BigDecimal> stringToBigDecimal()
+	public static StringToNumberConverterBuilder<BigDecimal> StringToBigDecimal()
 	{
-		return new StringToNumberConverterBuilder<>(ConverterType.STRING_TO_BIG_DECIMAL);
+		return new StringToNumberConverterBuilder<>(BigDecimal.class);
 	}
 	
 	
-	public static StringToBooleanConverterBuilder stringToBoolean()
+	public static StringToBooleanConverterBuilder StringToBoolean()
 	{
-		return new StringToBooleanConverterBuilder(ConverterType.STRING_TO_BOOLEAN);
+		return new StringToBooleanConverterBuilder();
 	}
 	
 	
-	public static StringToDateConverterBuilder stringToDate()
+	@SuppressWarnings("unchecked")
+	public static <MODEL extends Date> StringToDateConverterBuilder<MODEL> StringToDate(
+			final Class<MODEL> clazz)
 	{
-		return new StringToDateConverterBuilder(ConverterType.STRING_TO_DATE);
-	}
-	
-	
-	public abstract Converter<PRESENTATION, MODEL> build();
-	
-	
-	private static Locale getLocale(final Locale thisLocale, final Locale localeParam)
-	{
-		// user set locale has priority
-		if(thisLocale != null)
+		if(Date.class.equals(clazz))
 		{
-			return thisLocale;
+			return (StringToDateConverterBuilder<MODEL>)StringToUtilDate();
 		}
-		// context's locale
-		else if(localeParam != null)
+		if(java.sql.Date.class.equals(clazz))
 		{
-			return localeParam;
+			return (StringToDateConverterBuilder<MODEL>)StringToSqlDate();
 		}
-		// use default
-		return Locale.getDefault(Locale.Category.FORMAT);
+		if(java.sql.Time.class.equals(clazz))
+		{
+			return (StringToDateConverterBuilder<MODEL>)StringToSqlTime();
+		}
+		if(java.sql.Timestamp.class.equals(clazz))
+		{
+			return (StringToDateConverterBuilder<MODEL>)StringToSqlTimestamp();
+		}
+		
+		throw new IllegalArgumentException("Unsupported date type: " + clazz);
+	}
+	
+	
+	public static StringToDateConverterBuilder<Date> StringToUtilDate()
+	{
+		return new StringToDateConverterBuilder<>(Date.class);
+	}
+	
+	
+	public static StringToDateConverterBuilder<java.sql.Date> StringToSqlDate()
+	{
+		return new StringToDateConverterBuilder<>(java.sql.Date.class);
+	}
+	
+	
+	public static StringToDateConverterBuilder<java.sql.Time> StringToSqlTime()
+	{
+		return new StringToDateConverterBuilder<>(java.sql.Time.class);
+	}
+	
+	
+	public static StringToDateConverterBuilder<java.sql.Timestamp> StringToSqlTimestamp()
+	{
+		return new StringToDateConverterBuilder<>(java.sql.Timestamp.class);
+	}
+	
+	
+	@SuppressWarnings("unchecked")
+	public static <MODEL extends Temporal> StringToTemporalConverterBuilder<MODEL> StringToTemporal(
+			final Class<MODEL> clazz)
+	{
+		if(LocalDate.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToLocalDate();
+		}
+		if(LocalTime.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToLocalTime();
+		}
+		if(LocalDateTime.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToLocalDateTime();
+		}
+		if(OffsetTime.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToOffsetTime();
+		}
+		if(OffsetDateTime.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToOffsetDateTime();
+		}
+		if(ZonedDateTime.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToZonedDateTime();
+		}
+		if(Year.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToYear();
+		}
+		if(YearMonth.class.equals(clazz))
+		{
+			return (StringToTemporalConverterBuilder<MODEL>)StringToYearMonth();
+		}
+		
+		throw new IllegalArgumentException("Unsupported temporal type: " + clazz);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<LocalDate> StringToLocalDate()
+	{
+		return new StringToTemporalConverterBuilder<>(LocalDate.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<LocalTime> StringToLocalTime()
+	{
+		return new StringToTemporalConverterBuilder<>(LocalTime.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<LocalDateTime> StringToLocalDateTime()
+	{
+		return new StringToTemporalConverterBuilder<>(LocalDateTime.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<OffsetTime> StringToOffsetTime()
+	{
+		return new StringToTemporalConverterBuilder<>(OffsetTime.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<OffsetDateTime> StringToOffsetDateTime()
+	{
+		return new StringToTemporalConverterBuilder<>(OffsetDateTime.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<ZonedDateTime> StringToZonedDateTime()
+	{
+		return new StringToTemporalConverterBuilder<>(ZonedDateTime.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<Year> StringToYear()
+	{
+		return new StringToTemporalConverterBuilder<>(Year.class);
+	}
+	
+	
+	public static StringToTemporalConverterBuilder<YearMonth> StringToYearMonth()
+	{
+		return new StringToTemporalConverterBuilder<>(YearMonth.class);
+	}
+	
+	
+	
+	public static class Static
+	{
+		public static Locale getLocale(final Locale thisLocale, final Locale localeParam)
+		{
+			// user set locale has priority
+			if(thisLocale != null)
+			{
+				return thisLocale;
+			}
+			// context's locale
+			else if(localeParam != null)
+			{
+				return localeParam;
+			}
+			// use default
+			return Locale.getDefault(Locale.Category.FORMAT);
+		}
 	}
 	
 	
 	
 	public static class StringToNumberConverterBuilder<MODEL extends Number>
-			extends ConverterBuilder<String, MODEL>
+			implements ConverterBuilder<String, MODEL>
 	{
 		private static enum FormatType
 		{
 			INTEGER, NUMBER, CURRENCY, PERCENT
 		}
 		
-		private ErrorMessageProvider	errorMessageProvider	= context -> "Conversion error";
+		private final Class<? extends Number>	targetType;
 		
-		private Locale					locale;
-		private FormatType				formatType;
+		private ErrorMessageProvider			errorMessageProvider	= context -> "Conversion error";
+		
+		private Locale							locale;
+		private FormatType						formatType;
 		
 		// NumberFormat
-		private Boolean					groupingUsed;
-		private Integer					maximumIntegerDigits;
-		private Integer					minimumIntegerDigits;
-		private Integer					maximumFractionDigits;
-		private Integer					minimumFractionDigits;
-		private Currency				currency;
-		private String					currencySymbol;
-		private RoundingMode			roundingMode;
+		private Boolean							groupingUsed;
+		private Integer							maximumIntegerDigits;
+		private Integer							minimumIntegerDigits;
+		private Integer							maximumFractionDigits;
+		private Integer							minimumFractionDigits;
+		private Currency						currency;
+		private String							currencySymbol;
+		private RoundingMode					roundingMode;
 		
 		// DecimalFormat
-		private DecimalFormatSymbols	decimalFormatSymbols;
-		private Boolean					decimalSeparatorAlwaysShown;
-		private Integer					groupingSize;
-		private Integer					multiplier;
-		private String					negativePrefix;
-		private String					negativeSuffix;
-		private String					positivePrefix;
-		private String					positiveSuffix;
+		private DecimalFormatSymbols			decimalFormatSymbols;
+		private Boolean							decimalSeparatorAlwaysShown;
+		private Integer							groupingSize;
+		private Integer							multiplier;
+		private String							negativePrefix;
+		private String							negativeSuffix;
+		private String							positivePrefix;
+		private String							positiveSuffix;
 		
 		
-		StringToNumberConverterBuilder(final ConverterType type)
+		StringToNumberConverterBuilder(final Class<? extends Number> targetType)
 		{
-			super(type);
+			this.targetType = targetType;
 			
-			switch(type)
+			if(Byte.class.equals(targetType) || Short.class.equals(targetType)
+					|| Integer.class.equals(targetType) || Long.class.equals(targetType))
 			{
-				case STRING_TO_BYTE:
-				case STRING_TO_SHORT:
-				case STRING_TO_INTEGER:
-				case STRING_TO_LONG:
-				{
-					this.formatType = FormatType.INTEGER;
-				}
-				break;
-			
-				default:
-				{
-					this.formatType = FormatType.NUMBER;
-				}
+				this.formatType = FormatType.INTEGER;
+			}
+			else
+			{
+				this.formatType = FormatType.NUMBER;
 			}
 		}
 		
@@ -414,133 +533,129 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		@Override
 		public Converter<String, MODEL> build()
 		{
-			switch(this.type)
+			if(Byte.class.equals(this.targetType))
 			{
-				case STRING_TO_BYTE:
+				return (Converter<String, MODEL>)new StringToByteConverter(null,
+						this.errorMessageProvider)
 				{
-					return (Converter<String, MODEL>)new StringToByteConverter(null,
-							this.errorMessageProvider)
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
 					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_SHORT:
-				{
-					return (Converter<String, MODEL>)new StringToShortConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_INTEGER:
-				{
-					return (Converter<String, MODEL>)new StringToIntegerConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_LONG:
-				{
-					return (Converter<String, MODEL>)new StringToLongConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_BIG_INTEGER:
-				{
-					return (Converter<String, MODEL>)new StringToBigIntegerConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							final NumberFormat format = StringToNumberConverterBuilder.this
-									.getFormat(locale);
-							if(format instanceof DecimalFormat)
-							{
-								((DecimalFormat)format).setParseBigDecimal(true);
-							}
-							return format;
-						}
-					};
-				}
-				
-				case STRING_TO_FLOAT:
-				{
-					return (Converter<String, MODEL>)new StringToFloatConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_DOUBLE:
-				{
-					return (Converter<String, MODEL>)new StringToDoubleConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							return StringToNumberConverterBuilder.this.getFormat(locale);
-						}
-					};
-				}
-				
-				case STRING_TO_BIG_DECIMAL:
-				{
-					return (Converter<String, MODEL>)new StringToBigDecimalConverter(null,
-							this.errorMessageProvider)
-					{
-						@Override
-						protected NumberFormat getFormat(final Locale locale)
-						{
-							final NumberFormat format = StringToNumberConverterBuilder.this
-									.getFormat(locale);
-							if(format instanceof DecimalFormat)
-							{
-								((DecimalFormat)format).setParseBigDecimal(true);
-							}
-							return format;
-						}
-					};
-				}
-				
-				default:
-					return null;
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
 			}
+			
+			if(Short.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToShortConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
+			}
+			
+			if(Integer.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToIntegerConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
+			}
+			
+			if(Long.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToLongConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
+			}
+			
+			if(BigInteger.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToBigIntegerConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						final NumberFormat format = StringToNumberConverterBuilder.this
+								.getFormat(locale);
+						if(format instanceof DecimalFormat)
+						{
+							((DecimalFormat)format).setParseBigDecimal(true);
+						}
+						return format;
+					}
+				};
+			}
+			
+			if(Float.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToFloatConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
+			}
+			
+			if(Double.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToDoubleConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						return StringToNumberConverterBuilder.this.getFormat(locale);
+					}
+				};
+			}
+			
+			if(BigDecimal.class.equals(this.targetType))
+			{
+				return (Converter<String, MODEL>)new StringToBigDecimalConverter(null,
+						this.errorMessageProvider)
+				{
+					@Override
+					protected NumberFormat getFormat(final Locale locale)
+					{
+						final NumberFormat format = StringToNumberConverterBuilder.this
+								.getFormat(locale);
+						if(format instanceof DecimalFormat)
+						{
+							((DecimalFormat)format).setParseBigDecimal(true);
+						}
+						return format;
+					}
+				};
+			}
+			
+			return null;
 		}
 		
 		
 		private NumberFormat getFormat(final Locale localeParam)
 		{
-			final Locale locale = getLocale(this.locale,localeParam);
+			final Locale locale = Static.getLocale(this.locale,localeParam);
 			
 			NumberFormat format = null;
 			
@@ -640,7 +755,7 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 	
 	
 	
-	public static class StringToBooleanConverterBuilder extends ConverterBuilder<String, Boolean>
+	public static class StringToBooleanConverterBuilder implements ConverterBuilder<String, Boolean>
 	{
 		private ErrorMessageProvider	errorMessageProvider	= context -> "Conversion error";
 		
@@ -648,9 +763,8 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		private String					falseString				= Boolean.FALSE.toString();
 		
 		
-		StringToBooleanConverterBuilder(final ConverterType type)
+		StringToBooleanConverterBuilder()
 		{
-			super(type);
 		}
 		
 		
@@ -693,8 +807,10 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 	
 	
 	
-	public static class StringToDateConverterBuilder extends ConverterBuilder<String, Date>
+	public static class StringToDateConverterBuilder<MODEL extends Date>
+			implements ConverterBuilder<String, MODEL>
 	{
+		private final Class<MODEL>	targetType;
 		private Locale				locale;
 		private boolean				date		= true;
 		private boolean				time		= true;
@@ -704,20 +820,27 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		private DateFormatSymbols	dateFormatSymbols;
 		
 		
-		StringToDateConverterBuilder(final ConverterType type)
+		StringToDateConverterBuilder(final Class<MODEL> targetType)
 		{
-			super(type);
+			super();
+			
+			this.targetType = targetType;
+			
+			if(java.sql.Time.class.equals(targetType))
+			{
+				this.date = false;
+			}
 		}
 		
 		
-		public StringToDateConverterBuilder locale(final Locale locale)
+		public StringToDateConverterBuilder<MODEL> locale(final Locale locale)
 		{
 			this.locale = locale;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateOnly()
+		public StringToDateConverterBuilder<MODEL> dateOnly()
 		{
 			this.date = true;
 			this.time = false;
@@ -725,7 +848,7 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		}
 		
 		
-		public StringToDateConverterBuilder timeOnly()
+		public StringToDateConverterBuilder<MODEL> timeOnly()
 		{
 			this.date = false;
 			this.time = true;
@@ -733,7 +856,7 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		}
 		
 		
-		public StringToDateConverterBuilder dateAndTime()
+		public StringToDateConverterBuilder<MODEL> dateAndTime()
 		{
 			this.date = true;
 			this.time = true;
@@ -741,84 +864,84 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		}
 		
 		
-		public StringToDateConverterBuilder dateStyleShort()
+		public StringToDateConverterBuilder<MODEL> dateStyleShort()
 		{
 			this.dateStyle = DateFormat.SHORT;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateStyleMedium()
+		public StringToDateConverterBuilder<MODEL> dateStyleMedium()
 		{
 			this.dateStyle = DateFormat.MEDIUM;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateStyleLong()
+		public StringToDateConverterBuilder<MODEL> dateStyleLong()
 		{
 			this.dateStyle = DateFormat.LONG;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateStyleFull()
+		public StringToDateConverterBuilder<MODEL> dateStyleFull()
 		{
 			this.dateStyle = DateFormat.FULL;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateStyleDefault()
+		public StringToDateConverterBuilder<MODEL> dateStyleDefault()
 		{
 			this.dateStyle = DateFormat.DEFAULT;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder timeStyleShort()
+		public StringToDateConverterBuilder<MODEL> timeStyleShort()
 		{
 			this.timeStyle = DateFormat.SHORT;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder timeStyleMedium()
+		public StringToDateConverterBuilder<MODEL> timeStyleMedium()
 		{
 			this.timeStyle = DateFormat.MEDIUM;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder timeStyleLong()
+		public StringToDateConverterBuilder<MODEL> timeStyleLong()
 		{
 			this.timeStyle = DateFormat.LONG;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder timeStyleFull()
+		public StringToDateConverterBuilder<MODEL> timeStyleFull()
 		{
 			this.timeStyle = DateFormat.FULL;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder timeStyleDefault()
+		public StringToDateConverterBuilder<MODEL> timeStyleDefault()
 		{
 			this.timeStyle = DateFormat.DEFAULT;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder pattern(final String pattern)
+		public StringToDateConverterBuilder<MODEL> pattern(final String pattern)
 		{
 			this.pattern = pattern;
 			return this;
 		}
 		
 		
-		public StringToDateConverterBuilder dateFormatSymbols(
+		public StringToDateConverterBuilder<MODEL> dateFormatSymbols(
 				final DateFormatSymbols dateFormatSymbols)
 		{
 			this.dateFormatSymbols = dateFormatSymbols;
@@ -828,7 +951,7 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		
 		private DateFormat getFormat(final Locale localeParam)
 		{
-			final Locale locale = getLocale(this.locale,localeParam);
+			final Locale locale = Static.getLocale(this.locale,localeParam);
 			
 			if(this.pattern != null)
 			{
@@ -852,16 +975,181 @@ public abstract class ConverterBuilder<PRESENTATION, MODEL>
 		
 		
 		@Override
-		public Converter<String, Date> build()
+		public Converter<String, MODEL> build()
 		{
-			return new StringToDateConverter()
+			return StringToDateConverter.New(this.targetType,this::getFormat);
+		}
+	}
+	
+	
+	
+	public static class StringToTemporalConverterBuilder<MODEL extends Temporal>
+			implements ConverterBuilder<String, MODEL>
+	{
+		private final Class<MODEL>	targetType;
+		private Locale				locale;
+		private boolean				date		= true;
+		private boolean				time		= true;
+		private FormatStyle			dateStyle	= FormatStyle.MEDIUM;
+		private FormatStyle			timeStyle	= FormatStyle.MEDIUM;
+		private String				pattern;
+		
+		
+		StringToTemporalConverterBuilder(final Class<MODEL> targetType)
+		{
+			super();
+			
+			this.targetType = targetType;
+			
+			if(LocalTime.class.equals(targetType) || OffsetTime.class.equals(targetType)
+					|| LocalTime.class.equals(targetType))
 			{
-				@Override
-				protected DateFormat getFormat(final Locale locale)
-				{
-					return StringToDateConverterBuilder.this.getFormat(locale);
-				}
-			};
+				this.date = false;
+			}
+			else if(LocalDate.class.equals(targetType) || Year.class.equals(targetType)
+					|| YearMonth.class.equals(targetType))
+			{
+				this.time = false;
+			}
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> locale(final Locale locale)
+		{
+			this.locale = locale;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateOnly()
+		{
+			this.date = true;
+			this.time = false;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeOnly()
+		{
+			this.date = false;
+			this.time = true;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateAndTime()
+		{
+			this.date = true;
+			this.time = true;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateStyleShort()
+		{
+			this.dateStyle = FormatStyle.SHORT;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateStyleMedium()
+		{
+			this.dateStyle = FormatStyle.MEDIUM;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateStyleLong()
+		{
+			this.dateStyle = FormatStyle.LONG;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateStyleFull()
+		{
+			this.dateStyle = FormatStyle.FULL;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> dateStyleDefault()
+		{
+			this.dateStyle = FormatStyle.MEDIUM;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeStyleShort()
+		{
+			this.timeStyle = FormatStyle.SHORT;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeStyleMedium()
+		{
+			this.timeStyle = FormatStyle.MEDIUM;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeStyleLong()
+		{
+			this.timeStyle = FormatStyle.LONG;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeStyleFull()
+		{
+			this.timeStyle = FormatStyle.FULL;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> timeStyleDefault()
+		{
+			this.timeStyle = FormatStyle.MEDIUM;
+			return this;
+		}
+		
+		
+		public StringToTemporalConverterBuilder<MODEL> pattern(final String pattern)
+		{
+			this.pattern = pattern;
+			return this;
+		}
+		
+		
+		private DateTimeFormatter getFormatter(final Locale localeParam)
+		{
+			final Locale locale = Static.getLocale(this.locale,localeParam);
+			
+			if(this.pattern != null)
+			{
+				return DateTimeFormatter.ofPattern(pattern,locale);
+			}
+			
+			if(this.date && this.time)
+			{
+				return new DateTimeFormatterBuilder().appendLocalized(dateStyle,timeStyle)
+						.toFormatter(locale);
+			}
+			if(this.date)
+			{
+				return new DateTimeFormatterBuilder().appendLocalized(dateStyle,null)
+						.toFormatter(locale);
+			}
+			return new DateTimeFormatterBuilder().appendLocalized(null,timeStyle)
+					.toFormatter(locale);
+		}
+		
+		
+		@Override
+		public Converter<String, MODEL> build()
+		{
+			return StringToTemporalConverter.New(this.targetType,this::getFormatter);
 		}
 	}
 }
