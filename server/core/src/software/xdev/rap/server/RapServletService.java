@@ -64,14 +64,8 @@ public class RapServletService extends VaadinServletService
 		{
 		}
 	}
-
-	///////////////////////////////////////////////////////////////////////////
-	// instance fields //
-	/////////////////////////////////////////////////
-
-	private final ServiceLoader<Extension> serviceLoader = ServiceLoader.For(Extension.class);
-
-
+	
+	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////////////////////////////////////
@@ -109,7 +103,8 @@ public class RapServletService extends VaadinServletService
 	{
 		super.init();
 
-		this.serviceLoader.services().forEach(extension -> extension.serviceInitialized(this));
+		ServiceLoader.forType(Extension.class).services()
+				.forEach(extension -> extension.serviceInitialized(this));
 	}
 
 
@@ -121,7 +116,7 @@ public class RapServletService extends VaadinServletService
 	{
 		final VaadinSession session = super.createVaadinSession(request);
 
-		this.serviceLoader.services()
+		ServiceLoader.forType(Extension.class).services()
 				.forEach(extension -> extension.sessionCreated(this,session,request));
 
 		return session;
@@ -147,7 +142,7 @@ public class RapServletService extends VaadinServletService
 					{
 						session.lock();
 						
-						this.serviceLoader.services()
+						ServiceLoader.forType(Extension.class).services()
 								.forEach(extension -> extension.onRequestStart(this,session));
 					}
 					finally
@@ -177,7 +172,7 @@ public class RapServletService extends VaadinServletService
 			{
 				session.lock();
 				
-				this.serviceLoader.services()
+				ServiceLoader.forType(Extension.class).services()
 						.forEach(extension -> extension.onRequestEnd(this,session));
 			}
 			finally

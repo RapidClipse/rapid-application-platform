@@ -63,14 +63,8 @@ public class RapServlet extends VaadinServlet
 	{
 		return (RapServlet)VaadinServlet.getCurrent();
 	}
-
-	///////////////////////////////////////////////////////////////////////////
-	// instance fields //
-	/////////////////////////////////////////////////
-
-	private final ServiceLoader<Extension> serviceLoader = ServiceLoader.For(Extension.class);
-
-
+	
+	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////////////////////////////////////
@@ -119,7 +113,7 @@ public class RapServlet extends VaadinServlet
 	{
 		super.servletInitialized();
 
-		for(final Extension extension : this.serviceLoader.services())
+		for(final Extension extension : ServiceLoader.forType(Extension.class).services())
 		{
 			extension.servletInitialized(this);
 		}
@@ -133,7 +127,7 @@ public class RapServlet extends VaadinServlet
 	protected void service(final HttpServletRequest request, final HttpServletResponse response)
 			throws ServletException, IOException
 	{
-		for(final Extension extension : this.serviceLoader.services())
+		for(final Extension extension : ServiceLoader.forType(Extension.class).services())
 		{
 			if(extension.handleHttpRequest(request,response))
 			{

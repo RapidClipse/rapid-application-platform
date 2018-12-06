@@ -30,34 +30,22 @@ import software.xdev.rap.server.util.ServiceLoader;
  */
 public final class ValueTransfer
 {
-	private static ServiceLoader<ValueTransferHandler> handlerServiceLoader;
-
-
-	public static ServiceLoader<ValueTransferHandler> handlerServiceLoader()
-	{
-		if(handlerServiceLoader == null)
-		{
-			handlerServiceLoader = ServiceLoader.For(ValueTransferHandler.class);
-		}
-
-		return handlerServiceLoader;
-	}
-
-
 	public static Object put(final Object value)
 	{
-		return handlerServiceLoader().servicesStream().filter(handler -> handler.handlesPut(value))
-				.map(handler -> handler.put(value)).findFirst().orElse(value);
+		return ServiceLoader.forType(ValueTransferHandler.class).servicesStream()
+				.filter(handler -> handler.handlesPut(value)).map(handler -> handler.put(value))
+				.findFirst().orElse(value);
 	}
-
-
+	
+	
 	public static Object get(final Object value)
 	{
-		return handlerServiceLoader().servicesStream().filter(handler -> handler.handlesGet(value))
-				.map(handler -> handler.get(value)).findFirst().orElse(value);
+		return ServiceLoader.forType(ValueTransferHandler.class).servicesStream()
+				.filter(handler -> handler.handlesGet(value)).map(handler -> handler.get(value))
+				.findFirst().orElse(value);
 	}
-
-
+	
+	
 	private ValueTransfer()
 	{
 		throw new Error();

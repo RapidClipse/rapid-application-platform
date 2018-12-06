@@ -77,18 +77,11 @@ public final class CaptionUtils
 	{
 		return getCaptionResolver().resolveCaption(element,captionValue,locale);
 	}
-	
-	private static ServiceLoader<ClassCaptionResolverFactory> classCaptionResolverFactories;
 
 
 	public static String resolveCaption(final Class<?> clazz, final String propertyName)
 	{
-		if(classCaptionResolverFactories == null)
-		{
-			classCaptionResolverFactories = ServiceLoader.For(ClassCaptionResolverFactory.class);
-		}
-
-		return classCaptionResolverFactories.servicesStream()
+		return ServiceLoader.forType(ClassCaptionResolverFactory.class).servicesStream()
 				.map(factory -> factory.getClassCaptionResolver(clazz)).filter(Objects::nonNull)
 				.map(resolver -> resolver.resolveCaption(clazz,propertyName))
 				.filter(Objects::nonNull).findFirst().orElse(propertyName);

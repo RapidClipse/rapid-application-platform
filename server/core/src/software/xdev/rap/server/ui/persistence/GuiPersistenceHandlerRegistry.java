@@ -65,7 +65,7 @@ public final class GuiPersistenceHandlerRegistry
 
 	private void addProvidedHandlers()
 	{
-		ServiceLoader.For(GuiPersistenceHandlerProvider.class).servicesUncached()
+		ServiceLoader.forType(GuiPersistenceHandlerProvider.class).servicesUncached()
 				.forEach(provider -> provider.registerHandlers(this));
 	}
 	

@@ -76,9 +76,7 @@ public class AbstractFieldHandler<C extends AbstractField> extends ComponentHand
 			return array;
 		}
 
-		return ValueTransfer.handlerServiceLoader().servicesStream()
-				.filter(handler -> handler.handlesPut(value)).map(handler -> handler.put(value))
-				.findFirst().orElse(value);
+		return ValueTransfer.put(value);
 	}
 	
 	
@@ -114,8 +112,6 @@ public class AbstractFieldHandler<C extends AbstractField> extends ComponentHand
 			return array;
 		}
 
-		return ValueTransfer.handlerServiceLoader().servicesStream()
-				.filter(handler -> handler.handlesGet(value)).map(handler -> handler.get(value))
-				.findFirst().orElse(value);
+		return ValueTransfer.get(value);
 	}
 }

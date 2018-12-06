@@ -33,28 +33,20 @@ public abstract class AccessWrapper
 	public static interface Participant
 	{
 		public void before();
-
-
+		
+		
 		public void after();
 	}
-
-	private static ServiceLoader<Participant> serviceLoader = ServiceLoader.For(Participant.class);
-
-
-	private static Iterable<Participant> participants()
-	{
-		return serviceLoader.services();
-	}
-
-
+	
+	
 	protected void before()
 	{
-		participants().forEach(Participant::before);
+		ServiceLoader.forType(Participant.class).services().forEach(Participant::before);
 	}
-
-
+	
+	
 	protected void after()
 	{
-		participants().forEach(Participant::after);
+		ServiceLoader.forType(Participant.class).services().forEach(Participant::after);
 	}
 }
