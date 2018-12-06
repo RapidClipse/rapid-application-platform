@@ -21,6 +21,8 @@
 package software.xdev.rap.server.data.converter;
 
 
+import static java.util.Objects.requireNonNull;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -83,85 +85,85 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 		{
 			return (StringToTemporalConverter<MODEL>)YearMonth(formatterProvider);
 		}
-		
+
 		throw new IllegalArgumentException("Unsupported temporal type: " + clazz);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<LocalDate> LocalDate(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,LocalDate::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<LocalTime> LocalTime(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,LocalTime::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<LocalDateTime> LocalDateTime(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,LocalDateTime::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<OffsetTime> OffsetTime(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,OffsetTime::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<OffsetDateTime> OffsetDateTime(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,OffsetDateTime::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<ZonedDateTime> ZonedDateTime(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,ZonedDateTime::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<Year> Year(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,Year::parse);
 	}
-	
-	
+
+
 	public static StringToTemporalConverter<YearMonth> YearMonth(
 			final Function<Locale, DateTimeFormatter> formatterProvider)
 	{
 		return new Implementation<>(formatterProvider,YearMonth::parse);
 	}
-	
-	
-	
+
+
+
 	public static class Implementation<MODEL extends Temporal>
 			implements StringToTemporalConverter<MODEL>
 	{
 		private final Function<Locale, DateTimeFormatter>			formatterProvider;
 		private final BiFunction<String, DateTimeFormatter, MODEL>	temporalParser;
-		
-		
+
+
 		public Implementation(final Function<Locale, DateTimeFormatter> formatterProvider,
 				final BiFunction<String, DateTimeFormatter, MODEL> temporalParser)
 		{
 			super();
-			
-			this.formatterProvider = formatterProvider;
-			this.temporalParser = temporalParser;
+
+			this.formatterProvider = requireNonNull(formatterProvider);
+			this.temporalParser = requireNonNull(temporalParser);
 		}
-		
-		
+
+
 		@Override
 		public Result<MODEL> convertToModel(String value, final ValueContext context)
 		{
@@ -169,9 +171,9 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 			{
 				return Result.ok(null);
 			}
-			
+
 			value = value.trim();
-			
+
 			try
 			{
 				final Locale locale = context.getLocale().orElse(null);
@@ -183,8 +185,8 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 				return Result.error(e.getLocalizedMessage());
 			}
 		}
-		
-		
+
+
 		@Override
 		public String convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -192,7 +194,7 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 			{
 				return null;
 			}
-			
+
 			return this.formatterProvider.apply(context.getLocale().orElse(null)).format(value);
 		}
 	}

@@ -21,6 +21,8 @@
 package software.xdev.rap.server.data.converter;
 
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.function.Supplier;
 
 import com.vaadin.flow.data.binder.Result;
@@ -39,41 +41,41 @@ public interface HashConverter extends Converter<String, String>
 	{
 		return new Implementation(PasswordHasher::Md5,32);
 	}
-	
-	
+
+
 	public static HashConverter Sha1()
 	{
 		return new Implementation(PasswordHasher::Sha1,40);
 	}
-	
-	
+
+
 	public static HashConverter Sha2()
 	{
 		return new Implementation(PasswordHasher::Sha2,64);
 	}
-	
-	
+
+
 	public static HashConverter Pbkdf2withHmacSha1()
 	{
 		return new Implementation(PasswordHasher::Pbkdf2withHmacSha1,32);
 	}
-	
-	
-	
+
+
+
 	public static class Implementation implements HashConverter
 	{
 		private final Supplier<PasswordHasher>	passwordHasherSupplier;
 		private final int						hashLength;
-		
-		
+
+
 		protected Implementation(final Supplier<PasswordHasher> passwordHasherSupplier,
 				final int hashLength)
 		{
-			this.passwordHasherSupplier = passwordHasherSupplier;
+			this.passwordHasherSupplier = requireNonNull(passwordHasherSupplier);
 			this.hashLength = hashLength;
 		}
-		
-		
+
+
 		@Override
 		public Result<String> convertToModel(final String value, final ValueContext context)
 		{
@@ -81,27 +83,27 @@ public interface HashConverter extends Converter<String, String>
 			{
 				return Result.ok(null);
 			}
-			
+
 			final byte[] bytes = value.getBytes();
-			
+
 			if(bytes.length == this.hashLength)
 			{
 				return Result.ok(value);
 			}
-			
+
 			return Result
 					.ok(Hex.encodeToString(this.passwordHasherSupplier.get().hashPassword(bytes)));
 		}
-		
-		
+
+
 		@Override
 		public String convertToPresentation(final String value, final ValueContext context)
 		{
 			return value;
 		}
-		
-		
-		
+
+
+
 		public static class Hex
 		{
 			/**
@@ -109,8 +111,8 @@ public interface HashConverter extends Converter<String, String>
 			 */
 			private static final char[] DIGITS = {'0','1','2','3','4','5','6','7','8','9','a','b',
 					'c','d','e','f'};
-			
-			
+
+
 			/**
 			 * Encodes the specified byte array to a character array and then
 			 * returns that character array as a String.
@@ -124,8 +126,8 @@ public interface HashConverter extends Converter<String, String>
 			{
 				return new String(encode(bytes));
 			}
-			
-			
+
+
 			/**
 			 * Converts an array of bytes into an array of characters
 			 * representing the hexadecimal values of each byte in order. The
@@ -139,16 +141,16 @@ public interface HashConverter extends Converter<String, String>
 			public static char[] encode(final byte[] data)
 			{
 				final int l = data.length;
-				
+
 				final char[] out = new char[l << 1];
-				
+
 				// two characters form the hex value.
 				for(int i = 0, j = 0; i < l; i++)
 				{
 					out[j++] = DIGITS[(0xF0 & data[i]) >>> 4];
 					out[j++] = DIGITS[0x0F & data[i]];
 				}
-				
+
 				return out;
 			}
 		}

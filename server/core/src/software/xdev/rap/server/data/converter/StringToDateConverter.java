@@ -21,6 +21,8 @@
 package software.xdev.rap.server.data.converter;
 
 
+import static java.util.Objects.requireNonNull;
+
 import java.text.DateFormat;
 import java.text.ParsePosition;
 import java.util.Date;
@@ -58,57 +60,57 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 		{
 			return (StringToDateConverter<MODEL>)SqlTimestamp(dateFormatProvider);
 		}
-
+		
 		throw new IllegalArgumentException("Unsupported date type: " + clazz);
 	}
-
-
+	
+	
 	public static StringToDateConverter<Date> UtilDate(
 			final Function<Locale, DateFormat> dateFormatProvider)
 	{
 		return new Implementation<>(dateFormatProvider,date -> date);
 	}
-
-
+	
+	
 	public static StringToDateConverter<java.sql.Date> SqlDate(
 			final Function<Locale, DateFormat> dateFormatProvider)
 	{
 		return new Implementation<>(dateFormatProvider,date -> new java.sql.Date(date.getTime()));
 	}
-
-
+	
+	
 	public static StringToDateConverter<java.sql.Time> SqlTime(
 			final Function<Locale, DateFormat> dateFormatProvider)
 	{
 		return new Implementation<>(dateFormatProvider,date -> new java.sql.Time(date.getTime()));
 	}
-
-
+	
+	
 	public static StringToDateConverter<java.sql.Timestamp> SqlTimestamp(
 			final Function<Locale, DateFormat> dateFormatProvider)
 	{
 		return new Implementation<>(dateFormatProvider,
 				date -> new java.sql.Timestamp(date.getTime()));
 	}
-
-
-
+	
+	
+	
 	public static class Implementation<MODEL extends Date> implements StringToDateConverter<MODEL>
 	{
 		private final Function<Locale, DateFormat>	dateFormatProvider;
 		private final Function<Date, MODEL>			dateConverter;
-
-
+		
+		
 		public Implementation(final Function<Locale, DateFormat> dateFormatProvider,
 				final Function<Date, MODEL> dateConverter)
 		{
 			super();
-
-			this.dateFormatProvider = dateFormatProvider;
-			this.dateConverter = dateConverter;
+			
+			this.dateFormatProvider = requireNonNull(dateFormatProvider);
+			this.dateConverter = requireNonNull(dateConverter);
 		}
-
-
+		
+		
 		@Override
 		public Result<MODEL> convertToModel(String value, final ValueContext context)
 		{
@@ -116,9 +118,9 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.ok(null);
 			}
-
+			
 			value = value.trim();
-
+			
 			final ParsePosition parsePosition = new ParsePosition(0);
 			final Date parsedValue = this.dateFormatProvider.apply(context.getLocale().orElse(null))
 					.parse(value,parsePosition);
@@ -126,11 +128,11 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.error("Could not convert '" + value + "'");
 			}
-
+			
 			return Result.ok(dateConverter.apply(parsedValue));
 		}
-
-
+		
+		
 		@Override
 		public String convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -138,7 +140,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return null;
 			}
-
+			
 			final Locale locale = context.getLocale().orElse(null);
 			return this.dateFormatProvider.apply(locale).format(value);
 		}
