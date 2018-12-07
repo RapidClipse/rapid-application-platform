@@ -21,8 +21,10 @@
 package software.xdev.rap.server.data.filter;
 
 
-import java.util.Arrays;
-import java.util.Collections;
+import static java.util.Arrays.asList;
+import static java.util.Collections.unmodifiableList;
+import static software.xdev.rap.server.Rap.notEmpty;
+
 import java.util.List;
 
 
@@ -44,21 +46,23 @@ public interface Composite extends Filter
 	public List<Filter> filters();
 	
 	
+	public static Composite New(final Connector connector, final Filter... filters)
+	{
+		return New(connector,asList(filters));
+	}
+	
+	
+	public static Composite New(final Connector connector, final List<Filter> filters)
+	{
+		return new Implementation(connector,filters);
+	}
+	
+	
 	
 	public static class Implementation implements Composite
 	{
 		private final Connector		connector;
 		private final List<Filter>	filters;
-		
-		
-		@SafeVarargs
-		public Implementation(final Connector connector, final Filter... filters)
-		{
-			super();
-			
-			this.connector = connector;
-			this.filters = Arrays.asList(filters);
-		}
 
 
 		public Implementation(final Connector connector, final List<Filter> filters)
@@ -66,7 +70,7 @@ public interface Composite extends Filter
 			super();
 			
 			this.connector = connector;
-			this.filters = Collections.unmodifiableList(filters);
+			this.filters = unmodifiableList(notEmpty(filters));
 		}
 		
 		
