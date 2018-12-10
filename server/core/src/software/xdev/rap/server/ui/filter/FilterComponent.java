@@ -21,6 +21,7 @@
 package software.xdev.rap.server.ui.filter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,6 +38,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
 import software.xdev.rap.server.data.filter.Composite;
 import software.xdev.rap.server.data.filter.Composite.Connector;
 import software.xdev.rap.server.data.filter.Filter;
+import software.xdev.rap.server.util.ServiceLoader;
 
 
 /**
@@ -47,189 +49,205 @@ public class FilterComponent
 		extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
 		implements FilterContext, HasSize
 {
-	private boolean					caseSensitive				= false;
-	private char					wildcard					= '*';
-	
-	private Connector				searchPropertiesConnector	= Connector.OR;
-	private Connector				searchMultiWordConnector	= Connector.OR;
-	private Connector				filterPropertiesConnector	= Connector.AND;
-	private Connector				searchAndFilterConnector	= Connector.AND;
-	
-	private SearchFilterGenerator	searchFilterGenerator		= SearchFilterGenerator.New();
-	
-	private FilterOperatorRegistry	filterOperatorRegistry		= FilterOperatorRegistry.Default();
-	
-	private FilterSubject			filterSubject;
-	
-	private TextField				searchTextField;
-	private Button					addFilterButton;
-	private List<FilterEntryEditor>	entryEditors;
-	
-	
+	private boolean							caseSensitive				= false;
+	private char							wildcard					= '*';
+
+	private Connector						searchPropertiesConnector	= Connector.OR;
+	private Connector						searchMultiWordConnector	= Connector.OR;
+	private Connector						filterPropertiesConnector	= Connector.AND;
+	private Connector						searchAndFilterConnector	= Connector.AND;
+
+	private SearchFilterGenerator			searchFilterGenerator		= SearchFilterGenerator
+			.New();
+
+	private FilterOperatorRegistry			filterOperatorRegistry		= FilterOperatorRegistry
+			.Default();
+
+	private FilterSubject					filterSubject;
+
+	private TextField						searchTextField;
+	private Button							addFilterButton;
+	private final List<FilterEntryEditor>	entryEditors				= new ArrayList<>();
+
+
 	public FilterComponent()
 	{
 		super(new FilterData("",null));
 	}
-	
-	
+
+
 	@Override
 	public boolean isCaseSensitive()
 	{
 		return this.caseSensitive;
 	}
-	
-	
+
+
 	public void setCaseSensitive(final boolean caseSensitive)
 	{
 		this.caseSensitive = caseSensitive;
 	}
-	
-	
+
+
 	@Override
 	public char getWildcard()
 	{
 		return this.wildcard;
 	}
-	
-	
+
+
 	public void setWildcard(final char wildcard)
 	{
 		this.wildcard = wildcard;
 	}
-	
-	
+
+
 	@Override
 	public Connector getSearchPropertiesConnector()
 	{
 		return this.searchPropertiesConnector;
 	}
-	
-	
+
+
 	public void setSearchPropertiesConnector(final Connector searchPropertiesConnector)
 	{
 		this.searchPropertiesConnector = searchPropertiesConnector;
 	}
-	
-	
+
+
 	@Override
 	public Connector getSearchMultiWordConnector()
 	{
 		return this.searchMultiWordConnector;
 	}
-	
-	
+
+
 	public void setSearchMultiWordConnector(final Connector searchMultiWordConnector)
 	{
 		this.searchMultiWordConnector = searchMultiWordConnector;
 	}
-	
-	
+
+
 	@Override
 	public Connector getFilterPropertiesConnector()
 	{
 		return this.filterPropertiesConnector;
 	}
-	
-	
+
+
 	public void setFilterPropertiesConnector(final Connector filterPropertiesConnector)
 	{
 		this.filterPropertiesConnector = filterPropertiesConnector;
 	}
-	
-	
+
+
 	@Override
 	public Connector getSearchAndFilterConnector()
 	{
 		return this.searchAndFilterConnector;
 	}
-	
-	
+
+
 	public void setSearchAndFilterConnector(final Connector searchAndFilterConnector)
 	{
 		this.searchAndFilterConnector = searchAndFilterConnector;
 	}
-	
-	
+
+
 	public SearchFilterGenerator getSearchFilterGenerator()
 	{
 		return this.searchFilterGenerator;
 	}
-	
-	
+
+
 	public void setSearchFilterGenerator(final SearchFilterGenerator searchFilterGenerator)
 	{
 		this.searchFilterGenerator = searchFilterGenerator;
 	}
-	
-	
+
+
 	@Override
 	public FilterOperatorRegistry getFilterOperatorRegistry()
 	{
 		return this.filterOperatorRegistry;
 	}
-	
-	
+
+
 	public void setFilterOperatorRegistry(final FilterOperatorRegistry filterOperatorRegistry)
 	{
 		this.filterOperatorRegistry = filterOperatorRegistry;
 	}
-	
-	
+
+
+	public void setSubject(final Object source)
+	{
+		final FilterSubject subject = ServiceLoader.forType(FilterSubjectFactory.class)
+				.servicesStream().filter(factory -> factory.supports(source))
+				.map(f -> f.createFilterSubject(source)).findFirst().orElse(null);
+		setFilterSubject(subject);
+	}
+
+
+	public void setFilterSubject(final FilterSubject filterSubject)
+	{
+		this.filterSubject = filterSubject;
+
+		reset();
+	}
+
+
 	@Override
 	public FilterSubject getFilterSubject()
 	{
 		return this.filterSubject;
 	}
-	
-	
-	public void setFilterSubject(final FilterSubject filterSubject)
-	{
-		this.filterSubject = filterSubject;
-	}
-	
-	
+
+
 	@Override
 	protected VerticalLayout initContent()
 	{
 		this.searchTextField = createSearchTextField();
 		this.searchTextField.addValueChangeListener(event -> updateFilterData());
 		this.searchTextField.setEnabled(false);
-		
+
 		this.addFilterButton = createAddFilterButton();
 		this.addFilterButton.addClickListener(event -> addFilterEntry(0));
 		this.addFilterButton.setEnabled(false);
-		
+
 		final HorizontalLayout searchBar = new HorizontalLayout(this.searchTextField,
 				this.addFilterButton);
 		searchBar.expand(this.searchTextField);
 		searchBar.setWidth("100%");
-		
+
 		final VerticalLayout content = new VerticalLayout(searchBar);
 		content.setPadding(false);
 		content.setSpacing(true);
 		return content;
 	}
-	
-	
+
+
 	protected TextField createSearchTextField()
 	{
 		final TextField textField = new TextField();
 		textField.setValueChangeMode(ValueChangeMode.EAGER);
 		return textField;
 	}
-	
-	
+
+
 	protected Button createAddFilterButton()
 	{
 		final Button button = new Button();
 		button.setIcon(VaadinIcon.PLUS.create());
 		return button;
 	}
-	
-	
+
+
 	protected void addFilterEntry(final int index)
 	{
-		
+		final FilterEntryEditor editor = new FilterEntryEditor(this,this::updateFilterData);
+		this.entryEditors.add(index,editor);
+		// +1 because of search bar at top
+		getContent().addComponentAtIndex(index + 1,editor);
 	}
 
 
@@ -244,18 +262,32 @@ public class FilterComponent
 		this.searchTextField.setValue(searchText != null ? searchText : "");
 		updateFilterData();
 	}
-	
-	
+
+
 	protected void updateFilterData()
 	{
-		// setModelValue()
-		System.out.println("Updating Filter ...");
+		final String searchTerm = this.searchTextField.getValue();
+		final FilterEntry[] entries = this.entryEditors.stream()
+				.map(FilterEntryEditor::getFilterEntry).filter(Objects::nonNull)
+				.toArray(FilterEntry[]::new);
+		setModelValue(new FilterData(searchTerm,entries),false);
 	}
-	
-	
+
+
 	@Override
-	protected void setPresentationValue(final FilterData newPresentationValue)
+	protected void setPresentationValue(final FilterData filterData)
 	{
+		this.searchTextField.setValue(filterData.getSearchTerm());
+	}
+
+
+	public void reset()
+	{
+		setValue(new FilterData());
+
+		final boolean enabled = this.filterSubject != null;
+		this.searchTextField.setEnabled(enabled);
+		this.addFilterButton.setEnabled(enabled);
 	}
 
 

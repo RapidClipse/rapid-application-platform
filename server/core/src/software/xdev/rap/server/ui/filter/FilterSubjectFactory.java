@@ -25,34 +25,10 @@ package software.xdev.rap.server.ui.filter;
  * @author XDEV Software
  *
  */
-public final class FilterData
+public interface FilterSubjectFactory
 {
-	private final String		searchTerm;
-	private final FilterEntry[]	entries;
+	public boolean supports(Object source);
 	
 	
-	public FilterData()
-	{
-		this("",null);
-	}
-	
-	
-	public FilterData(final String searchTerm, final FilterEntry[] entries)
-	{
-		super();
-		this.searchTerm = searchTerm;
-		this.entries = entries;
-	}
-	
-	
-	public String getSearchTerm()
-	{
-		return this.searchTerm;
-	}
-	
-	
-	public FilterEntry[] getEntries()
-	{
-		return this.entries;
-	}
+	public FilterSubject createFilterSubject(Object source);
 }
