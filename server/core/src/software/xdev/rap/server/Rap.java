@@ -119,8 +119,8 @@ public final class Rap
 		}
 		return instance;
 	}
-	
-	
+
+
 	public static <E> E[] notEmpty(final E[] array)
 	{
 		if(array.length == 0)
@@ -139,8 +139,8 @@ public final class Rap
 		}
 		return collection;
 	}
-	
-	
+
+
 	public static <E> E[] minLength(final E[] array, final int minLength)
 	{
 		if(array.length < minLength)
@@ -159,51 +159,59 @@ public final class Rap
 		}
 		return collection;
 	}
-	
-	
+
+
+	public static Class<?> wrapperTypeIfPrimitive(final Class<?> clazz)
+	{
+		if(clazz.isPrimitive())
+		{
+			return wrapperType(clazz);
+		}
+
+		return clazz;
+	}
+
+
 	public static Class<?> wrapperType(final Class<?> primitive)
 	{
-		if(primitive.isPrimitive())
+		if(primitive == int.class)
 		{
-			if(primitive == int.class)
-			{
-				return Integer.class;
-			}
-			if(primitive == double.class)
-			{
-				return Double.class;
-			}
-			if(primitive == boolean.class)
-			{
-				return Boolean.class;
-			}
-			if(primitive == float.class)
-			{
-				return Float.class;
-			}
-			if(primitive == byte.class)
-			{
-				return Byte.class;
-			}
-			if(primitive == long.class)
-			{
-				return Long.class;
-			}
-			if(primitive == short.class)
-			{
-				return Short.class;
-			}
-			if(primitive == char.class)
-			{
-				return Character.class;
-			}
+			return Integer.class;
 		}
-		
-		throw new IllegalArgumentException();
+		if(primitive == double.class)
+		{
+			return Double.class;
+		}
+		if(primitive == boolean.class)
+		{
+			return Boolean.class;
+		}
+		if(primitive == float.class)
+		{
+			return Float.class;
+		}
+		if(primitive == byte.class)
+		{
+			return Byte.class;
+		}
+		if(primitive == long.class)
+		{
+			return Long.class;
+		}
+		if(primitive == short.class)
+		{
+			return Short.class;
+		}
+		if(primitive == char.class)
+		{
+			return Character.class;
+		}
+
+		throw new IllegalArgumentException("Not a primitive: " + primitive.getName());
 	}
-	
-	
-	
+
+
+
 	@WebListener
 	public static class ContextListener implements ServletContextListener
 	{
@@ -211,8 +219,8 @@ public final class Rap
 		public void contextInitialized(final ServletContextEvent sce)
 		{
 		}
-		
-		
+
+
 		@Override
 		public void contextDestroyed(final ServletContextEvent sce)
 		{
