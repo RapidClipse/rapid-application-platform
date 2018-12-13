@@ -66,7 +66,10 @@ public class FilterEntryEditor extends HorizontalLayout
 		
 		this.propertyComboBox = createPropertyComboBox();
 		this.propertyComboBox.setItems(context.getFilterSubject().filterableProperties());
-		this.propertyComboBox.addValueChangeListener(event -> propertySelectionChanged());
+		this.propertyComboBox.addValueChangeListener(event -> {
+			propertySelectionChanged();
+			filterChangeHandler.run();
+		});
 		
 		this.operatorComboBox = createOperatorComboBox();
 		/*
@@ -74,7 +77,10 @@ public class FilterEntryEditor extends HorizontalLayout
 		 * https://github.com/vaadin/vaadin-combo-box-flow/issues/169
 		 */
 		this.operatorComboBox.setItems(Collections.emptyList());
-		this.operatorComboBox.addValueChangeListener(event -> operatorSelectionChanged());
+		this.operatorComboBox.addValueChangeListener(event -> {
+			operatorSelectionChanged();
+			filterChangeHandler.run();
+		});
 		this.operatorComboBox.setVisible(false);
 		
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
@@ -103,17 +109,8 @@ public class FilterEntryEditor extends HorizontalLayout
 	}
 	
 	
-	public FilterEntryEditor(final FilterContext context, final Runnable filterChangeHandler,
-			final FilterEntry filterData)
-	{
-		this(context,filterChangeHandler);
-		
-		setFilterData(filterData);
-	}
-	
-	
 	@SuppressWarnings("unchecked")
-	public void setFilterData(final FilterEntry data)
+	public void setFilterEntry(final FilterEntry data)
 	{
 		final FilterProperty<?> property = this.context.getFilterSubject()
 				.filterableProperty(data.getPropertyIdentifier());
