@@ -24,55 +24,56 @@ package software.xdev.rap.server.ui.filter;
 import static java.util.Objects.requireNonNull;
 
 
-public interface FilterProperty
+public interface FilterProperty<T>
 {
 	public Object identifier();
-
-
-	public Class<?> type();
-
-
+	
+	
+	public Class<T> type();
+	
+	
 	public String caption();
-
-
-	public static FilterProperty New(final Object name, final Class<?> type, final String caption)
+	
+	
+	public static <T> FilterProperty<T> New(final Object name, final Class<T> type,
+			final String caption)
 	{
-		return new Implementation(name,type,caption);
+		return new Implementation<>(name,type,caption);
 	}
-
-
-
-	public static class Implementation implements FilterProperty
+	
+	
+	
+	public static class Implementation<T> implements FilterProperty<T>
 	{
 		private final Object	identifier;
-		private final Class<?>	type;
+		private final Class<T>	type;
 		private final String	caption;
-
-
-		public Implementation(final Object identifier, final Class<?> type, final String caption)
+		
+		
+		public Implementation(final Object identifier, final Class<T> type, final String caption)
 		{
 			super();
-
+			
 			this.identifier = requireNonNull(identifier);
 			this.type = requireNonNull(type);
 			this.caption = requireNonNull(caption);
 		}
-
-
+		
+		
 		@Override
 		public Object identifier()
 		{
 			return this.identifier;
 		}
-
-
+		
+		
 		@Override
-		public Class<?> type()
+		public Class<T> type()
 		{
 			return this.type;
 		}
-
-
+		
+		
 		@Override
 		public String caption()
 		{

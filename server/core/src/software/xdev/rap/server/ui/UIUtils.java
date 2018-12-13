@@ -44,14 +44,14 @@ public final class UIUtils
 			{
 				return type.cast(parent);
 			}
-			
+
 			parent = parent.getParent().orElse(null);
 		}
-		
+
 		return null;
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param parent
@@ -62,30 +62,30 @@ public final class UIUtils
 	{
 		lookupComponentTree(parent,toFunction(visitor));
 	}
-
-
+	
+	
 	/**
 	 *
 	 * @param parent
 	 * @param visitor
 	 * @param type
 	 */
-	public static <C extends Component> void traverseComponentTree(final Component parent,
-			final Consumer<C> visitor, final Class<C> type)
+	public static <C> void traverseComponentTree(final Component parent, final Class<C> type,
+			final Consumer<C> visitor)
 	{
-		lookupComponentTree(parent,toFunction(visitor),type);
+		lookupComponentTree(parent,type,toFunction(visitor));
 	}
-
-
-	private static <C extends Component, T> Function<C, T> toFunction(final Consumer<C> consumer)
+	
+	
+	private static <C, T> Function<C, T> toFunction(final Consumer<C> consumer)
 	{
 		return c -> {
 			consumer.accept(c);
 			return null;
 		};
 	}
-
-
+	
+	
 	/**
 	 * Shortcut for <code>lookupComponentTree(parent,visitor,null)</code>.
 	 *
@@ -98,14 +98,14 @@ public final class UIUtils
 	 * @return
 	 * @see #lookupComponentTree(Component, Function, Class)
 	 */
-
+	
 	public static <T> T lookupComponentTree(final Component parent,
 			final Function<Component, T> visitor)
 	{
-		return lookupComponentTree(parent,visitor,null);
+		return lookupComponentTree(parent,null,visitor);
 	}
-
-
+	
+	
 	/**
 	 * Walks through the <code>parent</code>'s component tree hierarchy.
 	 * <p>
@@ -123,53 +123,53 @@ public final class UIUtils
 	 *            The component type to visit
 	 * @param parent
 	 *            The root of the component tree to visit
-	 * @param visitor
-	 *            the visitor
 	 * @param type
 	 *            The component type class to visit
+	 * @param visitor
+	 *            the visitor
 	 * @return
 	 * @see {@link ComponentTreeVisitor}
 	 */
-
+	
 	@SuppressWarnings("unchecked")
-	public static <C extends Component, T> T lookupComponentTree(final Component parent,
-			final Function<C, T> visitor, final Class<C> type)
+	public static <C, T> T lookupComponentTree(final Component parent, final Class<C> type,
+			final Function<C, T> visitor)
 	{
 		T value = null;
-
+		
 		if(type == null || type.isInstance(parent))
 		{
 			value = visitor.apply((C)parent);
 		}
-
+		
 		if(value == null)
 		{
-			value = parent.getChildren().map(child -> traverse(child,visitor,type))
+			value = parent.getChildren().map(child -> traverse(child,type,visitor))
 					.filter(Objects::nonNull).findFirst().orElse(null);
 		}
-
+		
 		return value;
 	}
-
-
+	
+	
 	@SuppressWarnings("unchecked")
-	private static <C extends Component, T> T traverse(final Component child,
-			final Function<C, T> visitor, final Class<C> type)
+	private static <C, T> T traverse(final Component child, final Class<C> type,
+			final Function<C, T> visitor)
 	{
 		if(child instanceof HasComponents)
 		{
-			return lookupComponentTree(child,visitor,type);
+			return lookupComponentTree(child,type,visitor);
 		}
-
+		
 		if(type == null || type.isInstance(child))
 		{
 			return visitor.apply((C)child);
 		}
-
+		
 		return null;
 	}
-	
-	
+
+
 	private UIUtils()
 	{
 		throw new Error();

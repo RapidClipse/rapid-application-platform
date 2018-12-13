@@ -31,6 +31,7 @@ import java.util.List;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.data.value.ValueChangeMode;
 
 import software.xdev.rap.server.Rap;
 import software.xdev.rap.server.data.converter.ConverterBuilder;
@@ -38,6 +39,7 @@ import software.xdev.rap.server.data.converter.LocalDateToDateConverter;
 import software.xdev.rap.server.data.converter.LocalDateToTemporalConverter;
 import software.xdev.rap.server.data.filter.Filter;
 import software.xdev.rap.server.resources.StringResourceUtils;
+import software.xdev.rap.server.ui.TextFieldWithNull;
 
 
 /**
@@ -48,90 +50,92 @@ import software.xdev.rap.server.resources.StringResourceUtils;
 public interface FilterOperator
 {
 	public String key();
-	
-	
+
+
 	public String name();
-	
-	
+
+
 	public boolean isSupported(final FilterProperty property);
-	
-	
+
+
 	public List<FilterValueEditorComposite> createComposites(FilterContext context,
 			FilterProperty property);
-	
-	
+
+
 	public Filter createFilter(FilterContext context, FilterProperty property,
 			List<FilterValueEditorComposite> composites);
-	
-	
-	
+
+
+
 	public static abstract class Abstract implements FilterOperator
 	{
 		protected final String key;
-		
-		
+
+
 		public Abstract(final String key)
 		{
 			this.key = key;
 		}
-		
-		
+
+
 		@Override
 		public String key()
 		{
 			return this.key;
 		}
-		
-		
+
+
 		@Override
 		public String name()
 		{
 			return StringResourceUtils.getResourceString("Operator." + key,FilterOperator.class);
 		}
-		
-		
+
+
 		protected boolean isNumber(final Class<?> type)
 		{
 			return Number.class.isAssignableFrom(type) || type == int.class || type == double.class
 					|| type == float.class || type == long.class || type == short.class
 					|| type == byte.class;
 		}
-		
-		
+
+
 		protected boolean isTemporal(final Class<?> type)
 		{
 			return Temporal.class.isAssignableFrom(type);
 		}
-		
-		
+
+
 		protected boolean isDate(final Class<?> type)
 		{
 			return Date.class.isAssignableFrom(type);
 		}
-		
-		
+
+
 		protected boolean isBoolean(final Class<?> type)
 		{
 			return type == Boolean.class || type == boolean.class;
 		}
-		
-		
+
+
 		protected FilterValueEditorComposite<String, String> createStringField()
 		{
-			final TextField textField = new TextField();
+			final TextField textField = new TextFieldWithNull();
+			textField.setValueChangeMode(ValueChangeMode.EAGER);
 			return FilterValueEditorComposite.New(textField);
 		}
-		
-		
+
+
 		protected <MODEL extends Number> FilterValueEditorComposite<String, MODEL> createNumberField(
 				final Class<MODEL> numberType)
 		{
-			final TextField textField = new TextField();
+			final TextField textField = new TextFieldWithNull();
+			textField.setValueChangeMode(ValueChangeMode.EAGER);
 			return FilterValueEditorComposite.New(textField,
 					ConverterBuilder.stringToNumber(numberType).build());
 		}
-		
-		
+
+
 		/**
 		 * XXX There is only {@link DatePicker} at the moment, we have to wait
 		 * for Vaaadin 14 for more controls.
@@ -143,8 +147,8 @@ public interface FilterOperator
 			return FilterValueEditorComposite.New(datePicker,
 					LocalDateToTemporalConverter.New(dateType));
 		}
-		
-		
+
+
 		protected <MODEL extends Date> FilterValueEditorComposite<LocalDate, MODEL> createDateField(
 				final Class<MODEL> dateType)
 		{
@@ -152,47 +156,47 @@ public interface FilterOperator
 			return FilterValueEditorComposite.New(datePicker,
 					LocalDateToDateConverter.New(dateType));
 		}
-		
-		
+
+
 		protected FilterValueEditorComposite<Boolean, Boolean> createBooleanField()
 		{
 			final Checkbox checkbox = new Checkbox();
 			return FilterValueEditorComposite.New(checkbox);
 		}
-		
-		
+
+
 		protected FilterValueEditorComposite createChoiceField()
 		{
 			// TODO choice / combobox
 			return null;
 		}
 	}
-	
-	
-	
+
+
+
 	public static abstract class AbstractString extends Abstract
 	{
 		public AbstractString(final String key)
 		{
 			super(key);
 		}
-		
-		
+
+
 		@Override
 		public boolean isSupported(final FilterProperty property)
 		{
 			return property.type() == String.class;
 		}
-		
-		
+
+
 		@Override
 		public List<FilterValueEditorComposite> createComposites(final FilterContext context,
 				final FilterProperty property)
 		{
 			return Arrays.asList(createStringField());
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
@@ -202,93 +206,93 @@ public interface FilterOperator
 			{
 				return createStringFilter(value,context,property);
 			}
-			
+
 			return null;
 		}
-		
-		
+
+
 		protected abstract Filter createStringFilter(String value, FilterContext settings,
 				FilterProperty property);
 	}
-	
-	
-	
+
+
+
 	public static class Equals extends AbstractString
 	{
 		public final static String KEY = "EQUALS";
-		
-		
+
+
 		public Equals()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createStringFilter(final String value, final FilterContext context,
 				final FilterProperty property)
 		{
 			final char wildcard = context.getWildcard();
 			final boolean caseSensitive = context.isCaseSensitive();
-			
+
 			if(value.indexOf(wildcard) != -1 || !caseSensitive)
 			{
 				return Filter.StringComparison(property,value,caseSensitive,
 						Arrays.asList(wildcard));
 			}
-			
+
 			return Filter.Equals(property.identifier(),value);
 		}
 	}
-	
-	
-	
+
+
+
 	public static class StartsWith extends AbstractString
 	{
 		public final static String KEY = "STARTS_WITH";
-		
-		
+
+
 		public StartsWith()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createStringFilter(String value, final FilterContext context,
 				final FilterProperty property)
 		{
 			final char wildcard = context.getWildcard();
-			
+
 			if(value.length() > 0 && value.charAt(value.length() - 1) != wildcard)
 			{
 				value += wildcard;
 			}
-			
+
 			return Filter.StringComparison(property.identifier(),value,context.isCaseSensitive(),
 					Arrays.asList(wildcard));
 		}
 	}
-	
-	
-	
+
+
+
 	public static class Contains extends AbstractString
 	{
 		public final static String KEY = "CONTAINS";
-		
-		
+
+
 		public Contains()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createStringFilter(String value, final FilterContext context,
 				final FilterProperty property)
 		{
 			final char wildcard = context.getWildcard();
-			
+
 			if(value.length() > 0)
 			{
 				if(value.charAt(0) != wildcard)
@@ -300,58 +304,58 @@ public interface FilterOperator
 					value += wildcard;
 				}
 			}
-			
+
 			return Filter.StringComparison(property.identifier(),value,context.isCaseSensitive(),
 					Arrays.asList(wildcard));
 		}
 	}
-	
-	
-	
+
+
+
 	public static class Is extends Abstract
 	{
 		public final static String KEY = "IS";
-		
-		
+
+
 		public Is()
 		{
 			this(KEY);
 		}
-		
-		
+
+
 		protected Is(final String key)
 		{
 			super(key);
 		}
-		
-		
+
+
 		@Override
 		public boolean isSupported(final FilterProperty property)
 		{
 			return property.type() != String.class;
 		}
-		
-		
+
+
 		@Override
 		public List<FilterValueEditorComposite> createComposites(final FilterContext settings,
 				final FilterProperty property)
 		{
 			final Class<?> propertyType = property.type();
-			
+
 			final FilterValueEditorComposite composite;
-			
+
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
-						Number.class.asSubclass(Rap.wrapperType(propertyType)));
+						Rap.wrapperTypeIfPrimitive(propertyType).asSubclass(Number.class));
 			}
 			else if(isTemporal(propertyType))
 			{
-				composite = createTemporalField(Temporal.class.asSubclass(propertyType));
+				composite = createTemporalField(propertyType.asSubclass(Temporal.class));
 			}
 			else if(isDate(propertyType))
 			{
-				composite = createDateField(Date.class.asSubclass(propertyType));
+				composite = createDateField(propertyType.asSubclass(Date.class));
 			}
 			else if(isBoolean(propertyType))
 			{
@@ -361,11 +365,11 @@ public interface FilterOperator
 			{
 				composite = createChoiceField();
 			}
-			
+
 			return Arrays.asList(composite);
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
@@ -375,24 +379,24 @@ public interface FilterOperator
 			{
 				return Filter.Equals(property.identifier(),value);
 			}
-			
+
 			return null;
 		}
 	}
-	
-	
-	
+
+
+
 	public static class IsNot extends Is
 	{
 		public final static String KEY = "IS_NOT";
-		
-		
+
+
 		public IsNot()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
@@ -401,51 +405,51 @@ public interface FilterOperator
 			return filter != null ? Filter.Not(filter) : null;
 		}
 	}
-	
-	
-	
+
+
+
 	public static abstract class AbstractSizeComparing extends Abstract
 	{
 		public AbstractSizeComparing(final String key)
 		{
 			super(key);
 		}
-		
-		
+
+
 		@Override
 		public boolean isSupported(final FilterProperty property)
 		{
 			final Class<?> type = property.type();
 			return isNumber(type) || isTemporal(type) || isDate(type);
 		}
-		
-		
+
+
 		@Override
 		public List<FilterValueEditorComposite> createComposites(final FilterContext context,
 				final FilterProperty property)
 		{
 			final Class<?> propertyType = property.type();
-			
+
 			final FilterValueEditorComposite composite;
-			
+
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
-						Number.class.asSubclass(Rap.wrapperType(propertyType)));
+						Rap.wrapperTypeIfPrimitive(propertyType).asSubclass(Number.class));
 			}
 			else if(isTemporal(propertyType))
 			{
-				composite = createTemporalField(Temporal.class.asSubclass(propertyType));
+				composite = createTemporalField(propertyType.asSubclass(Temporal.class));
 			}
 			else
 			{
-				composite = createDateField(Date.class.asSubclass(propertyType));
+				composite = createDateField(propertyType.asSubclass(Date.class));
 			}
-			
+
 			return Arrays.asList(composite);
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
@@ -455,115 +459,115 @@ public interface FilterOperator
 			{
 				return createFilter(property,value);
 			}
-			
+
 			return null;
 		}
-		
-		
+
+
 		protected abstract Filter createFilter(final FilterProperty property, Comparable<?> value);
 	}
-	
-	
-	
+
+
+
 	public static class Greater extends AbstractSizeComparing
 	{
 		public final static String KEY = "GREATER";
-		
-		
+
+
 		public Greater()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createFilter(final FilterProperty property, final Comparable<?> value)
 		{
 			return Filter.Greater(property.identifier(),value);
 		}
 	}
-	
-	
-	
+
+
+
 	public static class Less extends AbstractSizeComparing
 	{
 		public final static String KEY = "LESS";
-		
-		
+
+
 		public Less()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createFilter(final FilterProperty property, final Comparable<?> value)
 		{
 			return Filter.Less(property.identifier(),value);
 		}
 	}
-	
-	
-	
+
+
+
 	public static class GreaterEqual extends AbstractSizeComparing
 	{
 		public final static String KEY = "GREATER_EQUAL";
-		
-		
+
+
 		public GreaterEqual()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createFilter(final FilterProperty property, final Comparable<?> value)
 		{
 			return Filter.GreaterEquals(property.identifier(),value);
 		}
 	}
-	
-	
-	
+
+
+
 	public static class LessEqual extends AbstractSizeComparing
 	{
 		public final static String KEY = "LESS_EQUAL";
-		
-		
+
+
 		public LessEqual()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		protected Filter createFilter(final FilterProperty property, final Comparable<?> value)
 		{
 			return Filter.LessEquals(property.identifier(),value);
 		}
 	}
-	
-	
-	
+
+
+
 	public static class Between extends Abstract
 	{
 		public final static String KEY = "BETWEEN";
-		
-		
+
+
 		public Between()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		public boolean isSupported(final FilterProperty property)
 		{
 			final Class<?> type = property.type();
 			return isNumber(type) || isTemporal(type) || isDate(type);
 		}
-		
-		
+
+
 		@Override
 		public List<FilterValueEditorComposite> createComposites(final FilterContext context,
 				final FilterProperty property)
@@ -572,30 +576,30 @@ public interface FilterOperator
 			final FilterValueEditorComposite end = createComposite(property.type());
 			return Arrays.asList(start,end);
 		}
-		
-		
+
+
 		protected FilterValueEditorComposite createComposite(final Class<?> propertyType)
 		{
 			final FilterValueEditorComposite composite;
-			
+
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
-						Number.class.asSubclass(Rap.wrapperType(propertyType)));
+						Rap.wrapperTypeIfPrimitive(propertyType).asSubclass(Number.class));
 			}
 			else if(isTemporal(propertyType))
 			{
-				composite = createTemporalField(Temporal.class.asSubclass(propertyType));
+				composite = createTemporalField(propertyType.asSubclass(Temporal.class));
 			}
 			else
 			{
-				composite = createDateField(Date.class.asSubclass(propertyType));
+				composite = createDateField(propertyType.asSubclass(Date.class));
 			}
-			
+
 			return composite;
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
@@ -606,73 +610,73 @@ public interface FilterOperator
 			{
 				return Filter.Between(property.identifier(),start,end);
 			}
-			
+
 			return null;
 		}
 	}
-	
-	
-	
+
+
+
 	public static class IsEmpty extends Abstract
 	{
 		public final static String KEY = "IS_EMPTY";
-		
-		
+
+
 		public IsEmpty()
 		{
 			this(KEY);
 		}
-		
-		
+
+
 		protected IsEmpty(final String key)
 		{
 			super(key);
 		}
-		
-		
+
+
 		@Override
 		public boolean isSupported(final FilterProperty property)
 		{
 			return true;
 		}
-		
-		
+
+
 		@Override
 		public List<FilterValueEditorComposite> createComposites(final FilterContext context,
 				final FilterProperty property)
 		{
 			return Collections.emptyList();
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)
 		{
 			Filter filter = Filter.Equals(property.identifier(),null);
-			
+
 			if(property.type() == String.class)
 			{
 				filter = Filter.Or(filter,Filter.Equals(property.identifier(),""));
 			}
-			
+
 			return filter;
 		}
 	}
-	
-	
-	
+
+
+
 	public static class IsNotEmpty extends IsEmpty
 	{
 		public final static String KEY = "IS_NOT_EMPTY";
-		
-		
+
+
 		public IsNotEmpty()
 		{
 			super(KEY);
 		}
-		
-		
+
+
 		@Override
 		public Filter createFilter(final FilterContext context, final FilterProperty property,
 				final List<FilterValueEditorComposite> composites)

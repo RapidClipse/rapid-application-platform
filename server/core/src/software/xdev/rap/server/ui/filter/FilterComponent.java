@@ -27,6 +27,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.vaadin.flow.component.AbstractCompositeField;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -216,10 +217,13 @@ public class FilterComponent
 
 		final HorizontalLayout searchBar = new HorizontalLayout(this.searchTextField,
 				this.addFilterButton);
+		searchBar.setMargin(false);
+		searchBar.setPadding(false);
 		searchBar.expand(this.searchTextField);
 		searchBar.setWidth("100%");
 
 		final VerticalLayout content = new VerticalLayout(searchBar);
+		content.setMargin(false);
 		content.setPadding(false);
 		content.setSpacing(true);
 		return content;
@@ -242,12 +246,42 @@ public class FilterComponent
 	}
 
 
+	protected Button createRemoveFilterButton()
+	{
+		final Button button = new Button();
+		button.setIcon(VaadinIcon.MINUS.create());
+		return button;
+	}
+
+
 	protected void addFilterEntry(final int index)
 	{
 		final FilterEntryEditor editor = new FilterEntryEditor(this,this::updateFilterData);
+		editor.setWidth("100%");
 		this.entryEditors.add(index,editor);
+
+		final Button addFilterButton = createAddFilterButton();
+		final Button removeFilterButton = createRemoveFilterButton();
+
+		final HorizontalLayout filterEntryRow = new HorizontalLayout(editor,removeFilterButton,
+				addFilterButton);
+		filterEntryRow.setPadding(false);
+		filterEntryRow.setMargin(false);
+		filterEntryRow.expand(editor);
+		filterEntryRow.setWidth("100%");
+
+		addFilterButton.addClickListener(event -> addFilterEntry(index + 1));
+		removeFilterButton.addClickListener(event -> removeFilterEntry(filterEntryRow));
+
 		// +1 because of search bar at top
-		getContent().addComponentAtIndex(index + 1,editor);
+		getContent().addComponentAtIndex(index + 1,filterEntryRow);
+	}
+
+
+	protected void removeFilterEntry(final Component entryComponent)
+	{
+		getContent().remove(entryComponent);
+		updateFilterData();
 	}
 
 
@@ -311,7 +345,7 @@ public class FilterComponent
 	}
 
 
-	private Filter createSearchFilter()
+	protected Filter createSearchFilter()
 	{
 		if(this.searchFilterGenerator != null)
 		{
@@ -322,7 +356,7 @@ public class FilterComponent
 	}
 
 
-	private Filter createValueFilter()
+	protected Filter createValueFilter()
 	{
 		if(this.entryEditors == null || this.entryEditors.isEmpty())
 		{

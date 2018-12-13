@@ -45,26 +45,26 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 	{
 		return true;
 	}
-	
-	
+
+
 	@Override
 	public FilterSubject createFilterSubject(final Object source)
 	{
 		try
 		{
 			final Class<?> clazz = source instanceof Class ? (Class<?>)source : source.getClass();
-
+			
 			final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(clazz)
 					.getPropertyDescriptors();
-			
-			final List<FilterProperty> searchableProperties = Arrays.stream(propertyDescriptors)
+
+			final List<FilterProperty<?>> searchableProperties = Arrays.stream(propertyDescriptors)
 					.filter(d -> d.getPropertyType() == String.class)
 					.map(d -> toFilterProperty(clazz,d)).collect(toList());
-
-			final List<FilterProperty> filterableProperties = Arrays.stream(propertyDescriptors)
+			
+			final List<FilterProperty<?>> filterableProperties = Arrays.stream(propertyDescriptors)
 					.filter(d -> Comparable.class.isAssignableFrom(d.getPropertyType()))
 					.map(d -> toFilterProperty(clazz,d)).collect(toList());
-
+			
 			return FilterSubject.New(searchableProperties,filterableProperties);
 		}
 		catch(final IntrospectionException e)
@@ -72,9 +72,9 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 			throw new RuntimeException(e);
 		}
 	}
-	
-	
-	protected FilterProperty toFilterProperty(final Class<?> clazz,
+
+
+	protected FilterProperty<?> toFilterProperty(final Class<?> clazz,
 			final PropertyDescriptor beanProperty)
 	{
 		final String name = beanProperty.getName();
