@@ -130,10 +130,10 @@ public class FilterEntryEditor extends HorizontalLayout
 				final Object[] values = data.getValues();
 				if(values != null && values.length == this.valueEditors.size())
 				{
-					final int i = 0;
+					int i = 0;
 					for(final Object value : values)
 					{
-						this.valueEditors.get(i).setValue(value);
+						this.valueEditors.get(i++).setValue(value);
 					}
 				}
 			}
