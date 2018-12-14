@@ -27,8 +27,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -163,12 +165,20 @@ public interface FilterOperator
 			final Checkbox checkbox = new Checkbox();
 			return FilterValueEditorComposite.New(checkbox);
 		}
-		
-		
-		protected FilterValueEditorComposite createChoiceField()
+
+
+		@SuppressWarnings("unchecked")
+		protected <T> FilterValueEditorComposite createChoiceField(final FilterContext context,
+				final FilterProperty property)
 		{
-			// TODO choice / combobox
-			return null;
+			final SubsetDataProvider<T> subsetDataProvider = (SubsetDataProvider<T>)context
+					.getSubsetDataProviderFactoryRegistry().getAll().stream()
+					.map(factory -> factory.createFor(context,property)).filter(Objects::nonNull)
+					.findFirst().orElse(SubsetDataProvider.Empty());
+
+			final ComboBox<T> combo = new ComboBox<>();
+			subsetDataProvider.configure(combo,context,property);
+			return FilterValueEditorComposite.New(combo);
 		}
 	}
 	
@@ -211,7 +221,7 @@ public interface FilterOperator
 		}
 		
 		
-		protected abstract Filter createStringFilter(String value, FilterContext settings,
+		protected abstract Filter createStringFilter(String value, FilterContext context,
 				FilterProperty property);
 	}
 	
@@ -337,7 +347,7 @@ public interface FilterOperator
 		
 		
 		@Override
-		public List<FilterValueEditorComposite> createComposites(final FilterContext settings,
+		public List<FilterValueEditorComposite> createComposites(final FilterContext context,
 				final FilterProperty property)
 		{
 			final Class<?> propertyType = property.type();
@@ -363,7 +373,7 @@ public interface FilterOperator
 			}
 			else
 			{
-				composite = createChoiceField();
+				composite = createChoiceField(context,property);
 			}
 			
 			return Arrays.asList(composite);
