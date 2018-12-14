@@ -25,11 +25,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.metamodel.Attribute;
 
 import com.vaadin.flow.component.ItemLabelGenerator;
-import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.function.SerializableFunction;
 
 import software.xdev.rap.server.data.filter.Filter;
-import software.xdev.rap.server.data.provider.JpaDataProviderFactory;
+import software.xdev.rap.server.data.provider.CriteriaDataProvider;
 import software.xdev.rap.server.persistence.jpa.Jpa;
 
 
@@ -60,12 +59,14 @@ public final class JpaSubsetDataProviderFactory
 	public static <T> SubsetDataProvider<T> createCriteriaSubsetDataProvider(
 			final CriteriaQuery<T> criteria, final String attributeName)
 	{
-		final DataProvider<T, Filter> dataProvider = JpaDataProviderFactory
-				.createCriteriaDataProvider(criteria);
+		final CriteriaDataProvider<T> dataProvider = CriteriaDataProvider.New(criteria);
 		final SerializableFunction<String, Filter> filterConverter = FilterConverterFactory
 				.New(attributeName);
-		final ItemLabelGenerator<T> itemLabelGenerator = entity -> String
-				.valueOf(Jpa.resolveValue(entity,attributeName));
+		final ItemLabelGenerator<T> itemLabelGenerator = entity -> {
+			final Object value = Jpa.resolveValue(entity,attributeName);
+			return String.valueOf(value);
+		};
+		
 		return SubsetDataProvider.New(dataProvider,filterConverter,itemLabelGenerator);
 	}
 	
