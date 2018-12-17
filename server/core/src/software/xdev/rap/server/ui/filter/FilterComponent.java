@@ -81,6 +81,61 @@ public class FilterComponent
 	public FilterComponent()
 	{
 		super(new FilterData("",null));
+
+		/*
+		 * Init UI
+		 */
+		getContent();
+	}
+	
+	
+	@Override
+	protected VerticalLayout initContent()
+	{
+		this.searchTextField = createSearchTextField();
+		this.searchTextField.addValueChangeListener(event -> updateFilterData());
+		this.searchTextField.setEnabled(false);
+		
+		this.addFilterButton = createAddFilterButton();
+		this.addFilterButton.addClickListener(event -> addFilterEntryEditor(0));
+		this.addFilterButton.setEnabled(false);
+		
+		final HorizontalLayout searchBar = new HorizontalLayout(this.searchTextField,
+				this.addFilterButton);
+		searchBar.setMargin(false);
+		searchBar.setPadding(false);
+		searchBar.expand(this.searchTextField);
+		searchBar.setWidth("100%");
+		
+		final VerticalLayout content = new VerticalLayout(searchBar);
+		content.setMargin(false);
+		content.setPadding(false);
+		content.setSpacing(true);
+		return content;
+	}
+	
+	
+	protected TextField createSearchTextField()
+	{
+		final TextField textField = new TextField();
+		textField.setValueChangeMode(ValueChangeMode.EAGER);
+		return textField;
+	}
+	
+	
+	protected Button createAddFilterButton()
+	{
+		final Button button = new Button();
+		button.setIcon(VaadinIcon.PLUS.create());
+		return button;
+	}
+	
+	
+	protected Button createRemoveFilterButton()
+	{
+		final Button button = new Button();
+		button.setIcon(VaadinIcon.MINUS.create());
+		return button;
 	}
 	
 	
@@ -265,56 +320,6 @@ public class FilterComponent
 	}
 	
 	
-	@Override
-	protected VerticalLayout initContent()
-	{
-		this.searchTextField = createSearchTextField();
-		this.searchTextField.addValueChangeListener(event -> updateFilterData());
-		this.searchTextField.setEnabled(false);
-		
-		this.addFilterButton = createAddFilterButton();
-		this.addFilterButton.addClickListener(event -> addFilterEntryEditor(0));
-		this.addFilterButton.setEnabled(false);
-		
-		final HorizontalLayout searchBar = new HorizontalLayout(this.searchTextField,
-				this.addFilterButton);
-		searchBar.setMargin(false);
-		searchBar.setPadding(false);
-		searchBar.expand(this.searchTextField);
-		searchBar.setWidth("100%");
-		
-		final VerticalLayout content = new VerticalLayout(searchBar);
-		content.setMargin(false);
-		content.setPadding(false);
-		content.setSpacing(true);
-		return content;
-	}
-	
-	
-	protected TextField createSearchTextField()
-	{
-		final TextField textField = new TextField();
-		textField.setValueChangeMode(ValueChangeMode.EAGER);
-		return textField;
-	}
-	
-	
-	protected Button createAddFilterButton()
-	{
-		final Button button = new Button();
-		button.setIcon(VaadinIcon.PLUS.create());
-		return button;
-	}
-	
-	
-	protected Button createRemoveFilterButton()
-	{
-		final Button button = new Button();
-		button.setIcon(VaadinIcon.MINUS.create());
-		return button;
-	}
-	
-	
 	protected FilterEntryEditor addFilterEntryEditor(final int index)
 	{
 		final FilterEntryEditor editor = new FilterEntryEditor(this,this::updateFilterData);
@@ -362,13 +367,14 @@ public class FilterComponent
 	
 	public String getSearchText()
 	{
-		return this.searchTextField.getValue();
+		return this.searchTextField != null ? this.searchTextField.getValue() : "";
 	}
 	
 	
 	public void setSearchText(final String searchText)
 	{
 		this.searchTextField.setValue(searchText != null ? searchText : "");
+		
 		updateFilterData();
 	}
 	
