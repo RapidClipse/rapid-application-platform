@@ -59,9 +59,9 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 	{
 		return new Implementation<>(criteria);
 	}
-
-
-
+	
+	
+	
 	public static class Implementation<T>
 			extends ConfigurableFilterDataProviderWrapper<T, Filter, Filter, Filter>
 			implements CriteriaDataProvider<T>
@@ -71,8 +71,8 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			super(DataProvider.fromFilteringCallbacks(new CriteriaFetchCallback<>(criteria),
 					new CriteriaCountCallback<>(criteria)));
 		}
-
-
+		
+		
 		@Override
 		protected Filter combineFilters(final Filter queryFilter, final Filter configuredFilter)
 		{
@@ -80,22 +80,22 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			{
 				return Filter.And(queryFilter,configuredFilter);
 			}
-
+			
 			return configuredFilter;
 		}
-
-
-
+		
+		
+		
 		protected static abstract class CriteriaCallbackBase<T> implements Serializable
 		{
 			private final CriteriaQuery<T>	criteria;
 			private final Root<T>			root;
-
-
+			
+			
 			public CriteriaCallbackBase(final CriteriaQuery<T> criteria)
 			{
 				super();
-
+				
 				this.criteria = criteria;
 				this.root = Jpa.findRoot(criteria,criteria.getResultType());
 				if(this.root == null)
@@ -103,41 +103,41 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 					throw new IllegalArgumentException("Unsupported criteria");
 				}
 			}
-
-
+			
+			
 			public CriteriaQuery<T> criteria()
 			{
 				return this.criteria;
 			}
-
-
+			
+			
 			public Root<T> root()
 			{
 				return this.root;
 			}
-
-
+			
+			
 			protected EntityManager entityManager()
 			{
 				return Jpa.getEntityManager(criteria().getResultType());
 			}
-
-
+			
+			
 			protected CriteriaQuery<T> createCriteria(final Query<T, Filter> query,
 					final EntityManager entityManager)
 			{
 				final CriteriaQuery<T> originalCriteria = criteria();
 				final Root<T> root = root();
-
+				
 				final CriteriaQuery<T> criteria = entityManager.getCriteriaBuilder()
 						.createQuery(originalCriteria.getResultType());
 				Jpa.copyCriteria(originalCriteria,criteria);
-
+				
 				final Optional<Filter> optFilter = query.getFilter();
 				if(optFilter.isPresent())
 				{
 					final Filter filter = optFilter.get();
-					Predicate predicate = new CriteriaFilterConverter<>(criteria).convert(filter);
+					Predicate predicate = new CriteriaFilterConverter<>(criteria).apply(filter);
 					final Predicate originalWhereClause = originalCriteria.getRestriction();
 					if(originalWhereClause != null)
 					{
@@ -146,7 +146,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 					}
 					criteria.where(predicate);
 				}
-
+				
 				final List<QuerySortOrder> sortOrders = query.getSortOrders();
 				if(sortOrders != null && !sortOrders.isEmpty())
 				{
@@ -169,13 +169,13 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 					orders.addAll(originalCriteria.getOrderList());
 					criteria.orderBy(orders);
 				}
-
+				
 				return criteria;
 			}
 		}
-
-
-
+		
+		
+		
 		protected static class CriteriaFetchCallback<T> extends CriteriaCallbackBase<T>
 				implements FetchCallback<T, Filter>
 		{
@@ -183,25 +183,25 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			{
 				super(criteria);
 			}
-
-
+			
+			
 			@Override
 			public Stream<T> fetch(final Query<T, Filter> query)
 			{
 				final EntityManager entityManager = entityManager();
-
+				
 				final CriteriaQuery<T> criteria = createCriteria(query,entityManager);
-
+				
 				final TypedQuery<T> typedQuery = entityManager.createQuery(criteria);
 				typedQuery.setFirstResult(query.getOffset());
 				typedQuery.setMaxResults(query.getLimit());
-
+				
 				return typedQuery.getResultList().stream();
 			}
 		}
-
-
-
+		
+		
+		
 		protected static class CriteriaCountCallback<T> extends CriteriaCallbackBase<T>
 				implements CountCallback<T, Filter>
 		{
@@ -209,15 +209,15 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			{
 				super(criteria);
 			}
-
-
+			
+			
 			@Override
 			public int count(final Query<T, Filter> query)
 			{
 				final EntityManager entityManager = entityManager();
-
+				
 				final CriteriaQuery<T> criteria = createCriteria(query,entityManager);
-
+				
 				return Jpa.count(criteria,entityManager).intValue();
 			}
 		}
