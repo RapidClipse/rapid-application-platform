@@ -1,0 +1,12 @@
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Equals
+com.rapidclipse.framework.server.ui.filter.FilterOperator$StartsWith
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Contains
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Is
+com.rapidclipse.framework.server.ui.filter.FilterOperator$IsNot
+com.rapidclipse.framework.server.ui.filter.FilterOperator$IsEmpty
+com.rapidclipse.framework.server.ui.filter.FilterOperator$IsNotEmpty
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Greater
+com.rapidclipse.framework.server.ui.filter.FilterOperator$GreaterEqual
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Less
+com.rapidclipse.framework.server.ui.filter.FilterOperator$LessEqual
+com.rapidclipse.framework.server.ui.filter.FilterOperator$Between

@@ -23,9 +23,9 @@
 		<version>9</version>
 	</parent>
 
-	<groupId>com.xdev-software</groupId>
+	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>0.8.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>XDEV Rapid Application Platform</name>
