@@ -22,7 +22,7 @@
 	</parent>
 
 	<artifactId>rap-server-reports</artifactId>
-	<name>XDEV Rapid Application Platform - Server - Reports</name>
+	<name>Rapid Application Platform - Server - Reports</name>
 
 	<properties>
 		<rootDir>../..</rootDir>

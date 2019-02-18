@@ -27,7 +27,7 @@
 	<artifactId>rap-security-auth</artifactId>
 	<packaging>jar</packaging>
 
-	<name>XDEV Rapid Application Platform - Security - Authentication and Authorization</name>
+	<name>Rapid Application Platform - Security - Authentication and Authorization</name>
 	
 	<properties>
 		<rootDir>..</rootDir>

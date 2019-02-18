@@ -30,7 +30,7 @@
 	</parent>
 
 	<artifactId>rap-server-security-auth</artifactId>
-	<name>XDEV Rapid Application Platform - Server - Security - Authentication and Authorization</name>
+	<name>Rapid Application Platform - Server - Security - Authentication and Authorization</name>
 
 	<properties>
 		<rootDir>../..</rootDir>
