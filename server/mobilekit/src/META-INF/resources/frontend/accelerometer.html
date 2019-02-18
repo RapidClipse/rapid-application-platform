@@ -1,0 +1,53 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-accelerometer"> 
+
+<script>
+		
+	class MobilekitAccelerometer extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-accelerometer';
+		}
+		
+		getCurrentAcceleration(id,options){
+			var _this = this, _server = this.$server;
+			navigator.accelerometer.getCurrentAcceleration(
+				function(acceleration){
+					_server.getCurrentAcceleration_success(id,_this.cloneAsObject(acceleration));
+				},
+				function(error){
+					_server.getCurrentAcceleration_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		
+		watchAcceleration(id,options){
+			var _this = this, _server = this.$server;
+			var watchId = navigator.accelerometer.watchAcceleration(
+				function(acceleration){
+					_server.watchAcceleration_success(id,_this.cloneAsObject(acceleration),watchId);
+				},
+				function(error){
+					_server.watchAcceleration_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		
+		clearWatch(watchId){
+			navigator.accelerometer.clearWatch(watchId);
+		}
+		
+		cloneAsObject(obj) {
+		    if (obj === null || !(obj instanceof Object)) { return obj; }
+		    var temp = (obj instanceof Array) ? [] : {};
+		    for (var key in obj) { temp[key] = this.cloneAsObject(obj[key]); }
+		    return temp;
+		}
+	}
+	customElements.define(MobilekitAccelerometer.is, MobilekitAccelerometer);
+	
+</script> 
+
+</dom-module>

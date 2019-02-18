@@ -1,0 +1,53 @@
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-geolocation"> 
+
+<script>
+		
+	class MobilekitGeolocation extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-geolocation';
+		}
+		
+		getCurrentPosition(id,options){
+			var _this = this, _server = this.$server;
+			navigator.geolocation.getCurrentPosition(
+				function(position){
+					_server.getCurrentPosition_success(id,_this.cloneAsObject(position));
+				},
+				function(error){
+					_server.getCurrentPosition_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		
+		watchPosition(id,options){
+			var _this = this, _server = this.$server;
+			var watchId = navigator.geolocation.watchPosition(
+				function(position){
+					_server.watchPosition_success(id,_this.cloneAsObject(position),watchId);
+				},
+				function(error){
+					_server.watchPosition_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		
+		clearWatch(watchId){
+			navigator.geolocation.clearWatch(watchId);
+		}
+		
+		cloneAsObject(obj) {
+		    if (obj === null || !(obj instanceof Object)) { return obj; }
+		    var temp = (obj instanceof Array) ? [] : {};
+		    for (var key in obj) { temp[key] = this.cloneAsObject(obj[key]); }
+		    return temp;
+		}
+	}
+	customElements.define(MobilekitGeolocation.is, MobilekitGeolocation);
+	
+</script> 
+
+</dom-module>
