@@ -16,7 +16,7 @@
 	<artifactId>rap-server</artifactId>
 	<packaging>pom</packaging>
 
-	<name>Rapid Application Platform - Server</name>
+	<name>Rapid Application Platform / Server</name>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

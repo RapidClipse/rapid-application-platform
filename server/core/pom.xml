@@ -14,7 +14,7 @@
 	</parent>
 
 	<artifactId>rap-server-core</artifactId>
-	<name>Rapid Application Platform - Server - Core</name>
+	<name>Rapid Application Platform / Server / Core</name>
 
 	<properties>
 		<rootDir>../..</rootDir>

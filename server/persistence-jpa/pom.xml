@@ -13,7 +13,7 @@
 	</parent>
 
 	<artifactId>rap-server-persistence-jpa</artifactId>
-	<name>Rapid Application Platform - Server - Persistence - JPA</name>
+	<name>Rapid Application Platform / Server / Persistence / JPA</name>
 
 	<properties>
 		<rootDir>../..</rootDir>

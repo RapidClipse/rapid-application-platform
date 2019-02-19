@@ -13,7 +13,7 @@
 	</parent>
 
 	<artifactId>rap-server-security-auth-jpa</artifactId>
-	<name>Rapid Application Platform - Server - Security - Authentication and Authorization - JPA</name>
+	<name>Rapid Application Platform / Server / Security / Authentication and Authorization / JPA</name>
 
 	<properties>
 		<rootDir>../..</rootDir>

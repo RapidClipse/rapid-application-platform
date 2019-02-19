@@ -1,5 +1,3 @@
-Copyright (C) ${copyright.firstYear}-${copyright.lastYear} by ${organizationName}, All Rights Reserved.
-
 This program and the accompanying materials
 are made available under the terms of the Eclipse Public License 2.0
 which accompanies this distribution, and is available at

@@ -16,7 +16,7 @@
 	<artifactId>rap-security-auth-ldap</artifactId>
 	<packaging>jar</packaging>
 
-	<name>Rapid Application Platform - Security - Authentication and Authorization - LDAP</name>
+	<name>Rapid Application Platform / Security / Authentication and Authorization / LDAP</name>
 
 	<properties>
 		<rootDir>..</rootDir>
