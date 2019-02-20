@@ -162,6 +162,9 @@
 								<include>src/main/resources/**</include>
 								<include>pom.xml</include>
 							</includes>
+							<excludes>
+								<exclude>*.properties</exclude>
+							</excludes>
 							<properties>
 								<year>${currentYear}</year>
 							</properties>
