@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa.dal;
 
@@ -79,24 +62,24 @@ class FindByExample<E>
 	{
 		final CriteriaBuilder builder       = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<E>      criteriaQuery = builder.createQuery(this.persistentClass);
-
+		
 		if(this.searchParameters.getDistinct())
 		{
 			criteriaQuery.distinct(true);
 		}
-
+		
 		final Root<E>   root      = criteriaQuery.from(this.persistentClass);
-
+		
 		final Predicate predicate = getPredicate(criteriaQuery, root, builder, entity);
 		if(predicate != null)
 		{
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-
+		
 		fetches(root);
-
+		
 		criteriaQuery.orderBy(buildJpaOrders(this.searchParameters.getOrders(), root, builder));
-
+		
 		final TypedQuery<E> typedQuery = this.entityManager.createQuery(criteriaQuery);
 		applyCacheHints(typedQuery);
 		applyPagination(typedQuery);
@@ -194,7 +177,7 @@ class FindByExample<E>
 				}
 			}
 		}
-
+		
 		return concatPredicate(builder, predicates);
 	}
 	
@@ -217,7 +200,7 @@ class FindByExample<E>
 		{
 			rangePredicate = builder.lessThanOrEqualTo(path, range.getTo());
 		}
-
+		
 		if(rangePredicate != null)
 		{
 			if(!range.isIncludeNullSet() || range.getIncludeNull() == Boolean.FALSE)
@@ -248,7 +231,7 @@ class FindByExample<E>
 	private Predicate byPropertySelectors(final Root<E> root, final CriteriaBuilder builder)
 	{
 		final List<Predicate> predicates = new ArrayList<>();
-
+		
 		for(final PropertySelector<?, ?> selector : this.searchParameters.getProperties())
 		{
 			if(selector.isBoolean())
@@ -278,7 +261,7 @@ class FindByExample<E>
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-
+			
 			for(final Boolean selection : selector.getSelected())
 			{
 				final Path<Boolean> path = Jpa.resolvePath(root, selector.getAttributes());
@@ -312,7 +295,7 @@ class FindByExample<E>
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-
+			
 			for(final String selection : selector.getSelected())
 			{
 				final Path<String> path = Jpa.resolvePath(root, selector.getAttributes());
@@ -349,7 +332,7 @@ class FindByExample<E>
 			path      = builder.lower(path);
 			attrValue = ((String)attrValue).toLowerCase();
 		}
-
+		
 		switch(searchMode != null ? searchMode : this.searchParameters.getSearchMode())
 		{
 			case EQUALS:
@@ -448,7 +431,7 @@ class FindByExample<E>
 		{
 			return mandatoryPredicateSupplier.getPredicate(criteriaQuery, root, builder, entity);
 		}
-
+		
 		return null;
 	}
 	
@@ -458,10 +441,10 @@ class FindByExample<E>
 		{
 			return null;
 		}
-
+		
 		final Class<E>        type       = root.getModel().getBindableJavaType();
 		final ManagedType<E>  mt         = this.entityManager.getMetamodel().entity(type);
-
+		
 		final List<Predicate> predicates = new ArrayList<>();
 		predicates.addAll(byExample(mt, root, entity, builder));
 		predicates.addAll(byExampleOnCompositePk(root, entity, builder));
@@ -499,10 +482,10 @@ class FindByExample<E>
 		{
 			return null;
 		}
-
+		
 		final Class<EID>       type = embeddablePath.getModel().getBindableJavaType();
 		final ManagedType<EID> mt   = this.entityManager.getMetamodel().embeddable(type);
-
+		
 		return Jpa.andPredicate(builder, byExample(mt, embeddablePath, embeddableValue, builder));
 	}
 	
@@ -525,7 +508,7 @@ class FindByExample<E>
 			{
 				continue;
 			}
-
+			
 			final Object attrValue = ReflectionUtils.getMemberValue(mtValue, attr.getJavaMember());
 			if(attrValue != null)
 			{
@@ -649,11 +632,11 @@ class FindByExample<E>
 		{
 			return null;
 		}
-
+		
 		final List<Predicate> predicates = new ArrayList<>();
 		final EntityType<E>   entity     = this.entityManager.getMetamodel().entity(type);
 		final String          pattern    = this.searchParameters.getSearchPattern();
-
+		
 		for(final SingularAttribute<? super E, ?> attr : entity.getSingularAttributes())
 		{
 			if(attr.getPersistentAttributeType() == PersistentAttributeType.MANY_TO_ONE
@@ -661,7 +644,7 @@ class FindByExample<E>
 			{
 				continue;
 			}
-
+			
 			if(attr.getJavaType() == String.class)
 			{
 				predicates.add(stringPredicate(
@@ -669,7 +652,7 @@ class FindByExample<E>
 					builder));
 			}
 		}
-
+		
 		return Jpa.orPredicate(builder, predicates);
 	}
 	
@@ -725,7 +708,7 @@ class FindByExample<E>
 		if(this.searchParameters.isCacheable())
 		{
 			typedQuery.setHint(QueryHints.CACHEABLE, true);
-
+			
 			if(this.searchParameters.hasCacheRegion())
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION, this.searchParameters.getCacheRegion());

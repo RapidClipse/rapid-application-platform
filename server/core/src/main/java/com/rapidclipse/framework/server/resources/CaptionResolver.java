@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.resources;
 
@@ -67,16 +50,16 @@ public interface CaptionResolver
 				{
 					return ((Member)element).getName();
 				}
-
+				
 				// avoid stack overflow
 				if(!isCallFromToString())
 				{
 					return element.toString();
 				}
-
+				
 				return element.getClass().getName() + "@" + Integer.toHexString(element.hashCode());
 			}
-
+			
 			return resolveCaption(element, value, locale);
 		}
 		
@@ -116,7 +99,7 @@ public interface CaptionResolver
 		protected String format(String string, final Object element)
 		{
 			CaptionParameterProvider parameterProvider = null;
-
+			
 			int                      start;
 			int                      searchStart       = 0;
 			while((start = string.indexOf("{%", searchStart)) >= 0)
@@ -128,16 +111,16 @@ public interface CaptionResolver
 					{
 						parameterProvider = getParameterProvider(element);
 					}
-
+					
 					final String        parameterName = string.substring(start + 2, end);
 					final String        value         = parameterProvider.getParameterValue(element, parameterName);
-
+					
 					final StringBuilder sb            = new StringBuilder();
 					sb.append(string.substring(0, start));
 					sb.append(value);
 					sb.append(string.substring(end + 1));
 					string      = sb.toString();
-
+					
 					searchStart = start + value.length();
 				}
 				else
@@ -160,9 +143,9 @@ public interface CaptionResolver
 	{
 		protected static Logger LOG             = Logger
 			.getLogger(BeanInfoParameterProvider.class.getName());
-
+		
 		private final Object    element;
-
+		
 		private boolean         acquireBeanInfo = true;
 		private BeanInfo        beanInfo;
 		
@@ -182,7 +165,7 @@ public interface CaptionResolver
 			if(this.acquireBeanInfo)
 			{
 				this.acquireBeanInfo = false;
-
+				
 				try
 				{
 					this.beanInfo = Introspector.getBeanInfo(this.element.getClass());
@@ -192,12 +175,12 @@ public interface CaptionResolver
 					LOG.log(Level.SEVERE, e.getMessage(), e);
 				}
 			}
-
+			
 			if(this.beanInfo == null)
 			{
 				return parameter;
 			}
-
+			
 			return getParameter(parameter, this.beanInfo);
 		}
 		
@@ -210,13 +193,13 @@ public interface CaptionResolver
 			{
 				return parameter;
 			}
-
+			
 			final Method method = propertyDescriptor.getReadMethod();
 			if(method.getParameterCount() > 0)
 			{
 				return parameter;
 			}
-
+			
 			try
 			{
 				final Object value = method.invoke(this.element);

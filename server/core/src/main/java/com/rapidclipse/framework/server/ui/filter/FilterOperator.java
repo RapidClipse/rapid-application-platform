@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.filter;
 
@@ -195,7 +178,7 @@ public interface FilterOperator
 			{
 				return createStringFilter(value, context, property);
 			}
-
+			
 			return null;
 		}
 		
@@ -222,13 +205,13 @@ public interface FilterOperator
 		{
 			final char    wildcard      = context.getWildcard();
 			final boolean caseSensitive = context.isCaseSensitive();
-
+			
 			if(value.indexOf(wildcard) != -1 || !caseSensitive)
 			{
 				return Filter.StringComparison(property.identifier(), value, caseSensitive,
 					Arrays.asList(wildcard));
 			}
-
+			
 			return Filter.Equals(property.identifier(), value);
 		}
 	}
@@ -249,12 +232,12 @@ public interface FilterOperator
 			final FilterProperty property)
 		{
 			final char wildcard = context.getWildcard();
-
+			
 			if(value.length() > 0 && value.charAt(value.length() - 1) != wildcard)
 			{
 				value += wildcard;
 			}
-
+			
 			return Filter.StringComparison(property.identifier(), value, context.isCaseSensitive(),
 				Arrays.asList(wildcard));
 		}
@@ -276,7 +259,7 @@ public interface FilterOperator
 			final FilterProperty property)
 		{
 			final char wildcard = context.getWildcard();
-
+			
 			if(value.length() > 0)
 			{
 				if(value.charAt(0) != wildcard)
@@ -288,7 +271,7 @@ public interface FilterOperator
 					value += wildcard;
 				}
 			}
-
+			
 			return Filter.StringComparison(property.identifier(), value, context.isCaseSensitive(),
 				Arrays.asList(wildcard));
 		}
@@ -320,9 +303,9 @@ public interface FilterOperator
 			final FilterProperty property)
 		{
 			final Class<?>                   propertyType = property.type();
-
+			
 			final FilterValueEditorComposite composite;
-
+			
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
@@ -344,7 +327,7 @@ public interface FilterOperator
 			{
 				composite = createChoiceField(context, property);
 			}
-
+			
 			return Arrays.asList(composite);
 		}
 		
@@ -359,7 +342,7 @@ public interface FilterOperator
 			{
 				return Filter.Equals(property.identifier(), value);
 			}
-
+			
 			return null;
 		}
 	}
@@ -404,9 +387,9 @@ public interface FilterOperator
 			final FilterProperty property)
 		{
 			final Class<?>                   propertyType = property.type();
-
+			
 			final FilterValueEditorComposite composite;
-
+			
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
@@ -420,7 +403,7 @@ public interface FilterOperator
 			{
 				composite = createDateField(propertyType.asSubclass(Date.class));
 			}
-
+			
 			return Arrays.asList(composite);
 		}
 		
@@ -435,7 +418,7 @@ public interface FilterOperator
 			{
 				return createFilter(property, value);
 			}
-
+			
 			return null;
 		}
 		
@@ -535,7 +518,7 @@ public interface FilterOperator
 		protected FilterValueEditorComposite createComposite(final Class<?> propertyType)
 		{
 			final FilterValueEditorComposite composite;
-
+			
 			if(isNumber(propertyType))
 			{
 				composite = createNumberField(
@@ -549,7 +532,7 @@ public interface FilterOperator
 			{
 				composite = createDateField(propertyType.asSubclass(Date.class));
 			}
-
+			
 			return composite;
 		}
 		
@@ -565,7 +548,7 @@ public interface FilterOperator
 			{
 				return Filter.Between(property.identifier(), start, end);
 			}
-
+			
 			return null;
 		}
 	}
@@ -605,12 +588,12 @@ public interface FilterOperator
 			final List<FilterValueEditorComposite> composites)
 		{
 			Filter filter = Filter.Equals(property.identifier(), null);
-
+			
 			if(property.type() == String.class)
 			{
 				filter = Filter.Or(filter, Filter.Equals(property.identifier(), ""));
 			}
-
+			
 			return filter;
 		}
 	}

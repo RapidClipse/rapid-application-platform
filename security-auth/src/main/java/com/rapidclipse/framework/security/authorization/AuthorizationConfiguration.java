@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Security / Authentication and Authorization
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.security.authorization;
 
@@ -107,7 +90,7 @@ public interface AuthorizationConfiguration
 		////////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-
+		
 		final Map<String, ? extends Set<String>>          resourceResources;
 		final Map<String, ? extends Set<String>>          roleRoles;
 		final Map<String, ? extends Map<String, Integer>> rolePermissions;
@@ -116,7 +99,7 @@ public interface AuthorizationConfiguration
 		////////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-
+		
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
@@ -136,7 +119,7 @@ public interface AuthorizationConfiguration
 		////////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -172,7 +155,7 @@ public interface AuthorizationConfiguration
 		{
 			return this.subjectRoles;
 		}
-
+		
 	}
-
+	
 }

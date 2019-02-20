@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.resources;
 
@@ -46,7 +29,7 @@ public final class StringResourceUtils
 		{
 			stringResourceProvider = StringResourceProvider.New();
 		}
-
+		
 		return stringResourceProvider;
 	}
 	
@@ -333,7 +316,7 @@ public final class StringResourceUtils
 	public static String format(String str, final Function<String, String> parameterProvider)
 	{
 		final boolean isRichText  = str.startsWith("{\\rtf");
-
+		
 		int           start;
 		int           searchStart = 0;
 		while((start = str.indexOf("{$", searchStart)) >= 0)
@@ -345,27 +328,27 @@ public final class StringResourceUtils
 				if(isRichText)
 				{
 					// remove optional rich text escapes
-
+					
 					if(start > 0 && str.charAt(start - 1) == '\\')
 					{
 						start--;
 					}
-
+					
 					final int len = key.length();
 					if(len > 0 && key.charAt(len - 1) == '\\')
 					{
 						key = key.substring(0, len - 1);
 					}
 				}
-
+				
 				final String        value = parameterProvider.apply(key);
-
+				
 				final StringBuilder sb    = new StringBuilder();
 				sb.append(str.substring(0, start));
 				sb.append(value);
 				sb.append(str.substring(end + 1));
 				str         = sb.toString();
-
+				
 				searchStart = start + value.length();
 			}
 			else
@@ -373,7 +356,7 @@ public final class StringResourceUtils
 				break;
 			}
 		}
-
+		
 		return str;
 	}
 	

@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Security / Authentication and Authorization
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.security.authorization;
 
@@ -60,7 +43,7 @@ public interface Role
 	///////////////////////////////////////////////////////////////////////////
 	// default methods //
 	/////////////////////
-
+	
 	/**
 	 * Returns the effective roles of this {@link Role} instance, meaning a
 	 * collection containing all the roles that this instance has been defined
@@ -91,7 +74,7 @@ public interface Role
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-
+	
 	/**
 	 * Utility method that collects the effective permissions from a collection
 	 * of passed roles.
@@ -126,7 +109,7 @@ public interface Role
 					handledResources, collectedPermissions);
 			}
 		}
-
+		
 		return collectedPermissions;
 	}
 	
@@ -152,7 +135,7 @@ public interface Role
 				collectEffectiveRoles(roles, effectiveRoles);
 			}
 		}
-
+		
 		return effectiveRoles;
 	}
 	
@@ -169,9 +152,9 @@ public interface Role
 				continue; // this permission (identity) has already been handled
 							// via another role, so skip it
 			}
-
+			
 			final Resource resource = permission.resource();
-
+			
 			/*
 			 * must clear the handledResources collection for every unique
 			 * permission as the current permission might handle a previously
@@ -195,14 +178,14 @@ public interface Role
 		{
 			return; // already handled
 		}
-
+		
 		final Permission collectedPermission = effectivePermissions.get(resource);
 		if(collectedPermission == null
 			|| Math.abs(collectedPermission.factor()) < Math.abs(permission.factor()))
 		{
 			effectivePermissions.put(resource, permission);
 		}
-
+		
 		for(final Resource child : resource.children())
 		{
 			collectEffectivePermissions(child, permission, handledResources, effectivePermissions);
@@ -212,7 +195,7 @@ public interface Role
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-
+	
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values.
 	 *
@@ -343,19 +326,19 @@ public interface Role
 			// refactored to proper types
 			throw new IllegalArgumentException("No role name given.");
 		}
-
+		
 		if(role != null)
 		{
 			if(!name.equals(role.name()))
 			{
 				throw new IllegalArgumentException("Invalid name for existing role: " + name);
 			}
-
+			
 			// (25.06.2014 TM)TODO: validate parent roles and permissions by
 			// name
 			return role;
 		}
-
+		
 		// instantiate only with name, roles and permissions get updated later
 		return New(name);
 	}
@@ -389,18 +372,18 @@ public interface Role
 		{
 			throw new IllegalArgumentException("No role name given.");
 		}
-
+		
 		if(!name.equals(role.name()))
 		{
 			throw new IllegalArgumentException("Invalid name for role: " + name);
 		}
-
+		
 		if(!(role instanceof Mutable))
 		{
 			throw new IllegalArgumentException(
 				"Passed subject is not of a generically mutable type");
 		}
-
+		
 		// ensure that all updating methods are called atomically
 		synchronized(role)
 		{
@@ -412,7 +395,7 @@ public interface Role
 	///////////////////////////////////////////////////////////////////////////
 	// member types //
 	/////////////////////
-
+	
 	/**
 	 * Interface equivalent of a constructor for the interface type {@link Role}
 	 * .
@@ -465,7 +448,7 @@ public interface Role
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-
+		
 		private final String                    name;
 		private volatile Collection<Role>       roles;
 		private volatile Collection<Permission> permissions;
@@ -473,7 +456,7 @@ public interface Role
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-
+		
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
@@ -486,7 +469,7 @@ public interface Role
 			this.name = requireNonNull(name);
 			this.setRoles(roles);
 			this.setPermissions(permissions);
-
+			
 			/*
 			 * note: cannot cache effective items immediately in unupdatable /
 			 * immutable implementation as the referenced roles might not be
@@ -524,7 +507,7 @@ public interface Role
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-
+		
 		/**
 		 * {@inheritDoc}
 		 */
@@ -558,5 +541,5 @@ public interface Role
 			return this.name;
 		}
 	}
-
+	
 }

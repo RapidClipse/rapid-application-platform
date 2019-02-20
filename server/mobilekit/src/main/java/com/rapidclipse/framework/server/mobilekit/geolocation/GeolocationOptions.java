@@ -21,7 +21,7 @@ public class GeolocationOptions implements Serializable
 	{
 		return new GeolocationOptions().enableHighAccuracy(false);
 	}
-
+	
 	private Boolean enableHighAccuracy;
 	private Integer timeout;
 	private Integer maximumAge;

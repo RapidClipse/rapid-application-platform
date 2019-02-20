@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.data.converter;
 
@@ -58,7 +41,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 		{
 			return (StringToDateConverter<MODEL>)SqlTimestamp(dateFormatProvider);
 		}
-
+		
 		throw new IllegalArgumentException("Unsupported date type: " + clazz);
 	}
 	
@@ -97,7 +80,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			final Function<Date, MODEL> dateConverter)
 		{
 			super();
-
+			
 			this.dateFormatProvider = requireNonNull(dateFormatProvider);
 			this.dateConverter      = requireNonNull(dateConverter);
 		}
@@ -109,9 +92,9 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.ok(null);
 			}
-
+			
 			value = value.trim();
-
+			
 			final ParsePosition parsePosition = new ParsePosition(0);
 			final Date          parsedValue   = this.dateFormatProvider.apply(context.getLocale().orElse(null))
 				.parse(value, parsePosition);
@@ -119,7 +102,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.error("Could not convert '" + value + "'");
 			}
-
+			
 			return Result.ok(dateConverter.apply(parsedValue));
 		}
 		
@@ -130,7 +113,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return null;
 			}
-
+			
 			final Locale locale = context.getLocale().orElse(null);
 			return this.dateFormatProvider.apply(locale).format(value);
 		}

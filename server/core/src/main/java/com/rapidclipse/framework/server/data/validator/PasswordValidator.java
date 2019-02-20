@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.data.validator;
 
@@ -38,7 +21,7 @@ public class PasswordValidator extends AbstractValidator<String>
 		LOWERCASE_LETTERS("[a-z]"),
 		NUMBERS("\\d"),
 		SPECIAL_CHARACTERS("[^\\w\\s]");
-
+		
 		private Pattern pattern;
 		
 		private Condition(final String regex)
@@ -46,9 +29,9 @@ public class PasswordValidator extends AbstractValidator<String>
 			this.pattern = Pattern.compile(regex);
 		}
 	}
-
+	
 	private final static Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
-
+	
 	private final int            minLength;
 	private final boolean        whitespacesAllowed;
 	private final int            minCompliedConditions;
@@ -62,7 +45,7 @@ public class PasswordValidator extends AbstractValidator<String>
 		final Condition... conditions)
 	{
 		super(errorMessage);
-
+		
 		this.minLength             = minLength;
 		this.whitespacesAllowed    = whitespacesAllowed;
 		this.minCompliedConditions = minCompliedConditions;
@@ -97,7 +80,7 @@ public class PasswordValidator extends AbstractValidator<String>
 			return ValidationResult
 				.error("Password must have at least " + this.minLength + " characters.");
 		}
-
+		
 		if(!isWhitespacesAllowed())
 		{
 			if(WHITESPACE_PATTERN.matcher(value).find())
@@ -105,11 +88,11 @@ public class PasswordValidator extends AbstractValidator<String>
 				return ValidationResult.error("No whitespaces allowed in password.");
 			}
 		}
-
+		
 		if(this.minCompliedConditions > 0 && this.conditions != null)
 		{
 			int compliedConditions = 0;
-
+			
 			for(final Condition condition : this.conditions)
 			{
 				if(condition.pattern.matcher(value).find())
@@ -122,7 +105,7 @@ public class PasswordValidator extends AbstractValidator<String>
 					}
 				}
 			}
-
+			
 			if(compliedConditions < this.minCompliedConditions)
 			{
 				return ValidationResult
@@ -131,7 +114,7 @@ public class PasswordValidator extends AbstractValidator<String>
 							.collect(Collectors.joining(", ")));
 			}
 		}
-
+		
 		return ValidationResult.ok();
 	}
 }

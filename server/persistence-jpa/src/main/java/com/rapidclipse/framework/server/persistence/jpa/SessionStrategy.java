@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa;
 
@@ -56,14 +39,14 @@ public interface SessionStrategy
 			final EntityManagerFactory            factory          = Jpa.getPersistenceManager()
 				.getEntityManagerFactory(persistenceUnit);
 			final EntityManager                   manager          = factory.createEntityManager();
-
+			
 			// instantiate conversationable wrapper with entity manager.
 			final Conversationable.Implementation conversationable = new Conversationable.Implementation();
 			conversationable.setEntityManager(manager);
-
+			
 			// Begin a database transaction, start the unit of work
 			manager.getTransaction().begin();
-
+			
 			conversationables.put(persistenceUnit, conversationable);
 		}
 		
@@ -88,7 +71,7 @@ public interface SessionStrategy
 						 * handled by an appropriate conversation managing
 						 * strategy.
 						 */
-
+						
 						final EntityTransaction transaction = em.getTransaction();
 						if(transaction != null && transaction.isActive())
 						{
@@ -141,7 +124,7 @@ public interface SessionStrategy
 						 */
 						session.setHibernateFlushMode(FlushMode.MANUAL);
 					}
-
+					
 					/*
 					 * Begin a database transaction, reconnects Session -
 					 * continues the unit of work
@@ -185,7 +168,7 @@ public interface SessionStrategy
 									transaction.rollback();
 								}
 							}
-
+							
 						}
 						else
 						{

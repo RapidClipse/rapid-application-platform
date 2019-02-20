@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Security / Authentication and Authorization / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.security.authorization.jpa;
 
@@ -85,27 +68,27 @@ public class JPAAuthorizationConfigurationProvider implements AuthorizationConfi
 		final Map<String, Set<String>>              roleRoles         = new HashMap<String, Set<String>>();
 		final Map<String, Map<String, Integer>>     rolePermissions   = new HashMap<String, Map<String, Integer>>();
 		final Map<String, Set<String>>              subjectRoles      = new HashMap<String, Set<String>>();
-
+		
 		final List<? extends AuthorizationSubject>  subjects          = getSubjects();
 		final List<? extends AuthorizationRole>     roles             = getRoles();
 		final List<? extends AuthorizationResource> resources         = getResources();
-
+		
 		for(final AuthorizationSubject subject : subjects)
 		{
 			subjectRoles.put(subject.subjectName(), unboxRoles(subject.roles()));
 		}
-
+		
 		for(final AuthorizationRole role : roles)
 		{
 			rolePermissions.put(role.roleName(), unboxResources(role.resources()));
 			roleRoles.put(role.roleName(), unboxRoles(role.roles()));
 		}
-
+		
 		for(final AuthorizationResource resource : resources)
 		{
 			resourceResources.put(resource.resourceName(), new HashSet<String>());
 		}
-
+		
 		return AuthorizationConfiguration.New(resourceResources, roleRoles, rolePermissions,
 			subjectRoles);
 	}
@@ -131,7 +114,7 @@ public class JPAAuthorizationConfigurationProvider implements AuthorizationConfi
 		{
 			return null;
 		}
-
+		
 		return roles.stream().map(AuthorizationRole::roleName).collect(Collectors.toSet());
 	}
 	
@@ -142,7 +125,7 @@ public class JPAAuthorizationConfigurationProvider implements AuthorizationConfi
 		{
 			return null;
 		}
-
+		
 		return resources.stream()
 			.collect(Collectors.toMap(AuthorizationResource::resourceName, r -> 1));
 	}

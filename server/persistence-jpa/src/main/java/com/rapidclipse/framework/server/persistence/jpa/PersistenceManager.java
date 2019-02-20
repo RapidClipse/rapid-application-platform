@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa;
 
@@ -47,11 +30,11 @@ public interface PersistenceManager
 	///////////////////////////////////////////////////////////////////////////
 	// factory //
 	/////////////////////////////////////////////////
-
+	
 	public static interface Factory
 	{
 		public PersistenceManager createPersistenceManager(final ServletContext context);
-
+		
 		///////////////////////////////////////////////////////////////////////////
 		// implementation //
 		/////////////////////////////////////////////////
@@ -65,7 +48,7 @@ public interface PersistenceManager
 			}
 		}
 	}
-
+	
 	public static final String FACTORY_INIT_PARAMETER = "rap.persistenceManager.factory";
 	
 	public String getDefaultPersistenceUnit();
@@ -113,7 +96,7 @@ public interface PersistenceManager
 			throws PersistenceException
 		{
 			final Map<String, Collection<Class<?>>> persistenceUnitTypes = new LinkedHashMap<>();
-
+			
 			try
 			{
 				final URL url = findPersistenceXML(servletContext);
@@ -146,7 +129,7 @@ public interface PersistenceManager
 			{
 				throw new PersistenceException(e);
 			}
-
+			
 			return persistenceUnitTypes;
 		}
 		
@@ -207,7 +190,7 @@ public interface PersistenceManager
 				}
 				clazz = clazz.getSuperclass();
 			}
-
+			
 			return null;
 		}
 		
@@ -232,7 +215,7 @@ public interface PersistenceManager
 				final Object              property   = properties.get("hibernate.cache.use_query_cache");
 				this.queryCacheEnabled = "true".equals(property);
 			}
-
+			
 			return this.queryCacheEnabled;
 		}
 		
@@ -242,7 +225,7 @@ public interface PersistenceManager
 			if(this.queryCacheMode == null)
 			{
 				this.queryCacheMode = SharedCacheMode.ENABLE_SELECTIVE;
-
+				
 				final Map<String, Object> properties = factory.getProperties();
 				final Object              property   = properties.get("xdev.queryCache.mode");
 				if(property != null)
@@ -255,7 +238,7 @@ public interface PersistenceManager
 					{}
 				}
 			}
-
+			
 			return this.queryCacheMode;
 		}
 		

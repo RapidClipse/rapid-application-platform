@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Security / Authentication and Authorization
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.security.authorization;
 
@@ -119,7 +102,7 @@ public interface Resource
 		///////////////////////////////////////////////////////////////////////////
 		// static methods //
 		///////////////////
-
+		
 		public static Resource provide(
 			final String name,
 			final Resource existingInstance,
@@ -127,12 +110,12 @@ public interface Resource
 		{
 			validateName(name);
 			validateChildren(children);
-
+			
 			if(existingInstance == null)
 			{
 				return New(name);
 			}
-
+			
 			validateResource(name, existingInstance);
 			return existingInstance;
 		}
@@ -182,17 +165,17 @@ public interface Resource
 		{
 			return new StringResource(requireNonNull(name));
 		}
-
+		
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-
+		
 		private final String name;
 		
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-
+		
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
@@ -205,7 +188,7 @@ public interface Resource
 		///////////////////////////////////////////////////////////////////////////
 		// declared methods //
 		/////////////////////
-
+		
 		public final String name()
 		{
 			return this.name;
@@ -214,7 +197,7 @@ public interface Resource
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-
+		
 		@Override
 		public final boolean equals(final Object other)
 		{
@@ -234,5 +217,5 @@ public interface Resource
 			return this.name;
 		}
 	}
-
+	
 }

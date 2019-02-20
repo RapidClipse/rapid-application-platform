@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa.dal;
 
@@ -65,9 +48,9 @@ public class PropertySelector<E, F> implements Serializable
 		final PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
 		return ps.orMode(orMode);
 	}
-
+	
 	private static final long serialVersionUID = 1L;
-
+	
 	private final PathHolder  pathHolder;
 	private List<F>           selected         = new ArrayList<>();
 	private SearchMode        searchMode;                          // for

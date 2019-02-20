@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.persistence;
 
@@ -28,24 +11,24 @@ public final class GuiPersistenceEntry
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-
+	
 	public static GuiPersistenceEntry New(final Map<String, Object> values)
 	{
 		final GuiPersistenceEntry instance = new GuiPersistenceEntry();
 		instance.values = Collections.unmodifiableMap(values);
 		return instance;
 	}
-
+	
 	///////////////////////////////////////////////////////////////////////////
 	// instance fields //
 	////////////////////
-
+	
 	Map<String, Object> values;
 	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-
+	
 	public GuiPersistenceEntry()
 	{
 		super();
@@ -54,7 +37,7 @@ public final class GuiPersistenceEntry
 	///////////////////////////////////////////////////////////////////////////
 	// override methods //
 	/////////////////////
-
+	
 	public final synchronized Map<String, Object> values()
 	{
 		return this.values;
@@ -77,5 +60,5 @@ public final class GuiPersistenceEntry
 			.map(entry -> prefix + entry.getKey() + ":\t" + entry.getValue())
 			.collect(Collectors.joining("\n"));
 	}
-
+	
 }

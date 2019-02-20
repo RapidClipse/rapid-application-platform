@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.filter;
 
@@ -45,10 +28,10 @@ public interface SubsetDataProviderFactoryRegistry
 	public static SubsetDataProviderFactoryRegistry Default()
 	{
 		final SubsetDataProviderFactoryRegistry registry = New();
-
+		
 		ServiceLoader.forType(SubsetDataProviderFactory.class).servicesStream()
 			.forEach(registry::put);
-
+		
 		return registry;
 	}
 	
@@ -65,7 +48,7 @@ public interface SubsetDataProviderFactoryRegistry
 		public SubsetDataProviderFactoryRegistry put(final SubsetDataProviderFactory factory)
 		{
 			this.factories.add(factory);
-
+			
 			return this;
 		}
 		
@@ -73,7 +56,7 @@ public interface SubsetDataProviderFactoryRegistry
 		public SubsetDataProviderFactoryRegistry remove(final SubsetDataProviderFactory factory)
 		{
 			this.factories.remove(factory);
-
+			
 			return this;
 		}
 		

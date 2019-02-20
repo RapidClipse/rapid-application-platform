@@ -49,7 +49,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 		throws ServletException
 	{
 		final List<MobileServiceConfiguration> serviceConfigs = new ArrayList<>();
-
+		
 		try
 		{
 			final URL url = findMobileXML(servlet);
@@ -68,7 +68,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 					if(documentElement != null)
 					{
 						final ClassLoader classLoader      = getClass().getClassLoader();
-
+						
 						final NodeList    servicesNodeList = documentElement
 							.getElementsByTagName("services");
 						if(servicesNodeList.getLength() == 1)
@@ -91,7 +91,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 		{
 			throw new ServletException(e);
 		}
-
+		
 		return MobileConfiguration.New(serviceConfigs);
 	}
 	
@@ -102,7 +102,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 		throws ServletException
 	{
 		final String className = serviceElement.getAttribute("class");
-
+		
 		try
 		{
 			final Class<?> serviceClass = classLoader.loadClass(className);
@@ -111,7 +111,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 				throw new IllegalArgumentException(
 					className + " is not a " + MobileService.class.getSimpleName());
 			}
-
+			
 			final NodeList            paramNodeList = serviceElement.getElementsByTagName("param");
 			final Map<String, String> params        = new HashMap<>();
 			for(int i = 0, c = paramNodeList.getLength(); i < c; i++)
@@ -119,7 +119,7 @@ public class MobileKitServletExtension implements RapServlet.Extension
 				final Element paramElement = (Element)paramNodeList.item(i);
 				params.put(paramElement.getAttribute("name"), paramElement.getAttribute("value"));
 			}
-
+			
 			return MobileServiceConfiguration.New((Class<? extends MobileService>)serviceClass,
 				params);
 		}

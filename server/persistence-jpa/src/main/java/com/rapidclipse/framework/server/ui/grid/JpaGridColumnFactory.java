@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.grid;
 
@@ -62,7 +45,7 @@ public interface JpaGridColumnFactory
 		public Implementation(final AttributeChain attributeChain)
 		{
 			super();
-
+			
 			this.attributeChain = requireNonNull(attributeChain);
 		}
 		
@@ -71,7 +54,7 @@ public interface JpaGridColumnFactory
 		{
 			final AttributeChain  attributeChain = this.attributeChain;
 			final Attribute<?, ?> attribute      = attributeChain.last();
-
+			
 			return grid.addColumn(entity -> Jpa.resolveValue(entity, attributeChain))
 				.setHeader(CaptionUtils.resolveCaption(
 					attribute.getDeclaringType().getJavaType(), attribute.getName()))

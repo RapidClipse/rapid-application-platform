@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.filter;
 
@@ -40,7 +23,7 @@ public final class JpaSubsetDataProviderFactory
 		final Class<T>         entityType = attribute.getDeclaringType().getJavaType();
 		final CriteriaQuery<T> criteria   = Jpa.createCriteriaQuery(entityType);
 		criteria.from(entityType);
-
+		
 		return createCriteriaSubsetDataProvider(criteria, attribute);
 	}
 	
@@ -63,7 +46,7 @@ public final class JpaSubsetDataProviderFactory
 																				Jpa.resolveValue(entity, attributeName);
 																			return String.valueOf(value);
 																		};
-
+		
 		return SubsetDataProvider.New(dataProvider, filterConverter, itemLabelGenerator);
 	}
 	

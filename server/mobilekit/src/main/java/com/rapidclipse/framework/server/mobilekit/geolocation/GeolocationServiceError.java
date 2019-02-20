@@ -17,14 +17,14 @@ public class GeolocationServiceError extends MobileServiceError
 		 * information. This is dependent on the platform.
 		 */
 		PERMISSION_DENIED(1),
-
+		
 		/**
 		 * Returned when the device is unable to retrieve a position. In
 		 * general, this means the device is not connected to a network or can't
 		 * get a satellite fix.
 		 */
 		POSITION_UNAVAILABLE(2),
-
+		
 		/**
 		 * Returned when the device is unable to retrieve a position within the
 		 * time specified by the timeout included in {@link GeolocationOptions}.
@@ -34,7 +34,7 @@ public class GeolocationServiceError extends MobileServiceError
 		 * timeout milliseconds.
 		 */
 		TIMEOUT(3);
-
+		
 		private final int code;
 		
 		private Reason(final int code)
@@ -54,7 +54,7 @@ public class GeolocationServiceError extends MobileServiceError
 			return null;
 		}
 	}
-
+	
 	private final Reason reason;
 	
 	public GeolocationServiceError(
@@ -63,7 +63,7 @@ public class GeolocationServiceError extends MobileServiceError
 		final Reason reason)
 	{
 		super(source, message);
-
+		
 		this.reason = reason;
 	}
 	

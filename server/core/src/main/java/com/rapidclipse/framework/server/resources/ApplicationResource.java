@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.resources;
 
@@ -62,7 +45,7 @@ public class ApplicationResource extends StreamResource
 		{
 			return stream;
 		}
-
+		
 		final String webContent = "WebContent/";
 		if(path.startsWith(webContent))
 		{
@@ -72,7 +55,7 @@ public class ApplicationResource extends StreamResource
 				return stream;
 			}
 		}
-
+		
 		throw new RuntimeException("'" + path + "' could not be found in application.");
 	}
 	
@@ -89,7 +72,7 @@ public class ApplicationResource extends StreamResource
 		}
 		catch(final IOException e)
 		{}
-
+		
 		Class<?> clazz = requestor;
 		if(clazz == null)
 		{
@@ -100,7 +83,7 @@ public class ApplicationResource extends StreamResource
 		{
 			return stream;
 		}
-
+		
 		return null;
 	}
 	
@@ -112,7 +95,7 @@ public class ApplicationResource extends StreamResource
 		{
 			return rootPath;
 		}
-
+		
 		return servletContext.getResource("/").getFile();
 	}
 }

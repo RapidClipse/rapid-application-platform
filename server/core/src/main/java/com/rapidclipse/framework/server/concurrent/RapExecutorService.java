@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.concurrent;
 
@@ -138,7 +121,7 @@ public interface RapExecutorService extends Executor
 		{
 			this.gracefulShutdown = Boolean
 				.valueOf(context.getInitParameter(GRACEFUL_SHUTDOWN_INIT_PARAMETER));
-
+			
 			int threadCount = 10;
 			try
 			{
@@ -147,14 +130,14 @@ public interface RapExecutorService extends Executor
 			}
 			catch(final NumberFormatException localNumberFormatException)
 			{}
-
+			
 			final ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
 			final ThreadFactory daemonThreadFactory  = runnable -> {
 															final Thread t = defaultThreadFactory.newThread(runnable);
 															t.setDaemon(true);
 															return t;
 														};
-
+			
 			if(threadCount <= 1)
 			{
 				this.executorService = Executors.newSingleThreadExecutor(daemonThreadFactory);

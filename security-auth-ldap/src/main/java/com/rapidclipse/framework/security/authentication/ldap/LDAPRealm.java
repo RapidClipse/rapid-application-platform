@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Security / Authentication and Authorization / LDAP
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.security.authentication.ldap;
 
@@ -77,7 +60,7 @@ public class LDAPRealm extends ActiveDirectoryRealm implements AutoCloseable
 		contextFactory.setUrl(url);
 		contextFactory.getEnvironment().put(Context.SECURITY_PRINCIPAL, userNameWithSuffix);
 		contextFactory.getEnvironment().put(Context.SECURITY_CREDENTIALS, password);
-
+		
 		final String securityAuthentication = configuration.getSecurityAuthentication();
 		if(securityAuthentication != null)
 		{

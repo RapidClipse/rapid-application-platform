@@ -12,7 +12,7 @@ public final class GuiPersistentState
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-
+	
 	public static GuiPersistentState New(
 		final String name,
 		final Map<String, GuiPersistenceEntry> entries)
@@ -22,18 +22,18 @@ public final class GuiPersistentState
 		instance.entries = Collections.unmodifiableMap(requireNonNull(entries));
 		return instance;
 	}
-
+	
 	///////////////////////////////////////////////////////////////////////////
 	// instance fields //
 	////////////////////
-
+	
 	String                           name;
 	Map<String, GuiPersistenceEntry> entries;
 	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-
+	
 	GuiPersistentState()
 	{
 		super();
@@ -42,7 +42,7 @@ public final class GuiPersistentState
 	///////////////////////////////////////////////////////////////////////////
 	// override methods //
 	/////////////////////
-
+	
 	public final String name()
 	{
 		return this.name;

@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa;
 
@@ -50,7 +33,7 @@ public final class ConversationUtils
 		if(conversationable != null)
 		{
 			final Conversation conversation = new Conversation.Implementation();
-
+			
 			try
 			{
 				conversationable.setConversation(conversation);
@@ -59,10 +42,10 @@ public final class ConversationUtils
 			{
 				return conversationable.getConversation();
 			}
-
+			
 			return conversation;
 		}
-
+		
 		return null;
 	}
 	

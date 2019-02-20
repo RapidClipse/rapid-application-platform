@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.resources;
 
@@ -68,7 +51,7 @@ public interface CaptionParameterProvider
 			try
 			{
 				final BeanInfo           beanInfo           = Introspector.getBeanInfo(element.getClass());
-
+				
 				final PropertyDescriptor propertyDescriptor = Arrays
 					.stream(beanInfo.getPropertyDescriptors())
 					.filter(pd -> pd.getName().equals(parameterName)).findFirst().orElse(null);
@@ -76,13 +59,13 @@ public interface CaptionParameterProvider
 				{
 					return parameterName;
 				}
-
+				
 				final Method method = propertyDescriptor.getReadMethod();
 				if(method.getParameterCount() > 0)
 				{
 					return parameterName;
 				}
-
+				
 				try
 				{
 					final Object value = method.invoke(element);
@@ -95,7 +78,7 @@ public interface CaptionParameterProvider
 			}
 			catch(final IntrospectionException e)
 			{}
-
+			
 			return parameterName;
 		}
 	}

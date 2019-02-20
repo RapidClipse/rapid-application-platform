@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Security / Authentication and Authorization / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.security.authorization.jpa;
 
@@ -96,33 +79,33 @@ public class SQLAuthorizationConfigurationProvider implements AuthorizationConfi
 		final Map<String, Set<String>>          roleRoles           = new HashMap<>();
 		final Map<String, Map<String, Integer>> rolePermissions     = new HashMap<>();
 		final Map<String, Set<String>>          subjectRoles        = new HashMap<>();
-
+		
 		final EntityManager                     entityManager       = Jpa.getEntityManager(getPersistenceUnit());
 		final Query                             usersAndGroupsQuery = entityManager
 			.createNativeQuery(getUsersAndGroupsSelect());
 		final List<Object[]>                    usersAndGroupsList  = usersAndGroupsQuery.getResultList();
-
+		
 		usersAndGroupsList.stream().map(row -> String.valueOf(row[0]))
 			.filter(user -> !subjectRoles.containsKey(user))
 			.forEach(user -> subjectRoles.put(user, unboxGroups(user, usersAndGroupsList)));
-
+		
 		final Query          rolesAndPermissionsQuery = entityManager
 			.createNativeQuery(getRolesAndPermissionsSelect());
 		final List<Object[]> rolesAndPermissionsList  = rolesAndPermissionsQuery.getResultList();
-
+		
 		rolesAndPermissionsList.stream().map(row -> String.valueOf(row[0]))
 			.filter(role -> !rolePermissions.containsKey(role)).forEach(role -> rolePermissions
 				.put(role, unboxPermissions(role, rolesAndPermissionsList)));
-
+		
 		rolePermissions.forEach((role, permissions) -> {
 			roleRoles.put(role, Collections.EMPTY_SET);
 			permissions.keySet()
 				.forEach(permission -> resourceResources.put(permission, Collections.EMPTY_SET));
 		});
-
+		
 		subjectRoles.values()
 			.forEach(roles -> roles.forEach(role -> roleRoles.put(role, Collections.EMPTY_SET)));
-
+		
 		return AuthorizationConfiguration.New(resourceResources, roleRoles, rolePermissions,
 			subjectRoles);
 	}

@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.ui.persistence;
 
@@ -39,7 +22,7 @@ public final class GuiPersistenceHandlerRegistry
 		}
 		return INSTANCE;
 	}
-
+	
 	private final Map<Class<? extends Component>, GuiPersistenceHandler<? extends Component>> handlers;
 	
 	private GuiPersistenceHandlerRegistry()
@@ -90,14 +73,14 @@ public final class GuiPersistenceHandlerRegistry
 		{
 			return (GuiPersistenceHandler<? super C>)handler;
 		}
-
+		
 		final Class<?> superclass = componentType.getSuperclass();
 		if(superclass != null && Component.class.isAssignableFrom(superclass))
 		{
 			return (GuiPersistenceHandler<? super C>)lookupHandler(
 				(Class<? extends Component>)superclass);
 		}
-
+		
 		/*
 		 * potentially null handler returned intentionally to give calling
 		 * context the decision to either throw a specific exception or get a

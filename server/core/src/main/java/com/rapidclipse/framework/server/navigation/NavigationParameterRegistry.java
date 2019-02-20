@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Core
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.navigation;
 
@@ -86,7 +69,7 @@ public interface NavigationParameterRegistry extends Serializable
 				id = UUID.randomUUID().toString();
 			}
 			while(this.map.containsKey(id));
-
+			
 			return id;
 		}
 		
@@ -95,14 +78,14 @@ public interface NavigationParameterRegistry extends Serializable
 			final Function<Object, Object> logic)
 		{
 			final Map<String, Object> transformed = new HashMap<>();
-
+			
 			for(final String name : parameters.names())
 			{
 				final Object value            = parameters.value(name);
 				final Object transformedValue = logic.apply(value);
 				transformed.put(name, transformedValue);
 			}
-
+			
 			return NavigationParameters.New(transformed);
 		}
 	}

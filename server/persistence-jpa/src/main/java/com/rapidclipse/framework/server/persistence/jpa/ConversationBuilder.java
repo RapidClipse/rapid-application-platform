@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.persistence.jpa;
 
@@ -70,12 +53,12 @@ public interface ConversationBuilder
 				this.detachListener      = event -> endConversation();
 				this.detachRegistrations = new ArrayList<>();
 			}
-
+			
 			for(final Component c : components)
 			{
 				this.detachRegistrations.add(c.addDetachListener(this.detachListener));
 			}
-
+			
 			return this;
 		}
 		
@@ -89,7 +72,7 @@ public interface ConversationBuilder
 			{
 				this.allowedNavigationViews.add(view);
 			}
-
+			
 			if(this.afterNavigationListener == null)
 			{
 				this.afterNavigationListener     = event -> {
@@ -100,11 +83,11 @@ public interface ConversationBuilder
 															endConversation();
 														}
 													};
-
+				
 				this.afterNavigationRegistration = this.ui
 					.addAfterNavigationListener(this.afterNavigationListener);
 			}
-
+			
 			return this;
 		}
 		
@@ -117,7 +100,7 @@ public interface ConversationBuilder
 				this.detachRegistrations = null;
 				this.detachListener      = null;
 			}
-
+			
 			if(this.afterNavigationListener != null)
 			{
 				this.afterNavigationRegistration.remove();
@@ -126,7 +109,7 @@ public interface ConversationBuilder
 				this.allowedNavigationViews  = null;
 				this.afterNavigationListener = null;
 			}
-
+			
 			if(this.persistenceUnit != null)
 			{
 				ConversationUtils.endConversation(this.persistenceUnit);
@@ -144,7 +127,7 @@ public interface ConversationBuilder
 			{
 				return ConversationUtils.startConversation(this.persistenceUnit);
 			}
-
+			
 			return ConversationUtils.startConversation();
 		}
 	}

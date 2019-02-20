@@ -1,20 +1,3 @@
-/*-
- * ---
- * Rapid Application Platform / Server / Persistence / JPA
- * --
- * Copyright (C) 2013 - 2019 XDEV Software Corp.
- * --
- * This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License 2.0
- * which accompanies this distribution, and is available at
- * https://www.eclipse.org/legal/epl-2.0/
- * 
- * SPDX-License-Identifier: EPL-2.0
- * 
- * Contributors:
- *     XDEV Software Corp. - initial API and implementation
- * ---
- */
 
 package com.rapidclipse.framework.server.data.provider;
 
@@ -73,7 +56,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			{
 				return Filter.And(queryFilter, configuredFilter);
 			}
-
+			
 			return configuredFilter;
 		}
 		
@@ -85,7 +68,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			public CriteriaCallbackBase(final CriteriaQuery<T> criteria)
 			{
 				super();
-
+				
 				this.criteria = criteria;
 				this.root     = Jpa.findRoot(criteria, criteria.getResultType());
 				if(this.root == null)
@@ -115,11 +98,11 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			{
 				final CriteriaQuery<T> originalCriteria = criteria();
 				final Root<T>          root             = root();
-
+				
 				final CriteriaQuery<T> criteria         = entityManager.getCriteriaBuilder()
 					.createQuery(originalCriteria.getResultType());
 				Jpa.copyCriteria(originalCriteria, criteria);
-
+				
 				final Optional<Filter> optFilter = query.getFilter();
 				if(optFilter.isPresent())
 				{
@@ -133,7 +116,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 					}
 					criteria.where(predicate);
 				}
-
+				
 				final List<QuerySortOrder> sortOrders = query.getSortOrders();
 				if(sortOrders != null && !sortOrders.isEmpty())
 				{
@@ -156,7 +139,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 					orders.addAll(originalCriteria.getOrderList());
 					criteria.orderBy(orders);
 				}
-
+				
 				return criteria;
 			}
 		}
@@ -173,13 +156,13 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			public Stream<T> fetch(final Query<T, Filter> query)
 			{
 				final EntityManager    entityManager = entityManager();
-
+				
 				final CriteriaQuery<T> criteria      = createCriteria(query, entityManager);
-
+				
 				final TypedQuery<T>    typedQuery    = entityManager.createQuery(criteria);
 				typedQuery.setFirstResult(query.getOffset());
 				typedQuery.setMaxResults(query.getLimit());
-
+				
 				return typedQuery.getResultList().stream();
 			}
 		}
@@ -196,9 +179,9 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			public int count(final Query<T, Filter> query)
 			{
 				final EntityManager    entityManager = entityManager();
-
+				
 				final CriteriaQuery<T> criteria      = createCriteria(query, entityManager);
-
+				
 				return Jpa.count(criteria, entityManager).intValue();
 			}
 		}
