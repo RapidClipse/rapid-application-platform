@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -169,25 +168,43 @@
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>timestamp-property</id>
+						<goals>
+							<goal>timestamp-property</goal>
+						</goals>
+						<phase>validate</phase>
+						<configuration>
+							<name>currentYear</name>
+							<pattern>yyyy</pattern>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
-				<version>1.17</version>
+				<version>3.0</version>
 				<configuration>
-					<licenseName>raplicense</licenseName>
-					<licenseResolver>${project.baseUri}${rootDir}/build/license</licenseResolver>
+					<header>${project.baseUri}/${rootDir}/license-header.txt</header>
+					<aggregate>true</aggregate>
+					<excludes>
+						<exclude>**/README</exclude>
+						<exclude>src/test/resources/**</exclude>
+						<exclude>.*</exclude>
+					</excludes>
+					<properties>
+						<year>${currentYear}</year>
+					</properties>
 				</configuration>
 				<executions>
 					<execution>
-						<id>first</id>
 						<goals>
-							<goal>update-file-header</goal>
+							<goal>format</goal>
 						</goals>
-						<phase>process-sources</phase>
-						<configuration>
-							<addJavaLicenseAfterPackage>false</addJavaLicenseAfterPackage>
-							<processStartTag>---</processStartTag>
-							<processEndTag>---</processEndTag>
-							<sectionDelimiter>--</sectionDelimiter>
-						</configuration>
 					</execution>
 				</executions>
 			</plugin>
