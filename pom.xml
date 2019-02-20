@@ -156,7 +156,13 @@
 						<artifactId>license-maven-plugin</artifactId>
 						<version>3.0</version>
 						<configuration>
-							<header>license-header.txt</header>
+							<header>license/header.txt</header>
+							<headerDefinitions>
+								<headerDefinition>license/header-definition.xml</headerDefinition>
+							</headerDefinitions>
+							<mapping>
+								<java>JAVA_STYLE</java>
+							</mapping>
 							<includes>
 								<include>src/main/java/**</include>
 								<include>src/main/resources/**</include>
