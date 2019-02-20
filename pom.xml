@@ -163,7 +163,7 @@
 								<include>pom.xml</include>
 							</includes>
 							<excludes>
-								<exclude>*.properties</exclude>
+								<exclude>**/*.properties</exclude>
 							</excludes>
 							<properties>
 								<year>${currentYear}</year>
