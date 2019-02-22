@@ -14,6 +14,8 @@
 
 package com.rapidclipse.framework.server.security;
 
+import java.beans.Beans;
+
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
@@ -28,10 +30,18 @@ public class AuthServiceInitListener implements VaadinServiceInitListener
 	{
 		super();
 	}
-	
+
 	@Override
 	public void serviceInit(final ServiceInitEvent event)
 	{
+		if(Beans.isDesignTime())
+		{
+			/*
+			 * Controller in design time causes unwanted routing.
+			 */
+			return;
+		}
+
 		event.getSource().addUIInitListener(
 			e -> e.getUI().addBeforeEnterListener(new AuthNavigationController()));
 	}
