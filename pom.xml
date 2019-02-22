@@ -100,7 +100,7 @@
 
 	<profiles>
 		<profile>
-			<id>sonatype-oss-release</id>
+			<id>ossrh</id>
 			<build>
 				<plugins>
 					<plugin>
