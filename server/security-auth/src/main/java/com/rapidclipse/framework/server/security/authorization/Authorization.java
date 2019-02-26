@@ -45,7 +45,7 @@ public final class Authorization
 	{
 		UI.getCurrent().getSession().setAttribute(AuthorizationManager.class, authorizationManager);
 	}
-	
+
 	/**
 	 * Returns the {@link AuthorizationManager} of the current user session.
 	 *
@@ -56,7 +56,7 @@ public final class Authorization
 	{
 		return UI.getCurrent().getSession().getAttribute(AuthorizationManager.class);
 	}
-	
+
 	/**
 	 * Searches for a specific resource in the current
 	 * {@link AuthorizationManager}. If no resource is found an
@@ -86,7 +86,7 @@ public final class Authorization
 		}
 		return resource;
 	}
-	
+
 	/**
 	 * Searches for a specific resource with {@link #getResource(String)}. If no
 	 * resource with the specific name is present a new one will be created and
@@ -108,7 +108,7 @@ public final class Authorization
 			return Resource.New(name);
 		}
 	}
-	
+
 	/**
 	 * Registers a {@link SubjectEvaluatingComponentExtension} with
 	 * <code>component</code>.
@@ -117,7 +117,7 @@ public final class Authorization
 	 *            the component to register the extension with
 	 * @param extension
 	 *            the extension to register
-	 * @see #evaluateComponents(XdevComponent)
+	 * @see #evaluateComponents(Component)
 	 */
 	public static void setSubjectEvaluatingComponentExtension(
 		final Component component,
@@ -125,7 +125,7 @@ public final class Authorization
 	{
 		ComponentUtil.setData(component, SubjectEvaluatingComponentExtension.class, extension);
 	}
-	
+
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the current user.
@@ -136,7 +136,7 @@ public final class Authorization
 	 * @see Authentication#login(Subject, Object)
 	 * @see Authentication#setUser(Subject, Object)
 	 * @see Authentication#getUser()
-	 * @see #setSubjectEvaluatingComponentExtension(XdevComponent,
+	 * @see #setSubjectEvaluatingComponentExtension(Component,
 	 *      SubjectEvaluatingComponentExtension)
 	 */
 	public static void evaluateComponents(final Component root)
@@ -146,7 +146,7 @@ public final class Authorization
 			evaluateComponents(root, Authentication.getUser());
 		}
 	}
-	
+
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the given
@@ -156,20 +156,20 @@ public final class Authorization
 	 *            the root component
 	 * @param subject
 	 *            the subject to evaluate against
-	 * @see #evaluateComponents(XdevComponent)
-	 * @see #setSubjectEvaluatingComponentExtension(XdevComponent,
+	 * @see #evaluateComponents(Component)
+	 * @see #setSubjectEvaluatingComponentExtension(Component,
 	 *      SubjectEvaluatingComponentExtension)
 	 */
 	public static void evaluateComponents(final Component root, final Subject subject)
 	{
 		UIUtils.lookupComponentTree(root, component -> {
-			
+
 			evaluateComponent(component, subject);
-			
+
 			return null;
 		});
 	}
-	
+
 	/**
 	 * Evaluates the {@link SubjectEvaluatingComponentExtension} of the
 	 * <code>component</code> against the given <code>subject</code>.
@@ -181,7 +181,7 @@ public final class Authorization
 	 *            the component to check
 	 * @param subject
 	 *            the subject to evaluate against
-	 * @see #setSubjectEvaluatingComponentExtension(XdevComponent,
+	 * @see #setSubjectEvaluatingComponentExtension(Component,
 	 *      SubjectEvaluatingComponentExtension)
 	 */
 	public static void evaluateComponent(final Component component, final Subject subject)
@@ -193,7 +193,7 @@ public final class Authorization
 			extension.evaluateSubject(component, subject);
 		}
 	}
-	
+
 	/**
 	 * Navigates to the application's permission denied view.
 	 *
@@ -203,16 +203,16 @@ public final class Authorization
 	{
 		Navigation.navigateTo(PermissionDeniedView.class);
 	}
-	
+
 	public static void rerouteToPermissionDeniedView(final BeforeEvent event)
 	{
 		Navigation.rerouteTo(event, PermissionDeniedView.class);
 	}
-	
+
 	private static UnauthorizedNavigationRequestHandler unauthorizedNavigationRequestHandler =
 		UnauthorizedNavigationRequestHandler
 			.Default();
-	
+
 	/**
 	 * @param unauthorizedNavigationRequestHandler
 	 *            the unauthorizedNavigationRequestHandler to set
@@ -222,7 +222,7 @@ public final class Authorization
 	{
 		Authorization.unauthorizedNavigationRequestHandler = unauthorizedNavigationRequestHandler;
 	}
-	
+
 	/**
 	 * @return the unauthorizedNavigationRequestHandler
 	 */
@@ -230,7 +230,7 @@ public final class Authorization
 	{
 		return unauthorizedNavigationRequestHandler;
 	}
-	
+
 	private Authorization()
 	{
 		throw new Error();
