@@ -12,23 +12,15 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
-
-import java.io.Serializable;
-import java.lang.annotation.ElementType;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
-import java.lang.annotation.Target;
-
+package com.rapidclipse.framework.server.jpa.dal;
 
 /**
  *
  * @author XDEV Software
  *
  */
-@Target(ElementType.TYPE)
-@Retention(RetentionPolicy.RUNTIME)
-public @interface DAO
+public enum OrderByDirection
 {
-	public Class<? extends DataAccessObject<?, ? extends Serializable>> value();
+	ASC,
+	DESC;
 }

@@ -12,16 +12,16 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
-import static com.rapidclipse.framework.server.persistence.jpa.dal.OrderByDirection.ASC;
-import static com.rapidclipse.framework.server.persistence.jpa.dal.OrderByDirection.DESC;
+import static com.rapidclipse.framework.server.jpa.dal.OrderByDirection.ASC;
+import static com.rapidclipse.framework.server.jpa.dal.OrderByDirection.DESC;
 
 import java.io.Serializable;
 
 import javax.persistence.metamodel.Attribute;
 
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
 
 
 /**

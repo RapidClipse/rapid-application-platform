@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
 /**
  * Static values to use in conjunction with {@link SearchParameters} object. It

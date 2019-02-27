@@ -32,8 +32,8 @@ import com.rapidclipse.framework.server.data.filter.Comparison.LessEquals;
 import com.rapidclipse.framework.server.data.filter.Comparison.SizeComparison;
 import com.rapidclipse.framework.server.data.filter.Comparison.StringComparison;
 import com.rapidclipse.framework.server.data.filter.Composite.Connector;
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

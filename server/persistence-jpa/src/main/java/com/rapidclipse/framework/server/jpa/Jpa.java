@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa;
+package com.rapidclipse.framework.server.jpa;
 
 import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
@@ -60,10 +60,10 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
 import com.rapidclipse.framework.server.RapServlet;
-import com.rapidclipse.framework.server.persistence.jpa.dal.CacheableQueries;
-import com.rapidclipse.framework.server.persistence.jpa.dal.CacheableQuery;
-import com.rapidclipse.framework.server.persistence.jpa.dal.DAO;
-import com.rapidclipse.framework.server.persistence.jpa.dal.DataAccessObject;
+import com.rapidclipse.framework.server.jpa.dal.CacheableQueries;
+import com.rapidclipse.framework.server.jpa.dal.CacheableQuery;
+import com.rapidclipse.framework.server.jpa.dal.DAO;
+import com.rapidclipse.framework.server.jpa.dal.DataAccessObject;
 import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.rapidclipse.framework.server.util.SoftCache;
 

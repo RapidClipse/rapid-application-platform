@@ -16,7 +16,7 @@ package com.rapidclipse.framework.server.data;
 
 import java.io.Serializable;
 
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

@@ -30,7 +30,7 @@ import javax.persistence.criteria.Root;
 
 import com.rapidclipse.framework.server.data.filter.CriteriaFilterConverter;
 import com.rapidclipse.framework.server.data.filter.Filter;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 import com.vaadin.flow.data.provider.CallbackDataProvider.CountCallback;
 import com.vaadin.flow.data.provider.CallbackDataProvider.FetchCallback;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;

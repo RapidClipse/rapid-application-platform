@@ -20,8 +20,8 @@ import java.util.Collection;
 
 import javax.persistence.metamodel.Attribute;
 
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.Jpa;
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;

@@ -19,7 +19,7 @@ import java.lang.reflect.Member;
 
 import javax.persistence.metamodel.Attribute;
 
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

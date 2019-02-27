@@ -19,7 +19,7 @@ import javax.persistence.metamodel.Attribute;
 
 import com.rapidclipse.framework.server.data.filter.Filter;
 import com.rapidclipse.framework.server.data.provider.CriteriaDataProvider;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.function.SerializableFunction;
 

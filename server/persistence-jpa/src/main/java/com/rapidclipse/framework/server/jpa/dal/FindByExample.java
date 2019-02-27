@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -45,8 +45,8 @@ import javax.persistence.metamodel.SingularAttribute;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.Jpa;
 import com.rapidclipse.framework.server.util.ReflectionUtils;
 
 

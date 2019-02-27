@@ -14,10 +14,10 @@
 
 package com.rapidclipse.framework.server.concurrent;
 
-import com.rapidclipse.framework.server.persistence.jpa.Conversationables;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
-import com.rapidclipse.framework.server.persistence.jpa.PersistenceManager;
-import com.rapidclipse.framework.server.persistence.jpa.SessionStrategyProvider;
+import com.rapidclipse.framework.server.jpa.Conversationables;
+import com.rapidclipse.framework.server.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.PersistenceManager;
+import com.rapidclipse.framework.server.jpa.SessionStrategyProvider;
 import com.vaadin.flow.internal.CurrentInstance;
 
 

@@ -26,7 +26,7 @@ import javax.persistence.Query;
 
 import com.rapidclipse.framework.security.authorization.AuthorizationConfiguration;
 import com.rapidclipse.framework.security.authorization.AuthorizationConfigurationProvider;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

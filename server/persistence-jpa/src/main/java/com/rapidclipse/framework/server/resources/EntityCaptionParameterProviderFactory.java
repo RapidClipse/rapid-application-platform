@@ -14,7 +14,7 @@
 
 package com.rapidclipse.framework.server.resources;
 
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

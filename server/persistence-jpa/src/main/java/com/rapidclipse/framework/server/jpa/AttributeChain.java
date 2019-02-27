@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa;
+package com.rapidclipse.framework.server.jpa;
 
 import static com.rapidclipse.framework.server.Rap.notEmpty;
 

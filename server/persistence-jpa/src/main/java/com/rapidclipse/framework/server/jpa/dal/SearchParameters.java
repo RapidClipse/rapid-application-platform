@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -25,7 +25,7 @@ import javax.persistence.CacheRetrieveMode;
 import javax.persistence.CacheStoreMode;
 import javax.persistence.metamodel.Attribute;
 
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
 
 
 /**

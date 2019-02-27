@@ -12,14 +12,14 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
 import java.io.Serializable;
 
 import org.hibernate.criterion.Example.PropertySelector;
 
-import com.rapidclipse.framework.server.persistence.jpa.AttributeChain;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

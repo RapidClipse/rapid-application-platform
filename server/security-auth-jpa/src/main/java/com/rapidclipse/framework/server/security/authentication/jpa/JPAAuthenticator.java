@@ -20,7 +20,7 @@ import com.rapidclipse.framework.security.authentication.AuthenticationFailedExc
 import com.rapidclipse.framework.security.authentication.Authenticator;
 import com.rapidclipse.framework.security.authentication.CredentialsUsernamePassword;
 import com.rapidclipse.framework.security.util.PasswordHasher;
-import com.rapidclipse.framework.server.persistence.jpa.Jpa;
+import com.rapidclipse.framework.server.jpa.Jpa;
 
 
 /**

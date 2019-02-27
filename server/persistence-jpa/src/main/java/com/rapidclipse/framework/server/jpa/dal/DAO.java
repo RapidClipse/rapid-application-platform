@@ -12,23 +12,23 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.persistence.jpa.dal;
+package com.rapidclipse.framework.server.jpa.dal;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import java.io.Serializable;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 
 /**
+ *
  * @author XDEV Software
  *
  */
-public interface PredicateSupplier
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface DAO
 {
-	public <T> Predicate getPredicate(
-		CriteriaQuery<?> criteriaQuery,
-		Root<T> root,
-		CriteriaBuilder builder,
-		T entity);
+	public Class<? extends DataAccessObject<?, ? extends Serializable>> value();
 }
