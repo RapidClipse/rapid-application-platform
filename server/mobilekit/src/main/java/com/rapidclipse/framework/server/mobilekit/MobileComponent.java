@@ -36,50 +36,55 @@ public abstract class MobileComponent extends PolymerTemplate<TemplateModel>
 {
 	private final transient Map<String, ServiceCall<?, ?>> serviceCalls = Collections
 		.synchronizedMap(new HashMap<>());
-	
+
 	protected MobileComponent()
 	{
 		super();
 	}
-	
+
 	protected JsonObject toJson(final Object pojo)
 	{
 		return Json.parse(new Gson().toJson(pojo));
 	}
-	
+
 	protected <T> T toJava(final JsonObject obj, final Class<T> type)
 	{
 		return new Gson().fromJson(obj.toJson(), type);
 	}
-	
+
 	protected <R, E extends MobileServiceError> String registerCall(
 		final Consumer<R> successCallback,
 		final Consumer<E> errorCallback)
 	{
-		final String            id   = UUID.randomUUID().toString();
-		final ServiceCall<R, E> call = ServiceCall.New(successCallback, errorCallback);
+		return registerCall(ServiceCall.New(successCallback, errorCallback));
+	}
+
+	protected <R, E extends MobileServiceError> String registerCall(
+		final ServiceCall<R, E> call)
+	{
+		final String id = UUID.randomUUID().toString();
 		this.serviceCalls.put(id, call);
 		return id;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected <R, E extends MobileServiceError> ServiceCall<R, E> getCall(final String id)
 	{
 		return (ServiceCall<R, E>)this.serviceCalls.get(id);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	protected <R, E extends MobileServiceError, S extends ServiceCall<R, E>> S getAndRemoveCall(
 		final String id)
 	{
 		return (S)this.serviceCalls.remove(id);
 	}
-	
+
 	protected void removeCall(final String id)
 	{
 		this.serviceCalls.remove(id);
 	}
-	
+
 	protected static interface ServiceCall<R, E extends MobileServiceError>
 	{
 		public static <R, E extends MobileServiceError> ServiceCall<R, E> New(
@@ -88,17 +93,17 @@ public abstract class MobileComponent extends PolymerTemplate<TemplateModel>
 		{
 			return new Implementation<R, E>(successCallback, errorCallback);
 		}
-		
+
 		public void success(final R returnValue);
-		
+
 		public void error(final E error);
-		
+
 		public static class Implementation<R, E extends MobileServiceError>
 			implements ServiceCall<R, E>
 		{
 			private final Consumer<R> successCallback;
 			private final Consumer<E> errorCallback;
-			
+
 			public Implementation(
 				final Consumer<R> successCallback,
 				final Consumer<E> errorCallback)
@@ -106,7 +111,7 @@ public abstract class MobileComponent extends PolymerTemplate<TemplateModel>
 				this.successCallback = successCallback;
 				this.errorCallback   = errorCallback;
 			}
-			
+
 			@Override
 			public void success(final R returnValue)
 			{
@@ -115,7 +120,7 @@ public abstract class MobileComponent extends PolymerTemplate<TemplateModel>
 					this.successCallback.accept(returnValue);
 				}
 			}
-			
+
 			@Override
 			public void error(final E error)
 			{
