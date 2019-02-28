@@ -1,0 +1,50 @@
+<!--
+
+    Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        XDEV Software Corp. - initial API and implementation
+
+-->
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-barcodescanner"> 
+
+<script>
+		
+	class MobilekitBarcodescanner extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-barcodescanner';
+		}
+		
+		scan(id,options){
+			var _this = this, _server = this.$server;
+			cordova.plugins.barcodeScanner.scan(
+				function(result){
+					_server.scan_success(id,_this.cloneAsObject(result));
+				},
+				function(error){
+					_server.scan_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		cloneAsObject(obj) {
+		    if (obj === null || !(obj instanceof Object)) { return obj; }
+		    var temp = (obj instanceof Array) ? [] : {};
+		    for (var key in obj) { temp[key] = this.cloneAsObject(obj[key]); }
+		    return temp;
+		}
+	}
+	customElements.define(MobilekitBarcodescanner.is, MobilekitBarcodescanner);
+	
+</script> 
+
+</dom-module>
