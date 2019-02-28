@@ -22,8 +22,8 @@ import static java.util.Objects.requireNonNull;
  * {@link Resource} instance.
  * <p>
  * Every permission has a "factor" value that represents the type and weight of
- * the permission. A negative value (< 0) means denial of access to the resource
- * (or negative permission), a non-negative value (>= 0) means permission of
+ * the permission. A negative value (&lt; 0) means denial of access to the resource
+ * (or negative permission), a non-negative value (&ge; 0) means permission of
  * access to the resource (or positive permission). The higher the absolute
  * value of a factor, the higher is its "weight" or priority compared to
  * conflicting permissions defined in other roles. The default factor is 0, so
@@ -40,7 +40,7 @@ public interface Permission
 	 * @return the associated {@link Resource} instance.
 	 */
 	public Resource resource();
-	
+
 	/**
 	 * The factor of this {@link Permission} instance. See {@link Permission}
 	 * for details.
@@ -48,7 +48,7 @@ public interface Permission
 	 * @return the factor of this {@link Permission} instance.
 	 */
 	public int factor();
-	
+
 	/**
 	 * Evaluates if the passed {@link Subject} instance is granted access to the
 	 * {@link Resource} instance associated with this {@link Permission}
@@ -65,11 +65,11 @@ public interface Permission
 		final Permission subjectPermission = subject.effectivePermissions().get(this.resource());
 		return subjectPermission != null && subjectPermission.factor() >= 0;
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-	
+
 	/**
 	 * Creates a new {@link Permission} instance for the passed {@link Resource}
 	 * instance and the passed factor. Note that factor can be any value, no
@@ -86,7 +86,7 @@ public interface Permission
 	{
 		return new Permission.Implementation(resource, factor);
 	}
-	
+
 	/**
 	 * Creates a new {@link Permission} instance for the passed {@link Resource}
 	 * instance and a default factor of 0.
@@ -100,7 +100,7 @@ public interface Permission
 	{
 		return New(resource, 0);
 	}
-	
+
 	/**
 	 * Simple default implementation of a {@link Permission}.
 	 *
@@ -111,14 +111,14 @@ public interface Permission
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		final Resource resource;
 		final int      factor;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
@@ -128,11 +128,11 @@ public interface Permission
 			this.resource = requireNonNull(resource);
 			this.factor   = factor;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -141,7 +141,7 @@ public interface Permission
 		{
 			return this.resource;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -150,12 +150,12 @@ public interface Permission
 		{
 			return this.factor;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return this.resource + " " + this.factor;
 		}
 	}
-	
+
 }
