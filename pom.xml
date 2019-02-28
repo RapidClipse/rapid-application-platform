@@ -28,6 +28,12 @@
 	<name>Rapid Application Platform</name>
 	<description>${project.name}</description>
 	<url>http://www.rapidclipse.com</url>
+	
+	<scm>
+		<url>https://github.com/RapidClipse/rapid-application-platform</url>
+		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
+		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
+	</scm>
 
 	<organization>
 		<name>XDEV Software Corp.</name>
