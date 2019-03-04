@@ -1,6 +1,8 @@
 
 package com.rapidclipse.framework.server.data.provider;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,79 +19,100 @@ import javax.persistence.TypedQuery;
 public interface CriteriaParameterProvider extends Serializable
 {
 	public void setParameters(TypedQuery<?> query);
-	
+
 	public static CriteriaParameterProvider Empty()
 	{
 		return query -> {};
 	}
-	
+
 	public static CriteriaParameterProvider ofSingleParameter(final String name, final Serializable value)
 	{
+		requireNonNull(name);
+
 		return query -> query.setParameter(name, value);
 	}
-	
+
 	public static <T, P extends Serializable> CriteriaParameterProvider
 		ofSingleParameter(final Parameter<P> parameter, final P value)
 	{
+		requireNonNull(parameter);
+
 		return query -> query.setParameter(parameter, value);
 	}
 	
+	public static CriteriaParameterProvider ofParameters(final Serializable... parameters)
+	{
+		requireNonNull(parameters);
+
+		return query -> {
+
+			for(int i = 0, c = parameters.length; i < c; i++)
+			{
+				query.setParameter(i, parameters[i]);
+			}
+		};
+	}
+
 	public static CriteriaParameterProvider ofNamedMap(final Map<String, Serializable> parameterMap)
 	{
+		requireNonNull(parameterMap);
+
 		return query -> Static.setParametersNamedMap(query, parameterMap);
 	}
-	
+
 	public static CriteriaParameterProvider ofParameterMap(final Map<Parameter<?>, Serializable> parameterMap)
 	{
+		requireNonNull(parameterMap);
+
 		return query -> Static.setParametersParameterMap(query, parameterMap);
 	}
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Implementation();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder add(String name, Serializable value);
-		
+
 		public <P extends Serializable> Builder add(Parameter<P> parameter, P value);
-		
+
 		public CriteriaParameterProvider build();
-		
+
 		public static class Implementation implements Builder
 		{
 			private final Map<String, Serializable>       nameToValue  = new HashMap<>();
 			private final Map<Parameter<?>, Serializable> paramToValue = new HashMap<>();
-			
+
 			@Override
 			public Builder add(final String name, final Serializable value)
 			{
-				this.nameToValue.put(name, value);
-				
+				this.nameToValue.put(requireNonNull(name), value);
+
 				return this;
 			}
-			
+
 			@Override
 			public <P extends Serializable> Builder add(final Parameter<P> parameter, final P value)
 			{
-				this.paramToValue.put(parameter, value);
-				
+				this.paramToValue.put(requireNonNull(parameter), value);
+
 				return this;
 			}
-			
+
 			@Override
 			public CriteriaParameterProvider build()
 			{
 				return query -> {
-					
+
 					Static.setParametersNamedMap(query, this.nameToValue);
 					Static.setParametersParameterMap(query, this.paramToValue);
 				};
 			}
 		}
 	}
-	
+
 	public static class Static
 	{
 		public static void
@@ -102,7 +125,7 @@ public interface CriteriaParameterProvider extends Serializable
 				query.setParameter(name, value);
 			}
 		}
-		
+
 		@SuppressWarnings({"rawtypes", "unchecked"})
 		public static void
 			setParametersParameterMap(
@@ -116,7 +139,7 @@ public interface CriteriaParameterProvider extends Serializable
 				query.setParameter(parameter, value);
 			}
 		}
-
+		
 		private Static()
 		{
 			throw new Error();
