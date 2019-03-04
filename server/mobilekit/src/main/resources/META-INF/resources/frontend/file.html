@@ -1,0 +1,59 @@
+<!--
+
+    Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        XDEV Software Corp. - initial API and implementation
+
+-->
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-file"> 
+
+<script>
+		
+	class MobilekitFile extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-file';
+		}
+		
+		readFile(id,path){
+			var _this = this, _server = this.$server;
+			var error = function(error){
+				_server.readFile_error(id,_this.cloneAsObject(error));	
+			};
+			window.resolveLocalFileSystemURL(path, function(fileEntry) {
+
+				fileEntry.file(function(file) {
+					var reader = new FileReader();
+
+					reader.onloadend = function() {
+						_server.readFile_success(id,this.result);
+					};
+
+					reader.readAsDataURL(file);
+
+				}, error);
+
+			}, error);
+		}
+		
+		cloneAsObject(obj) {
+		    if (obj === null || !(obj instanceof Object)) { return obj; }
+		    var temp = (obj instanceof Array) ? [] : {};
+		    for (var key in obj) { temp[key] = this.cloneAsObject(obj[key]); }
+		    return temp;
+		}
+	}
+	customElements.define(MobilekitFile.is, MobilekitFile);
+	
+</script> 
+
+</dom-module>
