@@ -14,13 +14,16 @@
 
 package com.rapidclipse.framework.server.ui.filter;
 
+import java.io.Serializable;
+
+
 /**
  * @author XDEV Software
  *
  */
-public interface FilterSubjectFactory
+public interface FilterSubjectFactory extends Serializable
 {
 	public boolean supports(Object source);
-	
+
 	public FilterSubject createFilterSubject(Object source);
 }
