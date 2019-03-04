@@ -37,7 +37,7 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 	{
 		super();
 	}
-	
+
 	@Override
 	public void getCurrentAcceleration(
 		final AccelerometerOptions options,
@@ -47,21 +47,21 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 		final String id = registerCall(successCallback, errorCallback);
 		getElement().callFunction("getCurrentAcceleration", id, toJson(options));
 	}
-	
+
 	@ClientCallable
-	void getCurrentAcceleration_success(final String id, final JsonObject positionObj)
+	void getCurrentAcceleration_success(final String id, final JsonObject accelerationObj)
 	{
-		final Acceleration acceleration = toJava(positionObj, AccelerationImpl.class);
+		final Acceleration acceleration = toJava(accelerationObj, AccelerationImpl.class);
 		getAndRemoveCall(id).success(acceleration);
 	}
-	
+
 	@ClientCallable
 	void getCurrentAcceleration_error(final String id, final String errorMessage)
 	{
 		final MobileServiceError error = new MobileServiceError(this, errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	@Override
 	public void watchAcceleration(
 		final AccelerometerOptions options,
@@ -71,38 +71,38 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 		final String id = registerCall(successCallback, errorCallback);
 		getElement().callFunction("watchAcceleration", id, toJson(options));
 	}
-	
+
 	@ClientCallable
 	void watchAcceleration_success(
 		final String id,
-		final JsonObject positionObj,
+		final JsonObject accelerationObj,
 		final String watchId)
 	{
-		final Acceleration      acceleration = toJava(positionObj, AccelerationImpl.class);
+		final Acceleration      acceleration = toJava(accelerationObj, AccelerationImpl.class);
 		final AccelerationWatch watch        = new AccelerationWatchImpl(acceleration, id, watchId);
 		getCall(id).success(watch);
 	}
-	
+
 	@ClientCallable
 	void watchAcceleration_error(final String id, final String errorMessage)
 	{
 		final MobileServiceError error = new MobileServiceError(this, errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	private void clearWatch(final String id, final String watchId)
 	{
 		removeCall(id);
 		getElement().callFunction("clearWatch", watchId);
 	}
-	
+
 	private static class AccelerationImpl implements Acceleration
 	{
 		private final double x;
 		private final double y;
 		private final double z;
 		private final long   timestamp;
-		
+
 		@SuppressWarnings("unused") // Used by Gson via reflection
 		AccelerationImpl(final double x, final double y, final double z, final long timestamp)
 		{
@@ -112,31 +112,31 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 			this.z         = z;
 			this.timestamp = timestamp;
 		}
-		
+
 		@Override
 		public double getX()
 		{
 			return this.x;
 		}
-		
+
 		@Override
 		public double getY()
 		{
 			return this.y;
 		}
-		
+
 		@Override
 		public double getZ()
 		{
 			return this.z;
 		}
-		
+
 		@Override
 		public long getTimestamp()
 		{
 			return this.timestamp;
 		}
-		
+
 		@Override
 		public String toString()
 		{
@@ -144,13 +144,13 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 				+ this.timestamp + "]";
 		}
 	}
-	
+
 	private class AccelerationWatchImpl implements AccelerationWatch
 	{
 		private final Acceleration acceleration;
 		private final String       id;
 		private final String       watchId;
-		
+
 		AccelerationWatchImpl(
 			final Acceleration Acceleration,
 			final String id,
@@ -161,19 +161,19 @@ public class AccelerometerComponent extends MobileComponent implements Accelerom
 			this.id           = id;
 			this.watchId      = watchId;
 		}
-		
+
 		@Override
 		public Acceleration getAcceleration()
 		{
 			return this.acceleration;
 		}
-		
+
 		@Override
 		public void remove()
 		{
 			AccelerometerComponent.this.clearWatch(this.id, this.watchId);
 		}
-		
+
 		@Override
 		public String toString()
 		{

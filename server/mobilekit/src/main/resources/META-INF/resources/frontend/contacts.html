@@ -1,0 +1,73 @@
+<!--
+
+    Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        XDEV Software Corp. - initial API and implementation
+
+-->
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-contacts"> 
+
+<script>
+		
+	class MobilekitContacts extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-contacts';
+		}
+		
+		findContacts(id,fields,options){
+			var _this = this, _server = this.$server;
+			navigator.contacts.find(
+				fields,
+				function(contacts){
+					_server.findContacts_success(id,_this.cloneAsObject(contacts));
+				},
+				function(error){
+					_server.findContacts_error(id,_this.cloneAsObject(error));	
+				},
+				options);
+		}
+		
+		pickContact(id){
+			var _this = this, _server = this.$server;
+			navigator.contacts.pickContact(
+				function(contact){
+					_server.pickContact_success(id,_this.cloneAsObject(contact));
+				},
+				function(error){
+					_server.pickContact_error(id,_this.cloneAsObject(error));	
+				});
+		}
+		
+		saveContact(id,contact){
+			var _this = this, _server = this.$server;
+			navigator.contacts.create(JSON.parse(contact)).save(
+				function(){
+					_server.saveContact_success(id,_this.cloneAsObject(contact));
+				},
+				function(error){
+					_server.pickContact_error(id,_this.cloneAsObject(error));	
+				});
+		}
+		
+		cloneAsObject(obj) {
+		    if (obj === null || !(obj instanceof Object)) { return obj; }
+		    var temp = (obj instanceof Array) ? [] : {};
+		    for (var key in obj) { temp[key] = this.cloneAsObject(obj[key]); }
+		    return temp;
+		}
+	}
+	customElements.define(MobilekitContacts.is, MobilekitContacts);
+	
+</script> 
+
+</dom-module>

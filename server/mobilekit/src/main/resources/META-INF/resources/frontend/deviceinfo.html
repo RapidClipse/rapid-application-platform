@@ -1,0 +1,43 @@
+<!--
+
+    Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+
+    This program and the accompanying materials
+    are made available under the terms of the Eclipse Public License 2.0
+    which accompanies this distribution, and is available at
+    https://www.eclipse.org/legal/epl-2.0/
+
+    SPDX-License-Identifier: EPL-2.0
+
+    Contributors:
+        XDEV Software Corp. - initial API and implementation
+
+-->
+<link rel="import" href="bower_components/polymer/polymer-element.html">
+
+<dom-module id="mobilekit-deviceinfo"> 
+
+<script>
+		
+	class MobilekitDeviceinfo extends Polymer.Element {
+		static get is(){
+			return 'mobilekit-deviceinfo';
+		}
+		
+		get(id){
+			var info = {};
+			info.model = device.model;
+			info.platform = device.platform;
+			info.uuid = device.uuid;
+			info.version = device.version;
+			info.manufacturer = device.manufacturer;
+			info.virtual = device.isVirtual;
+			info.serial = device.serial;
+			this.$server.callback(id,info);
+		}
+	}
+	customElements.define(MobilekitDeviceinfo.is, MobilekitDeviceinfo);
+	
+</script> 
+
+</dom-module>
