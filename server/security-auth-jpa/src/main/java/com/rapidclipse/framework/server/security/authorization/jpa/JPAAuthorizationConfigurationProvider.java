@@ -77,14 +77,14 @@ public class JPAAuthorizationConfigurationProvider implements AuthorizationConfi
 	@Override
 	public AuthorizationConfiguration provideConfiguration()
 	{
-		final Map<String, Set<String>>              resourceResources = new HashMap<String, Set<String>>();
-		final Map<String, Set<String>>              roleRoles         = new HashMap<String, Set<String>>();
-		final Map<String, Map<String, Integer>>     rolePermissions   = new HashMap<String, Map<String, Integer>>();
-		final Map<String, Set<String>>              subjectRoles      = new HashMap<String, Set<String>>();
+		final Map<String, Set<String>>          resourceResources = new HashMap<String, Set<String>>();
+		final Map<String, Set<String>>          roleRoles         = new HashMap<String, Set<String>>();
+		final Map<String, Map<String, Integer>> rolePermissions   = new HashMap<String, Map<String, Integer>>();
+		final Map<String, Set<String>>          subjectRoles      = new HashMap<String, Set<String>>();
 		
-		final List<? extends AuthorizationSubject>  subjects          = getSubjects();
-		final List<? extends AuthorizationRole>     roles             = getRoles();
-		final List<? extends AuthorizationResource> resources         = getResources();
+		final List<? extends AuthorizationSubject>  subjects  = getSubjects();
+		final List<? extends AuthorizationRole>     roles     = getRoles();
+		final List<? extends AuthorizationResource> resources = getResources();
 		
 		for(final AuthorizationSubject subject : subjects)
 		{

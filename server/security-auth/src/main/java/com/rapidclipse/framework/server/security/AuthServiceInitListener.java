@@ -30,7 +30,7 @@ public class AuthServiceInitListener implements VaadinServiceInitListener
 	{
 		super();
 	}
-
+	
 	@Override
 	public void serviceInit(final ServiceInitEvent event)
 	{
@@ -41,7 +41,7 @@ public class AuthServiceInitListener implements VaadinServiceInitListener
 			 */
 			return;
 		}
-
+		
 		event.getSource().addUIInitListener(
 			e -> e.getUI().addBeforeEnterListener(new AuthNavigationController()));
 	}

@@ -34,7 +34,7 @@ public interface VibrationService extends MobileService
 	{
 		return MobileService.getCurrent(VibrationService.class);
 	}
-
+	
 	/**
 	 * Vibrates with the specified pattern.
 	 * <p>

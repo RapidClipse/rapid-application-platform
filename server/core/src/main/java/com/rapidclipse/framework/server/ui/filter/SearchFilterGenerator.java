@@ -28,12 +28,12 @@ import com.rapidclipse.framework.server.data.filter.Filter;
 public interface SearchFilterGenerator extends Serializable
 {
 	public Filter createSearchFilter(String searchText, FilterContext context);
-
+	
 	public static SearchFilterGenerator New()
 	{
 		return new Implementation();
 	}
-
+	
 	public static class Implementation implements SearchFilterGenerator
 	{
 		@Override
@@ -43,17 +43,17 @@ public interface SearchFilterGenerator extends Serializable
 			{
 				return null;
 			}
-
+			
 			final String[] words = searchText.split(" ");
-
+			
 			if(words.length == 1)
 			{
 				return createSingleWordSearchFilter(words[0], settings);
 			}
-
+			
 			return createMultiWordSearchFilter(words, settings);
 		}
-
+		
 		protected Filter createSingleWordSearchFilter(
 			final String word,
 			final FilterContext context)
@@ -62,10 +62,10 @@ public interface SearchFilterGenerator extends Serializable
 				.stream()
 				.map(searchableProperty -> createWordFilter(searchableProperty, word, context))
 				.toArray(Filter[]::new);
-
+			
 			return combinePropertyFilters(propertyFilters, context);
 		}
-
+		
 		protected Filter createMultiWordSearchFilter(
 			final String[] words,
 			final FilterContext context)
@@ -77,10 +77,10 @@ public interface SearchFilterGenerator extends Serializable
 						.map(word -> createWordFilter(searchableProperty, word, context))
 						.toArray(Filter[]::new)))
 				.toArray(Filter[]::new);
-
+			
 			return combinePropertyFilters(propertyFilters, context);
 		}
-
+		
 		protected Filter createWordFilter(
 			final FilterProperty<?> searchableProperty,
 			final String word,
@@ -95,7 +95,7 @@ public interface SearchFilterGenerator extends Serializable
 			return Filter.StringComparison(searchableProperty.identifier(), pattern,
 				context.isCaseSensitive(), Arrays.asList(wildcard));
 		}
-
+		
 		protected Filter combinePropertyFilters(
 			final Filter[] propertyFilters,
 			final FilterContext settings)
@@ -104,10 +104,10 @@ public interface SearchFilterGenerator extends Serializable
 			{
 				case 0:
 					return null;
-
+				
 				case 1:
 					return propertyFilters[0];
-
+				
 				default:
 					return Composite.New(settings.getSearchPropertiesConnector(), propertyFilters);
 			}

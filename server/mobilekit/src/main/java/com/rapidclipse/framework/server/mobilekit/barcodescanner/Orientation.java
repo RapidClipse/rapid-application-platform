@@ -22,14 +22,14 @@ public enum Orientation
 {
 	PORTRAIT("portrait"),
 	LANDSCAPE("landscape");
-
+	
 	private String value;
-
+	
 	private Orientation(final String value)
 	{
 		this.value = value;
 	}
-
+	
 	public String getValue()
 	{
 		return this.value;

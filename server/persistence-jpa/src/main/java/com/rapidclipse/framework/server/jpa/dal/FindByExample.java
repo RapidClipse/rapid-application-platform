@@ -55,7 +55,7 @@ import com.rapidclipse.framework.server.util.ReflectionUtils;
  */
 class FindByExample<E>
 {
-	private final static Logger    logger = Logger.getLogger(FindByExample.class.getName());
+	private final static Logger logger = Logger.getLogger(FindByExample.class.getName());
 	
 	private final Class<E>         persistentClass;
 	private final EntityManager    entityManager;
@@ -81,7 +81,7 @@ class FindByExample<E>
 			criteriaQuery.distinct(true);
 		}
 		
-		final Root<E>   root      = criteriaQuery.from(this.persistentClass);
+		final Root<E> root = criteriaQuery.from(this.persistentClass);
 		
 		final Predicate predicate = getPredicate(criteriaQuery, root, builder, entity);
 		if(predicate != null)
@@ -101,10 +101,10 @@ class FindByExample<E>
 	
 	public int countByExample(final E entity)
 	{
-		final CriteriaBuilder builder       = this.entityManager.getCriteriaBuilder();
+		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
 		
-		CriteriaQuery<Long>   criteriaQuery = builder.createQuery(Long.class);
-		final Root<E>         root          = criteriaQuery.from(this.persistentClass);
+		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
+		final Root<E>       root          = criteriaQuery.from(this.persistentClass);
 		
 		if(this.searchParameters.getDistinct())
 		{
@@ -455,8 +455,8 @@ class FindByExample<E>
 			return null;
 		}
 		
-		final Class<E>        type       = root.getModel().getBindableJavaType();
-		final ManagedType<E>  mt         = this.entityManager.getMetamodel().entity(type);
+		final Class<E>       type = root.getModel().getBindableJavaType();
+		final ManagedType<E> mt   = this.entityManager.getMetamodel().entity(type);
 		
 		final List<Predicate> predicates = new ArrayList<>();
 		predicates.addAll(byExample(mt, root, entity, builder));

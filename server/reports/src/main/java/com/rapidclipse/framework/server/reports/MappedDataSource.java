@@ -99,7 +99,7 @@ public class MappedDataSource extends DelegatingDataSource
 	{
 		final String mappedName = this.fieldNameMapping.get(jrField.getName());
 		
-		JRField      field      = jrField;
+		JRField field = jrField;
 		if(mappedName != null)
 		{
 			field = this.mappedFields.computeIfAbsent(mappedName,

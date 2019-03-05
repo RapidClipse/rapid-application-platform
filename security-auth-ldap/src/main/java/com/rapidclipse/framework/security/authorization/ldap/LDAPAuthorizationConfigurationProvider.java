@@ -81,8 +81,8 @@ public class LDAPAuthorizationConfigurationProvider implements AuthorizationConf
 				new HashMap<String, HashMap<String, Integer>>();
 			final Map<String, Set<String>>                  subjectRoles      = new HashMap<String, Set<String>>();
 			
-			final String                                    username          = this.credentials.username();
-			final Set<String>                               groupNames        = realm.getGroupNamesForUser(username);
+			final String      username   = this.credentials.username();
+			final Set<String> groupNames = realm.getGroupNamesForUser(username);
 			subjectRoles.put(username, groupNames);
 			
 			for(final String group : groupNames)

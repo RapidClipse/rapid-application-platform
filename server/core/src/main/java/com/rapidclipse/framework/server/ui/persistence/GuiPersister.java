@@ -36,7 +36,7 @@ public interface GuiPersister
 	public static class Implementation implements GuiPersister
 	{
 		
-		protected final static Logger                     LOG = Logger
+		protected final static Logger LOG = Logger
 			.getLogger(GuiPersister.class.getName());
 		
 		private final Map<String, Map<String, Component>> entries;

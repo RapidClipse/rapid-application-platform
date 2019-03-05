@@ -44,10 +44,10 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 	{
 		try
 		{
-			final Class<?>                clazz                =
+			final Class<?> clazz =
 				source instanceof Class ? (Class<?>)source : source.getClass();
 			
-			final PropertyDescriptor[]    propertyDescriptors  = Introspector.getBeanInfo(clazz)
+			final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(clazz)
 				.getPropertyDescriptors();
 			
 			final List<FilterProperty<?>> searchableProperties = Arrays.stream(propertyDescriptors)

@@ -49,9 +49,9 @@ public interface SessionStrategy
 			final Conversationables conversationables,
 			final String persistenceUnit)
 		{
-			final EntityManagerFactory            factory          = Jpa.getPersistenceManager()
+			final EntityManagerFactory factory = Jpa.getPersistenceManager()
 				.getEntityManagerFactory(persistenceUnit);
-			final EntityManager                   manager          = factory.createEntityManager();
+			final EntityManager        manager = factory.createEntityManager();
 			
 			// instantiate conversationable wrapper with entity manager.
 			final Conversationable.Implementation conversationable = new Conversationable.Implementation();

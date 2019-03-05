@@ -24,7 +24,7 @@ public class SmsOptions
 	{
 		return new SmsOptions();
 	}
-
+	
 	private boolean replaceLineBreaks = false;
 	private boolean androidNativeApp  = false;
 	

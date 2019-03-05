@@ -88,14 +88,14 @@ public interface ConversationBuilder
 			
 			if(this.afterNavigationListener == null)
 			{
-				this.afterNavigationListener     = event -> {
-														
-														final String path = event.getLocation().getPath();
-														if(!this.allowedNavigationViews.contains(path))
-														{
-															endConversation();
-														}
-													};
+				this.afterNavigationListener = event -> {
+					
+					final String path = event.getLocation().getPath();
+					if(!this.allowedNavigationViews.contains(path))
+					{
+						endConversation();
+					}
+				};
 				
 				this.afterNavigationRegistration = this.ui
 					.addAfterNavigationListener(this.afterNavigationListener);

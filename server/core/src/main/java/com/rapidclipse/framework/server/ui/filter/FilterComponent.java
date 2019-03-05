@@ -47,15 +47,15 @@ public class FilterComponent
 	extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
 	implements FilterContext, HasSize
 {
-	private boolean                           caseSensitive                     = false;
-	private char                              wildcard                          = '*';
+	private boolean caseSensitive = false;
+	private char    wildcard      = '*';
 	
-	private Connector                         searchPropertiesConnector         = Connector.OR;
-	private Connector                         searchMultiWordConnector          = Connector.OR;
-	private Connector                         filterPropertiesConnector         = Connector.AND;
-	private Connector                         searchAndFilterConnector          = Connector.AND;
+	private Connector searchPropertiesConnector = Connector.OR;
+	private Connector searchMultiWordConnector  = Connector.OR;
+	private Connector filterPropertiesConnector = Connector.AND;
+	private Connector searchAndFilterConnector  = Connector.AND;
 	
-	private SearchFilterGenerator             searchFilterGenerator             = SearchFilterGenerator
+	private SearchFilterGenerator searchFilterGenerator = SearchFilterGenerator
 		.New();
 	
 	private FilterOperatorRegistry            filterOperatorRegistry            = FilterOperatorRegistry
@@ -63,11 +63,11 @@ public class FilterComponent
 	private SubsetDataProviderFactoryRegistry subsetDataProviderFactoryRegistry = SubsetDataProviderFactoryRegistry
 		.Default();
 	
-	private FilterSubject                     filterSubject;
+	private FilterSubject filterSubject;
 	
-	private TextField                         searchTextField;
-	private Button                            addFilterButton;
-	private final List<FilterEntryEditor>     filterEntryEditors                = new ArrayList<>();
+	private TextField                     searchTextField;
+	private Button                        addFilterButton;
+	private final List<FilterEntryEditor> filterEntryEditors = new ArrayList<>();
 	
 	public FilterComponent()
 	{

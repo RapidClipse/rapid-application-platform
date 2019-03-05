@@ -207,7 +207,7 @@ public interface ClientInfo extends Serializable
 		
 		public Implementation(final VaadinRequest request)
 		{
-			this.userAgent  = UserAgent.parseUserAgentString(request.getHeader("user-agent"));
+			this.userAgent = UserAgent.parseUserAgentString(request.getHeader("user-agent"));
 			
 			this.webBrowser = new WebBrowser();
 			this.webBrowser.updateRequestDetails(request);

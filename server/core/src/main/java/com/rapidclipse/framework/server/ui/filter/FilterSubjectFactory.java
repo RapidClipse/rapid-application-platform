@@ -24,6 +24,6 @@ import java.io.Serializable;
 public interface FilterSubjectFactory extends Serializable
 {
 	public boolean supports(Object source);
-
+	
 	public FilterSubject createFilterSubject(Object source);
 }

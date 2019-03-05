@@ -129,7 +129,7 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 				final CriteriaQuery<T> originalCriteria = criteria();
 				final Root<T>          root             = root();
 				
-				final CriteriaQuery<T> criteria         = entityManager.getCriteriaBuilder()
+				final CriteriaQuery<T> criteria = entityManager.getCriteriaBuilder()
 					.createQuery(originalCriteria.getResultType());
 				Jpa.copyCriteria(originalCriteria, criteria);
 				
@@ -186,11 +186,11 @@ public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<
 			@Override
 			public Stream<T> fetch(final Query<T, Filter> query)
 			{
-				final EntityManager    entityManager = entityManager();
+				final EntityManager entityManager = entityManager();
 				
-				final CriteriaQuery<T> criteria      = createCriteria(query, entityManager);
+				final CriteriaQuery<T> criteria = createCriteria(query, entityManager);
 				
-				final TypedQuery<T>    typedQuery    = entityManager.createQuery(criteria);
+				final TypedQuery<T> typedQuery = entityManager.createQuery(criteria);
 				parameterProvider().setParameters(typedQuery);
 				typedQuery.setFirstResult(query.getOffset());
 				typedQuery.setMaxResults(query.getLimit());

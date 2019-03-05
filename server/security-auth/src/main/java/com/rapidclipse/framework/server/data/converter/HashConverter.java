@@ -121,7 +121,7 @@ public interface HashConverter extends Converter<String, String>
 			 */
 			public static char[] encode(final byte[] data)
 			{
-				final int    l   = data.length;
+				final int l = data.length;
 				
 				final char[] out = new char[l << 1];
 				

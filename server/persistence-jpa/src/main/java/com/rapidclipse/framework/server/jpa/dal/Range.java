@@ -39,10 +39,10 @@ public class Range<E, D extends Comparable> implements Serializable
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final PathHolder  pathHolder;
-	private D                 from;
-	private D                 to;
-	private Boolean           includeNull;
+	private final PathHolder pathHolder;
+	private D                from;
+	private D                to;
+	private Boolean          includeNull;
 	
 	/**
 	 * Constructs a new Range with no boundaries and no restrictions on field's

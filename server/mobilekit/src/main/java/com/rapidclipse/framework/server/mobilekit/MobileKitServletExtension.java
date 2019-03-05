@@ -80,9 +80,9 @@ public class MobileKitServletExtension implements RapServlet.Extension
 					final Element  documentElement = doc.getDocumentElement();
 					if(documentElement != null)
 					{
-						final ClassLoader classLoader      = getClass().getClassLoader();
+						final ClassLoader classLoader = getClass().getClassLoader();
 						
-						final NodeList    servicesNodeList = documentElement
+						final NodeList servicesNodeList = documentElement
 							.getElementsByTagName("services");
 						if(servicesNodeList.getLength() == 1)
 						{

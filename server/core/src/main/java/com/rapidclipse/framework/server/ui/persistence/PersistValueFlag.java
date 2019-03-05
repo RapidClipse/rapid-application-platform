@@ -35,12 +35,12 @@ public final class PersistValueFlag
 		return flag != null ? flag.value : DEFAULT;
 	}
 	
-	private final static boolean          DEFAULT = false;
+	private final static boolean DEFAULT = false;
 	
-	private final static PersistValueFlag TRUE    = new PersistValueFlag(true);
-	private final static PersistValueFlag FALSE   = new PersistValueFlag(false);
+	private final static PersistValueFlag TRUE  = new PersistValueFlag(true);
+	private final static PersistValueFlag FALSE = new PersistValueFlag(false);
 	
-	private final boolean                 value;
+	private final boolean value;
 	
 	private PersistValueFlag(final boolean value)
 	{

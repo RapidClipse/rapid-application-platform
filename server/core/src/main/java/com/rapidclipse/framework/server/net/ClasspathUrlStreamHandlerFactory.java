@@ -59,7 +59,8 @@ public class ClasspathUrlStreamHandlerFactory implements URLStreamHandlerFactory
 			install();
 		}
 		catch(final IOException e)
-		{}
+		{
+		}
 	}
 	
 	public static void install()

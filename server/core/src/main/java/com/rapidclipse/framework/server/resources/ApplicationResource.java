@@ -84,7 +84,8 @@ public class ApplicationResource extends StreamResource
 			}
 		}
 		catch(final IOException e)
-		{}
+		{
+		}
 		
 		Class<?> clazz = requestor;
 		if(clazz == null)

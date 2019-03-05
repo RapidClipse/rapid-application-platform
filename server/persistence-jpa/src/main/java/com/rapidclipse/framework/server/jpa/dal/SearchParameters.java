@@ -61,45 +61,45 @@ import com.rapidclipse.framework.server.jpa.AttributeChain;
  */
 public class SearchParameters implements Serializable
 {
-	private static final long                  serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 	
-	private SearchMode                         searchMode       = SearchMode.EQUALS;
-	private boolean                            andMode          = true;
+	private SearchMode searchMode = SearchMode.EQUALS;
+	private boolean    andMode    = true;
 	
-	private final Set<OrderBy>                 orders           = new HashSet<>();
+	private final Set<OrderBy> orders = new HashSet<>();
 	
 	// technical parameters
-	private boolean                            caseSensitive    = true;
+	private boolean caseSensitive = true;
 	
-	private PredicateSupplier                  predicateSupplier;
+	private PredicateSupplier predicateSupplier;
 	
 	// pagination
-	private int                                maxResults       = -1;
-	private int                                first            = 0;
-	private int                                pageSize         = 0;
+	private int maxResults = -1;
+	private int first      = 0;
+	private int pageSize   = 0;
 	
 	// fetches
-	private final Set<PathHolder>              fetches          = new HashSet<>();
+	private final Set<PathHolder> fetches = new HashSet<>();
 	
 	// ranges
-	private final List<Range<?, ?>>            ranges           = new ArrayList<>();
+	private final List<Range<?, ?>> ranges = new ArrayList<>();
 	
 	// property selectors
-	private final List<PropertySelector<?, ?>> properties       = new ArrayList<>();
+	private final List<PropertySelector<?, ?>> properties = new ArrayList<>();
 	
 	// pattern to match against all strings.
-	private String                             searchPattern;
+	private String searchPattern;
 	
 	// Warn: before enabling cache for queries,
 	// check this: https://hibernate.atlassian.net/browse/HHH-1523
-	private Boolean                            cacheable        = false;
-	private String                             cacheRegion;
-	private CacheStoreMode                     cacheStoreMode;
-	private CacheRetrieveMode                  cacheRetrieveMode;
+	private Boolean           cacheable = false;
+	private String            cacheRegion;
+	private CacheStoreMode    cacheStoreMode;
+	private CacheRetrieveMode cacheRetrieveMode;
 	
-	private boolean                            useAndInXToMany  = true;
+	private boolean useAndInXToMany = true;
 	
-	private boolean                            useDistinct      = false;
+	private boolean useDistinct = false;
 	
 	// -----------------------------------
 	// SearchMode

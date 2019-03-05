@@ -26,7 +26,7 @@ public enum Direction
 	 * Use the back-facing camera
 	 */
 	BACK,
-
+	
 	/**
 	 * Use the front-facing camera
 	 */

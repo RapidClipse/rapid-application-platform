@@ -65,7 +65,7 @@ public interface CameraService extends MobileService
 	{
 		getPicture(options, successCallback, null);
 	}
-
+	
 	/**
 	 * Takes a photo using the camera, or retrieves a photo from the device's
 	 * image gallery. The image is passed to the success callback as a

@@ -37,7 +37,7 @@ public class JpaAccessWrapperParticipant implements AccessWrapper.Participant
 	{
 		final PersistenceManager persistenceManager = Jpa.getPersistenceManager();
 		
-		final Conversationables  conversationables  = Conversationables.New();
+		final Conversationables conversationables = Conversationables.New();
 		CurrentInstance.set(Conversationables.class, conversationables);
 		
 		final SessionStrategyProvider sessionStrategyProvider = Jpa.getSessionStrategyProvider();

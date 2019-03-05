@@ -33,13 +33,13 @@ public final class XmlRole
 	////////////////////
 	
 	@XmlAttribute
-	String                      name;
+	String name;
 	
 	@XmlElement(name = "role")
 	ArrayList<XmlRoleReference> roles;
 	
 	@XmlElement(name = "permission")
-	ArrayList<XmlPermission>    permissions;
+	ArrayList<XmlPermission> permissions;
 	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //

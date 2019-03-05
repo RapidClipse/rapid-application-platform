@@ -328,10 +328,10 @@ public final class StringResourceUtils
 	 */
 	public static String format(String str, final Function<String, String> parameterProvider)
 	{
-		final boolean isRichText  = str.startsWith("{\\rtf");
+		final boolean isRichText = str.startsWith("{\\rtf");
 		
-		int           start;
-		int           searchStart = 0;
+		int start;
+		int searchStart = 0;
 		while((start = str.indexOf("{$", searchStart)) >= 0)
 		{
 			final int end = str.indexOf("}", start + 2);
@@ -354,13 +354,13 @@ public final class StringResourceUtils
 					}
 				}
 				
-				final String        value = parameterProvider.apply(key);
+				final String value = parameterProvider.apply(key);
 				
-				final StringBuilder sb    = new StringBuilder();
+				final StringBuilder sb = new StringBuilder();
 				sb.append(str.substring(0, start));
 				sb.append(value);
 				sb.append(str.substring(end + 1));
-				str         = sb.toString();
+				str = sb.toString();
 				
 				searchStart = start + value.length();
 			}

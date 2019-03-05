@@ -29,7 +29,7 @@ public final class XmlPermission
 	////////////////////
 	
 	@XmlAttribute
-	String  resource;
+	String resource;
 	
 	@XmlAttribute
 	Integer factor;

@@ -135,7 +135,7 @@ public interface Navigation
 					.getCurrent();
 				final String                      id       = registry.put(NavigationParameters.New(this.parameters));
 				
-				final Map<String, String>         paramMap = new HashMap<>();
+				final Map<String, String> paramMap = new HashMap<>();
 				paramMap.put(NavigationUtils.ID_PARAMETER_NAME, id);
 				
 				// _ as dummy parameter value

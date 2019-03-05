@@ -138,9 +138,11 @@ public interface StringResourceProvider
 							.getString(key);
 					}
 					catch(final MissingResourceException mre)
-					{}
+					{
+					}
 					catch(final NullPointerException npe)
-					{}
+					{
+					}
 					
 					final int lastDot = name.lastIndexOf('.');
 					if(lastDot > 0)
@@ -172,7 +174,8 @@ public interface StringResourceProvider
 					return localizedProjectBundle.getString(key);
 				}
 				catch(final MissingResourceException e)
-				{}
+				{
+				}
 			}
 			
 			if(this.defaultProjectBundle != null)
@@ -182,7 +185,8 @@ public interface StringResourceProvider
 					return this.defaultProjectBundle.getString(key);
 				}
 				catch(final MissingResourceException e)
-				{}
+				{
+				}
 			}
 			
 			final String className = clazz != null ? clazz.getName() : getClass().getName();
@@ -233,7 +237,8 @@ public interface StringResourceProvider
 					}
 				}
 				catch(final IOException e)
-				{}
+				{
+				}
 				
 				return null;
 			}

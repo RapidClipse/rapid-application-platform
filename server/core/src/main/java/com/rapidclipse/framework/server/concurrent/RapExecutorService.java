@@ -142,7 +142,8 @@ public interface RapExecutorService extends Executor
 					.parseInt(context.getInitParameter(THREAD_COUNT_INIT_PARAMETER));
 			}
 			catch(final NumberFormatException localNumberFormatException)
-			{}
+			{
+			}
 			
 			final ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
 			final ThreadFactory daemonThreadFactory  = runnable -> {

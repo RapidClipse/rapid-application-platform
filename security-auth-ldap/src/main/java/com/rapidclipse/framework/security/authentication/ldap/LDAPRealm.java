@@ -145,17 +145,17 @@ public class LDAPRealm extends ActiveDirectoryRealm implements AutoCloseable
 		}
 		
 		// SHIRO-115 - prevent potential code injection:
-		final String               searchFilter    = "(&(objectClass=person)(userPrincipalName={0}))";
-		final Object[]             searchArguments = new Object[]{userPrincipalName};
+		final String   searchFilter    = "(&(objectClass=person)(userPrincipalName={0}))";
+		final Object[] searchArguments = new Object[]{userPrincipalName};
 		
-		final NamingEnumeration<?> answer          = this.ldapContext.search(this.searchBase, searchFilter,
+		final NamingEnumeration<?> answer = this.ldapContext.search(this.searchBase, searchFilter,
 			searchArguments, searchCtls);
 		
 		while(answer.hasMoreElements())
 		{
-			final SearchResult sr    = (SearchResult)answer.next();
+			final SearchResult sr = (SearchResult)answer.next();
 			
-			final Attributes   attrs = sr.getAttributes();
+			final Attributes attrs = sr.getAttributes();
 			
 			if(attrs != null)
 			{
@@ -199,10 +199,10 @@ public class LDAPRealm extends ActiveDirectoryRealm implements AutoCloseable
 		final String searchBase)
 		throws NamingException
 	{
-		final String         searchFilter    = "(&(objectClass=group)(CN={0}))";
-		final Object[]       searchArguments = new Object[]{groupName};
+		final String   searchFilter    = "(&(objectClass=group)(CN={0}))";
+		final Object[] searchArguments = new Object[]{groupName};
 		
-		final SearchControls searchCtls      = new SearchControls();
+		final SearchControls searchCtls = new SearchControls();
 		searchCtls.setSearchScope(SearchControls.SUBTREE_SCOPE);
 		
 		final NamingEnumeration<?> answer = this.ldapContext.search(searchBase, searchFilter,
@@ -210,9 +210,9 @@ public class LDAPRealm extends ActiveDirectoryRealm implements AutoCloseable
 		
 		while(answer.hasMoreElements())
 		{
-			final SearchResult sr    = (SearchResult)answer.next();
+			final SearchResult sr = (SearchResult)answer.next();
 			
-			final Attributes   attrs = sr.getAttributes();
+			final Attributes attrs = sr.getAttributes();
 			
 			if(attrs != null)
 			{

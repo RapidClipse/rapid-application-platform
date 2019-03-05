@@ -31,9 +31,9 @@ public final class BeanInfoUtils
 	{
 		try
 		{
-			BeanInfo       beanInfo = Introspector.getBeanInfo(beanClass);
+			BeanInfo beanInfo = Introspector.getBeanInfo(beanClass);
 			
-			final String[] parts    = propertyPath.split("\\.");
+			final String[] parts = propertyPath.split("\\.");
 			for(int i = 0; i < parts.length - 1; i++)
 			{
 				final String             name               = parts[i];

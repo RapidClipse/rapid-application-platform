@@ -43,15 +43,15 @@ public interface PersistenceManager
 	///////////////////////////////////////////////////////////////////////////
 	// factory //
 	/////////////////////////////////////////////////
-
+	
 	public static interface Factory
 	{
 		public PersistenceManager createPersistenceManager(final ServletContext context);
-
+		
 		///////////////////////////////////////////////////////////////////////////
 		// implementation //
 		/////////////////////////////////////////////////
-
+		
 		public static class Implementation implements Factory
 		{
 			@Override
@@ -61,35 +61,35 @@ public interface PersistenceManager
 			}
 		}
 	}
-
+	
 	public static final String FACTORY_INIT_PARAMETER = "rap.persistenceManager.factory";
-
+	
 	public String getDefaultPersistenceUnit();
-
+	
 	public Iterable<String> getPersistenceUnits();
-
+	
 	public Iterable<Class<?>> getPersistenceUnitClasses(final String persistenceUnit);
-
+	
 	public String getPersistenceUnit(Class<?> clazz);
-
+	
 	public EntityManagerFactory getEntityManagerFactory(final String persistenceUnit);
-
+	
 	public default boolean isQueryCacheEnabled(final String persistenceUnit)
 	{
 		return isQueryCacheEnabled(getEntityManagerFactory(persistenceUnit));
 	}
-
+	
 	public boolean isQueryCacheEnabled(final EntityManagerFactory factory);
-
+	
 	public default SharedCacheMode getQueryCacheMode(final String persistenceUnit)
 	{
 		return getQueryCacheMode(getEntityManagerFactory(persistenceUnit));
 	}
-
+	
 	public SharedCacheMode getQueryCacheMode(final EntityManagerFactory factory);
-
+	
 	public void close();
-
+	
 	public static class Implementation implements PersistenceManager
 	{
 		private final Map<String, Collection<Class<?>>> unitToClasses;
@@ -97,19 +97,19 @@ public interface PersistenceManager
 		private final Map<String, EntityManagerFactory> entityManagerFactories = new HashMap<>();
 		private Boolean                                 queryCacheEnabled;
 		private SharedCacheMode                         queryCacheMode;
-
+		
 		public Implementation(final ServletContext servletContext) throws PersistenceException
 		{
 			this.unitToClasses = readPersistenceUnitTypes(servletContext);
 			this.classToUnit   = createClassToUnitMap(this.unitToClasses);
 		}
-
+		
 		protected Map<String, Collection<Class<?>>> readPersistenceUnitTypes(
 			final ServletContext servletContext)
 			throws PersistenceException
 		{
 			final Map<String, Collection<Class<?>>> persistenceUnitTypes = new LinkedHashMap<>();
-
+			
 			try
 			{
 				final URL url = findPersistenceXML(servletContext);
@@ -142,10 +142,10 @@ public interface PersistenceManager
 			{
 				throw new PersistenceException(e);
 			}
-
+			
 			return persistenceUnitTypes;
 		}
-
+		
 		protected URL findPersistenceXML(final ServletContext servletContext)
 			throws MalformedURLException
 		{
@@ -157,7 +157,7 @@ public interface PersistenceManager
 			}
 			return resourceUrl;
 		}
-
+		
 		protected Map<Class<?>, String> createClassToUnitMap(
 			final Map<String, Collection<Class<?>>> unitToClasses)
 		{
@@ -168,7 +168,7 @@ public interface PersistenceManager
 			});
 			return classToUnit;
 		}
-
+		
 		@Override
 		public String getDefaultPersistenceUnit()
 		{
@@ -178,19 +178,19 @@ public interface PersistenceManager
 			}
 			return getPersistenceUnits().iterator().next();
 		}
-
+		
 		@Override
 		public Iterable<String> getPersistenceUnits()
 		{
 			return this.unitToClasses.keySet();
 		}
-
+		
 		@Override
 		public Iterable<Class<?>> getPersistenceUnitClasses(final String persistenceUnit)
 		{
 			return this.unitToClasses.get(persistenceUnit);
 		}
-
+		
 		@Override
 		public String getPersistenceUnit(Class<?> clazz)
 		{
@@ -203,10 +203,10 @@ public interface PersistenceManager
 				}
 				clazz = clazz.getSuperclass();
 			}
-
+			
 			return null;
 		}
-
+		
 		@Override
 		public EntityManagerFactory getEntityManagerFactory(final String persistenceUnit)
 		{
@@ -218,7 +218,7 @@ public interface PersistenceManager
 			}
 			return factory;
 		}
-
+		
 		@Override
 		public boolean isQueryCacheEnabled(final EntityManagerFactory factory)
 		{
@@ -228,17 +228,17 @@ public interface PersistenceManager
 				final Object              property   = properties.get("hibernate.cache.use_query_cache");
 				this.queryCacheEnabled = "true".equals(property);
 			}
-
+			
 			return this.queryCacheEnabled;
 		}
-
+		
 		@Override
 		public SharedCacheMode getQueryCacheMode(final EntityManagerFactory factory)
 		{
 			if(this.queryCacheMode == null)
 			{
 				this.queryCacheMode = SharedCacheMode.ENABLE_SELECTIVE;
-
+				
 				final Map<String, Object> properties = factory.getProperties();
 				final Object              property   = properties.get("rap.queryCache.mode");
 				if(property != null)
@@ -248,13 +248,14 @@ public interface PersistenceManager
 						this.queryCacheMode = SharedCacheMode.valueOf(property.toString());
 					}
 					catch(final IllegalArgumentException e)
-					{}
+					{
+					}
 				}
 			}
-
+			
 			return this.queryCacheMode;
 		}
-
+		
 		@Override
 		public void close()
 		{

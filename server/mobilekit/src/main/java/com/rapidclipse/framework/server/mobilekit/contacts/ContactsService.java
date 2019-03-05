@@ -56,7 +56,7 @@ public interface ContactsService extends MobileService
 	{
 		return MobileService.getCurrent(ContactsService.class);
 	}
-
+	
 	/**
 	 * Finds contacts in the device contacts database.
 	 * <p>

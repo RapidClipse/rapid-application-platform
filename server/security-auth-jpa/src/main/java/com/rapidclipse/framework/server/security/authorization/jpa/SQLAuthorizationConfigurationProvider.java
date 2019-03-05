@@ -88,15 +88,15 @@ public class SQLAuthorizationConfigurationProvider implements AuthorizationConfi
 	@Override
 	public AuthorizationConfiguration provideConfiguration()
 	{
-		final Map<String, Set<String>>          resourceResources   = new HashMap<>();
-		final Map<String, Set<String>>          roleRoles           = new HashMap<>();
-		final Map<String, Map<String, Integer>> rolePermissions     = new HashMap<>();
-		final Map<String, Set<String>>          subjectRoles        = new HashMap<>();
+		final Map<String, Set<String>>          resourceResources = new HashMap<>();
+		final Map<String, Set<String>>          roleRoles         = new HashMap<>();
+		final Map<String, Map<String, Integer>> rolePermissions   = new HashMap<>();
+		final Map<String, Set<String>>          subjectRoles      = new HashMap<>();
 		
-		final EntityManager                     entityManager       = Jpa.getEntityManager(getPersistenceUnit());
-		final Query                             usersAndGroupsQuery = entityManager
+		final EntityManager  entityManager       = Jpa.getEntityManager(getPersistenceUnit());
+		final Query          usersAndGroupsQuery = entityManager
 			.createNativeQuery(getUsersAndGroupsSelect());
-		final List<Object[]>                    usersAndGroupsList  = usersAndGroupsQuery.getResultList();
+		final List<Object[]> usersAndGroupsList  = usersAndGroupsQuery.getResultList();
 		
 		usersAndGroupsList.stream().map(row -> String.valueOf(row[0]))
 			.filter(user -> !subjectRoles.containsKey(user))

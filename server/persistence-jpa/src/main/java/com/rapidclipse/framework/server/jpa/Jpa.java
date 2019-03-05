@@ -74,20 +74,20 @@ import com.rapidclipse.framework.server.util.SoftCache;
  */
 public final class Jpa
 {
-	private final static String                                      HINT_CACHE_STORE_MODE    =
+	private final static String HINT_CACHE_STORE_MODE    =
 		"javax.persistence.cache.storeMode";
-	private final static String                                      HINT_CACHE_RETRIEVE_MODE =
+	private final static String HINT_CACHE_RETRIEVE_MODE =
 		"javax.persistence.cache.retrieveMode";
 	
-	public final static String                                       PROPERTY_SEPARATOR       = ".";
+	public final static String PROPERTY_SEPARATOR = ".";
 	
-	private static PersistenceManager                                persistenceManager;
+	private static PersistenceManager persistenceManager;
 	
-	private static SessionStrategyProvider                           sessionStrategyProvider;
+	private static SessionStrategyProvider sessionStrategyProvider;
 	
-	private final static SoftCache<Class<?>, DataAccessObject<?, ?>> daoCache                 = new SoftCache<>();
+	private final static SoftCache<Class<?>, DataAccessObject<?, ?>> daoCache = new SoftCache<>();
 	
-	private final static AtomicLong                                  aliasCounter             = new AtomicLong();
+	private final static AtomicLong aliasCounter = new AtomicLong();
 	
 	/**
 	 * @return the persistenceManager
@@ -431,7 +431,7 @@ public final class Jpa
 	{
 		final List<Attribute<?, ?>> attributes = new ArrayList<>();
 		
-		Class<?>                    current    = entityClass;
+		Class<?> current = entityClass;
 		
 		for(final String name : propertyPath.split("\\" + PROPERTY_SEPARATOR))
 		{
@@ -613,7 +613,7 @@ public final class Jpa
 		final CacheableQuery cacheableQuery,
 		final String persistenceUnit)
 	{
-		boolean               cacheable      = false;
+		boolean cacheable = false;
 		
 		final SharedCacheMode queryCacheMode = getPersistenceManager()
 			.getQueryCacheMode(persistenceUnit);
@@ -621,13 +621,13 @@ public final class Jpa
 		{
 			case ALL:
 				cacheable = true;
-				break;
-			
+			break;
+		
 			case NONE:
 			case UNSPECIFIED:
 				cacheable = false;
-				break;
-			
+			break;
+		
 			case DISABLE_SELECTIVE:
 				if(cacheableQuery != null)
 				{
@@ -637,8 +637,8 @@ public final class Jpa
 				{
 					cacheable = true;
 				}
-				break;
-			
+			break;
+		
 			case ENABLE_SELECTIVE:
 				if(cacheableQuery != null)
 				{
@@ -648,7 +648,7 @@ public final class Jpa
 				{
 					cacheable = false;
 				}
-				break;
+			break;
 		}
 		
 		typedQuery.setHint(QueryHints.CACHEABLE, cacheable);

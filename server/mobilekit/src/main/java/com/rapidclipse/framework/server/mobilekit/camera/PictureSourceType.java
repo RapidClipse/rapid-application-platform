@@ -40,12 +40,12 @@ public enum PictureSourceType
 	SAVED_PHOTO_ALBUM("SAVEDPHOTOALBUM");
 	
 	private String fieldName;
-
+	
 	private PictureSourceType(final String fieldName)
 	{
 		this.fieldName = fieldName;
 	}
-
+	
 	public String getFieldName()
 	{
 		return this.fieldName;

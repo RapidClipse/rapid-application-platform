@@ -107,7 +107,7 @@ public interface BarcodescannerService extends MobileService
 	{
 		scan(options, successCallback, null);
 	}
-
+	
 	/**
 	 * Opens the barcode scanner and passes the result to the callback if the
 	 * scan was completed successfully.

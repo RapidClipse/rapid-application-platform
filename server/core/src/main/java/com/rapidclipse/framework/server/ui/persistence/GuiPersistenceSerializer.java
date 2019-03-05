@@ -137,9 +137,9 @@ public interface GuiPersistenceSerializer
 				final JsonDeserializationContext context)
 				throws JsonParseException
 			{
-				final Map<String, Object> values  = new LinkedHashMap<>();
+				final Map<String, Object> values = new LinkedHashMap<>();
 				
-				final JsonObject          jsonObj = (JsonObject)element;
+				final JsonObject jsonObj = (JsonObject)element;
 				jsonObj.entrySet().forEach(entry -> {
 					final String      key         = entry.getKey();
 					final JsonElement jsonElement = entry.getValue();

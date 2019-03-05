@@ -126,7 +126,7 @@ public interface CriteriaParameterProvider extends Serializable
 				query.setParameter(parameter, value);
 			}
 		}
-
+		
 		private Static()
 		{
 			throw new Error();

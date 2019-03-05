@@ -21,6 +21,6 @@ package com.rapidclipse.framework.server.mobilekit.barcodescanner;
 public interface Barcode
 {
 	public BarcodeFormat getFormat();
-
+	
 	public String getData();
 }

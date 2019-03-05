@@ -64,14 +64,14 @@ public class PropertySelector<E, F> implements Serializable
 	
 	private static final long serialVersionUID = 1L;
 	
-	private final PathHolder  pathHolder;
-	private List<F>           selected         = new ArrayList<>();
-	private SearchMode        searchMode;                          // for
-																	// string
-																	// property
-																	// only.
-	private Boolean           notIncludingNull;
-	private boolean           orMode           = true;
+	private final PathHolder pathHolder;
+	private List<F>          selected = new ArrayList<>();
+	private SearchMode       searchMode;                  // for
+															// string
+															// property
+															// only.
+	private Boolean          notIncludingNull;
+	private boolean          orMode   = true;
 	
 	public PropertySelector(final Attribute<?, ?>... attributes)
 	{

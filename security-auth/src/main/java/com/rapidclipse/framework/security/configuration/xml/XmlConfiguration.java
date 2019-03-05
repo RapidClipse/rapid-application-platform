@@ -62,10 +62,10 @@ public final class XmlConfiguration
 	ArrayList<XmlResource> resources;
 	
 	@XmlElement(name = "role")
-	ArrayList<XmlRole>     roles;
+	ArrayList<XmlRole> roles;
 	
 	@XmlElement(name = "subject")
-	ArrayList<XmlSubject>  subjects;
+	ArrayList<XmlSubject> subjects;
 	
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //

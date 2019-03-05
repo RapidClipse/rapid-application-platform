@@ -143,12 +143,12 @@ public interface RoleRegistry
 		/**
 		 * The read-only role-name-to-role map used as an internal datastructure
 		 */
-		private final Map<String, Role>       registry;
+		private final Map<String, Role> registry;
 		
 		/**
 		 * The instance used to synchronize on. This may be any instance, even the map or registry instance itself.
 		 */
-		private final Object                  registryLock;
+		private final Object registryLock;
 		
 		/**
 		 * A map wrapper implementation wrapping the actual registry map and using the registryLock instance to

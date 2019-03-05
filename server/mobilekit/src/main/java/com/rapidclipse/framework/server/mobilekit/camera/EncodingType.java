@@ -26,7 +26,7 @@ public enum EncodingType
 	 * Return JPEG encoded image
 	 */
 	JPEG,
-
+	
 	/**
 	 * Return PNG encoded image
 	 */

@@ -63,7 +63,7 @@ public interface CaptionParameterProvider
 		{
 			try
 			{
-				final BeanInfo           beanInfo           = Introspector.getBeanInfo(element.getClass());
+				final BeanInfo beanInfo = Introspector.getBeanInfo(element.getClass());
 				
 				final PropertyDescriptor propertyDescriptor = Arrays
 					.stream(beanInfo.getPropertyDescriptors())
@@ -90,7 +90,8 @@ public interface CaptionParameterProvider
 				}
 			}
 			catch(final IntrospectionException e)
-			{}
+			{
+			}
 			
 			return parameterName;
 		}

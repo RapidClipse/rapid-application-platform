@@ -132,7 +132,7 @@ public interface Comparison extends Filter
 	
 	public static interface StringComparison extends Comparison
 	{
-		public final static char            DEFAULT_WILDCARD  = '*';
+		public final static char DEFAULT_WILDCARD = '*';
 		
 		public final static List<Character> DEFAULT_WILDCARDS = Collections
 			.unmodifiableList(Arrays.asList(DEFAULT_WILDCARD));

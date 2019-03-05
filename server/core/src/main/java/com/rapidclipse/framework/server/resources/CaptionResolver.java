@@ -113,8 +113,8 @@ public interface CaptionResolver
 		{
 			CaptionParameterProvider parameterProvider = null;
 			
-			int                      start;
-			int                      searchStart       = 0;
+			int start;
+			int searchStart = 0;
 			while((start = string.indexOf("{%", searchStart)) >= 0)
 			{
 				final int end = string.indexOf("}", start + 2);
@@ -125,14 +125,14 @@ public interface CaptionResolver
 						parameterProvider = getParameterProvider(element);
 					}
 					
-					final String        parameterName = string.substring(start + 2, end);
-					final String        value         = parameterProvider.getParameterValue(element, parameterName);
+					final String parameterName = string.substring(start + 2, end);
+					final String value         = parameterProvider.getParameterValue(element, parameterName);
 					
-					final StringBuilder sb            = new StringBuilder();
+					final StringBuilder sb = new StringBuilder();
 					sb.append(string.substring(0, start));
 					sb.append(value);
 					sb.append(string.substring(end + 1));
-					string      = sb.toString();
+					string = sb.toString();
 					
 					searchStart = start + value.length();
 				}
@@ -154,13 +154,13 @@ public interface CaptionResolver
 	
 	public static class BeanInfoParameterProvider implements Function<String, String>
 	{
-		protected static Logger LOG             = Logger
+		protected static Logger LOG = Logger
 			.getLogger(BeanInfoParameterProvider.class.getName());
 		
-		private final Object    element;
+		private final Object element;
 		
-		private boolean         acquireBeanInfo = true;
-		private BeanInfo        beanInfo;
+		private boolean  acquireBeanInfo = true;
+		private BeanInfo beanInfo;
 		
 		public BeanInfoParameterProvider(final Object element)
 		{

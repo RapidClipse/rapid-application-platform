@@ -37,17 +37,17 @@ public interface SubsetDataProvider<T> extends Serializable
 		ComboBox<T> comboBox,
 		final FilterContext context,
 		final FilterProperty<T> property);
-
+	
 	public static <T> SubsetDataProvider<T> Empty()
 	{
 		return (comboBox, context, property) -> comboBox.setItems(Collections.emptyList());
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(final Collection<T> items)
 	{
 		return (comboBox, context, property) -> comboBox.setItems(items);
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final Collection<T> items,
 		final ItemLabelGenerator<T> itemLabelGenerator)
@@ -57,12 +57,12 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setItems(items);
 		};
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(final ListDataProvider<T> listDataProvider)
 	{
 		return (comboBox, context, property) -> comboBox.setDataProvider(listDataProvider);
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final ListDataProvider<T> listDataProvider,
 		final ItemLabelGenerator<T> itemLabelGenerator)
@@ -72,14 +72,14 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setDataProvider(listDataProvider);
 		};
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final FetchItemsCallback<T> fetchItems,
 		final SerializableFunction<String, Integer> sizeCallback)
 	{
 		return (comboBox, context, property) -> comboBox.setDataProvider(fetchItems, sizeCallback);
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final FetchItemsCallback<T> fetchItems,
 		final SerializableFunction<String, Integer> sizeCallback,
@@ -90,14 +90,14 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setDataProvider(fetchItems, sizeCallback);
 		};
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final ItemFilter<T> itemFilter,
 		final Collection<T> items)
 	{
 		return (comboBox, context, property) -> comboBox.setItems(itemFilter, items);
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final ItemFilter<T> itemFilter,
 		final Collection<T> items,
@@ -108,7 +108,7 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setItems(itemFilter, items);
 		};
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final ItemFilter<T> itemFilter,
 		final ListDataProvider<T> listDataProvider)
@@ -116,7 +116,7 @@ public interface SubsetDataProvider<T> extends Serializable
 		return (comboBox, context, property) -> comboBox.setDataProvider(itemFilter,
 			listDataProvider);
 	}
-
+	
 	public static <T> SubsetDataProvider<T> New(
 		final ItemFilter<T> itemFilter,
 		final ListDataProvider<T> listDataProvider,
@@ -127,7 +127,7 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setDataProvider(itemFilter, listDataProvider);
 		};
 	}
-
+	
 	public static <T, C> SubsetDataProvider<T> New(
 		final DataProvider<T, C> dataProvider,
 		final SerializableFunction<String, C> filterConverter)
@@ -135,7 +135,7 @@ public interface SubsetDataProvider<T> extends Serializable
 		return (comboBox, context, property) -> comboBox.setDataProvider(dataProvider,
 			filterConverter);
 	}
-
+	
 	public static <T, C> SubsetDataProvider<T> New(
 		final DataProvider<T, C> dataProvider,
 		final SerializableFunction<String, C> filterConverter,
@@ -146,12 +146,12 @@ public interface SubsetDataProvider<T> extends Serializable
 			comboBox.setDataProvider(dataProvider, filterConverter);
 		};
 	}
-
+	
 	public static <T, C> SubsetDataProvider<T> New(final DataProvider<T, String> dataProvider)
 	{
 		return (comboBox, context, property) -> comboBox.setDataProvider(dataProvider);
 	}
-
+	
 	public static <T, C> SubsetDataProvider<T> New(
 		final DataProvider<T, String> dataProvider,
 		final ItemLabelGenerator<T> itemLabelGenerator)

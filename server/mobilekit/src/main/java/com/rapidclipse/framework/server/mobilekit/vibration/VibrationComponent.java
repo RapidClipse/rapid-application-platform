@@ -34,7 +34,7 @@ public class VibrationComponent extends MobileComponent implements VibrationServ
 	{
 		super();
 	}
-
+	
 	@Override
 	public void vibrate(final int... pattern)
 	{

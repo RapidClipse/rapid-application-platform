@@ -33,7 +33,7 @@ public final class XmlResource
 	////////////////////
 	
 	@XmlAttribute
-	String                          name;
+	String name;
 	
 	@XmlElement(name = "child")
 	ArrayList<XmlResourceReference> children;

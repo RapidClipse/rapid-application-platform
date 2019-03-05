@@ -299,32 +299,32 @@ public interface ConverterBuilder<PRESENTATION, MODEL>
 		
 		private final Class<? extends Number> targetType;
 		
-		private ErrorMessageProvider          errorMessageProvider = context -> "Conversion error";
+		private ErrorMessageProvider errorMessageProvider = context -> "Conversion error";
 		
-		private Locale                        locale;
-		private FormatType                    formatType;
+		private Locale     locale;
+		private FormatType formatType;
 		
 		// NumberFormat
-		private Boolean                       groupingUsed;
-		private Integer                       maximumIntegerDigits;
-		private Integer                       minimumIntegerDigits;
-		private Integer                       maximumFractionDigits;
-		private Integer                       minimumFractionDigits;
-		private Currency                      currency;
-		private String                        currencySymbol;
-		private RoundingMode                  roundingMode;
+		private Boolean      groupingUsed;
+		private Integer      maximumIntegerDigits;
+		private Integer      minimumIntegerDigits;
+		private Integer      maximumFractionDigits;
+		private Integer      minimumFractionDigits;
+		private Currency     currency;
+		private String       currencySymbol;
+		private RoundingMode roundingMode;
 		
 		// DecimalFormat
-		private DecimalFormatSymbols          decimalFormatSymbols;
-		private Boolean                       decimalSeparatorAlwaysShown;
-		private Integer                       groupingSize;
-		private Integer                       multiplier;
-		private String                        negativePrefix;
-		private String                        negativeSuffix;
-		private String                        positivePrefix;
-		private String                        positiveSuffix;
+		private DecimalFormatSymbols decimalFormatSymbols;
+		private Boolean              decimalSeparatorAlwaysShown;
+		private Integer              groupingSize;
+		private Integer              multiplier;
+		private String               negativePrefix;
+		private String               negativeSuffix;
+		private String               positivePrefix;
+		private String               positiveSuffix;
 		
-		private MODEL                         emptyValue;
+		private MODEL emptyValue;
 		
 		StringToNumberConverterBuilder(final Class<? extends Number> targetType)
 		{
@@ -615,19 +615,19 @@ public interface ConverterBuilder<PRESENTATION, MODEL>
 			{
 				case INTEGER:
 					format = NumberFormat.getIntegerInstance(locale);
-					break;
-				
+				break;
+			
 				case NUMBER:
 					format = NumberFormat.getNumberInstance(locale);
-					break;
-				
+				break;
+			
 				case CURRENCY:
 					format = NumberFormat.getCurrencyInstance(locale);
-					break;
-				
+				break;
+			
 				case PERCENT:
 					format = NumberFormat.getPercentInstance(locale);
-					break;
+				break;
 			}
 			
 			if(this.groupingUsed != null)
@@ -709,8 +709,8 @@ public interface ConverterBuilder<PRESENTATION, MODEL>
 	{
 		private ErrorMessageProvider errorMessageProvider = context -> "Conversion error";
 		
-		private String               trueString           = Boolean.TRUE.toString();
-		private String               falseString          = Boolean.FALSE.toString();
+		private String trueString  = Boolean.TRUE.toString();
+		private String falseString = Boolean.FALSE.toString();
 		
 		StringToBooleanConverterBuilder()
 		{

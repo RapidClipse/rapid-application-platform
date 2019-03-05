@@ -61,9 +61,9 @@ public class JPAAuthenticator
 		final CredentialsUsernamePassword credentials)
 		throws AuthenticationFailedException
 	{
-		final byte[]                      hashedPassword = this.passwordHasher.hashPassword(credentials.password());
+		final byte[] hashedPassword = this.passwordHasher.hashPassword(credentials.password());
 		
-		final CredentialsUsernamePassword found          = Jpa
+		final CredentialsUsernamePassword found = Jpa
 			.getDaoByEntityType(this.authenticationEntityType).findAll().stream()
 			.filter(entity -> entity.username().equals(credentials.username())
 				&& Arrays.equals(hashedPassword, entity.password()))

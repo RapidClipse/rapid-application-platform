@@ -38,12 +38,12 @@ public enum DestinationType
 	NATIVE_URI("NATIVE_URI");
 	
 	private String fieldName;
-
+	
 	private DestinationType(final String fieldName)
 	{
 		this.fieldName = fieldName;
 	}
-
+	
 	String getFieldName()
 	{
 		return this.fieldName;

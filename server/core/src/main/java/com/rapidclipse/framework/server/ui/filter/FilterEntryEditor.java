@@ -39,10 +39,10 @@ import com.vaadin.flow.shared.Registration;
 @SuppressWarnings("rawtypes")
 public class FilterEntryEditor extends HorizontalLayout
 {
-	private final FilterContext                            context;
+	private final FilterContext context;
 	
-	private final ComboBox<FilterProperty<?>>              propertyComboBox;
-	private final ComboBox<FilterOperator>                 operatorComboBox;
+	private final ComboBox<FilterProperty<?>> propertyComboBox;
+	private final ComboBox<FilterOperator>    operatorComboBox;
 	
 	private final ValueChangeListener<ValueChangeEvent<?>> filterValueChangeListener;
 	private FilterProperty<?>                              selectedProperty;
@@ -54,7 +54,7 @@ public class FilterEntryEditor extends HorizontalLayout
 	{
 		super();
 		
-		this.context          = context;
+		this.context = context;
 		
 		this.propertyComboBox = createPropertyComboBox();
 		this.propertyComboBox.setItems(context.getFilterSubject().filterableProperties());

@@ -27,12 +27,12 @@ import com.vaadin.flow.server.AbstractStreamResource;
 public interface Picture
 {
 	public String getBase64data();
-
+	
 	public byte[] toRawData();
 	
 	public InputStream toInputStream();
-
+	
 	public AbstractStreamResource toResource();
-
+	
 	public String getURI();
 }

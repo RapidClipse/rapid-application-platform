@@ -33,10 +33,10 @@ public final class XmlSubject
 	////////////////////
 	
 	@XmlAttribute
-	String                      name;
+	String name;
 	
 	@XmlAttribute
-	String                      password;
+	String password;
 	
 	@XmlElement(name = "role")
 	ArrayList<XmlRoleReference> roles;

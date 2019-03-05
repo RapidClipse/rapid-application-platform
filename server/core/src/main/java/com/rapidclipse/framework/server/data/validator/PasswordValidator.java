@@ -45,10 +45,10 @@ public class PasswordValidator extends AbstractValidator<String>
 	
 	private final static Pattern WHITESPACE_PATTERN = Pattern.compile("\\s");
 	
-	private final int            minLength;
-	private final boolean        whitespacesAllowed;
-	private final int            minCompliedConditions;
-	private final Condition[]    conditions;
+	private final int         minLength;
+	private final boolean     whitespacesAllowed;
+	private final int         minCompliedConditions;
+	private final Condition[] conditions;
 	
 	public PasswordValidator(
 		final String errorMessage,

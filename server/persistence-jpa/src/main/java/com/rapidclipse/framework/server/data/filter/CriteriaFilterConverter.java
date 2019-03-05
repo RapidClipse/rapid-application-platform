@@ -43,7 +43,7 @@ import com.rapidclipse.framework.server.jpa.Jpa;
 @SuppressWarnings("rawtypes")
 public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 {
-	private final static char      CRITERIA_WILDCARD = '%';
+	private final static char CRITERIA_WILDCARD = '%';
 	
 	private final CriteriaQuery<T> criteria;
 	private final Root<T>          root;
@@ -54,7 +54,7 @@ public class CriteriaFilterConverter<T> implements FilterConverter<Predicate>
 		
 		this.criteria = criteria;
 		
-		this.root     = Jpa.findRoot(criteria, criteria.getResultType());
+		this.root = Jpa.findRoot(criteria, criteria.getResultType());
 		if(this.root == null)
 		{
 			throw new IllegalArgumentException("Unsupported criteria");

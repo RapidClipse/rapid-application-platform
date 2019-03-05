@@ -25,10 +25,10 @@ public class LDAPConfiguration
 		private final String providerUrl;
 		
 		// Optional
-		private String       suffix = "";
-		private String       searchbase;
-		private String       securityAuthentication;
-		private String       securityProtocol;
+		private String suffix = "";
+		private String searchbase;
+		private String securityAuthentication;
+		private String securityProtocol;
 		
 		public LDAPConfigurationBuilder(final String providerUrl)
 		{
@@ -78,7 +78,7 @@ public class LDAPConfiguration
 	 */
 	private LDAPConfiguration(final LDAPConfigurationBuilder builder)
 	{
-		this.providerUrl            = builder.providerUrl;
+		this.providerUrl = builder.providerUrl;
 		
 		// optionals
 		this.suffix                 = builder.suffix;

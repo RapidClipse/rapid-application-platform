@@ -37,7 +37,7 @@ public class BarcodescannerComponent extends MobileComponent implements Barcodes
 	{
 		super();
 	}
-
+	
 	@Override
 	public void scan(
 		final BarcodescannerOptions options,
@@ -54,14 +54,14 @@ public class BarcodescannerComponent extends MobileComponent implements Barcodes
 		final Barcode barcode = toJava(barcodeObj, BarcodeImpl.class);
 		getAndRemoveCall(id).success(barcode);
 	}
-
+	
 	@ClientCallable
 	void scan_error(final String id, final String errorMessage)
 	{
 		final MobileServiceError error = new MobileServiceError(this, errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-
+	
 	private static class BarcodeImpl implements Barcode
 	{
 		private final BarcodeFormat format;
@@ -74,13 +74,13 @@ public class BarcodescannerComponent extends MobileComponent implements Barcodes
 			this.format = format;
 			this.data   = data;
 		}
-
+		
 		@Override
 		public BarcodeFormat getFormat()
 		{
 			return this.format;
 		}
-
+		
 		@Override
 		public String getData()
 		{

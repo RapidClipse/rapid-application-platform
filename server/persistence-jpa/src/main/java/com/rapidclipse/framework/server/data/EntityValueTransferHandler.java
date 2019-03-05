@@ -55,8 +55,8 @@ public class EntityValueTransferHandler implements ValueTransferHandler
 	{
 		final EntityValueTransferObject transferObject = (EntityValueTransferObject)value;
 		
-		Serializable                    id             = transferObject.id();
-		final Class<?>                  idType         = transferObject.idType();
+		Serializable   id     = transferObject.id();
+		final Class<?> idType = transferObject.idType();
 		if(!idType.isAssignableFrom(id.getClass()) && id instanceof Number)
 		{
 			/*

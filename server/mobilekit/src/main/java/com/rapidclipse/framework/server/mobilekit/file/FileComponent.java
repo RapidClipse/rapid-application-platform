@@ -87,23 +87,23 @@ public class FileComponent extends MobileComponent implements FileService
 		}
 		return new FileServiceError(this, message, reason);
 	}
-
+	
 	private static class FileDataImpl implements FileData
 	{
 		private final String base64data;
-
+		
 		@SuppressWarnings("unused") // Used by Gson via reflection
 		FileDataImpl(final String base64data)
 		{
 			this.base64data = base64data;
 		}
-
+		
 		@Override
 		public String getBase64data()
 		{
 			return this.base64data;
 		}
-
+		
 		@Override
 		public byte[] toRawData()
 		{
@@ -114,7 +114,7 @@ public class FileComponent extends MobileComponent implements FileService
 				: this.base64data.substring(contentStartIndex);
 			return new Base64(true).decode(data);
 		}
-
+		
 		@Override
 		public AbstractStreamResource toResource()
 		{

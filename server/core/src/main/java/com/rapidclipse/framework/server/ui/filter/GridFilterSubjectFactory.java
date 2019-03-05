@@ -41,9 +41,9 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 	@Override
 	public FilterSubject createFilterSubject(final Object source)
 	{
-		final Grid<?>                 grid                 = (Grid<?>)source;
-		final BeanPropertySet<?>      propertySet          = getBeanPropertySet(grid);
-		final Class<?>                beanType             = propertySet.getBeanType();
+		final Grid<?>            grid        = (Grid<?>)source;
+		final BeanPropertySet<?> propertySet = getBeanPropertySet(grid);
+		final Class<?>           beanType    = propertySet.getBeanType();
 		
 		final List<FilterProperty<?>> searchableProperties = grid.getColumns().stream()
 			.map(c -> propertySet.getProperty(c.getKey())).filter(Optional::isPresent)
@@ -79,7 +79,8 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 			}
 		}
 		catch(NoSuchFieldException | SecurityException e)
-		{}
+		{
+		}
 		
 		return null;
 	}

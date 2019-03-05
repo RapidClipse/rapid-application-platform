@@ -27,29 +27,29 @@ public final class FilterData implements Serializable
 {
 	private final String        searchTerm;
 	private final FilterEntry[] entries;
-
+	
 	public FilterData()
 	{
 		this("", null);
 	}
-
+	
 	public FilterData(final String searchTerm, final FilterEntry[] entries)
 	{
 		super();
 		this.searchTerm = searchTerm;
 		this.entries    = entries;
 	}
-
+	
 	public String getSearchTerm()
 	{
 		return this.searchTerm;
 	}
-
+	
 	public FilterEntry[] getEntries()
 	{
 		return this.entries;
 	}
-
+	
 	@Override
 	public boolean equals(final Object obj)
 	{
@@ -57,12 +57,12 @@ public final class FilterData implements Serializable
 		{
 			return true;
 		}
-
+		
 		if(!(obj instanceof FilterData))
 		{
 			return false;
 		}
-
+		
 		final FilterData other = (FilterData)obj;
 		return Objects.equals(this.searchTerm, other.searchTerm)
 			&& Arrays.equals(this.entries, other.entries);

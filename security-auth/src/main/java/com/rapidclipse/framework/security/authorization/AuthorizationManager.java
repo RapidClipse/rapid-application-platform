@@ -345,25 +345,25 @@ public interface AuthorizationManager
 		// instance fields //
 		////////////////////
 		
-		final AuthorizationConfigurationProvider              configurationProvider;
-		final ResourceProvider                                resourceProvider;
-		final ResourceUpdater                                 resourceUpdater;
-		final PermissionProvider                              permissionProvider;
-		final RoleProvider                                    roleProvider;
-		final RoleUpdater                                     roleUpdater;
-		final SubjectUpdater                                  subjectUpdater;
+		final AuthorizationConfigurationProvider configurationProvider;
+		final ResourceProvider                   resourceProvider;
+		final ResourceUpdater                    resourceUpdater;
+		final PermissionProvider                 permissionProvider;
+		final RoleProvider                       roleProvider;
+		final RoleUpdater                        roleUpdater;
+		final SubjectUpdater                     subjectUpdater;
 		
 		final HashMap<String, Resource>                       resourceTable   = new HashMap<>();
 		final HashMap<Resource, HashMap<Integer, Permission>> permissionTable = new HashMap<>();
 		final HashMap<String, Role>                           roleTable       = new HashMap<>();
 		final HashMap<String, Subject>                        subjectTable    = new HashMap<>();
 		
-		final Object                                          sharedLock      = new Object();
-		final PermissionManager                               permissionManager;
-		final RoleManager                                     roleManager;
-		final SubjectManager                                  subjectManager;
+		final Object            sharedLock = new Object();
+		final PermissionManager permissionManager;
+		final RoleManager       roleManager;
+		final SubjectManager    subjectManager;
 		
-		private boolean                                       initialized     = false;
+		private boolean initialized = false;
 		
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
@@ -710,9 +710,9 @@ public interface AuthorizationManager
 			final HashMap<String, Resource> newResources,
 			final AuthorizationConfiguration configuration)
 		{
-			final ResourceProvider                   resourceProvider     = this.resourceProvider;
-			final ResourceUpdater                    resourceUpdater      = this.resourceUpdater;
-			final HashMap<String, Resource>          oldResources         = this.resourceTable;
+			final ResourceProvider          resourceProvider = this.resourceProvider;
+			final ResourceUpdater           resourceUpdater  = this.resourceUpdater;
+			final HashMap<String, Resource> oldResources     = this.resourceTable;
 			
 			final Map<String, ? extends Set<String>> resourcesDefinitions = configuration
 				.resourceResources();
@@ -754,8 +754,8 @@ public interface AuthorizationManager
 			final HashMap<String, Role>                           oldRoles           = this.roleTable;
 			final HashMap<Resource, HashMap<Integer, Permission>> oldPermissionTable = this.permissionTable;
 			
-			final Map<String, ? extends Set<String>>              roleRoles          = config.roleRoles();
-			final Map<String, ? extends Map<String, Integer>>     rolePermissions    = config
+			final Map<String, ? extends Set<String>>          roleRoles       = config.roleRoles();
+			final Map<String, ? extends Map<String, Integer>> rolePermissions = config
 				.rolePermissions();
 			
 			/*
@@ -810,8 +810,8 @@ public interface AuthorizationManager
 			final AuthorizationConfiguration configuration,
 			final HashMap<String, Role> roles)
 		{
-			final SubjectUpdater                     subjectUpdater     = this.subjectUpdater;
-			final HashMap<String, Subject>           oldSubjects        = this.subjectTable;
+			final SubjectUpdater           subjectUpdater = this.subjectUpdater;
+			final HashMap<String, Subject> oldSubjects    = this.subjectTable;
 			
 			final Map<String, ? extends Set<String>> subjectDefinitions = configuration
 				.subjectRoles();

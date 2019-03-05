@@ -32,17 +32,17 @@ public class BarcodescannerOptions
 	{
 		return new BarcodescannerOptions().showFlipCameraButton(true);
 	}
-
+	
 	private Boolean                   preferFrontCamera;
 	private Boolean                   showFlipCameraButton;
 	private String                    prompt;
 	private final List<BarcodeFormat> formats = new ArrayList<>();
 	private Orientation               orientation;
-
+	
 	public BarcodescannerOptions()
 	{
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if the device's front camera should be
 	 * preferred.
@@ -57,7 +57,7 @@ public class BarcodescannerOptions
 	{
 		return this.preferFrontCamera;
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if the device's front camera should be
 	 * preferred.
@@ -73,7 +73,7 @@ public class BarcodescannerOptions
 		this.preferFrontCamera = preferFrontCamera;
 		return this;
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if the flip camera button should be shown.
 	 * <p>
@@ -87,7 +87,7 @@ public class BarcodescannerOptions
 	{
 		return this.showFlipCameraButton;
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if the flip camera button should be shown.
 	 * <p>
@@ -102,7 +102,7 @@ public class BarcodescannerOptions
 		this.showFlipCameraButton = showFlipCameraButton;
 		return this;
 	}
-
+	
 	/**
 	 * Shows a prompt message.
 	 * <p>
@@ -115,7 +115,7 @@ public class BarcodescannerOptions
 	{
 		return this.prompt;
 	}
-
+	
 	/**
 	 * Shows a prompt message.
 	 * <p>
@@ -129,7 +129,7 @@ public class BarcodescannerOptions
 		this.prompt = prompt;
 		return this;
 	}
-
+	
 	/**
 	 * List of allowed formats. All formats are allowed if empty.
 	 */
@@ -137,7 +137,7 @@ public class BarcodescannerOptions
 	{
 		return this.formats;
 	}
-
+	
 	/**
 	 * List of allowed formats. All formats are allowed if empty.
 	 */
@@ -146,7 +146,7 @@ public class BarcodescannerOptions
 		this.formats.addAll(Arrays.asList(formats));
 		return this;
 	}
-
+	
 	/**
 	 * List of allowed formats. All formats are allowed if empty.
 	 */
@@ -155,7 +155,7 @@ public class BarcodescannerOptions
 		this.formats.addAll(formats);
 		return this;
 	}
-
+	
 	/**
 	 * Preferred orientation. If not set the scanner rotates with the device.
 	 * <p>
@@ -168,7 +168,7 @@ public class BarcodescannerOptions
 	{
 		return this.orientation;
 	}
-
+	
 	/**
 	 * Preferred orientation. If not set the scanner rotates with the device.
 	 * <p>

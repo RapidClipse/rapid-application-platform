@@ -37,7 +37,7 @@ public interface SmsService extends MobileService
 	{
 		return MobileService.getCurrent(SmsService.class);
 	}
-
+	
 	/**
 	 * Sends a SMS to the specified number.
 	 *

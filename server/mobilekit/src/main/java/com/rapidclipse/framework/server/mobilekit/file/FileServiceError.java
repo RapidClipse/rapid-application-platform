@@ -57,7 +57,7 @@ public class FileServiceError extends MobileServiceError
 			return null;
 		}
 	}
-
+	
 	private final Reason reason;
 	
 	public FileServiceError(final FileService source, final String message, final Reason reason)

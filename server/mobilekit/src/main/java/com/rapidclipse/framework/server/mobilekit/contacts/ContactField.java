@@ -41,11 +41,11 @@ public class ContactField implements Serializable
 	private String  type;
 	private String  value;
 	private boolean pref;
-
+	
 	public ContactField()
 	{
 	}
-
+	
 	public ContactField(final String id, final String type, final String value, final boolean pref)
 	{
 		this.id    = id;
@@ -53,7 +53,7 @@ public class ContactField implements Serializable
 		this.value = value;
 		this.pref  = pref;
 	}
-
+	
 	/**
 	 * Unique identifier
 	 */
@@ -61,7 +61,7 @@ public class ContactField implements Serializable
 	{
 		return this.id;
 	}
-
+	
 	/**
 	 * Unique identifier
 	 */
@@ -70,7 +70,7 @@ public class ContactField implements Serializable
 		this.id = id;
 		return this;
 	}
-
+	
 	/**
 	 * A string that indicates what type of field this is, home for example.
 	 */
@@ -78,7 +78,7 @@ public class ContactField implements Serializable
 	{
 		return this.type;
 	}
-
+	
 	/**
 	 * A string that indicates what type of field this is, home for example.
 	 */
@@ -87,7 +87,7 @@ public class ContactField implements Serializable
 		this.type = type;
 		return this;
 	}
-
+	
 	/**
 	 * The value of the field, such as a phone number or email address.
 	 */
@@ -95,7 +95,7 @@ public class ContactField implements Serializable
 	{
 		return this.value;
 	}
-
+	
 	/**
 	 * The value of the field, such as a phone number or email address.
 	 */
@@ -104,7 +104,7 @@ public class ContactField implements Serializable
 		this.value = value;
 		return this;
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if this ContactField contains the user's
 	 * preferred value.
@@ -113,7 +113,7 @@ public class ContactField implements Serializable
 	{
 		return this.pref;
 	}
-
+	
 	/**
 	 * Set to <code>true</code> if this ContactField contains the user's
 	 * preferred value.
@@ -123,7 +123,7 @@ public class ContactField implements Serializable
 		this.pref = pref;
 		return this;
 	}
-
+	
 	@Override
 	public String toString()
 	{

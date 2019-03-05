@@ -45,7 +45,7 @@ public final class Authorization
 	{
 		UI.getCurrent().getSession().setAttribute(AuthorizationManager.class, authorizationManager);
 	}
-
+	
 	/**
 	 * Returns the {@link AuthorizationManager} of the current user session.
 	 *
@@ -56,7 +56,7 @@ public final class Authorization
 	{
 		return UI.getCurrent().getSession().getAttribute(AuthorizationManager.class);
 	}
-
+	
 	/**
 	 * Searches for a specific resource in the current
 	 * {@link AuthorizationManager}. If no resource is found an
@@ -86,7 +86,7 @@ public final class Authorization
 		}
 		return resource;
 	}
-
+	
 	/**
 	 * Searches for a specific resource with {@link #getResource(String)}. If no
 	 * resource with the specific name is present a new one will be created and
@@ -108,7 +108,7 @@ public final class Authorization
 			return Resource.New(name);
 		}
 	}
-
+	
 	/**
 	 * Registers a {@link SubjectEvaluatingComponentExtension} with
 	 * <code>component</code>.
@@ -125,7 +125,7 @@ public final class Authorization
 	{
 		ComponentUtil.setData(component, SubjectEvaluatingComponentExtension.class, extension);
 	}
-
+	
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the current user.
@@ -146,7 +146,7 @@ public final class Authorization
 			evaluateComponents(root, Authentication.getUser());
 		}
 	}
-
+	
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the given
@@ -163,13 +163,13 @@ public final class Authorization
 	public static void evaluateComponents(final Component root, final Subject subject)
 	{
 		UIUtils.lookupComponentTree(root, component -> {
-
+			
 			evaluateComponent(component, subject);
-
+			
 			return null;
 		});
 	}
-
+	
 	/**
 	 * Evaluates the {@link SubjectEvaluatingComponentExtension} of the
 	 * <code>component</code> against the given <code>subject</code>.
@@ -193,7 +193,7 @@ public final class Authorization
 			extension.evaluateSubject(component, subject);
 		}
 	}
-
+	
 	/**
 	 * Navigates to the application's permission denied view.
 	 *
@@ -203,16 +203,16 @@ public final class Authorization
 	{
 		Navigation.navigateTo(PermissionDeniedView.class);
 	}
-
+	
 	public static void rerouteToPermissionDeniedView(final BeforeEvent event)
 	{
 		Navigation.rerouteTo(event, PermissionDeniedView.class);
 	}
-
+	
 	private static UnauthorizedNavigationRequestHandler unauthorizedNavigationRequestHandler =
 		UnauthorizedNavigationRequestHandler
 			.Default();
-
+	
 	/**
 	 * @param unauthorizedNavigationRequestHandler
 	 *            the unauthorizedNavigationRequestHandler to set
@@ -222,7 +222,7 @@ public final class Authorization
 	{
 		Authorization.unauthorizedNavigationRequestHandler = unauthorizedNavigationRequestHandler;
 	}
-
+	
 	/**
 	 * @return the unauthorizedNavigationRequestHandler
 	 */
@@ -230,7 +230,7 @@ public final class Authorization
 	{
 		return unauthorizedNavigationRequestHandler;
 	}
-
+	
 	private Authorization()
 	{
 		throw new Error();

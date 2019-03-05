@@ -42,40 +42,40 @@ public interface Report
 	{
 		return new Implementation();
 	}
-
+	
 	public Report jrxml(final InputStream jrxmlInputStream);
-
+	
 	public Report jrxml(final String jrxmlPath);
-
+	
 	public Report dataSource(final JRDataSource dataSource);
-
+	
 	public default Report dataSource(final Stream<?> stream)
 	{
 		return dataSource(stream.collect(Collectors.toList()));
 	}
-
+	
 	public Report dataSource(Collection<?> beans);
-
+	
 	public Report parameters(final Map<String, Object> parameters);
-
+	
 	public Report parameter(final String name, final Object value);
-
+	
 	public Report subreport(final String name, final InputStream jrxmlInputStream);
-
+	
 	public Report subreport(final String name, final String jrxmlPath);
-
+	
 	public Report mapFields(Map<String, String> fieldNameMapping);
-
+	
 	public Report mapField(String from, String to);
-
+	
 	public void export(final Format format, final OutputStream stream);
-
+	
 	public byte[] exportToBytes(final Format format);
-
+	
 	public StreamResource exportToResource(final Format format);
-
+	
 	public StreamResource exportToResource(final Format format, final String fileNamePrefix);
-
+	
 	public static class Implementation implements Report
 	{
 		private InputStream               jrxmlInputStream;
@@ -83,49 +83,49 @@ public interface Report
 		private JRDataSource              dataSource;
 		private final Map<String, Object> parameters       = new HashMap<>();
 		private final Map<String, String> fieldNameMapping = new HashMap<>();
-
+		
 		@Override
 		public Report jrxml(final InputStream jrxmlInputStream)
 		{
 			this.jrxmlInputStream = jrxmlInputStream;
 			return this;
 		}
-
+		
 		@Override
 		public Report jrxml(final String jrxmlPath)
 		{
 			this.jrxmlPath = jrxmlPath;
 			return this;
 		}
-
+		
 		@Override
 		public Report dataSource(final JRDataSource dataSource)
 		{
 			this.dataSource = dataSource;
 			return this;
 		}
-
+		
 		@Override
 		public Report dataSource(final Collection<?> beans)
 		{
 			this.dataSource = new JRBeanCollectionDataSource(beans);
 			return this;
 		}
-
+		
 		@Override
 		public Report parameters(final Map<String, Object> parameters)
 		{
 			this.parameters.putAll(parameters);
 			return this;
 		}
-
+		
 		@Override
 		public Report parameter(final String name, final Object value)
 		{
 			this.parameters.put(name, value);
 			return this;
 		}
-
+		
 		@Override
 		public Report subreport(final String name, final InputStream jrxmlInputStream)
 		{
@@ -141,7 +141,7 @@ public interface Report
 				throw new ReportException(e);
 			}
 		}
-
+		
 		@Override
 		public Report subreport(final String name, final String jrxmlPath)
 		{
@@ -157,51 +157,51 @@ public interface Report
 				throw new ReportException(e);
 			}
 		}
-
+		
 		@Override
 		public Report mapFields(final Map<String, String> fieldNameMapping)
 		{
 			this.fieldNameMapping.putAll(fieldNameMapping);
 			return this;
 		}
-
+		
 		@Override
 		public Report mapField(final String from, final String to)
 		{
 			this.fieldNameMapping.put(from, to);
 			return this;
 		}
-
+		
 		@Override
 		public void export(final Format format, final OutputStream stream)
 		{
 			format.createExporter().export(getJrxml(), getDataSource(), parameters, stream);
 		}
-
+		
 		@Override
 		public byte[] exportToBytes(final Format format)
 		{
 			return format.createExporter().exportToBytes(getJrxml(), getDataSource(), parameters);
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(final Format format)
 		{
 			return format.createExporter().exportToResource(getJrxml(), getDataSource(), parameters);
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(final Format format, final String fileNamePrefix)
 		{
 			return format.createExporter().exportToResource(getJrxml(), getDataSource(), parameters,
 				fileNamePrefix);
 		}
-
+		
 		protected InputStream getJrxml()
 		{
 			return getJrxml(this.jrxmlInputStream, this.jrxmlPath);
 		}
-
+		
 		protected InputStream getJrxml(final InputStream jrxmlInputStream, final String jrxmlPath)
 		{
 			InputStream jrxml = jrxmlInputStream;
@@ -212,13 +212,13 @@ public interface Report
 					throw new IllegalStateException(
 						"No input specified, provide either a jrxml inputstream or path");
 				}
-
+				
 				jrxml = ApplicationResource.createInputStream(getCallerClass(), jrxmlPath);
 			}
-
+			
 			return jrxml;
 		}
-
+		
 		protected Class<?> getCallerClass()
 		{
 			for(final StackTraceElement element : Thread.currentThread().getStackTrace())
@@ -236,10 +236,10 @@ public interface Report
 					}
 				}
 			}
-
+			
 			return null;
 		}
-
+		
 		protected JRDataSource getDataSource()
 		{
 			JRDataSource dataSource = this.dataSource;

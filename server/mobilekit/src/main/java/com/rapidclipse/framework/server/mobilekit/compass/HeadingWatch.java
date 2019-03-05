@@ -27,7 +27,7 @@ public interface HeadingWatch extends Registration
 	 * @return the heading
 	 */
 	public Heading getHeading();
-
+	
 	/**
 	 * Stops watching for changes to the device's heading
 	 */
