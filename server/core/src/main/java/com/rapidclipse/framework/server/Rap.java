@@ -17,6 +17,7 @@ package com.rapidclipse.framework.server;
 import static com.rapidclipse.framework.server.util.StacktraceUtils.cutStacktraceByOne;
 
 import java.util.Collection;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import javax.servlet.ServletContext;
@@ -39,7 +40,7 @@ public final class Rap
 {
 	private static RapExecutorService    executorService;
 	private static ContentSecurityPolicy contentSecurityPolicy;
-	
+
 	/**
 	 * @return the executorService
 	 */
@@ -52,7 +53,7 @@ public final class Rap
 		}
 		return executorService;
 	}
-	
+
 	private static RapExecutorService createExecutorService(final ServletContext context)
 	{
 		final String className = context
@@ -70,10 +71,10 @@ public final class Rap
 				throw new RuntimeException(t);
 			}
 		}
-		
+
 		return new RapExecutorService.Implementation(context);
 	}
-	
+
 	/**
 	 * @return the contentSecurityPolicy
 	 */
@@ -81,7 +82,7 @@ public final class Rap
 	{
 		return contentSecurityPolicy;
 	}
-	
+
 	/**
 	 * @param contentSecurityPolicy
 	 *            the contentSecurityPolicy to set
@@ -90,7 +91,7 @@ public final class Rap
 	{
 		Rap.contentSecurityPolicy = contentSecurityPolicy;
 	}
-	
+
 	public static <T> T sessionBoundInstance(final Class<T> type, final Supplier<T> instantiator)
 	{
 		final VaadinSession session = VaadinSession.getCurrent();
@@ -106,7 +107,7 @@ public final class Rap
 		}
 		return instance;
 	}
-	
+
 	public static <E> E[] notEmpty(final E[] array)
 	{
 		if(array.length == 0)
@@ -115,7 +116,7 @@ public final class Rap
 		}
 		return array;
 	}
-	
+
 	public static <E, C extends Collection<E>> C notEmpty(final C collection)
 	{
 		if(collection.isEmpty())
@@ -124,7 +125,7 @@ public final class Rap
 		}
 		return collection;
 	}
-	
+
 	public static <E> E[] minLength(final E[] array, final int minLength)
 	{
 		if(array.length < minLength)
@@ -133,7 +134,7 @@ public final class Rap
 		}
 		return array;
 	}
-	
+
 	public static <E, C extends Collection<E>> C minSize(final C collection, final int minSize)
 	{
 		if(collection.size() < minSize)
@@ -142,17 +143,17 @@ public final class Rap
 		}
 		return collection;
 	}
-	
+
 	public static Class<?> wrapperTypeIfPrimitive(final Class<?> clazz)
 	{
 		if(clazz.isPrimitive())
 		{
 			return wrapperType(clazz);
 		}
-		
+
 		return clazz;
 	}
-	
+
 	public static Class<?> wrapperType(final Class<?> primitive)
 	{
 		if(primitive == int.class)
@@ -187,10 +188,22 @@ public final class Rap
 		{
 			return Character.class;
 		}
-		
+
 		throw new IllegalArgumentException("Not a primitive: " + primitive.getName());
 	}
-	
+
+	public static <T> T ensureSessionInstance(final Class<T> type, final Function<VaadinSession, T> creator)
+	{
+		final VaadinSession session  = VaadinSession.getCurrent();
+		T                   instance = session.getAttribute(type);
+		if(instance == null)
+		{
+			instance = creator.apply(session);
+			session.setAttribute(type, instance);
+		}
+		return instance;
+	}
+
 	@WebListener
 	public static class ContextListener implements ServletContextListener
 	{
@@ -198,7 +211,7 @@ public final class Rap
 		public void contextInitialized(final ServletContextEvent sce)
 		{
 		}
-		
+
 		@Override
 		public void contextDestroyed(final ServletContextEvent sce)
 		{
@@ -209,7 +222,7 @@ public final class Rap
 			}
 		}
 	}
-	
+
 	private Rap()
 	{
 		throw new Error();

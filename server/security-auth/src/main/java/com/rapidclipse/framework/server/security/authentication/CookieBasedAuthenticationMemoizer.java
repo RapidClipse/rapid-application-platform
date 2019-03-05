@@ -21,6 +21,7 @@ import java.util.UUID;
 
 import com.rapidclipse.framework.security.authentication.AuthenticationMemoizer;
 import com.rapidclipse.framework.security.authentication.CredentialsUsernamePassword;
+import com.rapidclipse.framework.server.Rap;
 import com.rapidclipse.framework.server.net.Cookies;
 
 
@@ -38,49 +39,55 @@ import com.rapidclipse.framework.server.net.Cookies;
 public class CookieBasedAuthenticationMemoizer
 	implements AuthenticationMemoizer<CredentialsUsernamePassword>
 {
+	public static CookieBasedAuthenticationMemoizer getCurrent()
+	{
+		return Rap.ensureSessionInstance(CookieBasedAuthenticationMemoizer.class,
+			session -> new CookieBasedAuthenticationMemoizer());
+	}
+	
 	protected final static String                            COOKIE_NAME = "XUID";
 	protected final Map<String, CredentialsUsernamePassword> rememberedCredentials;
 	protected Duration                                       lifespan;
-	
+
 	public CookieBasedAuthenticationMemoizer()
 	{
 		this.rememberedCredentials = new HashMap<>();
 		this.lifespan              = Duration.ofDays(14);
 	}
-	
+
 	public Duration getLifespan()
 	{
 		return this.lifespan;
 	}
-	
+
 	public void setLifespan(final Duration lifespan)
 	{
 		this.lifespan = lifespan;
 	}
-	
+
 	@Override
 	public void remember(final CredentialsUsernamePassword credentials)
 	{
 		remove(credentials);
-		
+
 		final String hash = UUID.randomUUID().toString();
 		Cookies.getCurrent().setCookie(COOKIE_NAME, hash, this.lifespan);
 		this.rememberedCredentials.put(hash, credentials);
 	}
-	
+
 	@Override
 	public void forget(final CredentialsUsernamePassword credentials)
 	{
 		remove(credentials);
-		
+
 		Cookies.getCurrent().deleteCookie(COOKIE_NAME);
 	}
-	
+
 	protected void remove(final CredentialsUsernamePassword credentials)
 	{
 		this.rememberedCredentials.values().remove(credentials);
 	}
-	
+
 	@Override
 	public CredentialsUsernamePassword lookup()
 	{
