@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-core</artifactId>
-			<version>12.0.5</version>
+			<version>13.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.flowingcode.addons</groupId>
