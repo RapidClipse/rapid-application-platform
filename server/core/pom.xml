@@ -1,19 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-
-    Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
-
-    This program and the accompanying materials
-    are made available under the terms of the Eclipse Public License 2.0
-    which accompanies this distribution, and is available at
-    https://www.eclipse.org/legal/epl-2.0/
-
-    SPDX-License-Identifier: EPL-2.0
-
-    Contributors:
-        XDEV Software Corp. - initial API and implementation
-
--->
+<!-- Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved. This program and the accompanying 
+	materials are made available under the terms of the Eclipse Public License 2.0 which accompanies this 
+	distribution, and is available at https://www.eclipse.org/legal/epl-2.0/ SPDX-License-Identifier: EPL-2.0 
+	Contributors: XDEV Software Corp. - initial API and implementation -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -56,6 +45,15 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-core</artifactId>
 			<version>13.0.0</version>
+		</dependency>
+		<!--
+		Added explicitely for now, because vaadin-core contains 2.1.1
+		https://github.com/vaadin/vaadin-combo-box-flow/issues/219
+		 -->
+		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>vaadin-combo-box-flow</artifactId>
+			<version>2.1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.flowingcode.addons</groupId>
