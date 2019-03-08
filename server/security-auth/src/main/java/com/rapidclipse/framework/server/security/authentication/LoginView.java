@@ -22,17 +22,4 @@ package com.rapidclipse.framework.server.security.authentication;
  */
 public interface LoginView extends AccessibleView
 {
-	/**
-	 * Returns the username of the login form.
-	 *
-	 * @return the username
-	 */
-	public String getUsername();
-	
-	/**
-	 * Returns the password of the login form.
-	 *
-	 * @return the password
-	 */
-	public String getPassword();
 }
