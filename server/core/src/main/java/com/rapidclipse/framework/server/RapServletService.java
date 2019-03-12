@@ -16,6 +16,7 @@ package com.rapidclipse.framework.server;
 
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.server.ServiceException;
 import com.vaadin.flow.server.ServletHelper;
 import com.vaadin.flow.server.ServletHelper.RequestType;
@@ -108,6 +109,24 @@ public class RapServletService extends VaadinServletService
 		
 		ServiceLoader.forType(Extension.class).services()
 			.forEach(extension -> extension.sessionCreated(this, session, request));
+		
+		return session;
+	}
+	
+	@Override
+	public VaadinSession findVaadinSession(final VaadinRequest request) throws SessionExpiredException
+	{
+		final VaadinSession session = super.findVaadinSession(request);
+		
+		if(session != null)
+		{
+			// auto-map * to <root>
+			final RouteConfiguration routeConfiguration = RouteConfiguration.forApplicationScope();
+			if(!routeConfiguration.getRoute("*").isPresent())
+			{
+				routeConfiguration.getRoute("").ifPresent(clazz -> routeConfiguration.setRoute("*", clazz));
+			}
+		}
 		
 		return session;
 	}
