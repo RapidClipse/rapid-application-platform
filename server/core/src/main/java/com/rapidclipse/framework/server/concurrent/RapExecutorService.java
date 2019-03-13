@@ -166,43 +166,25 @@ public interface RapExecutorService extends Executor
 		@Override
 		public void execute(final Runnable command)
 		{
-			this.executorService.execute(getRunnableAccessWrapper(command));
+			this.executorService.execute(ExecutionWrapper.Wrap(command));
 		}
 		
 		@Override
 		public Future<?> submit(final Runnable task)
 		{
-			return this.executorService.submit(getRunnableAccessWrapper(task));
+			return this.executorService.submit(ExecutionWrapper.Wrap(task));
 		}
 		
 		@Override
 		public <T> Future<T> submit(final Runnable task, final T result)
 		{
-			return this.executorService.submit(getRunnableAccessWrapper(task), result);
+			return this.executorService.submit(ExecutionWrapper.Wrap(task), result);
 		}
 		
 		@Override
 		public <T> Future<T> submit(final Callable<T> task)
 		{
-			return this.executorService.submit(getCallableAccessWrapper(task));
-		}
-		
-		protected RunnableAccessWrapper getRunnableAccessWrapper(final Runnable runnable)
-		{
-			if(runnable instanceof RunnableAccessWrapper)
-			{
-				return (RunnableAccessWrapper)runnable;
-			}
-			return new RunnableAccessWrapper(runnable);
-		}
-		
-		protected <T> CallableAccessWrapper<T> getCallableAccessWrapper(final Callable<T> callabale)
-		{
-			if(callabale instanceof CallableAccessWrapper)
-			{
-				return (CallableAccessWrapper<T>)callabale;
-			}
-			return new CallableAccessWrapper<>(callabale);
+			return this.executorService.submit(ExecutionWrapper.Wrap(task));
 		}
 		
 		@Override

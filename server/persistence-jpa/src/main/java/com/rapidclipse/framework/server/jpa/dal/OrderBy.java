@@ -14,10 +14,8 @@
 
 package com.rapidclipse.framework.server.jpa.dal;
 
-import static com.rapidclipse.framework.server.jpa.dal.OrderByDirection.ASC;
-import static com.rapidclipse.framework.server.jpa.dal.OrderByDirection.DESC;
-
 import java.io.Serializable;
+import java.util.Objects;
 
 import javax.persistence.metamodel.Attribute;
 
@@ -29,80 +27,98 @@ import com.rapidclipse.framework.server.jpa.AttributeChain;
  *
  * @author XDEV Software
  */
-public class OrderBy implements Serializable
+public interface OrderBy extends Serializable
 {
-	private static final long serialVersionUID = 1L;
-	private final PathHolder  pathHolder;
-	private OrderByDirection  direction        = ASC;
-	
-	public OrderBy(final OrderByDirection direction, final Attribute<?, ?>... attributes)
+	public static enum Direction
 	{
-		this.direction  = direction;
-		this.pathHolder = new PathHolder(new AttributeChain(attributes));
+		ASC,
+		DESC;
 	}
 	
-	public OrderBy(final OrderByDirection direction, final String path, final Class<?> from)
+	public PathHolder getPathHolder();
+	
+	public default AttributeChain getAttributes()
 	{
-		this.direction  = direction;
-		this.pathHolder = new PathHolder(path, from);
+		return getPathHolder().getAttributes();
 	}
 	
-	public AttributeChain getAttributes()
+	public default String getPath()
 	{
-		return this.pathHolder.getAttributes();
+		return getPathHolder().getPath();
 	}
 	
-	public String getPath()
+	public Direction getDirection();
+	
+	public default boolean isOrderDesc()
 	{
-		return this.pathHolder.getPath();
+		return Direction.DESC == getDirection();
 	}
 	
-	public OrderByDirection getDirection()
+	public static OrderBy New(final Direction direction, final Attribute<?, ?>... attributes)
 	{
-		return this.direction;
+		return new Implementation(direction, attributes);
 	}
 	
-	public boolean isOrderDesc()
+	public static OrderBy New(final Direction direction, final String path, final Class<?> from)
 	{
-		return DESC == this.direction;
+		return new Implementation(direction, path, from);
 	}
 	
-	@Override
-	public int hashCode()
+	public static class Implementation implements OrderBy
 	{
-		final int prime  = 31;
-		int       result = 1;
-		result = prime * result + ((this.pathHolder == null) ? 0 : this.pathHolder.hashCode());
-		return result;
-	}
-	
-	@Override
-	public boolean equals(final Object obj)
-	{
-		if(this == obj)
+		private final PathHolder pathHolder;
+		private Direction        direction = Direction.ASC;
+		
+		public Implementation(final Direction direction, final Attribute<?, ?>... attributes)
 		{
-			return true;
+			this.direction  = direction;
+			this.pathHolder = PathHolder.New(AttributeChain.New(attributes));
 		}
-		if(obj == null)
+		
+		public Implementation(final Direction direction, final String path, final Class<?> from)
 		{
-			return false;
+			this.direction  = direction;
+			this.pathHolder = PathHolder.New(path, from);
 		}
-		if(getClass() != obj.getClass())
+		
+		@Override
+		public PathHolder getPathHolder()
 		{
-			return false;
+			return this.pathHolder;
 		}
-		final OrderBy other = (OrderBy)obj;
-		if(this.pathHolder == null)
+		
+		@Override
+		public Direction getDirection()
 		{
-			if(other.pathHolder != null)
+			return this.direction;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			final int prime  = 31;
+			int       result = 1;
+			result = prime * result + ((this.pathHolder == null) ? 0 : this.pathHolder.hashCode());
+			return result;
+		}
+		
+		@Override
+		public boolean equals(final Object obj)
+		{
+			if(this == obj)
+			{
+				return true;
+			}
+			if(obj == null)
 			{
 				return false;
 			}
+			if(!(obj instanceof OrderBy))
+			{
+				return false;
+			}
+			final OrderBy other = (OrderBy)obj;
+			return Objects.equals(this.pathHolder, other.getPathHolder());
 		}
-		else if(!this.pathHolder.equals(other.pathHolder))
-		{
-			return false;
-		}
-		return true;
 	}
 }

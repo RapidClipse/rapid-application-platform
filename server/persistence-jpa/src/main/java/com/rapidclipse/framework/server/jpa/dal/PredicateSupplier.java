@@ -19,6 +19,9 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.rapidclipse.framework.server.data.filter.CriteriaFilterConverter;
+import com.rapidclipse.framework.server.data.filter.Filter;
+
 
 /**
  * @author XDEV Software
@@ -31,4 +34,31 @@ public interface PredicateSupplier
 		Root<T> root,
 		CriteriaBuilder builder,
 		T entity);
+	
+	public static <T> PredicateSupplier New(final Filter filter)
+	{
+		return new OfFilter(filter);
+	}
+	
+	public static class OfFilter implements PredicateSupplier
+	{
+		private final Filter filter;
+		
+		public OfFilter(final Filter filter)
+		{
+			super();
+			this.filter = filter;
+		}
+		
+		@Override
+		public <T> Predicate
+			getPredicate(
+				final CriteriaQuery<?> criteriaQuery,
+				final Root<T> root,
+				final CriteriaBuilder builder,
+				final T entity)
+		{
+			return new CriteriaFilterConverter<>(criteriaQuery).apply(filter);
+		}
+	}
 }

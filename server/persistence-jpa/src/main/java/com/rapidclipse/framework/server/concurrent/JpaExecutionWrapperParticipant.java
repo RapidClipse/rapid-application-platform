@@ -25,9 +25,9 @@ import com.vaadin.flow.internal.CurrentInstance;
  * @author XDEV Software
  *
  */
-public class JpaAccessWrapperParticipant implements AccessWrapper.Participant
+public class JpaExecutionWrapperParticipant implements ExecutionWrapper.Participant
 {
-	public JpaAccessWrapperParticipant()
+	public JpaExecutionWrapperParticipant()
 	{
 		super();
 	}

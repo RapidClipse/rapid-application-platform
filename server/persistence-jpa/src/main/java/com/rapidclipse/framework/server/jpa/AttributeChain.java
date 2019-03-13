@@ -16,6 +16,7 @@ package com.rapidclipse.framework.server.jpa;
 
 import static com.rapidclipse.framework.server.Rap.notEmpty;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,98 +31,131 @@ import javax.persistence.metamodel.PluralAttribute;
  * @author XDEV Software
  *
  */
-public final class AttributeChain implements Iterable<Attribute<?, ?>>, Cloneable
+public interface AttributeChain extends Iterable<Attribute<?, ?>>, Cloneable, Serializable
 {
-	private final List<Attribute<?, ?>> attributes;
+	public Iterable<Attribute<?, ?>> attributes();
 	
-	public AttributeChain(final Collection<? extends Attribute<?, ?>> attributes)
+	public Attribute<?, ?> first();
+	
+	public Attribute<?, ?> last();
+	
+	public String path();
+	
+	public boolean verify();
+
+	public AttributeChain clone();
+	
+	@Override
+	public Iterator<Attribute<?, ?>> iterator();
+	
+	public static AttributeChain New(final Collection<? extends Attribute<?, ?>> attributes)
 	{
-		super();
+		return new Implementation(attributes);
+	}
+	
+	public static AttributeChain New(final Attribute<?, ?>... attributes)
+	{
+		return new Implementation(attributes);
+	}
+	
+	public static class Implementation implements AttributeChain
+	{
+		private final List<Attribute<?, ?>> attributes;
 		
-		this.attributes = new ArrayList<>(notEmpty(attributes));
-	}
-	
-	public AttributeChain(final Attribute<?, ?>... attributes)
-	{
-		super();
+		public Implementation(final Collection<? extends Attribute<?, ?>> attributes)
+		{
+			super();
+			
+			this.attributes = new ArrayList<>(notEmpty(attributes));
+		}
 		
-		this.attributes = Arrays.asList(notEmpty(attributes));
-	}
-	
-	public Iterable<Attribute<?, ?>> attributes()
-	{
-		return this.attributes;
-	}
-	
-	public Attribute<?, ?> first()
-	{
-		return this.attributes.get(0);
-	}
-	
-	public Attribute<?, ?> last()
-	{
-		return this.attributes.get(this.attributes.size() - 1);
-	}
-	
-	public String path()
-	{
-		return Jpa.toPropertyPath(this);
-	}
-	
-	@SuppressWarnings("rawtypes")
-	public boolean verify()
-	{
-		final List<Attribute<?, ?>> attributes = new ArrayList<>(this.attributes);
-		Class<?>                    from       = null;
-		if(attributes.get(0).isCollection())
+		public Implementation(final Attribute<?, ?>... attributes)
 		{
-			from = ((PluralAttribute)attributes.get(0)).getElementType().getJavaType();
+			super();
+			
+			this.attributes = Arrays.asList(notEmpty(attributes));
 		}
-		else
+		
+		@Override
+		public Iterable<Attribute<?, ?>> attributes()
 		{
-			from = attributes.get(0).getJavaType();
+			return this.attributes;
 		}
-		attributes.remove(0);
-		for(final Attribute<?, ?> attribute : attributes)
+		
+		@Override
+		public Attribute<?, ?> first()
 		{
-			if(!attribute.getDeclaringType().getJavaType().isAssignableFrom(from))
+			return this.attributes.get(0);
+		}
+		
+		@Override
+		public Attribute<?, ?> last()
+		{
+			return this.attributes.get(this.attributes.size() - 1);
+		}
+		
+		@Override
+		public String path()
+		{
+			return Jpa.toPropertyPath(this);
+		}
+		
+		@Override
+		@SuppressWarnings("rawtypes")
+		public boolean verify()
+		{
+			final List<Attribute<?, ?>> attributes = new ArrayList<>(this.attributes);
+			Class<?>                    from       = null;
+			if(attributes.get(0).isCollection())
 			{
-				return false;
+				from = ((PluralAttribute)attributes.get(0)).getElementType().getJavaType();
 			}
-			from = attribute.getJavaType();
+			else
+			{
+				from = attributes.get(0).getJavaType();
+			}
+			attributes.remove(0);
+			for(final Attribute<?, ?> attribute : attributes)
+			{
+				if(!attribute.getDeclaringType().getJavaType().isAssignableFrom(from))
+				{
+					return false;
+				}
+				from = attribute.getJavaType();
+			}
+			
+			return true;
 		}
 		
-		return true;
-	}
-	
-	@Override
-	public Iterator<Attribute<?, ?>> iterator()
-	{
-		return this.attributes.iterator();
-	}
-	
-	@Override
-	public AttributeChain clone()
-	{
-		return new AttributeChain(this.attributes);
-	}
-	
-	@Override
-	public String toString()
-	{
-		return path();
-	}
-	
-	@Override
-	public boolean equals(final Object obj)
-	{
-		return obj == this || (obj instanceof AttributeChain
-			&& this.attributes.equals(((AttributeChain)obj).attributes));
-	}
-	
-	@Override
-	public int hashCode()
-	{
-		return this.attributes.hashCode();
+		@Override
+		public Iterator<Attribute<?, ?>> iterator()
+		{
+			return this.attributes.iterator();
+		}
+		
+		@Override
+		public AttributeChain clone()
+		{
+			return new Implementation(this.attributes);
+		}
+		
+		@Override
+		public String toString()
+		{
+			return path();
+		}
+		
+		@Override
+		public boolean equals(final Object obj)
+		{
+			return obj == this || (obj instanceof AttributeChain
+				&& this.attributes.equals(((AttributeChain)obj).attributes()));
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return this.attributes.hashCode();
+		}
 	}
 }

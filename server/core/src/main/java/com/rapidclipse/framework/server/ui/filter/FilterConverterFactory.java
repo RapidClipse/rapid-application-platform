@@ -27,33 +27,33 @@ import com.vaadin.flow.function.SerializableFunction;
  */
 public final class FilterConverterFactory
 {
-	public static SerializableFunction<String, Filter> New(final Serializable identifier)
+	public static SerializableFunction<String, Filter> createStringConverter(final Serializable identifier)
 	{
-		return New(identifier, false);
+		return createStringConverter(identifier, false);
 	}
-	
-	public static SerializableFunction<String, Filter> New(
+
+	public static SerializableFunction<String, Filter> createStringConverter(
 		final Serializable identifier,
 		final boolean caseSensitive)
 	{
 		return filter -> {
-			
+
 			String pattern;
 			if(filter == null || (pattern = filter.trim()).isEmpty())
 			{
 				return null;
 			}
-			
+
 			final int length = pattern.length();
 			if(length > 0 && pattern.charAt(length - 1) != StringComparison.DEFAULT_WILDCARD)
 			{
 				pattern += StringComparison.DEFAULT_WILDCARD;
 			}
-			
+
 			return Filter.StringComparison(identifier, pattern, caseSensitive);
 		};
 	}
-	
+
 	private FilterConverterFactory()
 	{
 		throw new Error();

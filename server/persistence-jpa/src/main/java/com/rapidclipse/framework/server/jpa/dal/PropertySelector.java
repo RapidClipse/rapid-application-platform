@@ -31,184 +31,202 @@ import com.rapidclipse.framework.server.jpa.AttributeChain;
  *
  * @author XDEV Software
  */
-public class PropertySelector<E, F> implements Serializable
+public interface PropertySelector<E, F> extends Serializable
 {
-	/*
-	 * PropertySelector builder
-	 */
-	public static <E, F> PropertySelector<E, F> newPropertySelector(final Attribute<?, ?>... fields)
-	{
-		return new PropertySelector<E, F>(fields);
-	}
+	public AttributeChain getAttributes();
 	
-	/*
-	 * PropertySelector builder
-	 */
-	public static <E, F> PropertySelector<E, F> newPropertySelector(
-		final String path,
-		final Class<E> from)
-	{
-		return new PropertySelector<E, F>(path, from);
-	}
+	public boolean isNotIncludingNullSet();
 	
-	/*
-	 * PropertySelector builder
-	 */
-	public static <E, F> PropertySelector<E, F> newPropertySelector(
-		final boolean orMode,
-		final Attribute<?, ?>... fields)
-	{
-		final PropertySelector<E, F> ps = new PropertySelector<E, F>(fields);
-		return ps.orMode(orMode);
-	}
+	public Boolean isNotIncludingNull();
 	
-	private static final long serialVersionUID = 1L;
+	public PropertySelector<E, F> withoutNull();
 	
-	private final PathHolder pathHolder;
-	private List<F>          selected = new ArrayList<>();
-	private SearchMode       searchMode;                  // for
-															// string
-															// property
-															// only.
-	private Boolean          notIncludingNull;
-	private boolean          orMode   = true;
+	public List<F> getSelected();
 	
-	public PropertySelector(final Attribute<?, ?>... attributes)
-	{
-		this.pathHolder = new PathHolder(new AttributeChain(attributes));
-	}
+	public PropertySelector<E, F> add(final F object);
 	
-	public PropertySelector(final String path, final Class<E> from)
-	{
-		this.pathHolder = new PathHolder(path, from);
-	}
-	
-	public AttributeChain getAttributes()
-	{
-		return this.pathHolder.getAttributes();
-	}
-	
-	public boolean isNotIncludingNullSet()
-	{
-		return this.notIncludingNull != null;
-	}
-	
-	public Boolean isNotIncludingNull()
-	{
-		return this.notIncludingNull;
-	}
-	
-	public PropertySelector<E, F> withoutNull()
-	{
-		this.notIncludingNull = true;
-		return this;
-	}
-	
-	/*
-	 * Get the possible candidates for property.
-	 */
-	public List<F> getSelected()
-	{
-		return this.selected;
-	}
-	
-	public PropertySelector<E, F> add(final F object)
-	{
-		this.selected.add(object);
-		return this;
-	}
-	
-	/*
-	 * Set the possible candidates for property.
-	 */
-	public void setSelected(final List<F> selected)
-	{
-		this.selected = new ArrayList<>(selected);
-	}
-	
+	public void setSelected(final List<F> selected);
+
 	@SuppressWarnings("unchecked")
-	public PropertySelector<E, F> selected(final F... selected)
+	public default PropertySelector<E, F> selected(final F... selected)
 	{
 		setSelected(Arrays.asList(selected));
 		return this;
 	}
 	
-	public boolean isNotEmpty()
-	{
-		return this.selected != null && !this.selected.isEmpty();
-	}
+	public boolean isNotEmpty();
 	
-	public void clearSelected()
-	{
-		if(this.selected != null)
-		{
-			this.selected.clear();
-		}
-	}
+	public void clearSelected();
 	
-	public void setValue(final F value)
+	public default void setValue(final F value)
 	{
 		setSelected(Arrays.asList(value));
 	}
 	
-	public F getValue()
+	public default F getValue()
 	{
-		return isNotEmpty() ? this.selected.get(0) : null;
+		return isNotEmpty() ? getSelected().get(0) : null;
 	}
 	
-	public boolean isBoolean()
+	public default boolean isBoolean()
 	{
 		return isType(Boolean.class);
 	}
 	
-	public boolean isString()
+	public default boolean isString()
 	{
 		return isType(String.class);
 	}
 	
-	public boolean isNumber()
+	public default boolean isNumber()
 	{
 		return isType(Number.class);
 	}
 	
-	public boolean isType(final Class<?> type)
+	public default boolean isType(final Class<?> type)
 	{
 		return type.isAssignableFrom(getAttributes().last().getJavaType());
 	}
 	
-	public SearchMode getSearchMode()
-	{
-		return this.searchMode;
-	}
+	public SearchMode getSearchMode();
 	
 	/**
 	 * In case, the field's type is a String, you can set a searchMode to use.
 	 * It is null by default.
 	 */
-	public void setSearchMode(final SearchMode searchMode)
-	{
-		this.searchMode = searchMode;
-	}
+	public void setSearchMode(final SearchMode searchMode);
 	
-	public PropertySelector<E, F> searchMode(final SearchMode searchMode)
+	public default PropertySelector<E, F> searchMode(final SearchMode searchMode)
 	{
 		setSearchMode(searchMode);
 		return this;
 	}
 	
-	public boolean isOrMode()
-	{
-		return this.orMode;
-	}
+	public boolean isOrMode();
 	
-	public void setOrMode(final boolean orMode)
-	{
-		this.orMode = orMode;
-	}
+	public void setOrMode(final boolean orMode);
 	
-	public PropertySelector<E, F> orMode(final boolean orMode)
+	public default PropertySelector<E, F> orMode(final boolean orMode)
 	{
 		setOrMode(orMode);
 		return this;
+	}
+	
+	public static <E, F> PropertySelector<E, F> New(final Attribute<?, ?>... fields)
+	{
+		return new Implementation<E, F>(fields);
+	}
+	
+	public static <E, F> PropertySelector<E, F> New(final String path, final Class<E> from)
+	{
+		return new Implementation<E, F>(path, from);
+	}
+	
+	public static <E, F> PropertySelector<E, F> New(final boolean orMode, final Attribute<?, ?>... fields)
+	{
+		return new Implementation<E, F>(fields).orMode(orMode);
+	}
+	
+	public static class Implementation<E, F> implements PropertySelector<E, F>
+	{
+		private final PathHolder pathHolder;
+		private List<F>          selected = new ArrayList<>();
+		// for string property only
+		private SearchMode searchMode;
+		private Boolean    notIncludingNull;
+		private boolean    orMode = true;
+		
+		public Implementation(final Attribute<?, ?>... attributes)
+		{
+			this.pathHolder = PathHolder.New(AttributeChain.New(attributes));
+		}
+		
+		public Implementation(final String path, final Class<E> from)
+		{
+			this.pathHolder = PathHolder.New(path, from);
+		}
+		
+		@Override
+		public AttributeChain getAttributes()
+		{
+			return this.pathHolder.getAttributes();
+		}
+		
+		@Override
+		public boolean isNotIncludingNullSet()
+		{
+			return this.notIncludingNull != null;
+		}
+		
+		@Override
+		public Boolean isNotIncludingNull()
+		{
+			return this.notIncludingNull;
+		}
+		
+		@Override
+		public PropertySelector<E, F> withoutNull()
+		{
+			this.notIncludingNull = true;
+			return this;
+		}
+		
+		@Override
+		public List<F> getSelected()
+		{
+			return this.selected;
+		}
+		
+		@Override
+		public PropertySelector<E, F> add(final F object)
+		{
+			this.selected.add(object);
+			return this;
+		}
+		
+		@Override
+		public void setSelected(final List<F> selected)
+		{
+			this.selected = new ArrayList<>(selected);
+		}
+		
+		@Override
+		public boolean isNotEmpty()
+		{
+			return this.selected != null && !this.selected.isEmpty();
+		}
+		
+		@Override
+		public void clearSelected()
+		{
+			if(this.selected != null)
+			{
+				this.selected.clear();
+			}
+		}
+		
+		@Override
+		public SearchMode getSearchMode()
+		{
+			return this.searchMode;
+		}
+		
+		@Override
+		public void setSearchMode(final SearchMode searchMode)
+		{
+			this.searchMode = searchMode;
+		}
+		
+		@Override
+		public boolean isOrMode()
+		{
+			return this.orMode;
+		}
+		
+		@Override
+		public void setOrMode(final boolean orMode)
+		{
+			this.orMode = orMode;
+		}
 	}
 }

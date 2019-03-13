@@ -14,10 +14,11 @@
 
 package com.rapidclipse.framework.server.jpa.dal;
 
+import static java.util.Objects.requireNonNull;
+
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.util.List;
-import java.util.Objects;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -53,7 +54,7 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 	
 	public JpaDataAccessObject(final Class<T> persistentClass)
 	{
-		this.persistentClass = Objects.requireNonNull(persistentClass);
+		this.persistentClass = requireNonNull(persistentClass);
 	}
 	
 	protected Class<T> persistentClass()
@@ -357,7 +358,7 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 	@Override
 	public List<T> findByExample(final T entity)
 	{
-		return findByExample(entity, new SearchParameters());
+		return findByExample(entity, SearchParameters.New());
 	}
 	
 	@Override
@@ -370,7 +371,7 @@ public class JpaDataAccessObject<T, ID extends Serializable> implements DataAcce
 	@Override
 	public int countByExample(final T entity)
 	{
-		return countByExample(entity, new SearchParameters());
+		return countByExample(entity, SearchParameters.New());
 	}
 	
 	@Override
