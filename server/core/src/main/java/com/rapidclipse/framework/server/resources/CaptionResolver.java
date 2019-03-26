@@ -25,8 +25,8 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import org.rapidpm.dependencies.core.logger.HasLogger;
 
 import com.rapidclipse.framework.server.util.ServiceLoader;
 
@@ -38,16 +38,16 @@ import com.rapidclipse.framework.server.util.ServiceLoader;
 public interface CaptionResolver
 {
 	public String resolveCaption(Object element, Locale locale);
-	
+
 	public String resolveCaption(Object element, String captionValue, Locale locale);
-	
+
 	public static class Implementation implements CaptionResolver
 	{
 		public Implementation()
 		{
 			super();
 		}
-		
+
 		@Override
 		public String resolveCaption(final Object element, final Locale locale)
 		{
@@ -63,19 +63,19 @@ public interface CaptionResolver
 				{
 					return ((Member)element).getName();
 				}
-				
+
 				// avoid stack overflow
 				if(!isCallFromToString())
 				{
 					return element.toString();
 				}
-				
+
 				return element.getClass().getName() + "@" + Integer.toHexString(element.hashCode());
 			}
-			
+
 			return resolveCaption(element, value, locale);
 		}
-		
+
 		@Override
 		public String resolveCaption(
 			final Object element,
@@ -85,7 +85,7 @@ public interface CaptionResolver
 			final String caption = StringResourceUtils.localizeString(captionValue, locale, element);
 			return format(caption, element);
 		}
-		
+
 		protected Caption getCaptionAnnotation(final Object element)
 		{
 			AnnotatedElement annotatedElement;
@@ -99,7 +99,7 @@ public interface CaptionResolver
 			}
 			return annotatedElement.getAnnotation(Caption.class);
 		}
-		
+
 		protected boolean isCallFromToString()
 		{
 			final Throwable throwable = new Throwable();
@@ -108,11 +108,11 @@ public interface CaptionResolver
 				.filter(element -> "toString".equals(element.getMethodName())).findFirst()
 				.isPresent();
 		}
-		
+
 		protected String format(String string, final Object element)
 		{
 			CaptionParameterProvider parameterProvider = null;
-			
+
 			int start;
 			int searchStart = 0;
 			while((start = string.indexOf("{%", searchStart)) >= 0)
@@ -124,16 +124,16 @@ public interface CaptionResolver
 					{
 						parameterProvider = getParameterProvider(element);
 					}
-					
+
 					final String parameterName = string.substring(start + 2, end);
 					final String value         = parameterProvider.getParameterValue(element, parameterName);
-					
+
 					final StringBuilder sb = new StringBuilder();
 					sb.append(string.substring(0, start));
 					sb.append(value);
 					sb.append(string.substring(end + 1));
 					string = sb.toString();
-					
+
 					searchStart = start + value.length();
 				}
 				else
@@ -143,7 +143,7 @@ public interface CaptionResolver
 			}
 			return string;
 		}
-		
+
 		protected CaptionParameterProvider getParameterProvider(final Object element)
 		{
 			return ServiceLoader.forType(CaptionParameterProviderFactory.class).servicesStream()
@@ -151,52 +151,49 @@ public interface CaptionResolver
 				.findFirst().orElse(null);
 		}
 	}
-	
-	public static class BeanInfoParameterProvider implements Function<String, String>
+
+	public static class BeanInfoParameterProvider implements Function<String, String>, HasLogger
 	{
-		protected static Logger LOG = Logger
-			.getLogger(BeanInfoParameterProvider.class.getName());
-		
 		private final Object element;
-		
+
 		private boolean  acquireBeanInfo = true;
 		private BeanInfo beanInfo;
-		
+
 		public BeanInfoParameterProvider(final Object element)
 		{
 			this.element = element;
 		}
-		
+
 		protected Object getElement()
 		{
 			return this.element;
 		}
-		
+
 		@Override
 		public String apply(final String parameter)
 		{
 			if(this.acquireBeanInfo)
 			{
 				this.acquireBeanInfo = false;
-				
+
 				try
 				{
 					this.beanInfo = Introspector.getBeanInfo(this.element.getClass());
 				}
 				catch(final IntrospectionException e)
 				{
-					LOG.log(Level.SEVERE, e.getMessage(), e);
+					logger().severe(e.getMessage(), e);
 				}
 			}
-			
+
 			if(this.beanInfo == null)
 			{
 				return parameter;
 			}
-			
+
 			return getParameter(parameter, this.beanInfo);
 		}
-		
+
 		protected String getParameter(final String parameter, final BeanInfo beanInfo)
 		{
 			final PropertyDescriptor propertyDescriptor = Arrays
@@ -206,13 +203,13 @@ public interface CaptionResolver
 			{
 				return parameter;
 			}
-			
+
 			final Method method = propertyDescriptor.getReadMethod();
 			if(method.getParameterCount() > 0)
 			{
 				return parameter;
 			}
-			
+
 			try
 			{
 				final Object value = method.invoke(this.element);
@@ -220,7 +217,7 @@ public interface CaptionResolver
 			}
 			catch(final Throwable t)
 			{
-				LOG.log(Level.SEVERE, t.getMessage(), t);
+				logger().severe(t.getMessage(), t);
 				return parameter;
 			}
 		}
