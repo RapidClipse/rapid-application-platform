@@ -15,13 +15,18 @@
 package com.rapidclipse.framework.server;
 
 import java.io.IOException;
+import java.util.Properties;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.rapidclipse.framework.server.resources.StringResourceI18NProvider;
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.function.DeploymentConfiguration;
+import com.vaadin.flow.server.Constants;
 import com.vaadin.flow.server.ServiceException;
 import com.vaadin.flow.server.VaadinServlet;
 
@@ -71,6 +76,25 @@ public class RapServlet extends VaadinServlet
 	///////////////////////////////////////////////////////////////////////////
 	// overrides //
 	/////////////////////////////////////////////////
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	protected DeploymentConfiguration createDeploymentConfiguration(final Properties initParameters)
+	{
+		final DeploymentConfiguration deploymentConfiguration = super.createDeploymentConfiguration(initParameters);
+		
+		/*
+		 * Inject default I18Provider if none has been set
+		 */
+		if(StringUtils.isEmpty(deploymentConfiguration.getStringProperty(Constants.I18N_PROVIDER, null)))
+		{
+			System.setProperty("vaadin." + Constants.I18N_PROVIDER, StringResourceI18NProvider.class.getName());
+		}
+		
+		return deploymentConfiguration;
+	}
 	
 	/**
 	 * {@inheritDoc}
