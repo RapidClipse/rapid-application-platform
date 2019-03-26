@@ -42,7 +42,7 @@ public class RapServlet extends VaadinServlet
 		public default void servletInitialized(final RapServlet servlet) throws ServletException
 		{
 		}
-		
+
 		public default boolean handleHttpRequest(
 			final HttpServletRequest request,
 			final HttpServletResponse response)
@@ -51,20 +51,20 @@ public class RapServlet extends VaadinServlet
 			return false;
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// static methods//
 	/////////////////////////////////////////////////
-	
+
 	public static RapServlet getRapServlet()
 	{
 		return (RapServlet)VaadinServlet.getCurrent();
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////////////////////////////////////
-	
+
 	/**
 	 *
 	 */
@@ -72,11 +72,11 @@ public class RapServlet extends VaadinServlet
 	{
 		super();
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// overrides //
 	/////////////////////////////////////////////////
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -84,7 +84,7 @@ public class RapServlet extends VaadinServlet
 	protected DeploymentConfiguration createDeploymentConfiguration(final Properties initParameters)
 	{
 		final DeploymentConfiguration deploymentConfiguration = super.createDeploymentConfiguration(initParameters);
-		
+
 		/*
 		 * Inject default I18Provider if none has been set
 		 */
@@ -92,10 +92,10 @@ public class RapServlet extends VaadinServlet
 		{
 			System.setProperty("vaadin." + Constants.I18N_PROVIDER, StringResourceI18NProvider.class.getName());
 		}
-		
+
 		return deploymentConfiguration;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -108,7 +108,7 @@ public class RapServlet extends VaadinServlet
 		service.init();
 		return service;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -117,7 +117,7 @@ public class RapServlet extends VaadinServlet
 	{
 		return (RapServletService)super.getService();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -125,13 +125,13 @@ public class RapServlet extends VaadinServlet
 	protected void servletInitialized() throws ServletException
 	{
 		super.servletInitialized();
-		
+
 		for(final Extension extension : ServiceLoader.forType(Extension.class).services())
 		{
 			extension.servletInitialized(this);
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -146,7 +146,7 @@ public class RapServlet extends VaadinServlet
 				return;
 			}
 		}
-		
+
 		super.service(request, response);
 	}
 }
