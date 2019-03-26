@@ -45,9 +45,9 @@ public final class Authentication
 	 *
 	 * @see #login(Subject, Object)
 	 */
-	public static boolean tryLogin(
-		final CredentialsUsernamePassword credentials,
-		final AuthenticatorProvider<CredentialsUsernamePassword, ?> authenticatorProvider)
+	public static <C extends CredentialsUsernamePassword> boolean tryLogin(
+		final C credentials,
+		final AuthenticatorProvider<C, ?> authenticatorProvider)
 	{
 		return tryLogin(credentials, authenticatorProvider, null);
 	}
@@ -61,9 +61,9 @@ public final class Authentication
 	 *
 	 * @see #login(Subject, Object)
 	 */
-	public static boolean tryLogin(
-		final CredentialsUsernamePassword credentials,
-		final AuthenticatorProvider<CredentialsUsernamePassword, ?> authenticatorProvider,
+	public static <C extends CredentialsUsernamePassword> boolean tryLogin(
+		final C credentials,
+		final AuthenticatorProvider<C, ?> authenticatorProvider,
 		final AuthorizationConfigurationProvider authorizationConfigurationProvider)
 	{
 		try
