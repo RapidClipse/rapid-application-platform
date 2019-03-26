@@ -44,16 +44,7 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-core</artifactId>
-			<version>13.0.0</version>
-		</dependency>
-		<!--
-		Added explicitely for now, because vaadin-core contains 2.1.1
-		https://github.com/vaadin/vaadin-combo-box-flow/issues/219
-		 -->
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-combo-box-flow</artifactId>
-			<version>2.1.2</version>
+			<version>13.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.flowingcode.addons</groupId>
