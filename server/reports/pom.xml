@@ -23,39 +23,27 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap-server</artifactId>
-		<version>0.9.0-SNAPSHOT</version>
+		<version>00.09.01-RAP-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
 	<artifactId>rap-server-reports</artifactId>
+
 	<name>Rapid Application Platform / Server / Reports</name>
-
-	<properties>
-		<rootDir>../..</rootDir>
-	</properties>
-
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-	</repositories>
 
 	<dependencies>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
+			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-core</artifactId>
-			<version>${project.version}</version>
+			<version>00.09.01-RAP-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.dynamicreports</groupId>
 			<artifactId>dynamicreports-core</artifactId>
-			<version>6.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.poi</groupId>
 			<artifactId>poi-ooxml</artifactId>
-			<version>4.0.1</version>
 		</dependency>
 	</dependencies>
 
