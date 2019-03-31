@@ -4,6 +4,7 @@ package com.rapidclipse.framework.server.resources;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.MissingResourceException;
 
 import com.vaadin.flow.i18n.I18NProvider;
 
@@ -32,7 +33,15 @@ public class StringResourceI18NProvider implements I18NProvider
 	@Override
 	public String getTranslation(final String key, final Locale locale, final Object... params)
 	{
-		return StringResourceUtils.getResourceString(key, locale, getCallerClass());
+		try
+		{
+			return StringResourceUtils.getResourceString(key, locale, getCallerClass());
+		}
+		catch(final MissingResourceException e)
+		{
+			// I18NProvider contract: error string instead of exception
+			return "!{" + key + "}!";
+		}
 	}
 	
 	private Class<?> getCallerClass()
@@ -40,8 +49,8 @@ public class StringResourceI18NProvider implements I18NProvider
 		for(final StackTraceElement elem : new Exception().getStackTrace())
 		{
 			final String className = elem.getClassName();
-			if(!className.startsWith("com.vaadin.") &&
-				!className.equals(StringResourceI18NProvider.class.getName()))
+			if(!className.equals(StringResourceI18NProvider.class.getName()) &&
+				!className.startsWith("com.vaadin."))
 			{
 				try
 				{
