@@ -11,7 +11,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.concurrent;
 
 import com.rapidclipse.framework.server.jpa.Conversationables;

@@ -11,7 +11,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.validation.constraints;
 
 import static java.lang.annotation.ElementType.ANNOTATION_TYPE;

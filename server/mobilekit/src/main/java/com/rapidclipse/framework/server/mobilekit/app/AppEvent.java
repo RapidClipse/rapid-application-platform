@@ -11,7 +11,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.mobilekit.app;
 
 import java.util.EventObject;

@@ -11,7 +11,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.resources;
 
 import com.rapidclipse.framework.server.jpa.Jpa;

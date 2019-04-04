@@ -11,7 +11,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.security.authentication;
 
 import com.rapidclipse.framework.security.authentication.AuthenticationFailedException;
