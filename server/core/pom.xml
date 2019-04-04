@@ -31,6 +31,13 @@
 
 	<name>Rapid Application Platform / Server / Core</name>
 
+	<url>http://www.rapidclipse.com</url>
+	<scm>
+		<url>https://github.com/RapidClipse/rapid-application-platform</url>
+		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
+		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
+	</scm>
+
 	<dependencies>
 		<dependency>
 			<groupId>javax.servlet</groupId>

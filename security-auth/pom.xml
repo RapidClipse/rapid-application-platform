@@ -31,4 +31,11 @@
 
 	<name>Rapid Application Platform / Security / Authentication and Authorization</name>
 
+	<url>http://www.rapidclipse.com</url>
+	<scm>
+		<url>https://github.com/RapidClipse/rapid-application-platform</url>
+		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
+		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
+	</scm>
+	
 </project>
