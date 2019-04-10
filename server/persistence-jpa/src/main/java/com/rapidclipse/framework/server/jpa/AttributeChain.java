@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import static com.rapidclipse.framework.server.Rap.notEmpty;
@@ -30,81 +31,131 @@ import javax.persistence.metamodel.PluralAttribute;
  * @author XDEV Software
  *
  */
-public interface AttributeChain extends Iterable<Attribute<?, ?>>, Cloneable, Serializable
+public interface AttributeChain<X, Y> extends Iterable<Attribute<?, ?>>, Cloneable, Serializable
 {
 	public Iterable<Attribute<?, ?>> attributes();
 	
-	public Attribute<?, ?> first();
+	public Attribute<X, ?> first();
 	
-	public Attribute<?, ?> last();
+	public Attribute<?, Y> last();
 	
 	public String path();
 	
-	public boolean verify();
-
-	public AttributeChain clone();
+	public AttributeChain<X, Y> clone();
 	
 	@Override
-	public Iterator<Attribute<?, ?>> iterator();
-	
-	public static AttributeChain New(final Collection<? extends Attribute<?, ?>> attributes)
+	public default Iterator<Attribute<?, ?>> iterator()
 	{
-		return new Implementation(attributes);
+		return attributes().iterator();
 	}
 	
-	public static AttributeChain New(final Attribute<?, ?>... attributes)
+	public static <X, Y> Builder<X, Y> Builder(final Attribute<X, Y> first)
 	{
-		return new Implementation(attributes);
+		return new Builder.Implementation<>(first);
 	}
 	
-	public static class Implementation implements AttributeChain
+	public static interface Builder<X, Y>
+	{
+		public <A> Builder<X, A> add(Attribute<Y, A> attribute);
+		
+		public AttributeChain<X, Y> build();
+		
+		public static class Implementation<X, Y> implements Builder<X, Y>
+		{
+			private final List<Attribute<?, ?>> attributes = new ArrayList<>();
+			
+			protected Implementation(final Attribute<X, Y> first)
+			{
+				this.attributes.add(first);
+			}
+			
+			@SuppressWarnings("unchecked")
+			@Override
+			public <A> Builder<X, A> add(final Attribute<Y, A> attribute)
+			{
+				this.attributes.add(attribute);
+				return (Builder<X, A>)this;
+			}
+			
+			@Override
+			public AttributeChain<X, Y> build()
+			{
+				return new AttributeChain.Implementation<>(this.attributes);
+			}
+		}
+	}
+	
+	public static AttributeChain<?, ?> New(final Collection<? extends Attribute<?, ?>> attributes)
+	{
+		return new Implementation<>(attributes);
+	}
+	
+	public static <X, Y> AttributeChain<X, Y> New(final Attribute<X, Y> singleAttribute)
+	{
+		return Builder(singleAttribute).build();
+	}
+	
+	public static <X, T1, Y> AttributeChain<X, Y> New(
+		final Attribute<X, T1> attribute1,
+		final Attribute<T1, Y> attribute2)
+	{
+		return Builder(attribute1).add(attribute2).build();
+	}
+	
+	public static <X, T1, T2, Y> AttributeChain<X, Y> New(
+		final Attribute<X, T1> attribute1,
+		final Attribute<T1, T2> attribute2,
+		final Attribute<T2, Y> attribute3)
+	{
+		return Builder(attribute1).add(attribute2).add(attribute3).build();
+	}
+	
+	public static <X, T1, T2, T3, Y> AttributeChain<X, Y> New(
+		final Attribute<X, T1> attribute1,
+		final Attribute<T1, T2> attribute2,
+		final Attribute<T2, T3> attribute3,
+		final Attribute<T3, Y> attribute4)
+	{
+		return Builder(attribute1).add(attribute2).add(attribute3).add(attribute4).build();
+	}
+	
+	public static <X, T1, T2, T3, T4, Y> AttributeChain<X, Y> New(
+		final Attribute<X, T1> attribute1,
+		final Attribute<T1, T2> attribute2,
+		final Attribute<T2, T3> attribute3,
+		final Attribute<T3, T4> attribute4,
+		final Attribute<T4, Y> attribute5)
+	{
+		return Builder(attribute1).add(attribute2).add(attribute3).add(attribute4).add(attribute5).build();
+	}
+	
+	public static AttributeChain<?, ?> New(final Attribute<?, ?>... attributes)
+	{
+		return new Implementation<>(attributes);
+	}
+	
+	public static class Implementation<X, Y> implements AttributeChain<X, Y>
 	{
 		private final List<Attribute<?, ?>> attributes;
 		
-		public Implementation(final Collection<? extends Attribute<?, ?>> attributes)
+		protected Implementation(final Collection<? extends Attribute<?, ?>> attributes)
 		{
 			super();
 			
-			this.attributes = new ArrayList<>(notEmpty(attributes));
+			this.attributes = verify(new ArrayList<>(notEmpty(attributes)));
 		}
 		
-		public Implementation(final Attribute<?, ?>... attributes)
+		protected Implementation(final Attribute<?, ?>... attributes)
 		{
 			super();
 			
-			this.attributes = Arrays.asList(notEmpty(attributes));
+			this.attributes = verify(Arrays.asList(notEmpty(attributes)));
 		}
 		
-		@Override
-		public Iterable<Attribute<?, ?>> attributes()
-		{
-			return this.attributes;
-		}
-		
-		@Override
-		public Attribute<?, ?> first()
-		{
-			return this.attributes.get(0);
-		}
-		
-		@Override
-		public Attribute<?, ?> last()
-		{
-			return this.attributes.get(this.attributes.size() - 1);
-		}
-		
-		@Override
-		public String path()
-		{
-			return Jpa.toPropertyPath(this);
-		}
-		
-		@Override
 		@SuppressWarnings("rawtypes")
-		public boolean verify()
+		private static List<Attribute<?, ?>> verify(final List<Attribute<?, ?>> attributes)
 		{
-			final List<Attribute<?, ?>> attributes = new ArrayList<>(this.attributes);
-			Class<?>                    from       = null;
+			Class<?> from = null;
 			if(attributes.get(0).isCollection())
 			{
 				from = ((PluralAttribute)attributes.get(0)).getElementType().getJavaType();
@@ -118,24 +169,45 @@ public interface AttributeChain extends Iterable<Attribute<?, ?>>, Cloneable, Se
 			{
 				if(!attribute.getDeclaringType().getJavaType().isAssignableFrom(from))
 				{
-					return false;
+					throw new IllegalArgumentException("Invalid attribute chain: " +
+						attribute.getDeclaringType().getJavaType().getName() + " <> " + from.getName());
 				}
 				from = attribute.getJavaType();
 			}
 			
-			return true;
+			return attributes;
 		}
 		
 		@Override
-		public Iterator<Attribute<?, ?>> iterator()
+		public Iterable<Attribute<?, ?>> attributes()
 		{
-			return this.attributes.iterator();
+			return this.attributes;
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public Attribute<X, ?> first()
+		{
+			return (Attribute<X, ?>)this.attributes.get(0);
+		}
+		
+		@SuppressWarnings("unchecked")
+		@Override
+		public Attribute<?, Y> last()
+		{
+			return (Attribute<?, Y>)this.attributes.get(this.attributes.size() - 1);
 		}
 		
 		@Override
-		public AttributeChain clone()
+		public String path()
 		{
-			return new Implementation(this.attributes);
+			return Jpa.toPropertyPath(this);
+		}
+		
+		@Override
+		public AttributeChain<X, Y> clone()
+		{
+			return new Implementation<>(this.attributes);
 		}
 		
 		@Override
@@ -148,7 +220,7 @@ public interface AttributeChain extends Iterable<Attribute<?, ?>>, Cloneable, Se
 		public boolean equals(final Object obj)
 		{
 			return obj == this || (obj instanceof AttributeChain
-				&& this.attributes.equals(((AttributeChain)obj).attributes()));
+				&& this.attributes.equals(((AttributeChain<?, ?>)obj).attributes()));
 		}
 		
 		@Override

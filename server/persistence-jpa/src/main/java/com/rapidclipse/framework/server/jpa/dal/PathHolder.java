@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa.dal;
 
 import java.io.Serializable;
@@ -30,11 +31,11 @@ import com.rapidclipse.framework.server.jpa.Jpa;
  */
 public interface PathHolder extends Serializable
 {
-	public AttributeChain getAttributes();
+	public AttributeChain<?, ?> getAttributes();
 
 	public String getPath();
 	
-	public static PathHolder New(final AttributeChain attributeChain)
+	public static PathHolder New(final AttributeChain<?, ?> attributeChain)
 	{
 		return new Implementation(attributeChain);
 	}
@@ -46,17 +47,12 @@ public interface PathHolder extends Serializable
 
 	public static class Implementation implements PathHolder
 	{
-		private final String             path;
-		private final Class<?>           from;
-		private transient AttributeChain attributeChain;
+		private final String                   path;
+		private final Class<?>                 from;
+		private transient AttributeChain<?, ?> attributeChain;
 		
-		public Implementation(final AttributeChain attributeChain)
+		public Implementation(final AttributeChain<?, ?> attributeChain)
 		{
-			if(!attributeChain.verify())
-			{
-				throw new IllegalArgumentException("Invalid attribute chain");
-			}
-			
 			this.attributeChain = attributeChain;
 			this.path           = attributeChain.path();
 			this.from           = attributeChain.first().getDeclaringType().getJavaType();
@@ -73,7 +69,7 @@ public interface PathHolder extends Serializable
 		}
 		
 		@Override
-		public AttributeChain getAttributes()
+		public AttributeChain<?, ?> getAttributes()
 		{
 			if(this.attributeChain == null)
 			{

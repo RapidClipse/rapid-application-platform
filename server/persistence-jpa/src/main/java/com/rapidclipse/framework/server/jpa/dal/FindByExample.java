@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa.dal;
 
 import java.util.ArrayList;
@@ -57,7 +58,7 @@ class FindByExample<E> implements HasLogger
 	private final Class<E>         persistentClass;
 	private final EntityManager    entityManager;
 	private final SearchParameters searchParameters;
-	
+
 	public FindByExample(
 		final Class<E> persistentClass,
 		final EntityManager entityManager,
@@ -67,42 +68,42 @@ class FindByExample<E> implements HasLogger
 		this.entityManager    = entityManager;
 		this.searchParameters = searchParameters;
 	}
-	
+
 	public List<E> findByExample(final E entity)
 	{
 		final CriteriaBuilder builder       = this.entityManager.getCriteriaBuilder();
 		CriteriaQuery<E>      criteriaQuery = builder.createQuery(this.persistentClass);
-		
+
 		if(this.searchParameters.getDistinct())
 		{
 			criteriaQuery.distinct(true);
 		}
-		
+
 		final Root<E> root = criteriaQuery.from(this.persistentClass);
-		
+
 		final Predicate predicate = getPredicate(criteriaQuery, root, builder, entity);
 		if(predicate != null)
 		{
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-		
+
 		fetches(root);
-		
+
 		criteriaQuery.orderBy(buildJpaOrders(this.searchParameters.getOrders(), root, builder));
-		
+
 		final TypedQuery<E> typedQuery = this.entityManager.createQuery(criteriaQuery);
 		applyCacheHints(typedQuery);
 		applyPagination(typedQuery);
 		return typedQuery.getResultList();
 	}
-	
+
 	public int countByExample(final E entity)
 	{
 		final CriteriaBuilder builder = this.entityManager.getCriteriaBuilder();
-		
+
 		CriteriaQuery<Long> criteriaQuery = builder.createQuery(Long.class);
 		final Root<E>       root          = criteriaQuery.from(this.persistentClass);
-		
+
 		if(this.searchParameters.getDistinct())
 		{
 			criteriaQuery = criteriaQuery.select(builder.countDistinct(root));
@@ -111,22 +112,22 @@ class FindByExample<E> implements HasLogger
 		{
 			criteriaQuery = criteriaQuery.select(builder.count(root));
 		}
-		
+
 		// predicate
 		final Predicate predicate = getPredicate(criteriaQuery, root, builder, entity);
 		if(predicate != null)
 		{
 			criteriaQuery = criteriaQuery.where(predicate);
 		}
-		
+
 		// construct order by to fetch or joins if needed
 		buildJpaOrders(this.searchParameters.getOrders(), root, builder);
-		
+
 		final TypedQuery<Long> typedQuery = this.entityManager.createQuery(criteriaQuery);
 		applyCacheHints(typedQuery);
 		return typedQuery.getSingleResult().intValue();
 	}
-	
+
 	private Predicate getPredicate(
 		final CriteriaQuery<?> criteriaQuery,
 		final Root<E> root,
@@ -137,7 +138,7 @@ class FindByExample<E> implements HasLogger
 			bySearchPredicate(root, builder, entity), //
 			byPredicate(criteriaQuery, root, builder, entity));
 	}
-	
+
 	private Predicate bySearchPredicate(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -148,14 +149,14 @@ class FindByExample<E> implements HasLogger
 			byExample(root, builder, entity), //
 			byPattern(root, builder, this.persistentClass));
 	}
-	
+
 	private Predicate concatPredicate(
 		final CriteriaBuilder builder,
 		final Predicate... predicatesNullAllowed)
 	{
 		return concatPredicate(builder, Arrays.asList(predicatesNullAllowed));
 	}
-	
+
 	private Predicate concatPredicate(
 		final CriteriaBuilder builder,
 		final Collection<Predicate> predicatesNullAllowed)
@@ -169,7 +170,7 @@ class FindByExample<E> implements HasLogger
 			return Jpa.orPredicate(builder, predicatesNullAllowed);
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Predicate byRanges(final Root<E> root, final CriteriaBuilder builder)
 	{
@@ -187,10 +188,10 @@ class FindByExample<E> implements HasLogger
 				}
 			}
 		}
-		
+
 		return concatPredicate(builder, predicates);
 	}
-	
+
 	private <D extends Comparable<? super D>> Predicate buildRangePredicate(
 		final Range<E, D> range,
 		final Root<E> root,
@@ -210,7 +211,7 @@ class FindByExample<E> implements HasLogger
 		{
 			rangePredicate = builder.lessThanOrEqualTo(path, range.getTo());
 		}
-		
+
 		if(rangePredicate != null)
 		{
 			if(!range.isIncludeNullSet() || range.getIncludeNull() == Boolean.FALSE)
@@ -236,12 +237,12 @@ class FindByExample<E> implements HasLogger
 		}
 		return null;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Predicate byPropertySelectors(final Root<E> root, final CriteriaBuilder builder)
 	{
 		final List<Predicate> predicates = new ArrayList<>();
-		
+
 		for(final PropertySelector<?, ?> selector : this.searchParameters.getProperties())
 		{
 			if(selector.isBoolean())
@@ -261,7 +262,7 @@ class FindByExample<E> implements HasLogger
 		}
 		return concatPredicate(builder, predicates);
 	}
-	
+
 	private void byBooleanSelector(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -271,7 +272,7 @@ class FindByExample<E> implements HasLogger
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-			
+
 			for(final Boolean selection : selector.getSelected())
 			{
 				final Path<Boolean> path = Jpa.resolvePath(root, selector.getAttributes());
@@ -295,7 +296,7 @@ class FindByExample<E> implements HasLogger
 			}
 		}
 	}
-	
+
 	private void byStringSelector(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -305,7 +306,7 @@ class FindByExample<E> implements HasLogger
 		if(selector.isNotEmpty())
 		{
 			final List<Predicate> selectorPredicates = new ArrayList<>();
-			
+
 			for(final String selection : selector.getSelected())
 			{
 				final Path<String> path = Jpa.resolvePath(root, selector.getAttributes());
@@ -322,7 +323,7 @@ class FindByExample<E> implements HasLogger
 			}
 		}
 	}
-	
+
 	private Predicate stringPredicate(
 		final Expression<String> path,
 		final Object attrValue,
@@ -330,7 +331,7 @@ class FindByExample<E> implements HasLogger
 	{
 		return stringPredicate(path, attrValue, null, builder);
 	}
-	
+
 	private Predicate stringPredicate(
 		Expression<String> path,
 		Object attrValue,
@@ -342,7 +343,7 @@ class FindByExample<E> implements HasLogger
 			path      = builder.lower(path);
 			attrValue = ((String)attrValue).toLowerCase();
 		}
-		
+
 		switch(searchMode != null ? searchMode : this.searchParameters.getSearchMode())
 		{
 			case EQUALS:
@@ -361,7 +362,7 @@ class FindByExample<E> implements HasLogger
 				throw new IllegalStateException("expecting a search mode!");
 		}
 	}
-	
+
 	private void byObjectSelector(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -384,7 +385,7 @@ class FindByExample<E> implements HasLogger
 			predicates.add(builder.isNotNull(Jpa.resolvePath(root, selector.getAttributes())));
 		}
 	}
-	
+
 	private void byObjectOrModeSelector(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -406,7 +407,7 @@ class FindByExample<E> implements HasLogger
 		}
 		predicates.add(Jpa.orPredicate(builder, selectorPredicates));
 	}
-	
+
 	private void byObjectAndModeSelector(
 		final Root<E> root,
 		final CriteriaBuilder builder,
@@ -428,7 +429,7 @@ class FindByExample<E> implements HasLogger
 		}
 		predicates.add(Jpa.andPredicate(builder, selectorPredicates));
 	}
-	
+
 	private Predicate byPredicate(
 		final CriteriaQuery<?> criteriaQuery,
 		final Root<E> root,
@@ -441,20 +442,20 @@ class FindByExample<E> implements HasLogger
 		{
 			return mandatoryPredicateSupplier.getPredicate(criteriaQuery, root, builder, entity);
 		}
-		
+
 		return null;
 	}
-	
+
 	private Predicate byExample(final Root<E> root, final CriteriaBuilder builder, final E entity)
 	{
 		if(entity == null)
 		{
 			return null;
 		}
-		
+
 		final Class<E>       type = root.getModel().getBindableJavaType();
 		final ManagedType<E> mt   = this.entityManager.getMetamodel().entity(type);
-		
+
 		final List<Predicate> predicates = new ArrayList<>();
 		predicates.addAll(byExample(mt, root, entity, builder));
 		predicates.addAll(byExampleOnCompositePk(root, entity, builder));
@@ -462,7 +463,7 @@ class FindByExample<E> implements HasLogger
 		predicates.addAll(byExampleOnXToMany(mt, root, entity, builder));
 		return concatPredicate(builder, predicates);
 	}
-	
+
 	private List<Predicate> byExampleOnCompositePk(
 		final Root<E> root,
 		final E entity,
@@ -482,7 +483,7 @@ class FindByExample<E> implements HasLogger
 				byExampleOnEmbeddable(root.get(embeddedIdAttribute.getName()), id, builder));
 		}
 	}
-	
+
 	private <EID> Predicate byExampleOnEmbeddable(
 		final Path<EID> embeddablePath,
 		final EID embeddableValue,
@@ -492,13 +493,13 @@ class FindByExample<E> implements HasLogger
 		{
 			return null;
 		}
-		
+
 		final Class<EID>       type = embeddablePath.getModel().getBindableJavaType();
 		final ManagedType<EID> mt   = this.entityManager.getMetamodel().embeddable(type);
-		
+
 		return Jpa.andPredicate(builder, byExample(mt, embeddablePath, embeddableValue, builder));
 	}
-	
+
 	/*
 	 * Add a predicate for each simple property whose value is not null.
 	 */
@@ -518,7 +519,7 @@ class FindByExample<E> implements HasLogger
 			{
 				continue;
 			}
-			
+
 			final Object attrValue = ReflectionUtils.getMemberValue(mtValue, attr.getJavaMember());
 			if(attrValue != null)
 			{
@@ -539,7 +540,7 @@ class FindByExample<E> implements HasLogger
 		}
 		return predicates;
 	}
-	
+
 	/*
 	 * Invoke byExample method for each not null x-to-one association when their
 	 * pk is not set. This allows you to search entities based on an associated
@@ -579,7 +580,7 @@ class FindByExample<E> implements HasLogger
 		}
 		return predicates;
 	}
-	
+
 	private Object getIdValue(final Object entity)
 	{
 		final Attribute<?, ?> idAttribute = Jpa.getIdAttribute(entity.getClass());
@@ -589,7 +590,7 @@ class FindByExample<E> implements HasLogger
 		}
 		return null;
 	}
-	
+
 	/*
 	 * Construct a join predicate on collection (eg many to many, List)
 	 */
@@ -631,7 +632,7 @@ class FindByExample<E> implements HasLogger
 		}
 		return predicates;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Predicate byPattern(
 		final Root<E> root,
@@ -642,11 +643,11 @@ class FindByExample<E> implements HasLogger
 		{
 			return null;
 		}
-		
+
 		final List<Predicate> predicates = new ArrayList<>();
 		final EntityType<E>   entity     = this.entityManager.getMetamodel().entity(type);
 		final String          pattern    = this.searchParameters.getSearchPattern();
-		
+
 		for(final SingularAttribute<? super E, ?> attr : entity.getSingularAttributes())
 		{
 			if(attr.getPersistentAttributeType() == PersistentAttributeType.MANY_TO_ONE
@@ -654,7 +655,7 @@ class FindByExample<E> implements HasLogger
 			{
 				continue;
 			}
-			
+
 			if(attr.getJavaType() == String.class)
 			{
 				predicates.add(stringPredicate(
@@ -662,14 +663,14 @@ class FindByExample<E> implements HasLogger
 					builder));
 			}
 		}
-		
+
 		return Jpa.orPredicate(builder, predicates);
 	}
-	
+
 	@SuppressWarnings({"unchecked", "rawtypes"})
 	private void fetches(final Root<E> root)
 	{
-		for(final AttributeChain chain : this.searchParameters.getFetches())
+		for(final AttributeChain<?, ?> chain : this.searchParameters.getFetches())
 		{
 			FetchParent<?, ?> from = root;
 			for(final Attribute<?, ?> attribute : chain)
@@ -698,7 +699,7 @@ class FindByExample<E> implements HasLogger
 			}
 		}
 	}
-	
+
 	private List<Order> buildJpaOrders(
 		final Iterable<OrderBy> orders,
 		final Root<E> root,
@@ -712,13 +713,13 @@ class FindByExample<E> implements HasLogger
 		}
 		return jpaOrders;
 	}
-	
+
 	private void applyCacheHints(final TypedQuery<?> typedQuery)
 	{
 		if(this.searchParameters.isCacheable())
 		{
 			typedQuery.setHint(QueryHints.CACHEABLE, true);
-			
+
 			if(this.searchParameters.hasCacheRegion())
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION, this.searchParameters.getCacheRegion());
@@ -727,13 +728,13 @@ class FindByExample<E> implements HasLogger
 			{
 				typedQuery.setHint(QueryHints.CACHE_REGION, this.persistentClass.getCanonicalName());
 			}
-			
+
 			if(this.searchParameters.hasCacheStoreMode())
 			{
 				typedQuery.setHint("javax.persistence.cache.storeMode",
 					this.searchParameters.getCacheStoreMode());
 			}
-			
+
 			if(this.searchParameters.hasCacheRetrieveMode())
 			{
 				typedQuery.setHint("javax.persistence.cache.retrieveMode",
@@ -741,7 +742,7 @@ class FindByExample<E> implements HasLogger
 			}
 		}
 	}
-	
+
 	private void applyPagination(final Query query)
 	{
 		if(this.searchParameters.getFirst() > 0)

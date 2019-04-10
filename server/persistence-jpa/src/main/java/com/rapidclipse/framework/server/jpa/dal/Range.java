@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa.dal;
 
 import java.io.Serializable;
@@ -31,75 +32,75 @@ public interface Range<E, D extends Comparable> extends Serializable
 	/**
 	 * @return the entity's attribute this Range refers to.
 	 */
-	public AttributeChain getAttributes();
-	
+	public AttributeChain<?, ?> getAttributes();
+
 	/**
 	 * @return the lower range boundary or null for unbound lower range.
 	 */
 	public D getFrom();
-	
+
 	/**
 	 * Sets the lower range boundary. Accepts null for unbound lower range.
 	 */
 	public void setFrom(final D from);
-	
+
 	public default Range<E, D> from(final D from)
 	{
 		setFrom(from);
 		return this;
 	}
-	
+
 	public default boolean isFromSet()
 	{
 		return getFrom() != null;
 	}
-	
+
 	/**
 	 * @return the upper range boundary or null for unbound upper range.
 	 */
 	public D getTo();
-	
+
 	/**
 	 * Sets the upper range boundary. Accepts null for unbound upper range.
 	 */
 	public void setTo(final D to);
-	
+
 	public default Range<E, D> to(final D to)
 	{
 		setTo(to);
 		return this;
 	}
-	
+
 	public default boolean isToSet()
 	{
 		return getTo() != null;
 	}
-	
+
 	public void setIncludeNull(final Boolean includeNull);
-	
+
 	public Boolean getIncludeNull();
-	
+
 	public default Range<E, D> includeNull(final Boolean includeNull)
 	{
 		setIncludeNull(includeNull);
 		return this;
 	}
-	
+
 	public default boolean isIncludeNullSet()
 	{
 		return getIncludeNull() != null;
 	}
-	
+
 	public default boolean isBetween()
 	{
 		return isFromSet() && isToSet();
 	}
-	
+
 	public default boolean isSet()
 	{
 		return isFromSet() || isToSet() || isIncludeNullSet();
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public default boolean isValid()
 	{
@@ -109,9 +110,9 @@ public interface Range<E, D extends Comparable> extends Serializable
 		}
 		return true;
 	}
-	
+
 	public void reset();
-	
+
 	/**
 	 * Constructs a new Range with no boundaries and no restrictions on field's
 	 * nullability.
@@ -123,7 +124,7 @@ public interface Range<E, D extends Comparable> extends Serializable
 	{
 		return new Implementation<>(attributes);
 	}
-	
+
 	/**
 	 * Constructs a new Range.
 	 *
@@ -141,7 +142,7 @@ public interface Range<E, D extends Comparable> extends Serializable
 	{
 		return new Implementation<>(from, to, attributes);
 	}
-	
+
 	/**
 	 * Constructs a new Range.
 	 *
@@ -164,26 +165,26 @@ public interface Range<E, D extends Comparable> extends Serializable
 	{
 		return new Implementation<>(from, to, includeNull, attributes);
 	}
-	
+
 	public static class Implementation<E, D extends Comparable> implements Range<E, D>
 	{
 		private final PathHolder pathHolder;
 		private D                from;
 		private D                to;
 		private Boolean          includeNull;
-		
+
 		public Implementation(final Attribute<?, ?>... attributes)
 		{
 			this.pathHolder = PathHolder.New(AttributeChain.New(attributes));
 		}
-		
+
 		public Implementation(final D from, final D to, final Attribute<?, ?>... attributes)
 		{
 			this(attributes);
 			this.from = from;
 			this.to   = to;
 		}
-		
+
 		public Implementation(
 			final D from,
 			final D to,
@@ -193,49 +194,49 @@ public interface Range<E, D extends Comparable> extends Serializable
 			this(from, to, attributes);
 			this.includeNull = includeNull;
 		}
-		
+
 		@Override
-		public AttributeChain getAttributes()
+		public AttributeChain<?, ?> getAttributes()
 		{
 			return this.pathHolder.getAttributes();
 		}
-		
+
 		@Override
 		public D getFrom()
 		{
 			return this.from;
 		}
-		
+
 		@Override
 		public void setFrom(final D from)
 		{
 			this.from = from;
 		}
-		
+
 		@Override
 		public D getTo()
 		{
 			return this.to;
 		}
-		
+
 		@Override
 		public void setTo(final D to)
 		{
 			this.to = to;
 		}
-		
+
 		@Override
 		public void setIncludeNull(final Boolean includeNull)
 		{
 			this.includeNull = includeNull;
 		}
-		
+
 		@Override
 		public Boolean getIncludeNull()
 		{
 			return this.includeNull;
 		}
-		
+
 		@Override
 		public void reset()
 		{

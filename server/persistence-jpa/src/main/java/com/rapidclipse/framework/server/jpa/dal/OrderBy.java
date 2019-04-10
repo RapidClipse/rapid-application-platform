@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa.dal;
 
 import java.io.Serializable;
@@ -33,65 +34,65 @@ public interface OrderBy extends Serializable
 		ASC,
 		DESC;
 	}
-	
+
 	public PathHolder getPathHolder();
-	
-	public default AttributeChain getAttributes()
+
+	public default AttributeChain<?, ?> getAttributes()
 	{
 		return getPathHolder().getAttributes();
 	}
-	
+
 	public default String getPath()
 	{
 		return getPathHolder().getPath();
 	}
-	
+
 	public Direction getDirection();
-	
+
 	public default boolean isOrderDesc()
 	{
 		return Direction.DESC == getDirection();
 	}
-	
+
 	public static OrderBy New(final Direction direction, final Attribute<?, ?>... attributes)
 	{
 		return new Implementation(direction, attributes);
 	}
-	
+
 	public static OrderBy New(final Direction direction, final String path, final Class<?> from)
 	{
 		return new Implementation(direction, path, from);
 	}
-	
+
 	public static class Implementation implements OrderBy
 	{
 		private final PathHolder pathHolder;
 		private Direction        direction = Direction.ASC;
-		
+
 		public Implementation(final Direction direction, final Attribute<?, ?>... attributes)
 		{
 			this.direction  = direction;
 			this.pathHolder = PathHolder.New(AttributeChain.New(attributes));
 		}
-		
+
 		public Implementation(final Direction direction, final String path, final Class<?> from)
 		{
 			this.direction  = direction;
 			this.pathHolder = PathHolder.New(path, from);
 		}
-		
+
 		@Override
 		public PathHolder getPathHolder()
 		{
 			return this.pathHolder;
 		}
-		
+
 		@Override
 		public Direction getDirection()
 		{
 			return this.direction;
 		}
-		
+
 		@Override
 		public int hashCode()
 		{
@@ -100,7 +101,7 @@ public interface OrderBy extends Serializable
 			result = prime * result + ((this.pathHolder == null) ? 0 : this.pathHolder.hashCode());
 			return result;
 		}
-		
+
 		@Override
 		public boolean equals(final Object obj)
 		{
