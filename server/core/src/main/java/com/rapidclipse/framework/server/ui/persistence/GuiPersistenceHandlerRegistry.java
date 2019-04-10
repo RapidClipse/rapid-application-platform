@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.persistence;
 
 import java.util.HashMap;
@@ -24,56 +25,55 @@ import com.vaadin.flow.component.Component;
 
 public final class GuiPersistenceHandlerRegistry
 {
-	private static GuiPersistenceHandlerRegistry INSTANCE;
-	
+	private static class InitializationOnDemandHolder
+	{
+		static final GuiPersistenceHandlerRegistry INSTANCE = new GuiPersistenceHandlerRegistry();
+	}
+
 	public static GuiPersistenceHandlerRegistry getInstance()
 	{
-		if(INSTANCE == null)
-		{
-			INSTANCE = new GuiPersistenceHandlerRegistry();
-		}
-		return INSTANCE;
+		return InitializationOnDemandHolder.INSTANCE;
 	}
-	
+
 	private final Map<Class<? extends Component>, GuiPersistenceHandler<? extends Component>> handlers;
-	
+
 	private GuiPersistenceHandlerRegistry()
 	{
 		this.handlers = new HashMap<>();
 		addDefaultHandlers();
 		addProvidedHandlers();
 	}
-	
+
 	private void addDefaultHandlers()
 	{
 		registerHandler(new AbstractFieldHandler<>());
 		registerHandler(new TabsHandler());
 	}
-	
+
 	private void addProvidedHandlers()
 	{
 		ServiceLoader.forType(GuiPersistenceHandlerProvider.class).servicesUncached()
 			.forEach(provider -> provider.registerHandlers(this));
 	}
-	
+
 	public <C extends Component> void registerHandler(final GuiPersistenceHandler<C> handler)
 	{
 		this.registerHandler(handler.handledType(), handler);
 	}
-	
+
 	public <C extends Component> void registerHandler(
 		final Class<C> type,
 		final GuiPersistenceHandler<? super C> handler)
 	{
 		this.handlers.put(type, handler);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <C extends Component> GuiPersistenceHandler<? super C> lookupHandler(final C component)
 	{
 		return (GuiPersistenceHandler<? super C>)lookupHandler(component.getClass());
 	}
-	
+
 	@SuppressWarnings("unchecked") // cast necessary due to
 	// type-heterogeneous collection content
 	public <C extends Component> GuiPersistenceHandler<? super C> lookupHandler(
@@ -85,14 +85,14 @@ public final class GuiPersistenceHandlerRegistry
 		{
 			return (GuiPersistenceHandler<? super C>)handler;
 		}
-		
+
 		final Class<?> superclass = componentType.getSuperclass();
 		if(superclass != null && Component.class.isAssignableFrom(superclass))
 		{
 			return (GuiPersistenceHandler<? super C>)lookupHandler(
 				(Class<? extends Component>)superclass);
 		}
-		
+
 		/*
 		 * potentially null handler returned intentionally to give calling
 		 * context the decision to either throw a specific exception or get a
