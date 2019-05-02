@@ -17,32 +17,32 @@ package com.rapidclipse.framework.server.ui.persistence.handler;
 import java.util.Map;
 
 import com.rapidclipse.framework.server.ui.persistence.GuiPersistenceEntry;
-import com.vaadin.flow.component.tabs.Tabs;
+import com.vaadin.flow.component.details.Details;
 
 
-public class TabsHandler extends ComponentHandler<Tabs>
+public class DetailsHandler extends ComponentHandler<Details>
 {
-	protected static final String SELECTED_TAB_INDEX = "selectedTabIndex";
+	protected static final String OPENED = "opened";
 
 	@Override
-	public Class<Tabs> handledType()
+	public Class<Details> handledType()
 	{
-		return Tabs.class;
+		return Details.class;
 	}
 
 	@Override
-	protected void addEntryValues(final Map<String, Object> entryValues, final Tabs component)
+	protected void addEntryValues(final Map<String, Object> entryValues, final Details component)
 	{
 		super.addEntryValues(entryValues, component);
 
-		entryValues.put(SELECTED_TAB_INDEX, component.getSelectedIndex());
+		entryValues.put(OPENED, component.isOpened());
 	}
 
 	@Override
-	public void restore(final Tabs component, final GuiPersistenceEntry entry)
+	public void restore(final Details component, final GuiPersistenceEntry entry)
 	{
 		super.restore(component, entry);
 
-		component.setSelectedIndex(((Number)entry.value(SELECTED_TAB_INDEX)).intValue());
+		component.setOpened(((Boolean)entry.value(OPENED)).booleanValue());
 	}
 }

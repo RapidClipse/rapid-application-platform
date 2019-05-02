@@ -18,25 +18,25 @@ import java.util.Map;
 
 import com.rapidclipse.framework.server.ui.persistence.GuiPersistenceEntry;
 import com.rapidclipse.framework.server.ui.persistence.PersistValueFlag;
-import com.vaadin.flow.component.AbstractField;
+import com.vaadin.flow.component.AbstractCompositeField;
 
 
 @SuppressWarnings("rawtypes")
-public class AbstractFieldHandler<C extends AbstractField> extends ComponentHandler<C>
+public class AbstractCompositeFieldHandler<C extends AbstractCompositeField> extends ComponentHandler<C>
 	implements HasValueHandler
 {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<C> handledType()
 	{
-		return (Class<C>)AbstractField.class;
+		return (Class<C>)AbstractCompositeField.class;
 	}
-
+	
 	@Override
 	protected void addEntryValues(final Map<String, Object> entryValues, final C component)
 	{
 		super.addEntryValues(entryValues, component);
-
+		
 		if(PersistValueFlag.get(component))
 		{
 			entryValues.put(VALUE, getFieldValueToStore(component.getValue()));
@@ -48,7 +48,7 @@ public class AbstractFieldHandler<C extends AbstractField> extends ComponentHand
 	public void restore(final C component, final GuiPersistenceEntry entry)
 	{
 		super.restore(component, entry);
-
+		
 		if(PersistValueFlag.get(component))
 		{
 			component.setValue(getFieldValueToRestore(entry.value(VALUE)));

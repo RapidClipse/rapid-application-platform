@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.persistence;
 
 import java.util.Collection;
@@ -25,7 +26,6 @@ import com.vaadin.flow.component.Component;
 
 public interface GuiPersistenceAnalyzer
 {
-	
 	public default GuiPersister createPersister(final String name, final Component root)
 	{
 		final Map<String, Component> map = new HashMap<>();
@@ -70,6 +70,10 @@ public interface GuiPersistenceAnalyzer
 		protected boolean persist(final Component component)
 		{
 			if(GuiPersistenceHandlerRegistry.getInstance().lookupHandler(component) == null)
+			{
+				return false;
+			}
+			if(!PersistFlag.get(component))
 			{
 				return false;
 			}
