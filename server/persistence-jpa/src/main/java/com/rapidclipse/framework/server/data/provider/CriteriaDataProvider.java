@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.provider;
 
 import static java.util.Objects.requireNonNull;
@@ -34,7 +35,6 @@ import com.rapidclipse.framework.server.data.filter.Filter;
 import com.rapidclipse.framework.server.jpa.Jpa;
 import com.vaadin.flow.data.provider.CallbackDataProvider.CountCallback;
 import com.vaadin.flow.data.provider.CallbackDataProvider.FetchCallback;
-import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProviderWrapper;
 import com.vaadin.flow.data.provider.DataProvider;
 import com.vaadin.flow.data.provider.Query;
@@ -46,7 +46,7 @@ import com.vaadin.flow.data.provider.SortDirection;
  * @author XDEV Software
  *
  */
-public interface CriteriaDataProvider<T> extends ConfigurableFilterDataProvider<T, Filter, Filter>
+public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filter>
 {
 	public static <T> CriteriaDataProvider<T> New(final CriteriaQuery<T> criteria)
 	{
