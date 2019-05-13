@@ -35,56 +35,56 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 	{
 		return new IntegerFormatBuilder.Implementation();
 	}
-	
+
 	public static DecimalFormatBuilder Decimal()
 	{
 		return new DecimalFormatBuilder.Implementation();
 	}
-	
+
 	public static PercentFormatBuilder Percent()
 	{
 		return new PercentFormatBuilder.Implementation();
 	}
-	
+
 	public static CurrencyFormatBuilder Currency()
 	{
 		return new CurrencyFormatBuilder.Implementation();
 	}
-	
+
 	public B locale(Locale locale);
-	
+
 	public B pattern(String pattern);
-	
+
 	public B localizedPattern(String localizedPattern);
-	
+
 	public B groupingUsed(boolean groupingUsed);
-	
+
 	public B groupingSize(int groupingSize);
-	
+
 	public B maximumIntegerDigits(int maximumIntegerDigits);
-	
+
 	public B minimumIntegerDigits(int minimumIntegerDigits);
-	
+
 	public B maximumFractionDigits(int maximumFractionDigits);
-	
+
 	public B minimumFractionDigits(int minimumFractionDigits);
-	
+
 	public B roundingMode(RoundingMode roundingMode);
-	
+
 	public B decimalSeparatorAlwaysShown(boolean decimalSeparatorAlwaysShown);
-	
+
 	public B multiplier(int multiplier);
-	
+
 	public B negativePrefix(String negativePrefix);
-	
+
 	public B negativeSuffix(String negativeSuffix);
-	
+
 	public B positivePrefix(String positivePrefix);
-	
+
 	public B positiveSuffix(String positiveSuffix);
-	
+
 	public NumberFormat build();
-	
+
 	public static abstract class Abstract<B extends NumberFormatBuilder<B>> implements NumberFormatBuilder<B>
 	{
 		private Locale       locale;
@@ -104,13 +104,18 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 		private String       positivePrefix;
 		private String       positiveSuffix;
 		
+		protected Abstract()
+		{
+			super();
+		}
+		
 		@Override
 		public B locale(final Locale locale)
 		{
 			this.locale = locale;
 			return $this();
 		}
-		
+
 		@Override
 		public B pattern(final String pattern)
 		{
@@ -118,7 +123,7 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			this.localizedPattern = null;
 			return $this();
 		}
-		
+
 		@Override
 		public B localizedPattern(final String localizedPattern)
 		{
@@ -126,98 +131,98 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			this.localizedPattern = localizedPattern;
 			return $this();
 		}
-		
+
 		@Override
 		public B groupingUsed(final boolean groupingUsed)
 		{
 			this.groupingUsed = groupingUsed;
 			return $this();
 		}
-		
+
 		@Override
 		public B groupingSize(final int groupingSize)
 		{
 			this.groupingSize = groupingSize;
 			return $this();
 		}
-		
+
 		@Override
 		public B maximumIntegerDigits(final int maximumIntegerDigits)
 		{
 			this.maximumIntegerDigits = maximumIntegerDigits;
 			return $this();
 		}
-		
+
 		@Override
 		public B minimumIntegerDigits(final int minimumIntegerDigits)
 		{
 			this.minimumIntegerDigits = minimumIntegerDigits;
 			return $this();
 		}
-		
+
 		@Override
 		public B maximumFractionDigits(final int maximumFractionDigits)
 		{
 			this.maximumFractionDigits = maximumFractionDigits;
 			return $this();
 		}
-		
+
 		@Override
 		public B minimumFractionDigits(final int minimumFractionDigits)
 		{
 			this.minimumFractionDigits = minimumFractionDigits;
 			return $this();
 		}
-		
+
 		@Override
 		public B roundingMode(final RoundingMode roundingMode)
 		{
 			this.roundingMode = roundingMode;
 			return $this();
 		}
-		
+
 		@Override
 		public B decimalSeparatorAlwaysShown(final boolean decimalSeparatorAlwaysShown)
 		{
 			this.decimalSeparatorAlwaysShown = decimalSeparatorAlwaysShown;
 			return $this();
 		}
-		
+
 		@Override
 		public B multiplier(final int multiplier)
 		{
 			this.multiplier = multiplier;
 			return $this();
 		}
-		
+
 		@Override
 		public B negativePrefix(final String negativePrefix)
 		{
 			this.negativePrefix = negativePrefix;
 			return $this();
 		}
-		
+
 		@Override
 		public B negativeSuffix(final String negativeSuffix)
 		{
 			this.negativeSuffix = negativeSuffix;
 			return $this();
 		}
-		
+
 		@Override
 		public B positivePrefix(final String positivePrefix)
 		{
 			this.positivePrefix = positivePrefix;
 			return $this();
 		}
-		
+
 		@Override
 		public B positiveSuffix(final String positiveSuffix)
 		{
 			this.positiveSuffix = positiveSuffix;
 			return $this();
 		}
-		
+
 		@Override
 		public NumberFormat build()
 		{
@@ -225,9 +230,9 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			updateFormat(format);
 			return format;
 		}
-		
+
 		protected abstract NumberFormat createFormat(Locale locale);
-		
+
 		protected void updateFormat(final NumberFormat format)
 		{
 			if(this.pattern != null)
@@ -291,24 +296,29 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 				decimalFormat(format).ifPresent(df -> df.setPositiveSuffix(this.positiveSuffix));
 			}
 		}
-		
+
 		protected Optional<DecimalFormat> decimalFormat(final NumberFormat format)
 		{
 			return format instanceof DecimalFormat ? Optional.of((DecimalFormat)format) : Optional.empty();
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		protected B $this()
 		{
 			return (B)this;
 		}
 	}
-	
+
 	public interface IntegerFormatBuilder extends NumberFormatBuilder<IntegerFormatBuilder>
 	{
 		public static class Implementation extends Abstract<IntegerFormatBuilder>
 			implements IntegerFormatBuilder
 		{
+			protected Implementation()
+			{
+				super();
+			}
+			
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -317,29 +327,34 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface FloatingFormatBuilder<B extends FloatingFormatBuilder<B>> extends NumberFormatBuilder<B>
 	{
 		public B decimalFormatSymbols(DecimalFormatSymbols decimalFormatSymbols);
-		
+
 		public static abstract class Abstract<B extends FloatingFormatBuilder<B>>
 			extends NumberFormatBuilder.Abstract<B>
 			implements FloatingFormatBuilder<B>
 		{
 			private DecimalFormatSymbols decimalFormatSymbols;
 			
+			protected Abstract()
+			{
+				super();
+			}
+
 			@Override
 			public B decimalFormatSymbols(final DecimalFormatSymbols decimalFormatSymbols)
 			{
 				this.decimalFormatSymbols = decimalFormatSymbols;
 				return $this();
 			}
-			
+
 			@Override
 			protected void updateFormat(final NumberFormat format)
 			{
 				super.updateFormat(format);
-				
+
 				if(this.decimalFormatSymbols != null)
 				{
 					decimalFormat(format).ifPresent(df -> df.setDecimalFormatSymbols(this.decimalFormatSymbols));
@@ -347,12 +362,17 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface DecimalFormatBuilder extends FloatingFormatBuilder<DecimalFormatBuilder>
 	{
 		public static class Implementation extends FloatingFormatBuilder.Abstract<DecimalFormatBuilder>
 			implements DecimalFormatBuilder
 		{
+			protected Implementation()
+			{
+				super();
+			}
+			
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -361,12 +381,17 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface PercentFormatBuilder extends FloatingFormatBuilder<PercentFormatBuilder>
 	{
 		public static class Implementation extends FloatingFormatBuilder.Abstract<PercentFormatBuilder>
 			implements PercentFormatBuilder
 		{
+			protected Implementation()
+			{
+				super();
+			}
+			
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -375,15 +400,20 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface CurrencyFormatBuilder extends FloatingFormatBuilder<CurrencyFormatBuilder>
 	{
 		public CurrencyFormatBuilder currency(Currency currency);
-		
+
 		public static class Implementation extends FloatingFormatBuilder.Abstract<CurrencyFormatBuilder>
 			implements CurrencyFormatBuilder
 		{
 			private Currency currency;
+			
+			protected Implementation()
+			{
+				super();
+			}
 			
 			@Override
 			public CurrencyFormatBuilder currency(final Currency currency)
@@ -391,19 +421,19 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 				this.currency = currency;
 				return $this();
 			}
-			
+
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
 				return locale != null ? NumberFormat.getCurrencyInstance(locale)
 					: NumberFormat.getCurrencyInstance();
 			}
-			
+
 			@Override
 			protected void updateFormat(final NumberFormat format)
 			{
 				super.updateFormat(format);
-				
+
 				if(this.currency != null)
 				{
 					format.setCurrency(this.currency);
