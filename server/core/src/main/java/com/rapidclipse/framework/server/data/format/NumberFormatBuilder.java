@@ -53,34 +53,79 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 
 	public B locale(Locale locale);
 
+	/**
+	 * @see DecimalFormat#applyPattern(String)
+	 */
 	public B pattern(String pattern);
 
+	/**
+	 * @see DecimalFormat#applyLocalizedPattern(String)
+	 */
 	public B localizedPattern(String localizedPattern);
 
+	/**
+	 * @see NumberFormat#setGroupingUsed(boolean)
+	 */
 	public B groupingUsed(boolean groupingUsed);
 
+	/**
+	 * @see DecimalFormat#setGroupingSize(int)
+	 */
 	public B groupingSize(int groupingSize);
 
+	/**
+	 * @see NumberFormat#setMaximumIntegerDigits(int)
+	 */
 	public B maximumIntegerDigits(int maximumIntegerDigits);
 
+	/**
+	 * @see NumberFormat#setMinimumIntegerDigits(int)
+	 */
 	public B minimumIntegerDigits(int minimumIntegerDigits);
 
+	/**
+	 * @see NumberFormat#setMaximumFractionDigits(int)
+	 */
 	public B maximumFractionDigits(int maximumFractionDigits);
 
+	/**
+	 * @see NumberFormat#setMinimumFractionDigits(int)
+	 */
 	public B minimumFractionDigits(int minimumFractionDigits);
 
+	/**
+	 * @see NumberFormat#setRoundingMode(RoundingMode)
+	 */
 	public B roundingMode(RoundingMode roundingMode);
 
+	/**
+	 * @see DecimalFormat#setDecimalSeparatorAlwaysShown(boolean)
+	 */
 	public B decimalSeparatorAlwaysShown(boolean decimalSeparatorAlwaysShown);
 
+	/**
+	 * @see DecimalFormat#setMultiplier(int)
+	 */
 	public B multiplier(int multiplier);
-
+	
+	/**
+	 * @see DecimalFormat#setNegativePrefix(String)
+	 */
 	public B negativePrefix(String negativePrefix);
-
+	
+	/**
+	 * @see DecimalFormat#setNegativeSuffix(String)
+	 */
 	public B negativeSuffix(String negativeSuffix);
-
+	
+	/**
+	 * @see DecimalFormat#setPositivePrefix(String)
+	 */
 	public B positivePrefix(String positivePrefix);
-
+	
+	/**
+	 * @see DecimalFormat#setPositiveSuffix(String)
+	 */
 	public B positiveSuffix(String positiveSuffix);
 
 	public NumberFormat build();
@@ -103,12 +148,12 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 		private String       negativeSuffix;
 		private String       positivePrefix;
 		private String       positiveSuffix;
-		
+
 		protected Abstract()
 		{
 			super();
 		}
-		
+
 		@Override
 		public B locale(final Locale locale)
 		{
@@ -318,7 +363,7 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			{
 				super();
 			}
-			
+
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -330,6 +375,9 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 
 	public interface FloatingFormatBuilder<B extends FloatingFormatBuilder<B>> extends NumberFormatBuilder<B>
 	{
+		/**
+		 * @see DecimalFormat#setDecimalFormatSymbols(DecimalFormatSymbols)
+		 */
 		public B decimalFormatSymbols(DecimalFormatSymbols decimalFormatSymbols);
 
 		public static abstract class Abstract<B extends FloatingFormatBuilder<B>>
@@ -337,7 +385,7 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			implements FloatingFormatBuilder<B>
 		{
 			private DecimalFormatSymbols decimalFormatSymbols;
-			
+
 			protected Abstract()
 			{
 				super();
@@ -372,7 +420,7 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			{
 				super();
 			}
-			
+
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -391,7 +439,7 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 			{
 				super();
 			}
-			
+
 			@Override
 			protected NumberFormat createFormat(final Locale locale)
 			{
@@ -403,18 +451,21 @@ public interface NumberFormatBuilder<B extends NumberFormatBuilder<B>>
 
 	public interface CurrencyFormatBuilder extends FloatingFormatBuilder<CurrencyFormatBuilder>
 	{
+		/**
+		 * @see NumberFormat#setCurrency(Currency)
+		 */
 		public CurrencyFormatBuilder currency(Currency currency);
 
 		public static class Implementation extends FloatingFormatBuilder.Abstract<CurrencyFormatBuilder>
 			implements CurrencyFormatBuilder
 		{
 			private Currency currency;
-			
+
 			protected Implementation()
 			{
 				super();
 			}
-			
+
 			@Override
 			public CurrencyFormatBuilder currency(final Currency currency)
 			{

@@ -36,34 +36,46 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 	{
 		return new DateOnlyFormatBuilder.Implementation();
 	}
-	
+
 	public static TimeOnlyFormatBuilder Time()
 	{
 		return new TimeOnlyFormatBuilder.Implementation();
 	}
-	
+
 	public static DateTimeFormatBuilder DateTime()
 	{
 		return new DateTimeFormatBuilder.Implementation();
 	}
-	
+
 	public static SimpleDateFormatBuilder Simple(final String pattern)
 	{
 		return new SimpleDateFormatBuilder.Implementation(pattern);
 	}
-	
+
 	public B locale(Locale locale);
-	
+
+	/**
+	 * @see DateFormat#setCalendar(Calendar)
+	 */
 	public B calendar(Calendar calendar);
-	
+
+	/**
+	 * @see DateFormat#setLenient(boolean)
+	 */
 	public B lenient(boolean lenient);
-	
+
+	/**
+	 * @see DateFormat#setNumberFormat(NumberFormat)
+	 */
 	public B numberFormat(NumberFormat numberFormat);
-	
+
+	/**
+	 * @see DateFormat#setTimeZone(TimeZone)
+	 */
 	public B timeZone(TimeZone timeZone);
-	
+
 	public DateFormat build();
-	
+
 	public static abstract class Abstract<B extends DateFormatBuilder<B>> implements DateFormatBuilder<B>
 	{
 		private Locale       locale;
@@ -71,47 +83,47 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 		private Boolean      lenient;
 		private NumberFormat numberFormat;
 		private TimeZone     timeZone;
-		
+
 		protected Abstract()
 		{
 			super();
 		}
-		
+
 		@Override
 		public B locale(final Locale locale)
 		{
 			this.locale = locale;
 			return $this();
 		}
-		
+
 		@Override
 		public B calendar(final Calendar calendar)
 		{
 			this.calendar = calendar;
 			return $this();
 		}
-		
+
 		@Override
 		public B lenient(final boolean lenient)
 		{
 			this.lenient = lenient;
 			return $this();
 		}
-		
+
 		@Override
 		public B numberFormat(final NumberFormat numberFormat)
 		{
 			this.numberFormat = numberFormat;
 			return $this();
 		}
-		
+
 		@Override
 		public B timeZone(final TimeZone timeZone)
 		{
 			this.timeZone = timeZone;
 			return $this();
 		}
-		
+
 		@Override
 		public DateFormat build()
 		{
@@ -119,9 +131,9 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 			updateFormat(format);
 			return format;
 		}
-		
+
 		protected abstract DateFormat createFormat(Locale locale);
-		
+
 		protected void updateFormat(final DateFormat format)
 		{
 			if(this.calendar != null)
@@ -141,18 +153,25 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				format.setTimeZone(this.timeZone);
 			}
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		protected B $this()
 		{
 			return (B)this;
 		}
 	}
-	
+
 	public interface DateOnlyFormatBuilder extends DateFormatBuilder<DateOnlyFormatBuilder>
 	{
+		/**
+		 * @see DateFormat#DEFAULT
+		 * @see DateFormat#SHORT
+		 * @see DateFormat#MEDIUM
+		 * @see DateFormat#LONG
+		 * @see DateFormat#FULL
+		 */
 		public DateOnlyFormatBuilder dateStyle(int dateStyle);
-		
+
 		public static class Implementation extends Abstract<DateOnlyFormatBuilder>
 			implements DateOnlyFormatBuilder
 		{
@@ -162,7 +181,7 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 			{
 				super();
 			}
-			
+
 			@Override
 			public DateOnlyFormatBuilder dateStyle(final int dateStyle)
 			{
@@ -173,7 +192,7 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				this.dateStyle = dateStyle;
 				return $this();
 			}
-			
+
 			@Override
 			protected DateFormat createFormat(final Locale locale)
 			{
@@ -182,21 +201,28 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface TimeOnlyFormatBuilder extends DateFormatBuilder<TimeOnlyFormatBuilder>
 	{
+		/**
+		 * @see DateFormat#DEFAULT
+		 * @see DateFormat#SHORT
+		 * @see DateFormat#MEDIUM
+		 * @see DateFormat#LONG
+		 * @see DateFormat#FULL
+		 */
 		public TimeOnlyFormatBuilder timeStyle(int timeStyle);
-		
+
 		public static class Implementation extends Abstract<TimeOnlyFormatBuilder>
 			implements TimeOnlyFormatBuilder
 		{
 			private int timeStyle = DateFormat.DEFAULT;
-			
+
 			protected Implementation()
 			{
 				super();
 			}
-			
+
 			@Override
 			public TimeOnlyFormatBuilder timeStyle(final int timeStyle)
 			{
@@ -207,7 +233,7 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				this.timeStyle = timeStyle;
 				return $this();
 			}
-			
+
 			@Override
 			protected DateFormat createFormat(final Locale locale)
 			{
@@ -216,24 +242,38 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface DateTimeFormatBuilder extends DateFormatBuilder<DateTimeFormatBuilder>
 	{
+		/**
+		 * @see DateFormat#DEFAULT
+		 * @see DateFormat#SHORT
+		 * @see DateFormat#MEDIUM
+		 * @see DateFormat#LONG
+		 * @see DateFormat#FULL
+		 */
 		public DateTimeFormatBuilder dateStyle(int dateStyle);
-		
+
+		/**
+		 * @see DateFormat#DEFAULT
+		 * @see DateFormat#SHORT
+		 * @see DateFormat#MEDIUM
+		 * @see DateFormat#LONG
+		 * @see DateFormat#FULL
+		 */
 		public DateTimeFormatBuilder timeStyle(int timeStyle);
-		
+
 		public static class Implementation extends Abstract<DateTimeFormatBuilder>
 			implements DateTimeFormatBuilder
 		{
 			private int dateStyle = DateFormat.DEFAULT;
 			private int timeStyle = DateFormat.DEFAULT;
-			
+
 			protected Implementation()
 			{
 				super();
 			}
-			
+
 			@Override
 			public DateTimeFormatBuilder dateStyle(final int dateStyle)
 			{
@@ -244,7 +284,7 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				this.dateStyle = dateStyle;
 				return $this();
 			}
-			
+
 			@Override
 			public DateTimeFormatBuilder timeStyle(final int timeStyle)
 			{
@@ -255,7 +295,7 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				this.timeStyle = timeStyle;
 				return $this();
 			}
-			
+
 			@Override
 			protected DateFormat createFormat(final Locale locale)
 			{
@@ -264,26 +304,32 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 			}
 		}
 	}
-	
+
 	public interface SimpleDateFormatBuilder extends DateFormatBuilder<SimpleDateFormatBuilder>
 	{
+		/**
+		 * @see SimpleDateFormat#setDateFormatSymbols(DateFormatSymbols)
+		 */
 		public SimpleDateFormatBuilder dateFormatSymbols(DateFormatSymbols dateFormatSymbols);
-		
+
+		/**
+		 * @see SimpleDateFormat#set2DigitYearStart(Date)
+		 */
 		public SimpleDateFormatBuilder twoDigitYearStart(Date twoDigitYearStart);
-		
+
 		public static class Implementation extends Abstract<SimpleDateFormatBuilder>
 			implements SimpleDateFormatBuilder
 		{
 			private final String      pattern;
 			private DateFormatSymbols dateFormatSymbols;
 			private Date              twoDigitYearStart;
-			
+
 			protected Implementation(final String pattern)
 			{
 				super();
 				this.pattern = pattern;
 			}
-			
+
 			@Override
 			public SimpleDateFormatBuilder dateFormatSymbols(final DateFormatSymbols dateFormatSymbols)
 			{
@@ -297,18 +343,18 @@ public interface DateFormatBuilder<B extends DateFormatBuilder<B>>
 				this.twoDigitYearStart = twoDigitYearStart;
 				return $this();
 			}
-			
+
 			@Override
 			protected DateFormat createFormat(final Locale locale)
 			{
 				return locale != null ? new SimpleDateFormat(this.pattern, locale) : new SimpleDateFormat(this.pattern);
 			}
-			
+
 			@Override
 			protected void updateFormat(final DateFormat format)
 			{
 				super.updateFormat(format);
-				
+
 				if(this.dateFormatSymbols != null)
 				{
 					((SimpleDateFormat)format).setDateFormatSymbols(this.dateFormatSymbols);
