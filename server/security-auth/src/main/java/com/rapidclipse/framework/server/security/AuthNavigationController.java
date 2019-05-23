@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.security;
 
 import java.util.Collection;
@@ -21,6 +22,7 @@ import com.rapidclipse.framework.server.security.authentication.AccessibleView;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
 import com.rapidclipse.framework.server.security.authentication.UnauthenticatedNavigationRequestHandler;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
+import com.rapidclipse.framework.server.security.authorization.RouteResourcesProvider;
 import com.rapidclipse.framework.server.security.authorization.UnauthorizedNavigationRequestHandler;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterListener;
@@ -90,7 +92,9 @@ public class AuthNavigationController implements BeforeEnterListener
 	
 	protected Collection<Resource> getRequiredResources(final BeforeEnterEvent event)
 	{
-		// TODO view to resource binding
-		throw new Error("Not implemented yet");
+		final RouteResourcesProvider routeResourcesProvider = Authorization.getRouteResourcesProvider();
+		return routeResourcesProvider != null
+			? routeResourcesProvider.getResourcesFor(event.getLocation(), event.getNavigationTarget())
+			: null;
 	}
 }
