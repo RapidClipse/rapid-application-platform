@@ -11,14 +11,13 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.security.authentication;
+package com.rapidclipse.framework.server.security.authorization;
 
 /**
- * A login view is used for authentication in an application.
  *
- * @author XDEV Software
- *
+ * @author XDEV Software (CK)
  */
-public interface LoginView extends AccessibleView
+public interface AuthorizationResource
 {
+	public String resourceName();
 }

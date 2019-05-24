@@ -24,6 +24,12 @@ import com.vaadin.flow.router.Location;
 
 
 /**
+ * Lookup for resources within routes. Default implementation uses the {@link Resources} annotation.
+ *
+ * @see Resource
+ * @see Resources
+ * @see Authorization#setRouteResourcesProvider(RouteResourcesProvider)
+ *
  * @author XDEV Software
  *
  */
@@ -31,12 +37,12 @@ import com.vaadin.flow.router.Location;
 public interface RouteResourcesProvider
 {
 	public Collection<Resource> getResourcesFor(Location location, Class<?> target);
-
+	
 	public static RouteResourcesProvider Default()
 	{
 		return new AnnotationBased();
 	}
-
+	
 	public static class AnnotationBased implements RouteResourcesProvider
 	{
 		@Override
@@ -51,7 +57,7 @@ public interface RouteResourcesProvider
 					return Arrays.stream(names).map(Authorization::resource).collect(Collectors.toList());
 				}
 			}
-
+			
 			return null;
 		}
 	}

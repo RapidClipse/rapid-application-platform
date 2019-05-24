@@ -11,12 +11,24 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.security.authorization;
+
+package com.rapidclipse.framework.server.security.authentication.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 
 /**
+ * A login view is used for authentication in an application.
+ *
  * @author XDEV Software
  *
  */
-public interface PermissionDeniedView
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+@AccessibleView
+public @interface LoginView
 {
 }

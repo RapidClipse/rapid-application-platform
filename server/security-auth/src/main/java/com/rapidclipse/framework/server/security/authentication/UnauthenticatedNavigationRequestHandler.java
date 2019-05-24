@@ -13,6 +13,7 @@
  */
 package com.rapidclipse.framework.server.security.authentication;
 
+import com.rapidclipse.framework.server.security.authentication.annotations.AccessibleView;
 import com.vaadin.flow.router.BeforeEvent;
 
 

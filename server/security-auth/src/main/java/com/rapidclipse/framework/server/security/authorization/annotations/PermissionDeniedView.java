@@ -11,13 +11,21 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.security.authorization.jpa;
+
+package com.rapidclipse.framework.server.security.authorization.annotations;
+
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
 
 /**
+ * @author XDEV Software
  *
- * @author XDEV Software (CK)
  */
-public interface AuthorizationResource
+@Target(ElementType.TYPE)
+@Retention(RetentionPolicy.RUNTIME)
+public @interface PermissionDeniedView
 {
-	public String resourceName();
 }

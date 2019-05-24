@@ -24,6 +24,9 @@ import java.util.stream.Collectors;
 import com.rapidclipse.framework.security.authorization.AuthorizationConfiguration;
 import com.rapidclipse.framework.security.authorization.AuthorizationConfigurationProvider;
 import com.rapidclipse.framework.server.jpa.Jpa;
+import com.rapidclipse.framework.server.security.authorization.AuthorizationResource;
+import com.rapidclipse.framework.server.security.authorization.AuthorizationRole;
+import com.rapidclipse.framework.server.security.authorization.AuthorizationSubject;
 
 
 /**

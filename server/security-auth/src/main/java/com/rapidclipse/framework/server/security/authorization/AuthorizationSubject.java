@@ -11,15 +11,18 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.security.authentication;
+package com.rapidclipse.framework.server.security.authorization;
+
+import java.util.Collection;
+
 
 /**
- * Marker interface for UIs that can be reached without any authentication, e.g.
- * the {@link LoginView}.
  *
- * @author XDEV Software
- *
+ * @author XDEV Software (CK)
  */
-public interface AccessibleView
+public interface AuthorizationSubject
 {
+	public String subjectName();
+	
+	public Collection<? extends AuthorizationRole> roles();
 }

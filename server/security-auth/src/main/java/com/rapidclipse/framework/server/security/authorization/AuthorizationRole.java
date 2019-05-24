@@ -11,7 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.security.authorization.jpa;
+package com.rapidclipse.framework.server.security.authorization;
 
 import java.util.Collection;
 
@@ -20,9 +20,11 @@ import java.util.Collection;
  *
  * @author XDEV Software (CK)
  */
-public interface AuthorizationSubject
+public interface AuthorizationRole
 {
-	public String subjectName();
+	public String roleName();
+	
+	public Collection<? extends AuthorizationResource> resources();
 	
 	public Collection<? extends AuthorizationRole> roles();
 }

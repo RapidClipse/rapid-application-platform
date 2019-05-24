@@ -11,13 +11,19 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.util;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Inherited;
+import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Objects;
+import java.util.Optional;
 
 
 public final class ReflectionUtils
@@ -85,6 +91,44 @@ public final class ReflectionUtils
 		}
 		
 		return null;
+	}
+	
+	public static <A extends Annotation> boolean
+		isAnnotationPresent(final AnnotatedElement annotatedElement, final Class<A> annotationType)
+	{
+		return findAnnotation(annotatedElement, annotationType) != null;
+	}
+	
+	public static <A extends Annotation> A
+		findAnnotation(final AnnotatedElement annotatedElement, final Class<A> annotationType)
+	{
+		return Optional.ofNullable(
+			// Find direct
+			annotatedElement.getAnnotation(annotationType))
+			.orElse(
+				// Find annotations of annotation (sort of annotation inheritance)
+				Arrays.stream(annotatedElement.getAnnotations())
+					// Avoid stack overflows with base annotations
+					.filter(a -> !isBaseAnnotation(annotatedElement))
+					.map(a -> findAnnotation(a.annotationType(), annotationType))
+					.filter(Objects::nonNull).findFirst()
+					.orElse(
+						// Find inherited if @Inherited is present
+						annotatedElement instanceof Class<?>
+							&& ((Class<?>)annotatedElement).getSuperclass() != null
+							&& annotationType.isAnnotationPresent(Inherited.class)
+								? findAnnotation(((Class<?>)annotatedElement).getSuperclass(), annotationType)
+								: null));
+	}
+	
+	private static boolean isBaseAnnotation(final AnnotatedElement annotatedElement)
+	{
+		if(annotatedElement instanceof Class)
+		{
+			final Class<?> clazz = (Class<?>)annotatedElement;
+			return clazz.isAnnotation() && clazz.getName().startsWith("java.lang.");
+		}
+		return false;
 	}
 	
 	private ReflectionUtils()

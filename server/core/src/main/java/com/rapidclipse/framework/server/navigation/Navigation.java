@@ -11,15 +11,18 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.navigation;
 
 import static java.util.Objects.requireNonNull;
 
+import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEvent;
@@ -54,16 +57,23 @@ public interface Navigation
 		event.rerouteTo(findComponentTargetType(targetType));
 	}
 
+	@SuppressWarnings("unchecked")
 	public static Class<? extends Component> findComponentTargetType(final Class<?> targetType)
 	{
 		final List<RouteData> routes      = RouteConfiguration.forSessionScope().getAvailableRoutes();
-		final RouteData       targetRoute = routes.stream()
-			.filter(data -> targetType.equals(data.getNavigationTarget()))
-			.findAny()
-			.orElse(routes.stream()
-				.filter(data -> targetType.isAssignableFrom(data.getNavigationTarget()))
-				.findAny()
-				.orElse(null));
+		final RouteData       targetRoute =
+			targetType.isAnnotation()
+				? routes.stream()
+					.filter(data -> ReflectionUtils.isAnnotationPresent(data.getNavigationTarget(),
+						(Class<? extends Annotation>)targetType))
+					.findAny().orElse(null)
+				: routes.stream()
+					.filter(data -> targetType.equals(data.getNavigationTarget()))
+					.findAny()
+					.orElse(routes.stream()
+						.filter(data -> targetType.isAssignableFrom(data.getNavigationTarget()))
+						.findAny()
+						.orElse(null));
 		if(targetRoute != null)
 		{
 			return targetRoute.getNavigationTarget();

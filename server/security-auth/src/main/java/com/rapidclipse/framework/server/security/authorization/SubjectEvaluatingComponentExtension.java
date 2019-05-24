@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -37,39 +38,44 @@ import com.vaadin.flow.component.Component;
 @FunctionalInterface
 public interface SubjectEvaluatingComponentExtension
 {
+	public static Builder Builder()
+	{
+		return Builder.New();
+	}
+
 	public static interface Builder
 	{
 		public Builder add(final Resource resource, final SubjectEvaluationStrategy strategy);
-		
+
 		public SubjectEvaluatingComponentExtension build();
-		
+
 		public static Builder New()
 		{
 			return new Implementation();
 		}
-		
+
 		public static class Implementation implements Builder
 		{
 			protected final Map<Resource, SubjectEvaluationStrategy> resourceStrategies;
-			
+
 			public Implementation()
 			{
 				super();
-				
+
 				this.resourceStrategies = new LinkedHashMap<>();
 			}
-			
+
 			@Override
 			public Builder add(final Resource resource, final SubjectEvaluationStrategy strategy)
 			{
 				requireNonNull(resource);
 				requireNonNull(strategy);
-				
+
 				this.resourceStrategies.put(resource, strategy);
-				
+
 				return this;
 			}
-			
+
 			@Override
 			public SubjectEvaluatingComponentExtension build()
 			{
@@ -77,7 +83,7 @@ public interface SubjectEvaluatingComponentExtension
 			}
 		}
 	}
-	
+
 	/**
 	 * Evaluates the passed {@link Subject} instance by checking if it has
 	 * sufficient {@link Permission}s for the component's {@link Resource}s.
@@ -87,31 +93,31 @@ public interface SubjectEvaluatingComponentExtension
 	 *            the {@link Subject} instance to be evaluated.
 	 */
 	public void evaluateSubject(final Component component, final Subject subject);
-	
+
 	public static SubjectEvaluatingComponentExtension New(
 		final Resource resource,
 		final SubjectEvaluationStrategy strategy)
 	{
 		return Builder.New().add(resource, strategy).build();
 	}
-	
+
 	public static SubjectEvaluatingComponentExtension New(
 		final Map<Resource, SubjectEvaluationStrategy> resourceStrategies)
 	{
 		return new Implementation(resourceStrategies);
 	}
-	
+
 	public static class Implementation implements SubjectEvaluatingComponentExtension
 	{
 		protected final Map<Resource, SubjectEvaluationStrategy> resourceStrategies;
-		
+
 		protected Implementation(final Map<Resource, SubjectEvaluationStrategy> resourceStrategies)
 		{
 			requireNonNull(resourceStrategies);
-			
+
 			this.resourceStrategies = resourceStrategies;
 		}
-		
+
 		@Override
 		public void evaluateSubject(final Component component, final Subject subject)
 		{

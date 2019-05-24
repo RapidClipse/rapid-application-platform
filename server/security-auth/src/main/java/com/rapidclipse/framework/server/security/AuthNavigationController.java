@@ -18,12 +18,12 @@ import java.util.Collection;
 
 import com.rapidclipse.framework.security.authorization.Resource;
 import com.rapidclipse.framework.security.authorization.Subject;
-import com.rapidclipse.framework.server.security.authentication.AccessibleView;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
 import com.rapidclipse.framework.server.security.authentication.UnauthenticatedNavigationRequestHandler;
+import com.rapidclipse.framework.server.security.authentication.annotations.AccessibleView;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
-import com.rapidclipse.framework.server.security.authorization.RouteResourcesProvider;
 import com.rapidclipse.framework.server.security.authorization.UnauthorizedNavigationRequestHandler;
+import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterListener;
 import com.vaadin.flow.router.ListenerPriority;
@@ -61,7 +61,7 @@ public class AuthNavigationController implements BeforeEnterListener
 	
 	protected boolean isAuthenticated(final BeforeEnterEvent event)
 	{
-		return AccessibleView.class.isAssignableFrom(event.getNavigationTarget())
+		return ReflectionUtils.isAnnotationPresent(event.getNavigationTarget(), AccessibleView.class)
 			|| Authentication.getUser() != null;
 	}
 	
@@ -92,9 +92,7 @@ public class AuthNavigationController implements BeforeEnterListener
 	
 	protected Collection<Resource> getRequiredResources(final BeforeEnterEvent event)
 	{
-		final RouteResourcesProvider routeResourcesProvider = Authorization.getRouteResourcesProvider();
-		return routeResourcesProvider != null
-			? routeResourcesProvider.getResourcesFor(event.getLocation(), event.getNavigationTarget())
-			: null;
+		return Authorization.getRouteResourcesProvider()
+			.getResourcesFor(event.getLocation(), event.getNavigationTarget());
 	}
 }
