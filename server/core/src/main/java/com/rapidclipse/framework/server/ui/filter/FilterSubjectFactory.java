@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
 import java.io.Serializable;
@@ -20,9 +21,7 @@ import java.io.Serializable;
  * @author XDEV Software
  *
  */
-public interface FilterSubjectFactory extends Serializable
+public interface FilterSubjectFactory<S> extends Serializable
 {
-	public boolean supports(Object source);
-	
-	public FilterSubject createFilterSubject(Object source);
+	public FilterSubject createFilterSubject(S source);
 }

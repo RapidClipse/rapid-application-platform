@@ -250,14 +250,6 @@ public class FilterComponent
 			.put(SubsetDataProviderFactory.New(predicate, provider));
 	}
 
-	public void setSubject(final Object source)
-	{
-		final FilterSubject subject = ServiceLoader.forType(FilterSubjectFactory.class)
-			.servicesStream().filter(factory -> factory.supports(source))
-			.map(f -> f.createFilterSubject(source)).findFirst().orElse(null);
-		setFilterSubject(subject);
-	}
-
 	public void setFilterSubject(final FilterSubject filterSubject)
 	{
 		this.filterSubject = filterSubject;
@@ -294,7 +286,7 @@ public class FilterComponent
 		final Registration registration = connectWith(grid.getDataProvider());
 
 		// set subject after successful registration
-		setSubject(grid);
+		setFilterSubject(GridFilterSubjectFactory.CreateFilterSubject(grid));
 
 		return registration;
 	}

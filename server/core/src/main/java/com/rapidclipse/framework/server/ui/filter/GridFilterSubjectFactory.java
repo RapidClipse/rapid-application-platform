@@ -33,20 +33,20 @@ import com.vaadin.flow.data.binder.PropertyDefinition;
  * @author XDEV Software
  *
  */
-public class GridFilterSubjectFactory implements FilterSubjectFactory
+public class GridFilterSubjectFactory implements FilterSubjectFactory<Grid<?>>
 {
 	public static GridFilterSubjectFactory New()
 	{
 		return new GridFilterSubjectFactory();
 	}
-
+	
 	public static GridFilterSubjectFactory New(
 		final Predicate<PropertyDefinition<?, ?>> searchablePropertyFilter,
 		final Predicate<PropertyDefinition<?, ?>> filterablePropertyFilter)
 	{
 		return new GridFilterSubjectFactory(searchablePropertyFilter, filterablePropertyFilter);
 	}
-
+	
 	public static GridFilterSubjectFactory New(
 		final Collection<String> searchableProperties,
 		final Collection<String> filterableProperties)
@@ -56,6 +56,11 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 			d -> filterableProperties.contains(d.getName()));
 	}
 	
+	public static FilterSubject CreateFilterSubject(final Grid<?> grid)
+	{
+		return New().createFilterSubject(grid);
+	}
+
 	public static FilterSubject CreateFilterSubject(
 		final Grid<?> grid,
 		final Collection<String> searchableProperties,
@@ -63,55 +68,53 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 	{
 		return New(searchableProperties, filterableProperties).createFilterSubject(grid);
 	}
-	
+
 	private final Predicate<PropertyDefinition<?, ?>> searchablePropertyFilter;
 	private final Predicate<PropertyDefinition<?, ?>> filterablePropertyFilter;
-
+	
 	public GridFilterSubjectFactory()
 	{
 		this(d -> true, d -> true);
 	}
-
+	
 	public GridFilterSubjectFactory(
 		final Predicate<PropertyDefinition<?, ?>> searchablePropertyFilter,
 		final Predicate<PropertyDefinition<?, ?>> filterablePropertyFilter)
 	{
 		super();
-
+		
 		this.searchablePropertyFilter = requireNonNull(searchablePropertyFilter);
 		this.filterablePropertyFilter = requireNonNull(filterablePropertyFilter);
 	}
 
 	@Override
-	public boolean supports(final Object source)
+	public FilterSubject createFilterSubject(final Grid<?> grid)
 	{
-		return source instanceof Grid && getBeanPropertySet((Grid<?>)source) != null;
-	}
-	
-	@Override
-	public FilterSubject createFilterSubject(final Object source)
-	{
-		final Grid<?>            grid        = (Grid<?>)source;
 		final BeanPropertySet<?> propertySet = getBeanPropertySet(grid);
-		final Class<?>           beanType    = propertySet.getBeanType();
-		
+		if(propertySet == null)
+		{
+			throw new IllegalArgumentException("Grid has no BeanPropertySet");
+		}
+
+		final Class<?> beanType = propertySet.getBeanType();
+
 		final List<FilterProperty<?>> searchableProperties = grid.getColumns().stream()
 			.map(c -> propertySet.getProperty(c.getKey()))
 			.filter(Optional::isPresent).map(Optional::get)
 			.filter(p -> String.class.equals(p.getType()))
 			.filter(this.searchablePropertyFilter)
 			.map(d -> toFilterProperty(beanType, d)).collect(toList());
-		
+
 		final List<FilterProperty<?>> filterableProperties = grid.getColumns().stream()
 			.map(c -> propertySet.getProperty(c.getKey()))
 			.filter(Optional::isPresent).map(Optional::get)
 			.filter(p -> Comparable.class.isAssignableFrom(p.getType()))
 			.filter(this.filterablePropertyFilter)
 			.map(d -> toFilterProperty(beanType, d)).collect(toList());
-		
+
 		return FilterSubject.New(searchableProperties, filterableProperties);
 	}
-	
+
 	protected FilterProperty<?> toFilterProperty(
 		final Class<?> clazz,
 		final PropertyDefinition<?, ?> propertyDefinition)
@@ -120,7 +123,7 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 		return FilterProperty.New(name, propertyDefinition.getType(),
 			CaptionUtils.resolveCaption(clazz, name));
 	}
-	
+
 	protected BeanPropertySet<?> getBeanPropertySet(final Grid<?> grid)
 	{
 		try
@@ -135,7 +138,7 @@ public class GridFilterSubjectFactory implements FilterSubjectFactory
 		catch(NoSuchFieldException | SecurityException e)
 		{
 		}
-		
+
 		return null;
 	}
 }

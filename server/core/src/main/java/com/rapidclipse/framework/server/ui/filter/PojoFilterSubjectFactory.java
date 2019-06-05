@@ -26,15 +26,13 @@ import java.util.List;
 import java.util.function.Predicate;
 
 import com.rapidclipse.framework.server.resources.CaptionUtils;
-import com.rapidclipse.framework.server.util.ServicePriority;
 
 
 /**
  * @author XDEV Software
  *
  */
-@ServicePriority(ServicePriority.MIN)
-public class PojoFilterSubjectFactory implements FilterSubjectFactory
+public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
 {
 	public static PojoFilterSubjectFactory New()
 	{
@@ -55,6 +53,11 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 		return new PojoFilterSubjectFactory(
 			d -> searchableProperties.contains(d.getName()),
 			d -> filterableProperties.contains(d.getName()));
+	}
+	
+	public static FilterSubject CreateFilterSubject(final Class<?> type)
+	{
+		return New().createFilterSubject(type);
 	}
 	
 	public static FilterSubject CreateFilterSubject(
@@ -81,12 +84,6 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 
 		this.searchablePropertyFilter = requireNonNull(searchablePropertyFilter);
 		this.filterablePropertyFilter = requireNonNull(filterablePropertyFilter);
-	}
-	
-	@Override
-	public boolean supports(final Object source)
-	{
-		return true;
 	}
 	
 	@Override
