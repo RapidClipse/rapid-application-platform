@@ -11,15 +11,19 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
+import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
 
 import java.beans.IntrospectionException;
 import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.rapidclipse.framework.server.util.ServicePriority;
@@ -32,6 +36,53 @@ import com.rapidclipse.framework.server.util.ServicePriority;
 @ServicePriority(ServicePriority.MIN)
 public class PojoFilterSubjectFactory implements FilterSubjectFactory
 {
+	public static PojoFilterSubjectFactory New()
+	{
+		return new PojoFilterSubjectFactory();
+	}
+	
+	public static PojoFilterSubjectFactory New(
+		final Predicate<PropertyDescriptor> searchablePropertyFilter,
+		final Predicate<PropertyDescriptor> filterablePropertyFilter)
+	{
+		return new PojoFilterSubjectFactory(searchablePropertyFilter, filterablePropertyFilter);
+	}
+	
+	public static PojoFilterSubjectFactory New(
+		final Collection<String> searchableProperties,
+		final Collection<String> filterableProperties)
+	{
+		return new PojoFilterSubjectFactory(
+			d -> searchableProperties.contains(d.getName()),
+			d -> filterableProperties.contains(d.getName()));
+	}
+	
+	public static FilterSubject CreateFilterSubject(
+		final Class<?> type,
+		final Collection<String> searchableProperties,
+		final Collection<String> filterableProperties)
+	{
+		return New(searchableProperties, filterableProperties).createFilterSubject(type);
+	}
+	
+	private final Predicate<PropertyDescriptor> searchablePropertyFilter;
+	private final Predicate<PropertyDescriptor> filterablePropertyFilter;
+	
+	public PojoFilterSubjectFactory()
+	{
+		this(d -> true, d -> true);
+	}
+	
+	public PojoFilterSubjectFactory(
+		final Predicate<PropertyDescriptor> searchablePropertyFilter,
+		final Predicate<PropertyDescriptor> filterablePropertyFilter)
+	{
+		super();
+
+		this.searchablePropertyFilter = requireNonNull(searchablePropertyFilter);
+		this.filterablePropertyFilter = requireNonNull(filterablePropertyFilter);
+	}
+	
 	@Override
 	public boolean supports(final Object source)
 	{
@@ -51,10 +102,12 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory
 			
 			final List<FilterProperty<?>> searchableProperties = Arrays.stream(propertyDescriptors)
 				.filter(d -> String.class.equals(d.getPropertyType()))
+				.filter(this.searchablePropertyFilter)
 				.map(d -> toFilterProperty(clazz, d)).collect(toList());
 			
 			final List<FilterProperty<?>> filterableProperties = Arrays.stream(propertyDescriptors)
 				.filter(d -> Comparable.class.isAssignableFrom(d.getPropertyType()))
+				.filter(this.filterablePropertyFilter)
 				.map(d -> toFilterProperty(clazz, d)).collect(toList());
 			
 			return FilterSubject.New(searchableProperties, filterableProperties);
