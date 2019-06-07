@@ -34,10 +34,11 @@ import com.vaadin.flow.router.RouteData;
  * @author XDEV Software
  *
  */
+@FunctionalInterface
 public interface NavigationItemProvider
 {
 	public List<NavigationItem> getItems();
-	
+
 	public static Comparator<NavigationItem> PositionSorter()
 	{
 		return (item1, item2) -> {
@@ -46,46 +47,46 @@ public interface NavigationItemProvider
 			return pos1 == pos2 ? 0 : pos1 < 0 ? 1 : pos2 < 0 ? -1 : pos1 < pos2 ? -1 : 1;
 		};
 	}
-	
+
 	public static Comparator<NavigationItem> LexicalSorter()
 	{
 		return (item1, item2) -> item1.displayName().compareTo(item2.displayName());
 	}
-	
+
 	public static NavigationItemProvider New()
 	{
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), PositionSorter());
 	}
-	
+
 	public static NavigationItemProvider New(final Predicate<NavigationItem> itemFilter)
 	{
 		return new Implementation(itemFilter, PositionSorter());
 	}
-	
+
 	public static NavigationItemProvider New(final Comparator<NavigationItem> itemSorter)
 	{
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), itemSorter);
 	}
-	
+
 	public static NavigationItemProvider
 		New(final Predicate<NavigationItem> itemFilter, final Comparator<NavigationItem> itemSorter)
 	{
 		return new Implementation(itemFilter, itemSorter);
 	}
-	
+
 	public static class Implementation implements NavigationItemProvider
 	{
 		private final Predicate<NavigationItem>  itemFilter;
 		private final Comparator<NavigationItem> itemSorter;
-		
+
 		public Implementation(final Predicate<NavigationItem> itemFilter, final Comparator<NavigationItem> itemSorter)
 		{
 			super();
-			
+
 			this.itemFilter = requireNonNull(itemFilter);
 			this.itemSorter = requireNonNull(itemSorter);
 		}
-		
+
 		@Override
 		public List<NavigationItem> getItems()
 		{
@@ -96,7 +97,7 @@ public interface NavigationItemProvider
 				.sorted(this.itemSorter)
 				.collect(Collectors.toList());
 		}
-		
+
 		protected NavigationItem toItem(final RouteData data)
 		{
 			final Class<? extends Component> target               = data.getNavigationTarget();
@@ -106,7 +107,7 @@ public interface NavigationItemProvider
 			{
 				return null;
 			}
-			
+
 			final int                position       = propertiesAnnotation.position();
 			final String             category       = propertiesAnnotation.category();
 			final NavigationItemIcon iconAnnotation = target.getAnnotation(NavigationItemIcon.class);
@@ -116,7 +117,7 @@ public interface NavigationItemProvider
 			{
 				displayName = target.getSimpleName();
 			}
-			
+
 			return NavigationItem.New(data, position, category, icon, displayName);
 		}
 	}
