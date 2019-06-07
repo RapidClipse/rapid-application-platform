@@ -16,6 +16,8 @@ package com.rapidclipse.framework.server.navigation;
 
 import static java.util.Objects.requireNonNull;
 
+import java.io.Serializable;
+
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.RouteData;
 
@@ -24,18 +26,18 @@ import com.vaadin.flow.router.RouteData;
  * @author XDEV Software
  *
  */
-public interface NavigationItem
+public interface NavigationItem extends Serializable
 {
 	public RouteData routeData();
-
+	
 	public int position();
-
+	
 	public String category();
-
+	
 	public VaadinIcon icon();
-
+	
 	public String displayName();
-
+	
 	public static NavigationItem New(
 		final RouteData routeData,
 		final int position,
@@ -45,7 +47,7 @@ public interface NavigationItem
 	{
 		return new Implementation(routeData, position, category, icon, displayName);
 	}
-
+	
 	public static class Implementation implements NavigationItem
 	{
 		private final RouteData  routeData;
@@ -53,7 +55,7 @@ public interface NavigationItem
 		private final String     category;
 		private final VaadinIcon icon;
 		private final String     displayName;
-
+		
 		public Implementation(
 			final RouteData routeData,
 			final int position,
@@ -62,38 +64,38 @@ public interface NavigationItem
 			final String displayName)
 		{
 			super();
-
+			
 			this.routeData   = routeData;
 			this.position    = position;
 			this.category    = category;
 			this.icon        = icon;
 			this.displayName = requireNonNull(displayName);
 		}
-
+		
 		@Override
 		public RouteData routeData()
 		{
 			return this.routeData;
 		}
-
+		
 		@Override
 		public int position()
 		{
 			return this.position;
 		}
-
+		
 		@Override
 		public String category()
 		{
 			return this.category;
 		}
-
+		
 		@Override
 		public VaadinIcon icon()
 		{
 			return this.icon;
 		}
-
+		
 		@Override
 		public String displayName()
 		{

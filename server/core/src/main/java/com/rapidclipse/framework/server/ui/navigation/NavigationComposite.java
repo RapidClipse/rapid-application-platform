@@ -14,6 +14,8 @@
 
 package com.rapidclipse.framework.server.ui.navigation;
 
+import java.beans.Beans;
+
 import com.rapidclipse.framework.server.navigation.NavigationItemProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
@@ -30,6 +32,11 @@ public abstract class NavigationComposite<T extends Component> extends Composite
 	public NavigationComposite()
 	{
 		super();
+		
+		if(!Beans.isDesignTime())
+		{
+			addAttachListener(event -> updateContent());
+		}
 	}
 
 	public void setItemProvider(final NavigationItemProvider itemProvider)
@@ -46,4 +53,6 @@ public abstract class NavigationComposite<T extends Component> extends Composite
 		
 		return this.itemProvider;
 	}
+
+	protected abstract void updateContent();
 }

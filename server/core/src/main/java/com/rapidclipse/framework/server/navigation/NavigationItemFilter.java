@@ -14,9 +14,8 @@
 
 package com.rapidclipse.framework.server.navigation;
 
-import java.util.function.Predicate;
-
 import com.rapidclipse.framework.server.util.ServiceLoader;
+import com.vaadin.flow.function.SerializablePredicate;
 
 
 /**
@@ -24,13 +23,13 @@ import com.rapidclipse.framework.server.util.ServiceLoader;
  *
  */
 @FunctionalInterface
-public interface NavigationItemFilter extends Predicate<NavigationItem>
+public interface NavigationItemFilter extends SerializablePredicate<NavigationItem>
 {
 	public final static NavigationItemFilter ALL = item -> true;
-	
-	public static Predicate<NavigationItem> RegisteredFilters()
+
+	public static SerializablePredicate<NavigationItem> RegisteredFilters()
 	{
-		Predicate<NavigationItem> predicate = ALL;
+		SerializablePredicate<NavigationItem> predicate = ALL;
 		for(final NavigationItemFilter filter : ServiceLoader.forType(NavigationItemFilter.class).services())
 		{
 			predicate = predicate.and(filter);

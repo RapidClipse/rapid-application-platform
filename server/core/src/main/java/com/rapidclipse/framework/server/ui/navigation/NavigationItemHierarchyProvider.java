@@ -14,6 +14,7 @@
 
 package com.rapidclipse.framework.server.ui.navigation;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,28 +27,28 @@ import com.rapidclipse.framework.server.navigation.NavigationItem;
  * @author XDEV Software
  *
  */
-public interface NavigationItemHierarchyProvider
+public interface NavigationItemHierarchyProvider extends Serializable
 {
 	public Iterable<String> getRootCategories();
-	
+
 	public Iterable<String> getChildCategories(String category);
-	
+
 	public static NavigationItemHierarchyProvider Plain(final List<NavigationItem> items)
 	{
 		return new Plain(items);
 	}
-
+	
 	public static class Plain implements NavigationItemHierarchyProvider
 	{
 		private final List<NavigationItem> items;
-
+		
 		protected Plain(final List<NavigationItem> items)
 		{
 			super();
-			
+
 			this.items = items;
 		}
-
+		
 		@Override
 		public Iterable<String> getRootCategories()
 		{
@@ -57,7 +58,7 @@ public interface NavigationItemHierarchyProvider
 				.distinct()
 				.collect(Collectors.toList());
 		}
-
+		
 		@Override
 		public Iterable<String> getChildCategories(final String category)
 		{

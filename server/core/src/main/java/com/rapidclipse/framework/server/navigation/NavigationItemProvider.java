@@ -16,16 +16,19 @@ package com.rapidclipse.framework.server.navigation;
 
 import static java.util.Objects.requireNonNull;
 
-import java.util.Comparator;
+import java.io.Serializable;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.function.SerializableComparator;
+import com.vaadin.flow.function.SerializablePredicate;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouteData;
 
@@ -35,11 +38,11 @@ import com.vaadin.flow.router.RouteData;
  *
  */
 @FunctionalInterface
-public interface NavigationItemProvider
+public interface NavigationItemProvider extends Serializable
 {
 	public List<NavigationItem> getItems();
 
-	public static Comparator<NavigationItem> PositionSorter()
+	public static SerializableComparator<NavigationItem> PositionSorter()
 	{
 		return (item1, item2) -> {
 			final int pos1 = item1.position();
@@ -48,7 +51,7 @@ public interface NavigationItemProvider
 		};
 	}
 
-	public static Comparator<NavigationItem> LexicalSorter()
+	public static SerializableComparator<NavigationItem> LexicalSorter()
 	{
 		return (item1, item2) -> item1.displayName().compareTo(item2.displayName());
 	}
@@ -58,28 +61,32 @@ public interface NavigationItemProvider
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), PositionSorter());
 	}
 
-	public static NavigationItemProvider New(final Predicate<NavigationItem> itemFilter)
+	public static NavigationItemProvider New(final SerializablePredicate<NavigationItem> itemFilter)
 	{
 		return new Implementation(itemFilter, PositionSorter());
 	}
 
-	public static NavigationItemProvider New(final Comparator<NavigationItem> itemSorter)
+	public static NavigationItemProvider New(final SerializableComparator<NavigationItem> itemSorter)
 	{
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), itemSorter);
 	}
 
 	public static NavigationItemProvider
-		New(final Predicate<NavigationItem> itemFilter, final Comparator<NavigationItem> itemSorter)
+		New(
+			final SerializablePredicate<NavigationItem> itemFilter,
+			final SerializableComparator<NavigationItem> itemSorter)
 	{
 		return new Implementation(itemFilter, itemSorter);
 	}
 
 	public static class Implementation implements NavigationItemProvider
 	{
-		private final Predicate<NavigationItem>  itemFilter;
-		private final Comparator<NavigationItem> itemSorter;
+		private final SerializablePredicate<NavigationItem>  itemFilter;
+		private final SerializableComparator<NavigationItem> itemSorter;
 
-		public Implementation(final Predicate<NavigationItem> itemFilter, final Comparator<NavigationItem> itemSorter)
+		public Implementation(
+			final SerializablePredicate<NavigationItem> itemFilter,
+			final SerializableComparator<NavigationItem> itemSorter)
 		{
 			super();
 
@@ -115,7 +122,15 @@ public interface NavigationItemProvider
 			String                   displayName    = propertiesAnnotation.displayName();
 			if(StringUtils.isEmpty(displayName))
 			{
-				displayName = target.getSimpleName();
+				final PageTitle pageTitle = target.getAnnotation(PageTitle.class);
+				if(pageTitle != null)
+				{
+					displayName = pageTitle.value();
+				}
+				else
+				{
+					displayName = CaptionUtils.resolveCaption(target);
+				}
 			}
 
 			return NavigationItem.New(data, position, category, icon, displayName);
