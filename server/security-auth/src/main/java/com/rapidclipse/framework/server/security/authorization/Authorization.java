@@ -29,8 +29,6 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.router.BeforeEvent;
-import com.vaadin.flow.router.Location;
-import com.vaadin.flow.router.RouteConfiguration;
 
 
 /**
@@ -52,7 +50,7 @@ public final class Authorization
 	{
 		UI.getCurrent().getSession().setAttribute(AuthorizationManager.class, authorizationManager);
 	}
-	
+
 	/**
 	 * Returns the {@link AuthorizationManager} of the current user session.
 	 *
@@ -63,7 +61,7 @@ public final class Authorization
 	{
 		return UI.getCurrent().getSession().getAttribute(AuthorizationManager.class);
 	}
-	
+
 	/**
 	 * Searches for a specific resource in the current
 	 * {@link AuthorizationManager}. If no resource is found an
@@ -93,7 +91,7 @@ public final class Authorization
 		}
 		return resource;
 	}
-	
+
 	/**
 	 * Searches for a specific resource with {@link #getResource(String)}. If no
 	 * resource with the specific name is present a new one will be created and
@@ -115,7 +113,7 @@ public final class Authorization
 			return Resource.New(name);
 		}
 	}
-	
+
 	/**
 	 * Registers a {@link SubjectEvaluatingComponentExtension} with the
 	 * <code>component</code>.
@@ -132,7 +130,7 @@ public final class Authorization
 	{
 		ComponentUtil.setData(component, SubjectEvaluatingComponentExtension.class, extension);
 	}
-	
+
 	/**
 	 * Returns the registered {@link SubjectEvaluatingComponentExtension} or <code>null</code>.
 	 *
@@ -145,7 +143,7 @@ public final class Authorization
 	{
 		return ComponentUtil.getData(component, SubjectEvaluatingComponentExtension.class);
 	}
-	
+
 	/**
 	 * Copies the registered resources from the <code>routedType</code> as a {@link SubjectEvaluatingComponentExtension}
 	 * with the given <code>strategy</code> into the <code>component</code>.
@@ -160,12 +158,7 @@ public final class Authorization
 	public static void
 		copyResources(final Class<?> routedType, final Component component, final SubjectEvaluationStrategy strategy)
 	{
-		final Location             location  =
-			RouteConfiguration.forSessionScope().getAvailableRoutes().stream()
-				.filter(rd -> rd.getNavigationTarget().equals(routedType))
-				.map(rd -> new Location(rd.getUrl()))
-				.findFirst().orElse(null);
-		final Collection<Resource> resources = getRouteResourcesProvider().getResourcesFor(location, routedType);
+		final Collection<Resource> resources = getRouteResourcesProvider().getResourcesFor(routedType);
 		if(!resources.isEmpty())
 		{
 			final SubjectEvaluatingComponentExtension.Builder builder = SubjectEvaluatingComponentExtension.Builder();
@@ -173,7 +166,7 @@ public final class Authorization
 			setSubjectEvaluatingComponentExtension(component, builder.build());
 		}
 	}
-	
+
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the current user.
@@ -194,7 +187,7 @@ public final class Authorization
 			evaluateComponents(root, Authentication.getUser());
 		}
 	}
-	
+
 	/**
 	 * Evaluates all {@link SubjectEvaluatingComponentExtension}s in the
 	 * component hierarchy of <code>root</code> against the given
@@ -211,13 +204,13 @@ public final class Authorization
 	public static void evaluateComponents(final Component root, final Subject subject)
 	{
 		UIUtils.lookupComponentTree(root, component -> {
-			
+
 			evaluateComponent(component, subject);
-			
+
 			return null;
 		});
 	}
-	
+
 	/**
 	 * Evaluates the {@link SubjectEvaluatingComponentExtension} of the
 	 * <code>component</code> against the given <code>subject</code>.
@@ -240,7 +233,7 @@ public final class Authorization
 			extension.evaluateSubject(component, subject);
 		}
 	}
-	
+
 	/**
 	 * Navigates to the application's permission denied view.
 	 *
@@ -250,16 +243,16 @@ public final class Authorization
 	{
 		Navigation.navigateTo(PermissionDeniedView.class);
 	}
-	
+
 	public static void rerouteToPermissionDeniedView(final BeforeEvent event)
 	{
 		Navigation.rerouteTo(event, PermissionDeniedView.class);
 	}
-	
+
 	private static UnauthorizedNavigationRequestHandler unauthorizedNavigationRequestHandler =
 		UnauthorizedNavigationRequestHandler
 			.Default();
-	
+
 	/**
 	 * @param unauthorizedNavigationRequestHandler
 	 *            the unauthorizedNavigationRequestHandler to set
@@ -269,7 +262,7 @@ public final class Authorization
 	{
 		Authorization.unauthorizedNavigationRequestHandler = requireNonNull(unauthorizedNavigationRequestHandler);
 	}
-	
+
 	/**
 	 * @return the unauthorizedNavigationRequestHandler
 	 */
@@ -277,9 +270,9 @@ public final class Authorization
 	{
 		return unauthorizedNavigationRequestHandler;
 	}
-	
+
 	private static RouteResourcesProvider routeResourcesProvider = RouteResourcesProvider.Default();
-	
+
 	/**
 	 * @param routeResourcesProvider
 	 *            the routeResourcesProvider to set
@@ -288,7 +281,7 @@ public final class Authorization
 	{
 		Authorization.routeResourcesProvider = requireNonNull(routeResourcesProvider);
 	}
-	
+
 	/**
 	 * @return the routeResourcesProvider
 	 */
@@ -296,7 +289,7 @@ public final class Authorization
 	{
 		return routeResourcesProvider;
 	}
-	
+
 	private Authorization()
 	{
 		throw new Error();

@@ -52,14 +52,9 @@ public interface NavigationItemProvider
 		return (item1, item2) -> item1.displayName().compareTo(item2.displayName());
 	}
 	
-	public static Predicate<NavigationItem> AllItems()
-	{
-		return item -> true;
-	}
-	
 	public static NavigationItemProvider New()
 	{
-		return new Implementation(AllItems(), PositionSorter());
+		return new Implementation(NavigationItemFilter.RegisteredFilters(), PositionSorter());
 	}
 	
 	public static NavigationItemProvider New(final Predicate<NavigationItem> itemFilter)
@@ -69,7 +64,7 @@ public interface NavigationItemProvider
 	
 	public static NavigationItemProvider New(final Comparator<NavigationItem> itemSorter)
 	{
-		return new Implementation(AllItems(), itemSorter);
+		return new Implementation(NavigationItemFilter.RegisteredFilters(), itemSorter);
 	}
 	
 	public static NavigationItemProvider
@@ -112,22 +107,17 @@ public interface NavigationItemProvider
 				return null;
 			}
 			
+			final int                position       = propertiesAnnotation.position();
+			final String             category       = propertiesAnnotation.category();
 			final NavigationItemIcon iconAnnotation = target.getAnnotation(NavigationItemIcon.class);
-			
-			final int position = propertiesAnnotation.position();
-			String    category = propertiesAnnotation.category();
-			if(StringUtils.isBlank(category))
-			{
-				category = null;
-			}
-			final VaadinIcon icon        = iconAnnotation != null ? iconAnnotation.value() : null;
-			String           displayName = propertiesAnnotation.displayName();
+			final VaadinIcon         icon           = iconAnnotation != null ? iconAnnotation.value() : null;
+			String                   displayName    = propertiesAnnotation.displayName();
 			if(StringUtils.isEmpty(displayName))
 			{
 				displayName = target.getSimpleName();
 			}
 			
-			return NavigationItem.New(position, category, icon, displayName);
+			return NavigationItem.New(data, position, category, icon, displayName);
 		}
 	}
 }

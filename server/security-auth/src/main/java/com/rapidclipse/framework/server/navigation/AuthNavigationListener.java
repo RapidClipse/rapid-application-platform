@@ -12,18 +12,12 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.security;
+package com.rapidclipse.framework.server.navigation;
 
-import java.util.Collection;
-
-import com.rapidclipse.framework.security.authorization.Resource;
-import com.rapidclipse.framework.security.authorization.Subject;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
 import com.rapidclipse.framework.server.security.authentication.UnauthenticatedNavigationRequestHandler;
-import com.rapidclipse.framework.server.security.authentication.annotations.AccessibleView;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
 import com.rapidclipse.framework.server.security.authorization.UnauthorizedNavigationRequestHandler;
-import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.vaadin.flow.router.BeforeEnterEvent;
 import com.vaadin.flow.router.BeforeEnterListener;
 import com.vaadin.flow.router.ListenerPriority;
@@ -34,12 +28,19 @@ import com.vaadin.flow.router.ListenerPriority;
  *
  */
 @ListenerPriority(Integer.MAX_VALUE)
-public class AuthNavigationController implements BeforeEnterListener
+public class AuthNavigationListener implements BeforeEnterListener
 {
+	private final AuthNavigationController controller = AuthNavigationController.Default();
+	
+	public AuthNavigationListener()
+	{
+		super();
+	}
+	
 	@Override
 	public void beforeEnter(final BeforeEnterEvent event)
 	{
-		if(!isAuthenticated(event))
+		if(!this.controller.isAuthenticated(event.getNavigationTarget()))
 		{
 			final UnauthenticatedNavigationRequestHandler handler = Authentication
 				.getUnauthenticatedNavigationRequestHandler();
@@ -48,7 +49,7 @@ public class AuthNavigationController implements BeforeEnterListener
 				handler.handle(event);
 			}
 		}
-		else if(!isAuthorized(event))
+		else if(!this.controller.isAuthorized(event.getNavigationTarget()))
 		{
 			final UnauthorizedNavigationRequestHandler handler = Authorization
 				.getUnauthorizedNavigationRequestHandler();
@@ -57,42 +58,5 @@ public class AuthNavigationController implements BeforeEnterListener
 				handler.handle(event);
 			}
 		}
-	}
-	
-	protected boolean isAuthenticated(final BeforeEnterEvent event)
-	{
-		return ReflectionUtils.isAnnotationPresent(event.getNavigationTarget(), AccessibleView.class)
-			|| Authentication.getUser() != null;
-	}
-	
-	protected boolean isAuthorized(final BeforeEnterEvent event)
-	{
-		final Collection<Resource> resources = getRequiredResources(event);
-		if(resources == null || resources.isEmpty())
-		{
-			return true;
-		}
-		
-		final Subject user = Authentication.getUser();
-		if(user == null)
-		{
-			return false;
-		}
-		
-		for(final Resource resource : resources)
-		{
-			if(!user.hasPermission(resource))
-			{
-				return false;
-			}
-		}
-		
-		return true;
-	}
-	
-	protected Collection<Resource> getRequiredResources(final BeforeEnterEvent event)
-	{
-		return Authorization.getRouteResourcesProvider()
-			.getResourcesFor(event.getLocation(), event.getNavigationTarget());
 	}
 }

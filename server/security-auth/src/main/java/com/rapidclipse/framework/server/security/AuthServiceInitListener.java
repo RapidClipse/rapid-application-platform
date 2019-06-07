@@ -11,10 +11,12 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.security;
 
 import java.beans.Beans;
 
+import com.rapidclipse.framework.server.navigation.AuthNavigationListener;
 import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 
@@ -29,7 +31,7 @@ public class AuthServiceInitListener implements VaadinServiceInitListener
 	{
 		super();
 	}
-	
+
 	@Override
 	public void serviceInit(final ServiceInitEvent event)
 	{
@@ -40,8 +42,8 @@ public class AuthServiceInitListener implements VaadinServiceInitListener
 			 */
 			return;
 		}
-		
+
 		event.getSource().addUIInitListener(
-			e -> e.getUI().addBeforeEnterListener(new AuthNavigationController()));
+			e -> e.getUI().addBeforeEnterListener(new AuthNavigationListener()));
 	}
 }

@@ -20,7 +20,6 @@ import java.util.stream.Collectors;
 
 import com.rapidclipse.framework.security.authorization.Resource;
 import com.rapidclipse.framework.server.security.authorization.annotations.Resources;
-import com.vaadin.flow.router.Location;
 
 
 /**
@@ -36,17 +35,17 @@ import com.vaadin.flow.router.Location;
 @FunctionalInterface
 public interface RouteResourcesProvider
 {
-	public Collection<Resource> getResourcesFor(Location location, Class<?> target);
-	
+	public Collection<Resource> getResourcesFor(Class<?> target);
+
 	public static RouteResourcesProvider Default()
 	{
 		return new AnnotationBased();
 	}
-	
+
 	public static class AnnotationBased implements RouteResourcesProvider
 	{
 		@Override
-		public Collection<Resource> getResourcesFor(final Location location, final Class<?> target)
+		public Collection<Resource> getResourcesFor(final Class<?> target)
 		{
 			final Resources resources = target.getAnnotation(Resources.class);
 			if(resources != null)
@@ -57,7 +56,7 @@ public interface RouteResourcesProvider
 					return Arrays.stream(names).map(Authorization::resource).collect(Collectors.toList());
 				}
 			}
-			
+
 			return null;
 		}
 	}
