@@ -18,7 +18,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -41,7 +40,7 @@ import com.vaadin.flow.router.RouteData;
 public interface NavigationItemProvider extends Serializable
 {
 	public List<NavigationItem> getItems();
-
+	
 	public static SerializableComparator<NavigationItem> PositionSorter()
 	{
 		return (item1, item2) -> {
@@ -50,27 +49,27 @@ public interface NavigationItemProvider extends Serializable
 			return pos1 == pos2 ? 0 : pos1 < 0 ? 1 : pos2 < 0 ? -1 : pos1 < pos2 ? -1 : 1;
 		};
 	}
-
+	
 	public static SerializableComparator<NavigationItem> LexicalSorter()
 	{
 		return (item1, item2) -> item1.displayName().compareTo(item2.displayName());
 	}
-
+	
 	public static NavigationItemProvider New()
 	{
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), PositionSorter());
 	}
-
+	
 	public static NavigationItemProvider New(final SerializablePredicate<NavigationItem> itemFilter)
 	{
 		return new Implementation(itemFilter, PositionSorter());
 	}
-
+	
 	public static NavigationItemProvider New(final SerializableComparator<NavigationItem> itemSorter)
 	{
 		return new Implementation(NavigationItemFilter.RegisteredFilters(), itemSorter);
 	}
-
+	
 	public static NavigationItemProvider
 		New(
 			final SerializablePredicate<NavigationItem> itemFilter,
@@ -78,48 +77,58 @@ public interface NavigationItemProvider extends Serializable
 	{
 		return new Implementation(itemFilter, itemSorter);
 	}
-
+	
 	public static class Implementation implements NavigationItemProvider
 	{
 		private final SerializablePredicate<NavigationItem>  itemFilter;
 		private final SerializableComparator<NavigationItem> itemSorter;
-
-		public Implementation(
+		
+		protected Implementation(
 			final SerializablePredicate<NavigationItem> itemFilter,
 			final SerializableComparator<NavigationItem> itemSorter)
 		{
 			super();
-
+			
 			this.itemFilter = requireNonNull(itemFilter);
 			this.itemSorter = requireNonNull(itemSorter);
 		}
-
+		
 		@Override
 		public List<NavigationItem> getItems()
 		{
 			return RouteConfiguration.forSessionScope().getAvailableRoutes().stream()
 				.map(this::toItem)
-				.filter(Objects::nonNull)
 				.filter(this.itemFilter)
 				.sorted(this.itemSorter)
 				.collect(Collectors.toList());
 		}
-
+		
 		protected NavigationItem toItem(final RouteData data)
 		{
-			final Class<? extends Component> target               = data.getNavigationTarget();
-			final NavigationItemProperties   propertiesAnnotation =
+			final Class<? extends Component> target = data.getNavigationTarget();
+			
+			final NavigationItemProperties propertiesAnnotation =
 				target.getAnnotation(NavigationItemProperties.class);
-			if(propertiesAnnotation == null)
+			final NavigationItemIcon       iconAnnotation       =
+				target.getAnnotation(NavigationItemIcon.class);
+			
+			int        position    = -1;
+			String     category    = null;
+			VaadinIcon icon        = null;
+			String     displayName = null;
+			
+			if(propertiesAnnotation != null)
 			{
-				return null;
+				position    = propertiesAnnotation.position();
+				category    = propertiesAnnotation.category();
+				displayName = propertiesAnnotation.displayName();
 			}
-
-			final int                position       = propertiesAnnotation.position();
-			final String             category       = propertiesAnnotation.category();
-			final NavigationItemIcon iconAnnotation = target.getAnnotation(NavigationItemIcon.class);
-			final VaadinIcon         icon           = iconAnnotation != null ? iconAnnotation.value() : null;
-			String                   displayName    = propertiesAnnotation.displayName();
+			
+			if(iconAnnotation != null)
+			{
+				icon = iconAnnotation.value();
+			}
+			
 			if(StringUtils.isEmpty(displayName))
 			{
 				final PageTitle pageTitle = target.getAnnotation(PageTitle.class);
@@ -132,7 +141,7 @@ public interface NavigationItemProvider extends Serializable
 					displayName = CaptionUtils.resolveCaption(target);
 				}
 			}
-
+			
 			return NavigationItem.New(data, position, category, icon, displayName);
 		}
 	}
