@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server;
 
 import static com.rapidclipse.framework.server.util.StacktraceUtils.cutStacktraceByOne;
@@ -45,11 +46,6 @@ public final class Rap
 	 */
 	public static RapExecutorService getExecutorService()
 	{
-		if(executorService == null)
-		{
-			executorService = createExecutorService(
-				RapServlet.getRapServlet().getServletContext());
-		}
 		return executorService;
 	}
 
@@ -207,12 +203,16 @@ public final class Rap
 	public static class ContextListener implements ServletContextListener
 	{
 		@Override
-		public void contextInitialized(final ServletContextEvent sce)
+		public void contextInitialized(final ServletContextEvent event)
 		{
+			if(Rap.executorService == null)
+			{
+				Rap.executorService = Rap.createExecutorService(event.getServletContext());
+			}
 		}
 
 		@Override
-		public void contextDestroyed(final ServletContextEvent sce)
+		public void contextDestroyed(final ServletContextEvent event)
 		{
 			if(Rap.executorService != null)
 			{
