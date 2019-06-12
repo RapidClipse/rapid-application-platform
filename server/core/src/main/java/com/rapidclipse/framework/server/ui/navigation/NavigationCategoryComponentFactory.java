@@ -19,6 +19,7 @@ import java.util.function.Supplier;
 import com.rapidclipse.framework.server.navigation.NavigationCategory;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.details.Details;
+import com.vaadin.flow.component.details.DetailsVariant;
 import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -49,6 +50,7 @@ public interface NavigationCategoryComponentFactory
 		public NavigationCategoryComponent apply(final NavigationCategory category)
 		{
 			final Details details = new Details();
+			details.addThemeVariants(DetailsVariant.SMALL);
 			
 			final Supplier<Component> icon = category.icon();
 			if(icon != null)

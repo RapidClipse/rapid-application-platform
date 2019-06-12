@@ -22,6 +22,7 @@ import com.rapidclipse.framework.server.navigation.NavigationItem;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.router.RouterLink;
 
@@ -88,6 +89,7 @@ public interface NavigationItemComponentFactory extends SerializableFunction<Nav
 		public Component apply(final NavigationItem item)
 		{
 			final Button button = new Button(item.displayName());
+			button.addThemeVariants(ButtonVariant.LUMO_SMALL);
 			Optional.ofNullable(item.icon()).ifPresent(icon -> button.setIcon(icon.get()));
 			button.addClickListener(event -> this.eventHandler.handleEvent(button, item));
 			return button;

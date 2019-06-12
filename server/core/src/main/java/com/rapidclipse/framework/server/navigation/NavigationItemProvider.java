@@ -19,6 +19,7 @@ import static java.util.Objects.requireNonNull;
 import java.io.Serializable;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -162,11 +163,13 @@ public interface NavigationItemProvider extends Serializable
 			
 			for(final Annotation annotation : target.getAnnotations())
 			{
-				if(annotation.annotationType().getAnnotation(NavigationIcon.class) != null)
+				final Class<? extends Annotation> annotationType = annotation.annotationType();
+				if(annotationType.getAnnotation(NavigationIcon.class) != null)
 				{
 					try
 					{
-						final Object value = annotation.annotationType().getDeclaredMethod("value").invoke(null);
+						final Method valueMethod = annotationType.getDeclaredMethod("value");
+						final Object value       = valueMethod.invoke(annotation);
 						if(value instanceof VaadinIcon)
 						{
 							return ((VaadinIcon)value)::create;
