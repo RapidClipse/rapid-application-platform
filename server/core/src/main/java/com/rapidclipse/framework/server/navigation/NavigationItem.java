@@ -14,11 +14,9 @@
 
 package com.rapidclipse.framework.server.navigation;
 
-import static java.util.Objects.requireNonNull;
+import java.util.function.Supplier;
 
-import java.io.Serializable;
-
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.router.RouteData;
 
 
@@ -26,7 +24,7 @@ import com.vaadin.flow.router.RouteData;
  * @author XDEV Software
  *
  */
-public interface NavigationItem extends Serializable
+public interface NavigationItem extends NavigationElement
 {
 	public RouteData routeData();
 	
@@ -34,42 +32,34 @@ public interface NavigationItem extends Serializable
 	
 	public String category();
 	
-	public VaadinIcon icon();
-	
-	public String displayName();
-	
 	public static NavigationItem New(
+		final Supplier<Component> icon,
+		final String displayName,
 		final RouteData routeData,
 		final int position,
-		final String category,
-		final VaadinIcon icon,
-		final String displayName)
+		final String category)
 	{
-		return new Implementation(routeData, position, category, icon, displayName);
+		return new Implementation(icon, displayName, routeData, position, category);
 	}
 	
-	public static class Implementation implements NavigationItem
+	public static class Implementation extends NavigationElement.Abstract implements NavigationItem
 	{
-		private final RouteData  routeData;
-		private final int        position;
-		private final String     category;
-		private final VaadinIcon icon;
-		private final String     displayName;
+		private final RouteData routeData;
+		private final int       position;
+		private final String    category;
 		
-		public Implementation(
+		protected Implementation(
+			final Supplier<Component> icon,
+			final String displayName,
 			final RouteData routeData,
 			final int position,
-			final String category,
-			final VaadinIcon icon,
-			final String displayName)
+			final String category)
 		{
-			super();
+			super(icon, displayName);
 			
-			this.routeData   = routeData;
-			this.position    = position;
-			this.category    = category;
-			this.icon        = icon;
-			this.displayName = requireNonNull(displayName);
+			this.routeData = routeData;
+			this.position  = position;
+			this.category  = category;
 		}
 		
 		@Override
@@ -88,18 +78,6 @@ public interface NavigationItem extends Serializable
 		public String category()
 		{
 			return this.category;
-		}
-		
-		@Override
-		public VaadinIcon icon()
-		{
-			return this.icon;
-		}
-		
-		@Override
-		public String displayName()
-		{
-			return this.displayName;
 		}
 	}
 }

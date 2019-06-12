@@ -12,14 +12,14 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.navigation;
+package com.rapidclipse.framework.server.navigation.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.vaadin.flow.component.icon.VaadinIcon;
+import com.flowingcode.vaadin.addons.ironicons.FileIcons;
 
 
 /**
@@ -28,7 +28,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-public @interface NavigationItemIcon
+@NavigationIcon
+public @interface NavigationIconFile
 {
-	VaadinIcon value();
+	FileIcons value();
 }

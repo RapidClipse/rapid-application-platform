@@ -12,19 +12,24 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.ui.navigation;
+package com.rapidclipse.framework.server.navigation.annotations;
 
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.vaadin.flow.component.icon.VaadinIcon;
 
 
 /**
  * @author XDEV Software
  *
  */
-public class HorizontalNavigationBar extends NavigationBar<HorizontalLayout>
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@NavigationIcon
+public @interface NavigationIconVaadin
 {
-	public HorizontalNavigationBar()
-	{
-		super();
-	}
+	VaadinIcon value();
 }

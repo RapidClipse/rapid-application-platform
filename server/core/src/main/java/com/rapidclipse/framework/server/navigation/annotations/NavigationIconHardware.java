@@ -12,19 +12,24 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.ui.navigation;
+package com.rapidclipse.framework.server.navigation.annotations;
 
-import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
+
+import com.flowingcode.vaadin.addons.ironicons.HardwareIcons;
 
 
 /**
  * @author XDEV Software
  *
  */
-public class VerticalNavigationBar extends NavigationBar<VerticalLayout>
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@NavigationIcon
+public @interface NavigationIconHardware
 {
-	public VerticalNavigationBar()
-	{
-		super();
-	}
+	HardwareIcons value();
 }

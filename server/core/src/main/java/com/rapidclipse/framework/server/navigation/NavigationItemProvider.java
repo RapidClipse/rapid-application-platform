@@ -17,11 +17,18 @@ package com.rapidclipse.framework.server.navigation;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
+import java.lang.annotation.Annotation;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.flowingcode.vaadin.addons.ironicons.IronIconEnum;
+import com.rapidclipse.framework.server.navigation.annotations.NavigationIcon;
+import com.rapidclipse.framework.server.navigation.annotations.NavigationIconFactory;
+import com.rapidclipse.framework.server.navigation.annotations.NavigationItemProperties;
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -109,24 +116,17 @@ public interface NavigationItemProvider extends Serializable
 			
 			final NavigationItemProperties propertiesAnnotation =
 				target.getAnnotation(NavigationItemProperties.class);
-			final NavigationItemIcon       iconAnnotation       =
-				target.getAnnotation(NavigationItemIcon.class);
 			
-			int        position    = -1;
-			String     category    = null;
-			VaadinIcon icon        = null;
-			String     displayName = null;
+			final Supplier<Component> icon        = resolveIcon(target);
+			String                    displayName = null;
+			int                       position    = -1;
+			String                    category    = null;
 			
 			if(propertiesAnnotation != null)
 			{
+				displayName = propertiesAnnotation.displayName();
 				position    = propertiesAnnotation.position();
 				category    = propertiesAnnotation.category();
-				displayName = propertiesAnnotation.displayName();
-			}
-			
-			if(iconAnnotation != null)
-			{
-				icon = iconAnnotation.value();
 			}
 			
 			if(StringUtils.isEmpty(displayName))
@@ -142,7 +142,49 @@ public interface NavigationItemProvider extends Serializable
 				}
 			}
 			
-			return NavigationItem.New(data, position, category, icon, displayName);
+			return NavigationItem.New(icon, displayName, data, position, category);
+		}
+		
+		protected Supplier<Component> resolveIcon(final Class<? extends Component> target)
+		{
+			final NavigationIconFactory factory = target.getAnnotation(NavigationIconFactory.class);
+			if(factory != null)
+			{
+				try
+				{
+					return factory.value().newInstance();
+				}
+				catch(InstantiationException | IllegalAccessException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+			
+			for(final Annotation annotation : target.getAnnotations())
+			{
+				if(annotation.annotationType().getAnnotation(NavigationIcon.class) != null)
+				{
+					try
+					{
+						final Object value = annotation.annotationType().getDeclaredMethod("value").invoke(null);
+						if(value instanceof VaadinIcon)
+						{
+							return ((VaadinIcon)value)::create;
+						}
+						if(value instanceof IronIconEnum)
+						{
+							return ((IronIconEnum)value)::create;
+						}
+					}
+					catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException
+						| NoSuchMethodException | SecurityException e)
+					{
+						throw new RuntimeException(e);
+					}
+				}
+			}
+			
+			return null;
 		}
 	}
 }
