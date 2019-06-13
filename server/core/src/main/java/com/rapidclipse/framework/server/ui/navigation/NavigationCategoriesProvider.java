@@ -16,6 +16,7 @@ package com.rapidclipse.framework.server.ui.navigation;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,31 +32,31 @@ import com.rapidclipse.framework.server.navigation.NavigationItem;
  */
 public interface NavigationCategoriesProvider extends Serializable
 {
-	public Iterable<NavigationCategory> getRootCategories();
-
+	public Collection<NavigationCategory> getRootCategories();
+	
 	public static NavigationCategoriesProvider New(final NavigationCategory... categories)
 	{
-		return ()->Arrays.asList(categories);
+		return () -> Arrays.asList(categories);
 	}
-
+	
 	public static NavigationCategoriesProvider ForItems(final List<NavigationItem> items)
 	{
 		return new ItemBound(items);
 	}
-
+	
 	public static class ItemBound implements NavigationCategoriesProvider
 	{
 		private final List<NavigationItem> items;
-
+		
 		protected ItemBound(final List<NavigationItem> items)
 		{
 			super();
-
+			
 			this.items = items;
 		}
-
+		
 		@Override
-		public Iterable<NavigationCategory> getRootCategories()
+		public Collection<NavigationCategory> getRootCategories()
 		{
 			return this.items.stream()
 				.map(NavigationItem::category)

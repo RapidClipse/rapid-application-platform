@@ -31,7 +31,7 @@ import com.rapidclipse.framework.server.navigation.NavigationItem;
  */
 public interface NavigationHierarchyProvider extends NavigationCategoriesProvider
 {
-	public Iterable<NavigationCategory> getChildCategories(NavigationCategory category);
+	public Collection<NavigationCategory> getChildCategories(NavigationCategory category);
 
 	public static NavigationHierarchyProvider ForItems(final List<NavigationItem> items)
 	{
@@ -46,7 +46,7 @@ public interface NavigationHierarchyProvider extends NavigationCategoriesProvide
 		}
 
 		@Override
-		public Iterable<NavigationCategory> getChildCategories(final NavigationCategory category)
+		public Collection<NavigationCategory> getChildCategories(final NavigationCategory category)
 		{
 			return null;
 		}
@@ -102,13 +102,13 @@ public interface NavigationHierarchyProvider extends NavigationCategoriesProvide
 				return new NavigationHierarchyProvider()
 				{
 					@Override
-					public Iterable<NavigationCategory> getRootCategories()
+					public Collection<NavigationCategory> getRootCategories()
 					{
 						return map.get(null);
 					}
 
 					@Override
-					public Iterable<NavigationCategory> getChildCategories(final NavigationCategory category)
+					public Collection<NavigationCategory> getChildCategories(final NavigationCategory category)
 					{
 						return map.get(category);
 					}
