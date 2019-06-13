@@ -23,7 +23,6 @@ import com.rapidclipse.framework.security.authorization.Resource;
 import com.rapidclipse.framework.security.authorization.Subject;
 import com.rapidclipse.framework.server.navigation.Navigation;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
-import com.rapidclipse.framework.server.security.authorization.annotations.PermissionDeniedView;
 import com.rapidclipse.framework.server.ui.UIUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentUtil;

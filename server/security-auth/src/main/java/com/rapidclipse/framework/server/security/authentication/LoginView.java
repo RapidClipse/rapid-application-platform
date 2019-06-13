@@ -12,24 +12,23 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.navigation.annotations;
+package com.rapidclipse.framework.server.security.authentication;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.flowingcode.vaadin.addons.ironicons.ImageIcons;
-
 
 /**
+ * A login view is used for authentication in an application.
+ *
  * @author XDEV Software
  *
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@NavigationIcon
-public @interface NavigationIconImage
+@Retention(RetentionPolicy.RUNTIME)
+@AccessibleView
+public @interface LoginView
 {
-	ImageIcons value();
 }

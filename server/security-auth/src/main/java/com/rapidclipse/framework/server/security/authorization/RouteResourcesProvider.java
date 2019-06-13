@@ -19,7 +19,6 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 import com.rapidclipse.framework.security.authorization.Resource;
-import com.rapidclipse.framework.server.security.authorization.annotations.Resources;
 
 
 /**

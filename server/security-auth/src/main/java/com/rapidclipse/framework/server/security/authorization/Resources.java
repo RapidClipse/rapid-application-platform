@@ -12,24 +12,21 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.navigation.annotations;
+package com.rapidclipse.framework.server.security.authorization;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.flowingcode.vaadin.addons.ironicons.SocialIcons;
-
 
 /**
  * @author XDEV Software
  *
  */
-@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@NavigationIcon
-public @interface NavigationIconSocial
+@Retention(RetentionPolicy.RUNTIME)
+public @interface Resources
 {
-	SocialIcons value();
+	public String[] value();
 }

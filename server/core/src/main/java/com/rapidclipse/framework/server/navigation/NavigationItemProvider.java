@@ -27,9 +27,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.StringUtils;
 
 import com.flowingcode.vaadin.addons.ironicons.IronIconEnum;
-import com.rapidclipse.framework.server.navigation.annotations.NavigationIcon;
-import com.rapidclipse.framework.server.navigation.annotations.NavigationIconFactory;
-import com.rapidclipse.framework.server.navigation.annotations.NavigationItemProperties;
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.VaadinIcon;

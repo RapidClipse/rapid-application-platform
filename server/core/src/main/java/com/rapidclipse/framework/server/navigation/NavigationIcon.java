@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.security.authentication.annotations;
+package com.rapidclipse.framework.server.navigation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -24,8 +24,8 @@ import java.lang.annotation.Target;
  * @author XDEV Software
  *
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RedirectView
+@Target(ElementType.ANNOTATION_TYPE)
+public @interface NavigationIcon
 {
 }

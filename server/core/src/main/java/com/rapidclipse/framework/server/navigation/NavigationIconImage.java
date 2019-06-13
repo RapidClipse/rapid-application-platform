@@ -12,23 +12,24 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.security.authentication.annotations;
+package com.rapidclipse.framework.server.navigation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.flowingcode.vaadin.addons.ironicons.ImageIcons;
+
 
 /**
- * Marker annotation for UIs that can be reached without any authentication, e.g.
- * the {@link LoginView}.
- *
  * @author XDEV Software
  *
  */
-@Target({ElementType.TYPE, ElementType.ANNOTATION_TYPE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AccessibleView
+@Target(ElementType.TYPE)
+@NavigationIcon
+public @interface NavigationIconImage
 {
+	ImageIcons value();
 }

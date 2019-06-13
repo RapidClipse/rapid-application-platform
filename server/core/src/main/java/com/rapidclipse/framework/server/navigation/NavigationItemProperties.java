@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.navigation.annotations;
+package com.rapidclipse.framework.server.navigation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -25,7 +25,12 @@ import java.lang.annotation.Target;
  *
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target(ElementType.ANNOTATION_TYPE)
-public @interface NavigationIcon
+@Target(ElementType.TYPE)
+public @interface NavigationItemProperties
 {
+	int position() default -1;
+	
+	String category() default "";
+	
+	String displayName() default "";
 }

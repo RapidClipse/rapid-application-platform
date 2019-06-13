@@ -18,8 +18,8 @@ import java.util.Collection;
 
 import com.rapidclipse.framework.security.authorization.Resource;
 import com.rapidclipse.framework.security.authorization.Subject;
+import com.rapidclipse.framework.server.security.authentication.AccessibleView;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
-import com.rapidclipse.framework.server.security.authentication.annotations.AccessibleView;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
 import com.rapidclipse.framework.server.util.ReflectionUtils;
 

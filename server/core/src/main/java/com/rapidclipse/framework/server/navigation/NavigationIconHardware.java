@@ -12,21 +12,24 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.security.authorization.annotations;
+package com.rapidclipse.framework.server.navigation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import com.flowingcode.vaadin.addons.ironicons.HardwareIcons;
+
 
 /**
  * @author XDEV Software
  *
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Resources
+@Target(ElementType.TYPE)
+@NavigationIcon
+public @interface NavigationIconHardware
 {
-	public String[] value();
+	HardwareIcons value();
 }

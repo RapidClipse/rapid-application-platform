@@ -23,8 +23,6 @@ import com.rapidclipse.framework.security.authorization.AuthorizationConfigurati
 import com.rapidclipse.framework.security.authorization.AuthorizationManager;
 import com.rapidclipse.framework.security.authorization.Subject;
 import com.rapidclipse.framework.server.navigation.Navigation;
-import com.rapidclipse.framework.server.security.authentication.annotations.LoginView;
-import com.rapidclipse.framework.server.security.authentication.annotations.RedirectView;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
 import com.vaadin.flow.router.BeforeEvent;
 import com.vaadin.flow.server.VaadinSession;

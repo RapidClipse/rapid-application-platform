@@ -12,7 +12,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.security.authentication.annotations;
+package com.rapidclipse.framework.server.security.authentication;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -21,14 +21,11 @@ import java.lang.annotation.Target;
 
 
 /**
- * A login view is used for authentication in an application.
- *
  * @author XDEV Software
  *
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@AccessibleView
-public @interface LoginView
+public @interface RedirectView
 {
 }
