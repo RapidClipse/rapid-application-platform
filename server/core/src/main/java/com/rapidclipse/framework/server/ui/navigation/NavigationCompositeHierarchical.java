@@ -120,8 +120,9 @@ public abstract class NavigationCompositeHierarchical<T extends Component & HasC
 		final NavigationCategoryComponentFactory categoryComponentFactory = getCategoryComponentFactory();
 		final NavigationItemComponentFactory     itemComponentFactory     = getItemComponentFactory();
 
-		createContent(content::add, hierarchyProvider.getRootCategories(), item -> StringUtils.isEmpty(item.category()),
-			items, hierarchyProvider, hierarchyLevelSorter, categoryComponentFactory, itemComponentFactory);
+		createContent(c -> content.add(c), hierarchyProvider.getRootCategories(),
+			item -> StringUtils.isEmpty(item.category()), items, hierarchyProvider, hierarchyLevelSorter,
+			categoryComponentFactory, itemComponentFactory);
 	}
 
 	protected void createContent(
