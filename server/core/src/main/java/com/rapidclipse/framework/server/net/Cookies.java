@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.net;
 
 import java.io.Serializable;
@@ -33,58 +34,58 @@ public interface Cookies extends Serializable
 	{
 		setCookie(key, value, "/", null);
 	}
-	
+
 	public default void setCookie(final String key, final String value, final Duration lifespan)
 	{
 		setCookie(key, value, "/", lifespan);
 	}
-	
+
 	public default void setCookie(final String key, final String value, final String path)
 	{
 		setCookie(key, value, path, null);
 	}
-	
+
 	public void setCookie(
 		final String key,
 		final String value,
 		final String path,
 		final Duration lifespan);
-	
+
 	public default void deleteCookie(final String key)
 	{
 		setCookie(key, "");
 	}
-	
+
 	public String getCookie(final String key);
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// static methods//
 	/////////////////////////////////////////////////
-	
+
 	public static Cookies getCurrent()
 	{
 		return VaadinSession.getCurrent().getAttribute(Cookies.class);
 	}
-	
+
 	static void initFor(final VaadinSession session)
 	{
 		session.setAttribute(Cookies.class, new Implementation(session));
 	}
-	
+
 	public static class Implementation implements Cookies
 	{
 		private Cookie[] cookies;
-		
+
 		public Implementation(final VaadinSession vs)
 		{
 			vs.addRequestHandler((session, request, response) -> {
-				
+
 				this.cookies = request.getCookies();
-				
+
 				return false;
 			});
 		}
-		
+
 		@Override
 		public void setCookie(
 			final String key,
@@ -97,9 +98,9 @@ public interface Cookies extends Serializable
 				+ "if(millis>0){var date = new Date();date.setTime(date.getTime()+millis);"
 				+ "expires=\";expires=\"+date.toGMTString();}\n"
 				+ "document.cookie=\"%s=%s;path=%s\"+expires;", millis, key, value, path);
-			UI.getCurrent().getPage().executeJavaScript(js);
+			UI.getCurrent().getPage().executeJs(js);
 		}
-		
+
 		@Override
 		public String getCookie(final String key)
 		{
@@ -107,7 +108,7 @@ public interface Cookies extends Serializable
 			{
 				return null;
 			}
-			
+
 			return Arrays.stream(this.cookies).filter(cookie -> cookie.getName().equals(key))
 				.map(Cookie::getValue).findFirst().orElse(null);
 		}
