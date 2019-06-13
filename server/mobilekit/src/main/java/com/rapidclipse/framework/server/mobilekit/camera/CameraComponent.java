@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.camera;
 
 import java.io.ByteArrayInputStream;
@@ -39,7 +40,7 @@ public class CameraComponent extends MobileComponent implements CameraService
 	{
 		super();
 	}
-	
+
 	@Override
 	public void getPicture(
 		final CameraOptions options,
@@ -47,9 +48,9 @@ public class CameraComponent extends MobileComponent implements CameraService
 		final Consumer<MobileServiceError> errorCallback)
 	{
 		final String id = registerCall(new GetPictureServiceCall(successCallback, errorCallback, options));
-		getElement().callFunction("getPicture", id, toJson(options));
+		getElement().callJsFunction("getPicture", id, toJson(options));
 	}
-	
+
 	@ClientCallable
 	void getPicture_success(final String id, final String pictureData)
 	{
@@ -57,19 +58,19 @@ public class CameraComponent extends MobileComponent implements CameraService
 		final Picture               picture = new PictureImpl(call.options, pictureData);
 		call.success(picture);
 	}
-	
+
 	@ClientCallable
 	void getPicture_error(final String id, final String errorMessage)
 	{
 		final MobileServiceError error = new MobileServiceError(this, errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	private static class GetPictureServiceCall
 		extends ServiceCall.Implementation<Picture, MobileServiceError>
 	{
 		final CameraOptions options;
-		
+
 		GetPictureServiceCall(
 			final Consumer<Picture> successCallback,
 			final Consumer<MobileServiceError> errorCallback,
@@ -79,12 +80,12 @@ public class CameraComponent extends MobileComponent implements CameraService
 			this.options = options;
 		}
 	}
-	
+
 	private static class PictureImpl implements Picture
 	{
 		private String base64data;
 		private String uri;
-		
+
 		public PictureImpl(final CameraOptions options, final String value)
 		{
 			if(options.getDestinationType() == DestinationType.IMAGE)
@@ -96,13 +97,13 @@ public class CameraComponent extends MobileComponent implements CameraService
 				this.uri = value;
 			}
 		}
-		
+
 		@Override
 		public String getBase64data()
 		{
 			return this.base64data;
 		}
-		
+
 		@Override
 		public byte[] toRawData()
 		{
@@ -110,16 +111,16 @@ public class CameraComponent extends MobileComponent implements CameraService
 			{
 				throw new IllegalArgumentException("Picture contains only URI");
 			}
-			
+
 			return Base64.getDecoder().decode(this.base64data);
 		}
-		
+
 		@Override
 		public InputStream toInputStream()
 		{
 			return new ByteArrayInputStream(toRawData());
 		}
-		
+
 		@Override
 		public AbstractStreamResource toResource()
 		{
@@ -127,10 +128,10 @@ public class CameraComponent extends MobileComponent implements CameraService
 			{
 				throw new IllegalArgumentException("ImageData contains only URI");
 			}
-			
+
 			return new StreamResource("MobilekitPicture", this::toInputStream);
 		}
-		
+
 		@Override
 		public String getURI()
 		{

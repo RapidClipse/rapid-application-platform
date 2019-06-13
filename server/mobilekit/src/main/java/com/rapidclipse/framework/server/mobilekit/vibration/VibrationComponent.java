@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.vibration;
 
 import java.util.stream.Collectors;
@@ -33,12 +34,12 @@ public class VibrationComponent extends MobileComponent implements VibrationServ
 	{
 		super();
 	}
-	
+
 	@Override
 	public void vibrate(final int... pattern)
 	{
 		final String time = pattern.length == 1 ? String.valueOf(pattern[0])
 			: IntStream.of(pattern).mapToObj(String::valueOf).collect(Collectors.joining(",", "[", "]"));
-		getElement().callFunction("vibrate", time);
+		getElement().callJsFunction("vibrate", time);
 	}
 }

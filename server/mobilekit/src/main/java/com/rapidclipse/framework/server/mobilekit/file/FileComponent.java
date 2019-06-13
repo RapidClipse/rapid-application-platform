@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.file;
 
 import java.io.ByteArrayInputStream;
@@ -42,7 +43,7 @@ public class FileComponent extends MobileComponent implements FileService
 	{
 		super();
 	}
-	
+
 	@Override
 	public void readFile(
 		final String path,
@@ -50,9 +51,9 @@ public class FileComponent extends MobileComponent implements FileService
 		final Consumer<FileServiceError> errorCallback)
 	{
 		final String id = registerCall(successCallback, errorCallback);
-		getElement().callFunction("readFile", id, path);
+		getElement().callJsFunction("readFile", id, path);
 	}
-	
+
 	@ClientCallable
 	void readFile_success(
 		final String id,
@@ -61,14 +62,14 @@ public class FileComponent extends MobileComponent implements FileService
 		final FileData fileData = toJava(fileDataObj, FileDataImpl.class);
 		getAndRemoveCall(id).success(fileData);
 	}
-	
+
 	@ClientCallable
 	void readFile_error(final String id, final JsonValue errorValue)
 	{
 		final FileServiceError error = createFileServiceError("Error reading file", errorValue);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	private FileServiceError createFileServiceError(final String message, final JsonValue value)
 	{
 		Reason reason = null;
@@ -86,23 +87,23 @@ public class FileComponent extends MobileComponent implements FileService
 		}
 		return new FileServiceError(this, message, reason);
 	}
-	
+
 	private static class FileDataImpl implements FileData
 	{
 		private final String base64data;
-		
+
 		@SuppressWarnings("unused") // Used by Gson via reflection
 		FileDataImpl(final String base64data)
 		{
 			this.base64data = base64data;
 		}
-		
+
 		@Override
 		public String getBase64data()
 		{
 			return this.base64data;
 		}
-		
+
 		@Override
 		public byte[] toRawData()
 		{
@@ -113,7 +114,7 @@ public class FileComponent extends MobileComponent implements FileService
 				: this.base64data.substring(contentStartIndex);
 			return new Base64(true).decode(data);
 		}
-		
+
 		@Override
 		public AbstractStreamResource toResource()
 		{

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.deviceinfo;
 
 import java.util.function.Consumer;
@@ -35,21 +36,21 @@ public class DeviceInfoComponent extends MobileComponent implements DeviceInfoSe
 	{
 		super();
 	}
-	
+
 	@Override
 	public void getDeviceInfo(final Consumer<DeviceInfo> callback)
 	{
 		final String id = registerCall(callback, null);
-		getElement().callFunction("get", id);
+		getElement().callJsFunction("get", id);
 	}
-	
+
 	@ClientCallable
 	void callback(final String id, final JsonObject infoObj)
 	{
 		final DeviceInfo info = toJava(infoObj, DeviceInfoImpl.class);
 		getAndRemoveCall(id).success(info);
 	}
-	
+
 	private static class DeviceInfoImpl implements DeviceInfo
 	{
 		private final String  model;
@@ -59,7 +60,7 @@ public class DeviceInfoComponent extends MobileComponent implements DeviceInfoSe
 		private final String  manufacturer;
 		private final boolean virtual;
 		private final String  serial;
-		
+
 		@SuppressWarnings("unused") // Used by Gson via reflection
 		DeviceInfoImpl(
 			final String model,
@@ -78,43 +79,43 @@ public class DeviceInfoComponent extends MobileComponent implements DeviceInfoSe
 			this.virtual      = virtual;
 			this.serial       = serial;
 		}
-		
+
 		@Override
 		public String getModel()
 		{
 			return this.model;
 		}
-		
+
 		@Override
 		public String getPlatform()
 		{
 			return this.platform;
 		}
-		
+
 		@Override
 		public String getUuid()
 		{
 			return this.uuid;
 		}
-		
+
 		@Override
 		public String getVersion()
 		{
 			return this.version;
 		}
-		
+
 		@Override
 		public String getManufacturer()
 		{
 			return this.manufacturer;
 		}
-		
+
 		@Override
 		public boolean isVirtual()
 		{
 			return this.virtual;
 		}
-		
+
 		@Override
 		public String getSerial()
 		{

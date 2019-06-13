@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.sms;
 
 import java.util.function.Consumer;
@@ -34,7 +35,7 @@ public class SmsComponent extends MobileComponent implements SmsService
 	{
 		super();
 	}
-	
+
 	@Override
 	public void sendSms(
 		final String number,
@@ -46,9 +47,9 @@ public class SmsComponent extends MobileComponent implements SmsService
 		final Consumer<Object> successWrapper = successCallback != null
 			? object -> successCallback.run() : null;
 		final String           id             = registerCall(successWrapper, errorCallback);
-		getElement().callFunction("sendSms", id, number, message, toJson(options));
+		getElement().callJsFunction("sendSms", id, number, message, toJson(options));
 	}
-	
+
 	private String toJson(final SmsOptions options)
 	{
 		final StringBuilder sb = new StringBuilder();
@@ -57,13 +58,13 @@ public class SmsComponent extends MobileComponent implements SmsService
 			.append("}}");
 		return sb.toString();
 	}
-	
+
 	@ClientCallable
 	void sendSms_success(final String id)
 	{
 		getAndRemoveCall(id).success(null);
 	}
-	
+
 	@ClientCallable
 	void sendSms_error(final String id, final String errorMessage)
 	{

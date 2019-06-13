@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit.contacts;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 	{
 		super();
 	}
-	
+
 	@Override
 	public void findContacts(
 		final ContactFindOptions options,
@@ -49,9 +50,9 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		final Consumer<ContactsServiceError> errorCallback)
 	{
 		final String id = registerCall(successCallback, errorCallback);
-		getElement().callFunction("findContacts", id, generateFieldsJS(options), generateOptionsJS(options));
+		getElement().callJsFunction("findContacts", id, generateFieldsJS(options), generateOptionsJS(options));
 	}
-	
+
 	private String generateFieldsJS(final ContactFindOptions options)
 	{
 		final StringBuilder js = new StringBuilder();
@@ -69,7 +70,7 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		js.append("];");
 		return js.toString();
 	}
-	
+
 	private String generateOptionsJS(final ContactFindOptions options)
 	{
 		final StringBuilder js = new StringBuilder();
@@ -89,7 +90,7 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		js.append("}");
 		return js.toString();
 	}
-	
+
 	@ClientCallable
 	void findContacts_success(final String id, final JsonArray contactsArray)
 	{
@@ -100,21 +101,21 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		}
 		getAndRemoveCall(id).success(contacts);
 	}
-	
+
 	@ClientCallable
 	void findContacts_error(final String id, final String errorMessage)
 	{
 		final ContactsServiceError error = createContactsServiceError(errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	@Override
 	public void pickContact(final Consumer<Contact> successCallback, final Consumer<ContactsServiceError> errorCallback)
 	{
 		final String id = registerCall(successCallback, errorCallback);
-		getElement().callFunction("pickContact", id);
+		getElement().callJsFunction("pickContact", id);
 	}
-	
+
 	@ClientCallable
 	void pickContact_success(
 		final String id,
@@ -124,14 +125,14 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		final Contact contact = toJava(contactObj, Contact.class);
 		getAndRemoveCall(id).success(contact);
 	}
-	
+
 	@ClientCallable
 	void pickContact_error(final String id, final String errorMessage)
 	{
 		final ContactsServiceError error = createContactsServiceError(errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	@Override
 	public void saveContact(
 		final Contact contact,
@@ -139,9 +140,9 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		final Consumer<ContactsServiceError> errorCallback)
 	{
 		final String id = registerCall(successCallback, errorCallback);
-		getElement().callFunction("saveContact", id, toJson(contact));
+		getElement().callJsFunction("saveContact", id, toJson(contact));
 	}
-	
+
 	@ClientCallable
 	void saveContact_success(
 		final String id,
@@ -151,18 +152,18 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		final Contact contact = toJava(contactObj, Contact.class);
 		getAndRemoveCall(id).success(contact);
 	}
-	
+
 	@ClientCallable
 	void saveContact_error(final String id, final String errorMessage)
 	{
 		final ContactsServiceError error = createContactsServiceError(errorMessage);
 		getAndRemoveCall(id).error(error);
 	}
-	
+
 	private ContactsServiceError createContactsServiceError(final String message)
 	{
 		Reason reason = null;
-		
+
 		try
 		{
 			final int code = Integer.parseInt(message);
@@ -172,7 +173,7 @@ public class ContactsComponent extends MobileComponent implements ContactsServic
 		{
 			// swallow
 		}
-		
+
 		return new ContactsServiceError(this, message, reason);
 	}
 }
