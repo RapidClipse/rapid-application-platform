@@ -23,6 +23,7 @@ import java.time.OffsetDateTime;
 import java.time.OffsetTime;
 import java.time.Year;
 import java.time.YearMonth;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.Temporal;
 import java.util.function.Function;
@@ -75,62 +76,64 @@ public interface LocalDateToTemporalConverter<MODEL extends Temporal>
 		{
 			return (LocalDateToTemporalConverter<MODEL>)YearMonth();
 		}
-
+		
 		throw new IllegalArgumentException("Unsupported temporal type: " + clazz);
 	}
-
+	
 	public static LocalDateToTemporalConverter<LocalDate> LocalDate()
 	{
 		return new Implementation<>(date -> date);
 	}
-
+	
 	public static LocalDateToTemporalConverter<LocalTime> LocalTime()
 	{
-		return new Implementation<>(LocalTime::from);
+		return new Implementation<>(date -> LocalTime.of(0, 0));
 	}
-
+	
 	public static LocalDateToTemporalConverter<LocalDateTime> LocalDateTime()
 	{
-		return new Implementation<>(LocalDateTime::from);
+		return new Implementation<>(date -> date.atTime(0, 0));
 	}
-
+	
 	public static LocalDateToTemporalConverter<OffsetTime> OffsetTime()
 	{
-		return new Implementation<>(OffsetTime::from);
+		return new Implementation<>(
+			date -> OffsetTime.of(LocalTime.of(0, 0), OffsetDateTime.now().getOffset()));
 	}
-
+	
 	public static LocalDateToTemporalConverter<OffsetDateTime> OffsetDateTime()
 	{
-		return new Implementation<>(OffsetDateTime::from);
+		return new Implementation<>(
+			date -> OffsetDateTime.of(date.atTime(0, 0), OffsetDateTime.now().getOffset()));
 	}
-
+	
 	public static LocalDateToTemporalConverter<ZonedDateTime> ZonedDateTime()
 	{
-		return new Implementation<>(ZonedDateTime::from);
+		return new Implementation<>(date -> ZonedDateTime.of(date.atTime(0, 0), ZoneId.systemDefault()));
 	}
-
+	
 	public static LocalDateToTemporalConverter<Year> Year()
 	{
 		return new Implementation<>(Year::from);
 	}
-
+	
 	public static LocalDateToTemporalConverter<YearMonth> YearMonth()
 	{
 		return new Implementation<>(YearMonth::from);
 	}
-
+	
 	public static class Implementation<MODEL extends Temporal>
 		implements LocalDateToTemporalConverter<MODEL>
 	{
 		private final Function<LocalDate, MODEL> temporalConverter;
-
+		
 		public Implementation(final Function<LocalDate, MODEL> temporalConverter)
 		{
 			super();
-
+			
 			this.temporalConverter = requireNonNull(temporalConverter);
 		}
-
+		
 		@Override
 		public Result<MODEL> convertToModel(final LocalDate value, final ValueContext context)
 		{
@@ -138,10 +141,10 @@ public interface LocalDateToTemporalConverter<MODEL extends Temporal>
 			{
 				return Result.ok(null);
 			}
-
+			
 			return Result.ok(this.temporalConverter.apply(value));
 		}
-
+		
 		@Override
 		public LocalDate convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -149,7 +152,7 @@ public interface LocalDateToTemporalConverter<MODEL extends Temporal>
 			{
 				return null;
 			}
-
+			
 			return LocalDate.from(value);
 		}
 	}
