@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.resources;
 
 import com.rapidclipse.framework.server.jpa.Jpa;
@@ -30,6 +31,7 @@ public class EntityCaptionParameterProvider implements CaptionParameterProvider
 	@Override
 	public String getParameterValue(final Object element, final String parameterName)
 	{
-		return String.valueOf(Jpa.resolveValue(element, parameterName));
+		final Object value = Jpa.resolveValue(element, parameterName);
+		return String.valueOf(value);
 	}
 }
