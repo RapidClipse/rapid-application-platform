@@ -25,17 +25,22 @@ import com.vaadin.flow.component.ItemLabelGenerator;
  */
 public final class ItemLabelGeneratorFactory
 {
+	public static <T> ItemLabelGenerator<T> NonNull(final ItemLabelGenerator<T> delegate)
+	{
+		return WithDefaultValue(delegate, "");
+	}
+
 	public static <T> ItemLabelGenerator<T>
 		WithDefaultValue(final ItemLabelGenerator<T> delegate, final String defaultValue)
 	{
 		Objects.requireNonNull(defaultValue);
-
+		
 		return value -> {
 			final String label = delegate.apply(value);
 			return label != null ? label : defaultValue;
 		};
 	}
-
+	
 	private ItemLabelGeneratorFactory()
 	{
 		throw new Error();
