@@ -60,10 +60,10 @@ import javax.servlet.annotation.WebListener;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
 
+import com.rapidclipse.framework.server.data.DAO;
 import com.rapidclipse.framework.server.jpa.dal.CacheableQueries;
 import com.rapidclipse.framework.server.jpa.dal.CacheableQuery;
-import com.rapidclipse.framework.server.jpa.dal.DAO;
-import com.rapidclipse.framework.server.jpa.dal.DataAccessObject;
+import com.rapidclipse.framework.server.jpa.dal.JpaDataAccessObject;
 import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.rapidclipse.framework.server.util.SoftCache;
 
@@ -86,7 +86,7 @@ public final class Jpa
 
 	private static SessionStrategyProvider sessionStrategyProvider;
 
-	private final static SoftCache<Class<?>, DataAccessObject<?, ?>> daoCache = new SoftCache<>();
+	private final static SoftCache<Class<?>, JpaDataAccessObject<?, ?>> daoCache = new SoftCache<>();
 
 	private final static AtomicLong aliasCounter = new AtomicLong();
 
@@ -636,7 +636,7 @@ public final class Jpa
 		}
 	}
 
-	public static <D extends DataAccessObject<?, ?>> D getDao(final Class<D> daoType)
+	public static <D extends JpaDataAccessObject<?, ?>> D getDao(final Class<D> daoType)
 		throws RuntimeException
 	{
 		synchronized(daoCache)
@@ -662,24 +662,24 @@ public final class Jpa
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T, I extends Serializable> DataAccessObject<T, I> getDao(final T entity)
+	public static <T, I extends Serializable> JpaDataAccessObject<T, I> getDao(final T entity)
 		throws RuntimeException
 	{
-		return (DataAccessObject<T, I>)getDaoByEntityType(entity.getClass());
+		return (JpaDataAccessObject<T, I>)getDaoByEntityType(entity.getClass());
 	}
 
 	@SuppressWarnings("unchecked")
-	public static <T, I extends Serializable> DataAccessObject<T, I> getDaoByEntityType(
+	public static <T, I extends Serializable> JpaDataAccessObject<T, I> getDaoByEntityType(
 		final Class<T> entity)
 		throws RuntimeException
 	{
 		final DAO dao = entity.getAnnotation(DAO.class);
 		if(dao == null)
 		{
-			throw new RuntimeException("Not an entity");
+			throw new IllegalArgumentException("Not an entity");
 		}
 
-		return (DataAccessObject<T, I>)getDao(dao.value());
+		return (JpaDataAccessObject<T, I>)getDao(dao.value());
 	}
 
 	public static CacheableQuery getCacheableQueryAnnotation(

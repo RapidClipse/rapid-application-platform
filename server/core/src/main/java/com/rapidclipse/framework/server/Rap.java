@@ -28,7 +28,10 @@ import javax.servlet.annotation.WebListener;
 import org.apache.commons.lang3.StringUtils;
 
 import com.rapidclipse.framework.server.concurrent.RapExecutorService;
+import com.rapidclipse.framework.server.data.DAO;
+import com.rapidclipse.framework.server.data.DataAccessObject;
 import com.rapidclipse.framework.server.net.ContentSecurityPolicy;
+import com.rapidclipse.framework.server.util.SoftCache;
 import com.vaadin.flow.server.VaadinSession;
 
 
@@ -38,8 +41,9 @@ import com.vaadin.flow.server.VaadinSession;
  */
 public final class Rap
 {
-	private static RapExecutorService    executorService;
-	private static ContentSecurityPolicy contentSecurityPolicy;
+	private static RapExecutorService                             executorService;
+	private static ContentSecurityPolicy                          contentSecurityPolicy;
+	private final static SoftCache<Class<?>, DataAccessObject<?>> daoCache = new SoftCache<>();
 
 	/**
 	 * @return the executorService
@@ -197,6 +201,51 @@ public final class Rap
 			session.setAttribute(type, instance);
 		}
 		return instance;
+	}
+
+	public static <D extends DataAccessObject<?>> D getDao(final Class<D> daoType)
+		throws RuntimeException
+	{
+		synchronized(daoCache)
+		{
+			@SuppressWarnings("unchecked")
+			D dao = (D)daoCache.get(daoType);
+
+			if(dao == null)
+			{
+				try
+				{
+					dao = daoType.newInstance();
+					daoCache.put(daoType, dao);
+				}
+				catch(InstantiationException | IllegalAccessException e)
+				{
+					throw new RuntimeException(e);
+				}
+			}
+
+			return dao;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> DataAccessObject<T> getDao(final T pojo)
+		throws RuntimeException
+	{
+		return (DataAccessObject<T>)getDaoByPojoType(pojo.getClass());
+	}
+
+	@SuppressWarnings("unchecked")
+	public static <T> DataAccessObject<T> getDaoByPojoType(final Class<T> pojo)
+		throws RuntimeException
+	{
+		final DAO dao = pojo.getAnnotation(DAO.class);
+		if(dao == null)
+		{
+			throw new IllegalArgumentException("No DAO annotation present");
+		}
+
+		return (DataAccessObject<T>)getDao(dao.value());
 	}
 
 	@WebListener
