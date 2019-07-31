@@ -17,6 +17,7 @@ package com.rapidclipse.framework.server.util;
 import java.lang.annotation.Annotation;
 import java.lang.annotation.Inherited;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
@@ -40,10 +41,10 @@ public final class ReflectionUtils
 				return field;
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static Object getMemberValue(final Object obj, final Member member)
 	{
 		if(member instanceof Field)
@@ -89,16 +90,16 @@ public final class ReflectionUtils
 				method.setAccessible(accessible);
 			}
 		}
-		
+
 		return null;
 	}
-	
+
 	public static <A extends Annotation> boolean
 		isAnnotationPresent(final AnnotatedElement annotatedElement, final Class<A> annotationType)
 	{
 		return findAnnotation(annotatedElement, annotationType) != null;
 	}
-	
+
 	public static <A extends Annotation> A
 		findAnnotation(final AnnotatedElement annotatedElement, final Class<A> annotationType)
 	{
@@ -120,7 +121,7 @@ public final class ReflectionUtils
 								? findAnnotation(((Class<?>)annotatedElement).getSuperclass(), annotationType)
 								: null));
 	}
-	
+
 	private static boolean isBaseAnnotation(final AnnotatedElement annotatedElement)
 	{
 		if(annotatedElement instanceof Class)
@@ -131,6 +132,27 @@ public final class ReflectionUtils
 		return false;
 	}
 	
+	public static boolean hasDefaultConstructor(final Class<?> clazz)
+	{
+		return getDefaultConstructor(clazz) != null;
+	}
+	
+	public static <T> Constructor<T> getDefaultConstructor(final Class<T> clazz)
+	{
+		try
+		{
+			return clazz.getDeclaredConstructor();
+		}
+		catch(final SecurityException e)
+		{
+			return null;
+		}
+		catch(final NoSuchMethodException e)
+		{
+			return null;
+		}
+	}
+
 	private ReflectionUtils()
 	{
 		throw new Error();
