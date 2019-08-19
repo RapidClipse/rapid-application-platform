@@ -33,7 +33,7 @@
 		<module>security-auth-ldap</module>
 		<module>server</module>
 		<module>server/core</module>
-		<module>server/mobilekit</module>
+<!-- 		<module>server/mobilekit</module> -->
 		<module>server/persistence-jpa</module>
 		<module>server/reports</module>
 		<module>server/security-auth</module>
