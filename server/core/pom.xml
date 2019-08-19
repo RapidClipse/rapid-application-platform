@@ -48,6 +48,10 @@
 			<artifactId>vaadin-core</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.vaadin</groupId>
+			<artifactId>flow-server-compatibility-mode</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.flowingcode.addons</groupId>
 			<artifactId>iron-icons</artifactId>
 		</dependency>
