@@ -14,6 +14,7 @@
 
 package com.rapidclipse.framework.server.navigation;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 import com.rapidclipse.framework.security.authorization.Resource;
@@ -22,13 +23,14 @@ import com.rapidclipse.framework.server.security.authentication.AccessibleView;
 import com.rapidclipse.framework.server.security.authentication.Authentication;
 import com.rapidclipse.framework.server.security.authorization.Authorization;
 import com.rapidclipse.framework.server.util.ReflectionUtils;
+import com.vaadin.flow.router.HasErrorParameter;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface AuthNavigationController
+public interface AuthNavigationController extends Serializable
 {
 	public boolean isAuthenticated(final Class<?> target);
 
@@ -50,6 +52,7 @@ public interface AuthNavigationController
 		public boolean isAuthenticated(final Class<?> target)
 		{
 			return ReflectionUtils.isAnnotationPresent(target, AccessibleView.class)
+				|| HasErrorParameter.class.isAssignableFrom(target)
 				|| Authentication.getUser() != null;
 		}
 
