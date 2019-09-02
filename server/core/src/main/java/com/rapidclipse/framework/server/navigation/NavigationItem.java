@@ -27,11 +27,11 @@ import com.vaadin.flow.router.RouteData;
 public interface NavigationItem extends NavigationElement
 {
 	public RouteData routeData();
-	
+
 	public int position();
-	
+
 	public String category();
-	
+
 	public static NavigationItem New(
 		final Supplier<Component> icon,
 		final String displayName,
@@ -39,16 +39,16 @@ public interface NavigationItem extends NavigationElement
 		final int position,
 		final String category)
 	{
-		return new Implementation(icon, displayName, routeData, position, category);
+		return new Default(icon, displayName, routeData, position, category);
 	}
-	
-	public static class Implementation extends NavigationElement.Abstract implements NavigationItem
+
+	public static class Default extends NavigationElement.Abstract implements NavigationItem
 	{
 		private final RouteData routeData;
 		private final int       position;
 		private final String    category;
-		
-		protected Implementation(
+
+		protected Default(
 			final Supplier<Component> icon,
 			final String displayName,
 			final RouteData routeData,
@@ -56,24 +56,24 @@ public interface NavigationItem extends NavigationElement
 			final String category)
 		{
 			super(icon, displayName);
-			
+
 			this.routeData = routeData;
 			this.position  = position;
 			this.category  = category;
 		}
-		
+
 		@Override
 		public RouteData routeData()
 		{
 			return this.routeData;
 		}
-		
+
 		@Override
 		public int position()
 		{
 			return this.position;
 		}
-		
+
 		@Override
 		public String category()
 		{

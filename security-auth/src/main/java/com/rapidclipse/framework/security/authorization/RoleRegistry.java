@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -39,21 +40,21 @@ public interface RoleRegistry
 	 * @return the {@link Role} instance identified by the passed name.
 	 */
 	public Role role(String roleName);
-	
+
 	/**
 	 * Returns a read-only map of all known {@link Role} instances (values), identified by their names (keys).
 	 *
 	 * @return a read-only map containing all known roles.
 	 */
 	public Map<String, Role> roles();
-	
+
 	/**
 	 * Returns the lock instance that is internally used by this registry instance.
 	 *
 	 * @return the lock.
 	 */
 	public Object lockRoleRegistry();
-	
+
 	/**
 	 * Creates a new {@link RoleRegistry} instance using the passed map instance as its internal datastructure
 	 * and the passed registryLock instance as the synchronization lock for accessing the registry.
@@ -66,11 +67,11 @@ public interface RoleRegistry
 	 */
 	public static RoleRegistry New(final Map<String, Role> registry, final Object registryLock)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registry),
 			requireNonNull(registryLock));
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleRegistry} instance using the passed map instance and a newly instantiated object
 	 * to be used a synchronization lock.
@@ -83,7 +84,7 @@ public interface RoleRegistry
 	{
 		return New(registry, new Object());
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleRegistry} instance using the passed {@link Role} instances to derive its
 	 * internal datastructure from and the passed registryLock instance as the synchronization lock for
@@ -98,10 +99,10 @@ public interface RoleRegistry
 	public static RoleRegistry New(final Collection<? extends Role> roles, final Object registryLock)
 	{
 		return New(
-			Implementation.buildRegistry(requireNonNull(roles)),
+			Default.buildRegistry(requireNonNull(roles)),
 			requireNonNull(registryLock));
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleRegistry} instance using the passed {@link Role} instance to derive its
 	 * internal datastructure from and a newly instantiated object to be used as the synchronization lock.
@@ -114,7 +115,7 @@ public interface RoleRegistry
 	{
 		return New(roles, new Object());
 	}
-	
+
 	/**
 	 * A simple {@link RoleRegistry} default implementation that synchronizes on a provided lock instance for
 	 * accessing the internal registry in order to avoid concurrency issues while the internal datastructure is
@@ -122,44 +123,44 @@ public interface RoleRegistry
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements RoleRegistry
+	public final class Default implements RoleRegistry
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// static methods //
 		///////////////////
-		
+
 		static final Map<String, Role> buildRegistry(final Collection<? extends Role> roles)
 		{
 			final HashMap<String, Role> registry = new HashMap<>();
 			roles.forEach(role -> registry.put(role.name(), role));
 			return registry;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		/**
 		 * The read-only role-name-to-role map used as an internal datastructure
 		 */
 		private final Map<String, Role> registry;
-		
+
 		/**
 		 * The instance used to synchronize on. This may be any instance, even the map or registry instance itself.
 		 */
 		private final Object registryLock;
-		
+
 		/**
 		 * A map wrapper implementation wrapping the actual registry map and using the registryLock instance to
 		 * perform synchronization. Through this technique, the map can be accessed directly without losing the
 		 * consistent concurrency protection achieve via the locking instance.
 		 */
 		private final LockedMap<String, Role> lockedRegistry;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation-detail constructor that might change in the future.
 		 *
@@ -168,18 +169,18 @@ public interface RoleRegistry
 		 * @param registryLock
 		 *            the locking instance to be used to synchronize on for accessing the registry.
 		 */
-		Implementation(final Map<String, Role> registry, final Object registryLock)
+		protected Default(final Map<String, Role> registry, final Object registryLock)
 		{
 			super();
 			this.registry       = registry;
 			this.registryLock   = registryLock;
 			this.lockedRegistry = LockedMap.New(this.registry, registryLock);
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -197,7 +198,7 @@ public interface RoleRegistry
 			}
 			throw new RuntimeException("Unknown role: " + roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -206,7 +207,7 @@ public interface RoleRegistry
 		{
 			return this.lockedRegistry;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -215,7 +216,7 @@ public interface RoleRegistry
 		{
 			return this.registryLock;
 		}
-		
+
 	}
-	
+
 }

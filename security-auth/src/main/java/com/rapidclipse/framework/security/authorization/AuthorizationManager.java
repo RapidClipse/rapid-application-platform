@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -38,13 +39,13 @@ public interface AuthorizationManager
 	 *         instance itself.
 	 */
 	public AuthorizationRegistry authorizationRegistry();
-	
+
 	/**
 	 * Causes the authorization information to be reloaded and all depending
 	 * data structures to be rebuilt accordingly.
 	 */
 	public void reloadAuthorizations();
-	
+
 	/**
 	 * Returns the {@link Resource} instance identified by the passed name.
 	 *
@@ -53,7 +54,7 @@ public interface AuthorizationManager
 	 * @return the {@link Resource} instance identified by the passed name.
 	 */
 	public Resource resource(String name);
-	
+
 	/**
 	 * Creates a new {@link AuthorizationManager} instance configured by the
 	 * passed part instances.
@@ -87,12 +88,12 @@ public interface AuthorizationManager
 		final RoleUpdater roleUpdater,
 		final SubjectUpdater subjectUpdater)
 	{
-		return new Implementation(requireNonNull(configurationProvider),
+		return new Default(requireNonNull(configurationProvider),
 			requireNonNull(resourceProvider), requireNonNull(resourceUpdater),
 			requireNonNull(permissionProvider), requireNonNull(roleProvider),
 			requireNonNull(roleUpdater), requireNonNull(subjectUpdater));
 	}
-	
+
 	/**
 	 * Creates a new {@link AuthorizationManager} instance using the passed
 	 * {@link AuthorizationConfigurationProvider} and default implementations
@@ -113,7 +114,7 @@ public interface AuthorizationManager
 		return New(configurationProvider, Resource::provide, Resource::update, Permission::New,
 			Role::provide, Role::update, Subject::update);
 	}
-	
+
 	/**
 	 * Creates a new {@link AuthorizationManager} instance from a {@link File}
 	 * assumed to contain an XML configuration suitable for processing by a
@@ -127,15 +128,15 @@ public interface AuthorizationManager
 	{
 		return New(XmlAuthorizationConfigurationProvider.New(xmlFile));
 	}
-	
+
 	/**
 	 * @return a new {@link AuthorizationManager.Builder} instance.
 	 */
-	public static AuthorizationManager.Builder Builder()
+	public static Builder Builder()
 	{
-		return new AuthorizationManager.Builder.Implementation();
+		return new Builder.Default();
 	}
-	
+
 	/**
 	 * A builder pattern utility type that allows more a flexible and
 	 * ergonomical assembly of {@link AuthorizationManager} instances than using
@@ -154,7 +155,7 @@ public interface AuthorizationManager
 		 */
 		public Builder configurationProvider(
 			AuthorizationConfigurationProvider configurationProvider);
-		
+
 		/**
 		 * Sets the {@link ResourceProvider} instance to be used in the
 		 * assembly.
@@ -164,7 +165,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder resourceProvider(ResourceProvider resourceProvider);
-		
+
 		/**
 		 * Sets the {@link ResourceUpdater} instance to be used in the assembly.
 		 *
@@ -173,7 +174,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder resourceUpdater(ResourceUpdater resourceUpdater);
-		
+
 		/**
 		 * Sets the {@link PermissionProvider} instance to be used in the
 		 * assembly.
@@ -183,7 +184,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder permissionProvider(PermissionProvider permissionProvider);
-		
+
 		/**
 		 * Sets the {@link RoleProvider} instance to be used in the assembly.
 		 *
@@ -192,7 +193,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder roleProvider(RoleProvider roleProvider);
-		
+
 		/**
 		 * Sets the {@link RoleUpdater} instance to be used in the assembly.
 		 *
@@ -201,7 +202,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder roleUpdater(RoleUpdater roleUpdater);
-		
+
 		/**
 		 * Sets the {@link SubjectUpdater} instance to be used in the assembly.
 		 *
@@ -210,7 +211,7 @@ public interface AuthorizationManager
 		 * @return this
 		 */
 		public Builder subjectUpdater(SubjectUpdater subjectUpdater);
-		
+
 		/**
 		 * Creates a new {@link AuthorizationManager} instance from the
 		 * previously set assembly part instances.
@@ -218,102 +219,102 @@ public interface AuthorizationManager
 		 * @return a new {@link AuthorizationManager} instance
 		 */
 		public AuthorizationManager build();
-		
+
 		/**
 		 * Simple {@link AuthorizationManager.Builder} implementation.
 		 *
 		 * @author XDEV Software (TM)
 		 */
-		public final class Implementation implements Builder
+		public final class Default implements Builder
 		{
 			///////////////////////////////////////////////////////////////////////////
 			// instance fields //
 			////////////////////
-			
-			AuthorizationConfigurationProvider configurationProvider = null;
-			ResourceProvider                   resourceProvider      = Resource::provide;
-			ResourceUpdater                    resourceUpdater       = Resource::update;
-			PermissionProvider                 permissionProvider    = Permission::New;
-			RoleProvider                       roleProvider          = Role::provide;
-			RoleUpdater                        roleUpdater           = Role::update;
-			SubjectUpdater                     subjectUpdater        = Subject::update;
-			
+
+			private AuthorizationConfigurationProvider configurationProvider = null;
+			private ResourceProvider                   resourceProvider      = Resource::provide;
+			private ResourceUpdater                    resourceUpdater       = Resource::update;
+			private PermissionProvider                 permissionProvider    = Permission::New;
+			private RoleProvider                       roleProvider          = Role::provide;
+			private RoleUpdater                        roleUpdater           = Role::update;
+			private SubjectUpdater                     subjectUpdater        = Subject::update;
+
 			///////////////////////////////////////////////////////////////////////////
 			// override methods //
 			/////////////////////
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation configurationProvider(
+			public Builder.Default configurationProvider(
 				final AuthorizationConfigurationProvider configurationProvider)
 			{
 				this.configurationProvider = configurationProvider;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation resourceProvider(final ResourceProvider resourceProvider)
+			public Builder.Default resourceProvider(final ResourceProvider resourceProvider)
 			{
 				this.resourceProvider = resourceProvider;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation resourceUpdater(final ResourceUpdater resourceUpdater)
+			public Builder.Default resourceUpdater(final ResourceUpdater resourceUpdater)
 			{
 				this.resourceUpdater = resourceUpdater;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation permissionProvider(
+			public Builder.Default permissionProvider(
 				final PermissionProvider permissionProvider)
 			{
 				this.permissionProvider = permissionProvider;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation roleProvider(final RoleProvider roleProvider)
+			public Builder.Default roleProvider(final RoleProvider roleProvider)
 			{
 				this.roleProvider = roleProvider;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation roleUpdater(final RoleUpdater roleUpdater)
+			public Builder.Default roleUpdater(final RoleUpdater roleUpdater)
 			{
 				this.roleUpdater = roleUpdater;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
 			@Override
-			public Builder.Implementation subjectUpdater(final SubjectUpdater subjectUpdater)
+			public Builder.Default subjectUpdater(final SubjectUpdater subjectUpdater)
 			{
 				this.subjectUpdater = subjectUpdater;
 				return this;
 			}
-			
+
 			/**
 			 * {@inheritDoc}
 			 */
@@ -325,11 +326,11 @@ public interface AuthorizationManager
 					requireNonNull(this.permissionProvider), requireNonNull(this.roleProvider),
 					requireNonNull(this.roleUpdater), requireNonNull(this.subjectUpdater));
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	/**
 	 * Simple {@link AuthorizationManager} default implementation that uses an
 	 * internally created locking instance and connects delegate
@@ -338,40 +339,40 @@ public interface AuthorizationManager
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements AuthorizationManager
+	public final class Default implements AuthorizationManager
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final AuthorizationConfigurationProvider configurationProvider;
-		final ResourceProvider                   resourceProvider;
-		final ResourceUpdater                    resourceUpdater;
-		final PermissionProvider                 permissionProvider;
-		final RoleProvider                       roleProvider;
-		final RoleUpdater                        roleUpdater;
-		final SubjectUpdater                     subjectUpdater;
-		
-		final HashMap<String, Resource>                       resourceTable   = new HashMap<>();
-		final HashMap<Resource, HashMap<Integer, Permission>> permissionTable = new HashMap<>();
-		final HashMap<String, Role>                           roleTable       = new HashMap<>();
-		final HashMap<String, Subject>                        subjectTable    = new HashMap<>();
-		
-		final Object            sharedLock = new Object();
-		final PermissionManager permissionManager;
-		final RoleManager       roleManager;
-		final SubjectManager    subjectManager;
-		
+
+		private final AuthorizationConfigurationProvider configurationProvider;
+		private final ResourceProvider                   resourceProvider;
+		private final ResourceUpdater                    resourceUpdater;
+		private final PermissionProvider                 permissionProvider;
+		private final RoleProvider                       roleProvider;
+		private final RoleUpdater                        roleUpdater;
+		private final SubjectUpdater                     subjectUpdater;
+
+		private final HashMap<String, Resource>                       resourceTable   = new HashMap<>();
+		private final HashMap<Resource, HashMap<Integer, Permission>> permissionTable = new HashMap<>();
+		private final HashMap<String, Role>                           roleTable       = new HashMap<>();
+		private final HashMap<String, Subject>                        subjectTable    = new HashMap<>();
+
+		private final Object            sharedLock = new Object();
+		private final PermissionManager permissionManager;
+		private final RoleManager       roleManager;
+		private final SubjectManager    subjectManager;
+
 		private boolean initialized = false;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final AuthorizationConfigurationProvider configurationProvider,
 			final ResourceProvider resourceProvider,
 			final ResourceUpdater resourceUpdater,
@@ -393,11 +394,11 @@ public interface AuthorizationManager
 			this.roleManager           = RoleManager.New(this.sharedLock, this.roleTable);
 			this.subjectManager        = SubjectManager.New(this.sharedLock, this.subjectTable);
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -407,7 +408,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.sharedLock;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -417,7 +418,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.sharedLock;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -427,7 +428,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.sharedLock;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -435,7 +436,7 @@ public interface AuthorizationManager
 		public final Resource resource(final String name)
 		{
 			this.ensureInitialized();
-			
+
 			// must lock locally as there is no registry instance to handle it
 			// (26.06.2014 TM)TODO: resource Registry?
 			synchronized(this.sharedLock)
@@ -443,7 +444,7 @@ public interface AuthorizationManager
 				return this.resourceTable.get(name);
 			}
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -453,7 +454,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.permissionManager.permission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -463,7 +464,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.roleManager.role(roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -473,7 +474,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.subjectManager.subject(subjectName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -483,7 +484,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.permissionManager.providePermission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -493,7 +494,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.roleManager.roles();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -503,7 +504,7 @@ public interface AuthorizationManager
 			this.ensureInitialized();
 			return this.subjectManager.subjects();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -511,12 +512,12 @@ public interface AuthorizationManager
 		public final AuthorizationRegistry authorizationRegistry()
 		{
 			this.ensureInitialized();
-			
+
 			// through the registry encapsulation this manager implementation
 			// itself acts as a registry.
 			return this;
 		}
-		
+
 		private void ensureInitialized()
 		{
 			synchronized(this.sharedLock)
@@ -529,20 +530,20 @@ public interface AuthorizationManager
 				this.initialized = true;
 			}
 		}
-		
+
 		private void build()
 		{
 			final HashMap<String, Resource>                       resources   = new HashMap<>();
 			final HashMap<Resource, HashMap<Integer, Permission>> permissions = new HashMap<>();
 			final HashMap<String, Role>                           roles       = new HashMap<>();
 			final HashMap<String, Subject>                        subjects    = new HashMap<>();
-			
+
 			// prepare updaters (normaly no-op, but important hooking
 			// opportunity for custom logic)
 			this.resourceUpdater.prepareResourceUpdate(this.resourceTable.values());
 			this.roleUpdater.prepareRoleUpdate(this.roleTable.values());
 			this.subjectUpdater.prepareSubjectUpdate(this.subjectTable.values());
-			
+
 			try
 			{
 				/*
@@ -552,13 +553,13 @@ public interface AuthorizationManager
 				 */
 				final AuthorizationConfiguration configuration = this.configurationProvider
 					.provideConfiguration();
-				
+
 				// update existing or get new instances via the provided
 				// configuration
 				this.buildResourceTable(resources, configuration);
 				this.buildRoleTable(roles, configuration, resources, permissions);
 				this.buildSubjectTable(subjects, configuration, roles);
-				
+
 				// signal updaters that the process has been completed
 				// successfully
 				// (26.06.2014 TM)TODO: separate into dedicated trys with
@@ -573,7 +574,7 @@ public interface AuthorizationManager
 				this.resourceUpdater.rollbackResourceUpdate(resources.values(), e);
 				this.roleUpdater.rollbackRoleUpdate(roles.values(), e);
 				this.subjectUpdater.rollbackSubjectUpdate(subjects.values(), e);
-				
+
 				// pass exception along
 				throw e;
 			}
@@ -584,7 +585,7 @@ public interface AuthorizationManager
 				this.roleUpdater.cleanupRoleUpdate();
 				this.subjectUpdater.cleanupSubjectUpdate();
 			}
-			
+
 			/*
 			 * clear and update registry tables. Must be the same instances as
 			 * they are referenced by / linked into registry instances. Note
@@ -594,13 +595,13 @@ public interface AuthorizationManager
 			this.permissionTable.clear();
 			this.roleTable.clear();
 			this.subjectTable.clear();
-			
+
 			this.resourceTable.putAll(resources);
 			this.permissionTable.putAll(permissions);
 			this.roleTable.putAll(roles);
 			this.subjectTable.putAll(subjects);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -613,7 +614,7 @@ public interface AuthorizationManager
 				this.ensureInitialized();
 			}
 		}
-		
+
 		private static final <E> Set<E> resolve(
 			final Set<String> names,
 			final HashMap<String, E> mapping)
@@ -622,9 +623,9 @@ public interface AuthorizationManager
 			{
 				return null;
 			}
-			
+
 			final HashSet<E> resolved = new HashSet<>(names.size());
-			
+
 			for(final String name : names)
 			{
 				final E element = mapping.get(name);
@@ -634,10 +635,10 @@ public interface AuthorizationManager
 				}
 				resolved.add(element);
 			}
-			
+
 			return resolved;
 		}
-		
+
 		private static final Permission lookupPermission(
 			final HashMap<Resource, HashMap<Integer, Permission>> table,
 			final Resource resource,
@@ -646,7 +647,7 @@ public interface AuthorizationManager
 			final HashMap<Integer, Permission> subTable = table.get(resource);
 			return subTable == null ? null : subTable.get(factor);
 		}
-		
+
 		private static final void putPermission(
 			final HashMap<Resource, HashMap<Integer, Permission>> table,
 			final Resource resource,
@@ -660,7 +661,7 @@ public interface AuthorizationManager
 			}
 			subTable.put(factor, permission);
 		}
-		
+
 		private static final Set<Permission> resolvePermissions(
 			final HashMap<Resource, HashMap<Integer, Permission>> oldPermissionTable,
 			final HashMap<Resource, HashMap<Integer, Permission>> newPermissionTable,
@@ -672,9 +673,9 @@ public interface AuthorizationManager
 			{
 				return null;
 			}
-			
+
 			final HashSet<Permission> permissions = new HashSet<>();
-			
+
 			definitions.forEach((k, v) -> {
 				final Resource resource = resources.get(k);
 				if(resource == null)
@@ -684,7 +685,7 @@ public interface AuthorizationManager
 																			// proper
 																			// exception
 				}
-				
+
 				Permission permission = lookupPermission(newPermissionTable, resource, v);
 				if(permission == null)
 				{
@@ -701,10 +702,10 @@ public interface AuthorizationManager
 				putPermission(newPermissionTable, resource, v, permission);
 				permissions.add(permission);
 			});
-			
+
 			return permissions;
 		}
-		
+
 		private void buildResourceTable(
 			final HashMap<String, Resource> newResources,
 			final AuthorizationConfiguration configuration)
@@ -712,10 +713,10 @@ public interface AuthorizationManager
 			final ResourceProvider          resourceProvider = this.resourceProvider;
 			final ResourceUpdater           resourceUpdater  = this.resourceUpdater;
 			final HashMap<String, Resource> oldResources     = this.resourceTable;
-			
+
 			final Map<String, ? extends Set<String>> resourcesDefinitions = configuration
 				.resourceResources();
-			
+
 			/*
 			 * resolve instance names to actual instances by looking up already
 			 * registered existing ones or getting new ones from the provider.
@@ -724,12 +725,12 @@ public interface AuthorizationManager
 			resourcesDefinitions.forEach((resourceName, value) -> {
 				final Resource resource = resourceProvider
 					.provideResource(oldResources.get(resourceName), resourceName, value);
-				
+
 				// always put returned instance in case the provider discarded
 				// the old instance and created a new one.
 				newResources.put(resourceName, resource);
 			});
-			
+
 			/*
 			 * Update the instances in a second pass after all instances have
 			 * been resolved. Children collections have to be resolved locally
@@ -740,7 +741,7 @@ public interface AuthorizationManager
 					resolve(resourcesDefinitions.get(name), newResources));
 			});
 		}
-		
+
 		private void buildRoleTable(
 			final HashMap<String, Role> newRoles,
 			final AuthorizationConfiguration config,
@@ -752,11 +753,11 @@ public interface AuthorizationManager
 			final RoleUpdater                                     roleUpdater        = this.roleUpdater;
 			final HashMap<String, Role>                           oldRoles           = this.roleTable;
 			final HashMap<Resource, HashMap<Integer, Permission>> oldPermissionTable = this.permissionTable;
-			
+
 			final Map<String, ? extends Set<String>>          roleRoles       = config.roleRoles();
 			final Map<String, ? extends Map<String, Integer>> rolePermissions = config
 				.rolePermissions();
-			
+
 			/*
 			 * resolve instance names to actual instances by looking up already
 			 * registered existing ones or getting new ones from the provider.
@@ -767,7 +768,7 @@ public interface AuthorizationManager
 				final Role                 existingRole = oldRoles.get(roleName);
 				final Role                 role         = roleProvider.provideRole(existingRole, roleName, value,
 					permissions != null ? permissions.keySet() : Collections.emptySet());
-				
+
 				// always put returned instance in case the provider discarded
 				// the old instance and created a new one.
 				newRoles.put(roleName, role);
@@ -780,18 +781,18 @@ public interface AuthorizationManager
 					// role already covered, continue loop
 					return;
 				}
-				
+
 				final Role role = roleProvider.provideRole(oldRoles.get(roleName), roleName,
 					Collections.emptySet(), // obviously empty, otherwise
 											// first loop would have covered
 											// it already
 					value.keySet());
-				
+
 				// always put returned instance in case the provider discarded
 				// the old instance and created a new one.
 				newRoles.put(roleName, role);
 			});
-			
+
 			/*
 			 * Update the instances in a second pass after all instances have
 			 * been resolved. Children collections have to be resolved locally
@@ -803,7 +804,7 @@ public interface AuthorizationManager
 						rolePermissions.get(name), resources, permissionProvider));
 			});
 		}
-		
+
 		private void buildSubjectTable(
 			final HashMap<String, Subject> newSubjects,
 			final AuthorizationConfiguration configuration,
@@ -811,10 +812,10 @@ public interface AuthorizationManager
 		{
 			final SubjectUpdater           subjectUpdater = this.subjectUpdater;
 			final HashMap<String, Subject> oldSubjects    = this.subjectTable;
-			
+
 			final Map<String, ? extends Set<String>> subjectDefinitions = configuration
 				.subjectRoles();
-			
+
 			/*
 			 * subject resolving and updating can be done in one pass as it has
 			 * no type-recursion (subject knows other subjects) like resource or
@@ -832,13 +833,13 @@ public interface AuthorizationManager
 																								// proper
 																								// exception
 				}
-				
+
 				// always put returned instance in case the provider discarded
 				// the old instance and created a new one.
 				newSubjects.put(subjectName, subject);
 			});
 		}
-		
+
 	}
-	
+
 }

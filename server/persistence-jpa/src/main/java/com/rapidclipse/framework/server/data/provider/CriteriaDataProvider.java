@@ -56,14 +56,14 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 	public static <T> CriteriaDataProvider<T>
 		New(final CriteriaQuery<T> criteria, final CriteriaParameterProvider parameterProvider)
 	{
-		return new Implementation<>(criteria, parameterProvider);
+		return new Default<>(criteria, parameterProvider);
 	}
 
-	public static class Implementation<T>
+	public static class Default<T>
 		extends ConfigurableFilterDataProviderWrapper<T, Filter, Filter, Filter>
 		implements CriteriaDataProvider<T>
 	{
-		public Implementation(final CriteriaQuery<T> criteria, final CriteriaParameterProvider parameters)
+		protected Default(final CriteriaQuery<T> criteria, final CriteriaParameterProvider parameters)
 		{
 			super(DataProvider.fromFilteringCallbacks(new CriteriaFetchCallback<>(criteria, parameters),
 				new CriteriaCountCallback<>(criteria, parameters)));
@@ -86,7 +86,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 			private final CriteriaParameterProvider parameterProvider;
 			private final Root<T>                   root;
 
-			public CriteriaCallbackBase(
+			protected CriteriaCallbackBase(
 				final CriteriaQuery<T> criteria,
 				final CriteriaParameterProvider parameterProvider)
 			{
@@ -175,7 +175,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 		protected static class CriteriaFetchCallback<T> extends CriteriaCallbackBase<T>
 			implements FetchCallback<T, Filter>
 		{
-			public CriteriaFetchCallback(
+			protected CriteriaFetchCallback(
 				final CriteriaQuery<T> criteria,
 				final CriteriaParameterProvider parameterProvider)
 			{
@@ -201,7 +201,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 		protected static class CriteriaCountCallback<T> extends CriteriaCallbackBase<T>
 			implements CountCallback<T, Filter>
 		{
-			public CriteriaCountCallback(
+			protected CriteriaCountCallback(
 				final CriteriaQuery<T> criteria,
 				final CriteriaParameterProvider parameterProvider)
 			{

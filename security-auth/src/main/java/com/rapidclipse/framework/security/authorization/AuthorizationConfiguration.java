@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -36,7 +37,7 @@ public interface AuthorizationConfiguration
 	 *         resources.
 	 */
 	public Map<String, ? extends Set<String>> resourceResources();
-	
+
 	/**
 	 * The parent role names (value) for every valid role (keys). The key
 	 * collection of the returned map also represents the complete set of valid
@@ -46,7 +47,7 @@ public interface AuthorizationConfiguration
 	 * @see #roleRoles()
 	 */
 	public Map<String, ? extends Set<String>> roleRoles();
-	
+
 	/**
 	 * The explicitely defined permissions (value) for every valid role (keys).
 	 * Every permission is represented by its name and its associated factor.
@@ -58,7 +59,7 @@ public interface AuthorizationConfiguration
 	 * @see #rolePermissions()
 	 */
 	public Map<String, ? extends Map<String, Integer>> rolePermissions();
-	
+
 	/**
 	 * The role names (value) for every valid subject (keys). The key collection
 	 * of the returned map also represents the complete set of valid subjects.
@@ -66,7 +67,7 @@ public interface AuthorizationConfiguration
 	 * @return a table representing all valid subjects and their defined roles.
 	 */
 	public Map<String, ? extends Set<String>> subjectRoles();
-	
+
 	/**
 	 * Creates a new {@link AuthorizationConfiguration} instance from the passed
 	 * parts.
@@ -87,35 +88,35 @@ public interface AuthorizationConfiguration
 		final Map<String, ? extends Map<String, Integer>> rolePermissions,
 		final Map<String, ? extends Set<String>> subjectRoles)
 	{
-		return new Implementation(requireNonNull(resourceResources), requireNonNull(roleRoles),
+		return new Default(requireNonNull(resourceResources), requireNonNull(roleRoles),
 			requireNonNull(rolePermissions), requireNonNull(subjectRoles));
 	}
-	
+
 	/**
 	 * A simple immutable {@link AuthorizationConfiguration} default
 	 * implementation.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements AuthorizationConfiguration
+	public final class Default implements AuthorizationConfiguration
 	{
 		////////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final Map<String, ? extends Set<String>>          resourceResources;
-		final Map<String, ? extends Set<String>>          roleRoles;
-		final Map<String, ? extends Map<String, Integer>> rolePermissions;
-		final Map<String, ? extends Set<String>>          subjectRoles;
-		
+
+		private final Map<String, ? extends Set<String>>          resourceResources;
+		private final Map<String, ? extends Set<String>>          roleRoles;
+		private final Map<String, ? extends Map<String, Integer>> rolePermissions;
+		private final Map<String, ? extends Set<String>>          subjectRoles;
+
 		////////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final Map<String, ? extends Set<String>> resourceResources,
 			final Map<String, ? extends Set<String>> roleRoles,
 			final Map<String, ? extends Map<String, Integer>> rolePermissions,
@@ -127,11 +128,11 @@ public interface AuthorizationConfiguration
 			this.rolePermissions   = rolePermissions;
 			this.subjectRoles      = subjectRoles;
 		}
-		
+
 		////////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -140,7 +141,7 @@ public interface AuthorizationConfiguration
 		{
 			return this.resourceResources;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -149,7 +150,7 @@ public interface AuthorizationConfiguration
 		{
 			return this.roleRoles;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -158,7 +159,7 @@ public interface AuthorizationConfiguration
 		{
 			return this.rolePermissions;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -167,7 +168,7 @@ public interface AuthorizationConfiguration
 		{
 			return this.subjectRoles;
 		}
-		
+
 	}
-	
+
 }

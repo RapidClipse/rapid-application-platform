@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import java.util.Collection;
@@ -40,9 +41,9 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		final RoleRegistry roleRegistry,
 		final SubjectRegistry subjectRegistry)
 	{
-		return new Implementation(permissionRegistry, roleRegistry, subjectRegistry);
+		return new Default(permissionRegistry, roleRegistry, subjectRegistry);
 	}
-	
+
 	/**
 	 * Creates a new {@link AuthorizationRegistry} instance with the passed authorization entity instances as
 	 * the entries for the according sub-registries and an internally created exclusive synchronization instance
@@ -63,7 +64,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 	{
 		return New(permissions, roles, subjects, new Object());
 	}
-	
+
 	/**
 	 * Creates a new {@link AuthorizationRegistry} instance with the passed authorization entity instances as
 	 * the entries for the according sub-registries and an internally created exclusive synchronization instance
@@ -85,36 +86,36 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		final Collection<? extends Subject> subjects,
 		final Object sharedLock)
 	{
-		return new Implementation(
+		return new Default(
 			PermissionRegistry.New(permissions, sharedLock),
 			RoleRegistry.New(roles, sharedLock),
 			SubjectRegistry.New(subjects, sharedLock));
 	}
-	
+
 	/**
 	 * A simple {@link AuthorizationRegistry} default implementation that is comprised of delegate
 	 * {@link PermissionRegistry}, {@link RoleRegistry} and {@link SubjectRegistry} instances.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public class Implementation implements AuthorizationRegistry
+	public class Default implements AuthorizationRegistry
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final PermissionRegistry permissionRegistry;
-		final RoleRegistry       roleRegistry;
-		final SubjectRegistry    subjectRegistry;
-		
+
+		private final PermissionRegistry permissionRegistry;
+		private final RoleRegistry       roleRegistry;
+		private final SubjectRegistry    subjectRegistry;
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final PermissionRegistry permissionRegistry,
 			final RoleRegistry roleRegistry,
 			final SubjectRegistry subjectRegistry)
@@ -124,11 +125,11 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 			this.roleRegistry       = roleRegistry;
 			this.subjectRegistry    = subjectRegistry;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -137,7 +138,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		{
 			return this.permissionRegistry.permission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -146,7 +147,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		{
 			return this.roleRegistry.role(roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -155,7 +156,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		{
 			return this.subjectRegistry.subject(subjectName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -164,7 +165,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		{
 			return this.roleRegistry.roles();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -174,7 +175,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 			// will indirectly return the lock
 			return this.permissionRegistry.lockPermissionRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -184,7 +185,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 			// will indirectly return the lock
 			return this.roleRegistry.lockRoleRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -193,7 +194,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 		{
 			return this.subjectRegistry.subjects();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -203,7 +204,7 @@ public interface AuthorizationRegistry extends PermissionRegistry, RoleRegistry,
 			// will indirectly return the lock
 			return this.subjectRegistry.lockSubjectRegistry();
 		}
-		
+
 	}
-	
+
 }

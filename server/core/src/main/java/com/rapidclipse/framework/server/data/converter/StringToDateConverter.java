@@ -56,41 +56,41 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 		{
 			return (StringToDateConverter<MODEL>)SqlTimestamp(dateFormatProvider, errorMessageProvider);
 		}
-
+		
 		throw new IllegalArgumentException("Unsupported date type: " + clazz);
 	}
-
+	
 	public static StringToDateConverter<Date> UtilDate(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(dateFormatProvider, date -> date, errorMessageProvider);
+		return new Default<>(dateFormatProvider, date -> date, errorMessageProvider);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Date> SqlDate(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(dateFormatProvider, date -> new java.sql.Date(date.getTime()),
+		return new Default<>(dateFormatProvider, date -> new java.sql.Date(date.getTime()),
 			errorMessageProvider);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Time> SqlTime(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(dateFormatProvider, date -> new java.sql.Time(date.getTime()),
+		return new Default<>(dateFormatProvider, date -> new java.sql.Time(date.getTime()),
 			errorMessageProvider);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Timestamp> SqlTimestamp(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(dateFormatProvider,
+		return new Default<>(dateFormatProvider,
 			date -> new java.sql.Timestamp(date.getTime()), errorMessageProvider);
 	}
-
+	
 	public static <MODEL extends Date> StringToDateConverter<MODEL> New(
 		final Class<MODEL> clazz,
 		final Function<Locale, DateFormat> dateFormatProvider,
@@ -98,61 +98,61 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 	{
 		return New(clazz, dateFormatProvider, ctx -> errorMessage);
 	}
-
+	
 	public static StringToDateConverter<Date> UtilDate(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final String errorMessage)
 	{
 		return UtilDate(dateFormatProvider, ctx -> errorMessage);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Date> SqlDate(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final String errorMessage)
 	{
 		return SqlDate(dateFormatProvider, ctx -> errorMessage);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Time> SqlTime(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final String errorMessage)
 	{
 		return SqlTime(dateFormatProvider, ctx -> errorMessage);
 	}
-
+	
 	public static StringToDateConverter<java.sql.Timestamp> SqlTimestamp(
 		final Function<Locale, DateFormat> dateFormatProvider,
 		final String errorMessage)
 	{
 		return SqlTimestamp(dateFormatProvider, ctx -> errorMessage);
 	}
-
-	public static class Implementation<MODEL extends Date> implements StringToDateConverter<MODEL>
+	
+	public static class Default<MODEL extends Date> implements StringToDateConverter<MODEL>
 	{
 		private final Function<Locale, DateFormat> dateFormatProvider;
 		private final Function<Date, MODEL>        dateConverter;
 		private final ErrorMessageProvider         errorMessageProvider;
-
-		protected Implementation(
+		
+		protected Default(
 			final Function<Locale, DateFormat> dateFormatProvider,
 			final Function<Date, MODEL> dateConverter,
 			final String errorMessage)
 		{
 			this(dateFormatProvider, dateConverter, ctx -> errorMessage);
 		}
-
-		public Implementation(
+		
+		public Default(
 			final Function<Locale, DateFormat> dateFormatProvider,
 			final Function<Date, MODEL> dateConverter,
 			final ErrorMessageProvider errorMessageProvider)
 		{
 			super();
-
+			
 			this.dateFormatProvider   = requireNonNull(dateFormatProvider);
 			this.dateConverter        = requireNonNull(dateConverter);
 			this.errorMessageProvider = requireNonNull(errorMessageProvider);
 		}
-
+		
 		@Override
 		public Result<MODEL> convertToModel(String value, final ValueContext context)
 		{
@@ -160,9 +160,9 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.ok(null);
 			}
-
+			
 			value = value.trim();
-
+			
 			final ParsePosition parsePosition = new ParsePosition(0);
 			final Date          parsedValue   = this.dateFormatProvider.apply(context.getLocale().orElse(null))
 				.parse(value, parsePosition);
@@ -170,10 +170,10 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return Result.error(this.errorMessageProvider.apply(context));
 			}
-
+			
 			return Result.ok(this.dateConverter.apply(parsedValue));
 		}
-
+		
 		@Override
 		public String convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -181,7 +181,7 @@ public interface StringToDateConverter<MODEL extends Date> extends Converter<Str
 			{
 				return null;
 			}
-
+			
 			final Locale locale = context.getLocale().orElse(null);
 			return this.dateFormatProvider.apply(locale).format(value);
 		}

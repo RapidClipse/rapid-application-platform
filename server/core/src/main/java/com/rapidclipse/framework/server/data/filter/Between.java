@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 /**
@@ -20,41 +21,49 @@ package com.rapidclipse.framework.server.data.filter;
 public interface Between extends Filter
 {
 	public Object identifier();
-	
+
 	public Comparable<?> start();
-	
+
 	public Comparable<?> end();
 	
-	public static class Implementation implements Between
+	public static Between New(
+		final Object identifier,
+		final Comparable<?> start,
+		final Comparable<?> end)
+	{
+		return new Default(identifier, start, end);
+	}
+
+	public static class Default implements Between
 	{
 		private final Object        identifier;
 		private final Comparable<?> start;
 		private final Comparable<?> end;
-		
-		public Implementation(
+
+		protected Default(
 			final Object identifier,
 			final Comparable<?> start,
 			final Comparable<?> end)
 		{
 			super();
-			
+
 			this.identifier = identifier;
 			this.start      = start;
 			this.end        = end;
 		}
-		
+
 		@Override
 		public Object identifier()
 		{
 			return this.identifier;
 		}
-		
+
 		@Override
 		public Comparable<?> start()
 		{
 			return this.start;
 		}
-		
+
 		@Override
 		public Comparable<?> end()
 		{

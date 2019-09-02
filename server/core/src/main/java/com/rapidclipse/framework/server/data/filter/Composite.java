@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 import static com.rapidclipse.framework.server.Rap.notEmpty;
@@ -31,40 +32,40 @@ public interface Composite extends Filter
 		AND,
 		OR
 	}
-	
+
 	public Connector connector();
-	
+
 	public List<Filter> filters();
-	
+
 	public static Composite New(final Connector connector, final Filter... filters)
 	{
 		return New(connector, asList(filters));
 	}
-	
+
 	public static Composite New(final Connector connector, final List<Filter> filters)
 	{
-		return new Implementation(connector, filters);
+		return new Default(connector, filters);
 	}
-	
-	public static class Implementation implements Composite
+
+	public static class Default implements Composite
 	{
 		private final Connector    connector;
 		private final List<Filter> filters;
-		
-		public Implementation(final Connector connector, final List<Filter> filters)
+
+		protected Default(final Connector connector, final List<Filter> filters)
 		{
 			super();
-			
+
 			this.connector = connector;
 			this.filters   = unmodifiableList(notEmpty(filters));
 		}
-		
+
 		@Override
 		public Connector connector()
 		{
 			return this.connector;
 		}
-		
+
 		@Override
 		public List<Filter> filters()
 		{

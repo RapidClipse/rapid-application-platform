@@ -51,14 +51,14 @@ public interface SubjectEvaluatingComponentExtension
 
 		public static Builder New()
 		{
-			return new Implementation();
+			return new Default();
 		}
 
-		public static class Implementation implements Builder
+		public static class Default implements Builder
 		{
 			protected final Map<Resource, SubjectEvaluationStrategy> resourceStrategies;
 
-			public Implementation()
+			protected Default()
 			{
 				super();
 
@@ -104,14 +104,14 @@ public interface SubjectEvaluatingComponentExtension
 	public static SubjectEvaluatingComponentExtension New(
 		final Map<Resource, SubjectEvaluationStrategy> resourceStrategies)
 	{
-		return new Implementation(resourceStrategies);
+		return new Default(resourceStrategies);
 	}
 
-	public static class Implementation implements SubjectEvaluatingComponentExtension
+	public static class Default implements SubjectEvaluatingComponentExtension
 	{
 		protected final Map<Resource, SubjectEvaluationStrategy> resourceStrategies;
 
-		protected Implementation(final Map<Resource, SubjectEvaluationStrategy> resourceStrategies)
+		protected Default(final Map<Resource, SubjectEvaluationStrategy> resourceStrategies)
 		{
 			requireNonNull(resourceStrategies);
 

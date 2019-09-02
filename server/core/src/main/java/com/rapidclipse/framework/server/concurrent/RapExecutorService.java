@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.concurrent;
 
 import java.util.concurrent.Callable;
@@ -53,11 +54,11 @@ public interface RapExecutorService extends Executor
 	{
 		public RapExecutorService createExecutorService(final ServletContext context);
 	}
-	
+
 	public static final String FACTORY_INIT_PARAMETER           = "rap.executorService.factory";
 	public static final String THREAD_COUNT_INIT_PARAMETER      = "rap.executorService.threadCount";
 	public static final String GRACEFUL_SHUTDOWN_INIT_PARAMETER = "rap.executorService.gracefulShutdown";
-	
+
 	/**
 	 * Submits a Runnable task for execution and returns a Future representing
 	 * that task. The Future's {@code get} method will return {@code null} upon
@@ -72,7 +73,7 @@ public interface RapExecutorService extends Executor
 	 *             if the task is null
 	 */
 	public Future<?> submit(Runnable task);
-	
+
 	/**
 	 * Submits a Runnable task for execution and returns a Future representing
 	 * that task. The Future's {@code get} method will return the given result
@@ -91,7 +92,7 @@ public interface RapExecutorService extends Executor
 	 *             if the task is null
 	 */
 	public <T> Future<T> submit(Runnable task, T result);
-	
+
 	/**
 	 * Submits a value-returning task for execution and returns a Future
 	 * representing the pending results of the task. The Future's {@code get}
@@ -112,28 +113,33 @@ public interface RapExecutorService extends Executor
 	 *             if the task is null
 	 */
 	public <T> Future<T> submit(Callable<T> task);
-	
+
 	/**
 	 * Initiates a shutdown of the executor service. This is done automatically
 	 * when the corresponding servlet context is destroyed and therefor
 	 * shouldn't be called by the user.
 	 */
 	public void shutdown();
-	
+
+	public static RapExecutorService New(final ServletContext context)
+	{
+		return new Default(context);
+	}
+
 	/**
 	 * Default implementation of the {@link RapExecutorService} contract.
 	 *
 	 */
-	public static class Implementation implements RapExecutorService
+	public static class Default implements RapExecutorService
 	{
 		private ExecutorService executorService;
 		private boolean         gracefulShutdown;
-		
-		public Implementation(final ServletContext context)
+
+		protected Default(final ServletContext context)
 		{
 			this.gracefulShutdown = Boolean
 				.valueOf(context.getInitParameter(GRACEFUL_SHUTDOWN_INIT_PARAMETER));
-			
+
 			int threadCount = 10;
 			try
 			{
@@ -143,14 +149,14 @@ public interface RapExecutorService extends Executor
 			catch(final NumberFormatException localNumberFormatException)
 			{
 			}
-			
+
 			final ThreadFactory defaultThreadFactory = Executors.defaultThreadFactory();
 			final ThreadFactory daemonThreadFactory  = runnable -> {
 															final Thread t = defaultThreadFactory.newThread(runnable);
 															t.setDaemon(true);
 															return t;
 														};
-			
+
 			if(threadCount <= 1)
 			{
 				this.executorService = Executors.newSingleThreadExecutor(daemonThreadFactory);
@@ -161,31 +167,31 @@ public interface RapExecutorService extends Executor
 					daemonThreadFactory);
 			}
 		}
-		
+
 		@Override
 		public void execute(final Runnable command)
 		{
 			this.executorService.execute(ExecutionWrapper.Wrap(command));
 		}
-		
+
 		@Override
 		public Future<?> submit(final Runnable task)
 		{
 			return this.executorService.submit(ExecutionWrapper.Wrap(task));
 		}
-		
+
 		@Override
 		public <T> Future<T> submit(final Runnable task, final T result)
 		{
 			return this.executorService.submit(ExecutionWrapper.Wrap(task), result);
 		}
-		
+
 		@Override
 		public <T> Future<T> submit(final Callable<T> task)
 		{
 			return this.executorService.submit(ExecutionWrapper.Wrap(task));
 		}
-		
+
 		@Override
 		public void shutdown()
 		{

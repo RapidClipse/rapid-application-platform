@@ -36,16 +36,16 @@ import org.apache.commons.lang3.StringUtils;
 public interface NavigationParametersMetadata
 {
 	public Iterable<String> names();
-	
+
 	public NavigationParameterMetadata get(final String name);
-	
+
 	public List<String> mandatoryParameters();
-	
+
 	public static NavigationParametersMetadata New(final Class<?> targetType)
 	{
 		return New(getMetadata(targetType));
 	}
-
+	
 	public static Map<String, NavigationParameterMetadata> getMetadata(final Class<?> target)
 	{
 		final List<Class<?>> hierarchy = new ArrayList<>();
@@ -55,9 +55,9 @@ public interface NavigationParametersMetadata
 			hierarchy.add(0, clazz);
 			clazz = clazz.getSuperclass();
 		}
-
+		
 		final Map<String, NavigationParameterMetadata> parameters = new HashMap<>();
-
+		
 		for(final Class<?> current : hierarchy)
 		{
 			for(final Field field : current.getDeclaredFields())
@@ -66,14 +66,14 @@ public interface NavigationParametersMetadata
 				{
 					continue;
 				}
-
+				
 				final NavigationParameter urlParameter = field
 					.getAnnotation(NavigationParameter.class);
 				if(urlParameter == null)
 				{
 					continue;
 				}
-
+				
 				String name = urlParameter.name();
 				if(StringUtils.isEmpty(name))
 				{
@@ -83,7 +83,7 @@ public interface NavigationParametersMetadata
 				parameters.put(name, NavigationParameterMetadata.New(field, field.getType(), name,
 					urlParameter.optional()));
 			}
-
+			
 			for(final Method method : current.getDeclaredMethods())
 			{
 				if(Modifier.isStatic(method.getModifiers())
@@ -91,14 +91,14 @@ public interface NavigationParametersMetadata
 				{
 					continue;
 				}
-
+				
 				final NavigationParameter urlParameter = method
 					.getAnnotation(NavigationParameter.class);
 				if(urlParameter == null)
 				{
 					continue;
 				}
-
+				
 				String name = urlParameter.name();
 				if(StringUtils.isEmpty(name))
 				{
@@ -113,38 +113,38 @@ public interface NavigationParametersMetadata
 					method.getParameterTypes()[0], name, urlParameter.optional()));
 			}
 		}
-
+		
 		return parameters;
 	}
-	
+
 	public static NavigationParametersMetadata New(
 		final Map<String, NavigationParameterMetadata> parameters)
 	{
-		return new Implementation(parameters);
+		return new Default(parameters);
 	}
-	
-	public static class Implementation implements NavigationParametersMetadata
+
+	public static class Default implements NavigationParametersMetadata
 	{
 		private final Map<String, NavigationParameterMetadata> parameters;
-		
-		public Implementation(final Map<String, NavigationParameterMetadata> parameters)
+
+		protected Default(final Map<String, NavigationParameterMetadata> parameters)
 		{
 			super();
 			this.parameters = unmodifiableMap(requireNonNull(parameters));
 		}
-		
+
 		@Override
 		public Iterable<String> names()
 		{
 			return this.parameters.keySet();
 		}
-		
+
 		@Override
 		public NavigationParameterMetadata get(final String name)
 		{
 			return this.parameters.get(name);
 		}
-		
+
 		@Override
 		public List<String> mandatoryParameters()
 		{

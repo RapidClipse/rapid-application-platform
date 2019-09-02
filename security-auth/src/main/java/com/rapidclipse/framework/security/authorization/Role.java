@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -41,21 +42,21 @@ public interface Role
 	 *         instance.
 	 */
 	public String name();
-	
+
 	/**
 	 * @return The roles this role instance has been defined by.
 	 */
 	public Collection<Role> roles();
-	
+
 	/**
 	 * @return The permissions this role instance has been defined by.
 	 */
 	public Collection<Permission> permissions();
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// default methods //
 	/////////////////////
-	
+
 	/**
 	 * Returns the effective roles of this {@link Role} instance, meaning a
 	 * collection containing all the roles that this instance has been defined
@@ -68,7 +69,7 @@ public interface Role
 	{
 		return collectEffectiveRoles(this.roles(), new HashSet<>());
 	}
-	
+
 	/**
 	 * Returns the effective permissions of this {@link Role} instance, meaning
 	 * a collection containing all the permissions that this instance has been
@@ -82,11 +83,11 @@ public interface Role
 	{
 		return collectEffectivePermissions(new HashSet<>(Arrays.asList(this)));
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-	
+
 	/**
 	 * Utility method that collects the effective permissions from a collection
 	 * of passed roles.
@@ -103,7 +104,7 @@ public interface Role
 		return collectEffectivePermissions(roles, new HashSet<>(), new HashSet<>(), new HashSet<>(),
 			new HashMap<>());
 	}
-	
+
 	public static <M extends Map<Resource, Permission>> M collectEffectivePermissions(
 		final Collection<Role> roles,
 		final Set<Role> handledRoles,
@@ -121,10 +122,10 @@ public interface Role
 					handledResources, collectedPermissions);
 			}
 		}
-		
+
 		return collectedPermissions;
 	}
-	
+
 	public static <R, C extends Set<? super Role>> C collectEffectiveRoles(
 		final Collection<Role> roles,
 		final C effectiveRoles)
@@ -147,10 +148,10 @@ public interface Role
 				collectEffectiveRoles(roles, effectiveRoles);
 			}
 		}
-		
+
 		return effectiveRoles;
 	}
-	
+
 	public static void collectEffectivePermissions(
 		final Iterable<Permission> permissions,
 		final Set<Permission> handledPermissions,
@@ -164,9 +165,9 @@ public interface Role
 				continue; // this permission (identity) has already been handled
 							// via another role, so skip it
 			}
-			
+
 			final Resource resource = permission.resource();
-			
+
 			/*
 			 * must clear the handledResources collection for every unique
 			 * permission as the current permission might handle a previously
@@ -179,7 +180,7 @@ public interface Role
 			collectEffectivePermissions(resource, permission, handledResources, effectivePermissions);
 		}
 	}
-	
+
 	public static void collectEffectivePermissions(
 		final Resource resource,
 		final Permission permission,
@@ -190,24 +191,24 @@ public interface Role
 		{
 			return; // already handled
 		}
-		
+
 		final Permission collectedPermission = effectivePermissions.get(resource);
 		if(collectedPermission == null
 			|| Math.abs(collectedPermission.factor()) < Math.abs(permission.factor()))
 		{
 			effectivePermissions.put(resource, permission);
 		}
-		
+
 		for(final Resource child : resource.children())
 		{
 			collectEffectivePermissions(child, permission, handledResources, effectivePermissions);
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-	
+
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values.
 	 *
@@ -225,9 +226,9 @@ public interface Role
 		final Set<? extends Role> roles,
 		final Set<? extends Permission> permissions)
 	{
-		return new Role.Implementation(name, roles, permissions);
+		return new Role.Default(name, roles, permissions);
 	}
-	
+
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values with no
 	 * explicit permissions.
@@ -240,9 +241,9 @@ public interface Role
 	 */
 	public static Role NewFromRoles(final String name, final Set<? extends Role> roles)
 	{
-		return new Role.Implementation(name, roles, Collections.emptySet());
+		return new Role.Default(name, roles, Collections.emptySet());
 	}
-	
+
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values with no
 	 * explicit parent roles.
@@ -258,9 +259,9 @@ public interface Role
 		final String name,
 		final Set<? extends Permission> permissions)
 	{
-		return new Role.Implementation(name, Collections.emptySet(), permissions);
+		return new Role.Default(name, Collections.emptySet(), permissions);
 	}
-	
+
 	/**
 	 * Returns a new {@link Role} instance with the passed name that is
 	 * otherwise empty.
@@ -271,9 +272,9 @@ public interface Role
 	 */
 	public static Role New(final String name)
 	{
-		return new Role.Implementation(name, Collections.emptySet(), Collections.emptySet());
+		return new Role.Default(name, Collections.emptySet(), Collections.emptySet());
 	}
-	
+
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values with no
 	 * explicit permissions.
@@ -286,11 +287,11 @@ public interface Role
 	 */
 	public static Role New(final String name, final Role... roles)
 	{
-		return new Role.Implementation(name,
+		return new Role.Default(name,
 			roles == null ? Collections.emptySet() : new HashSet<>(Arrays.asList(roles)),
 			Collections.emptySet());
 	}
-	
+
 	/**
 	 * Returns a new {@link Role} instance defined by the passed values with no
 	 * explicit parent roles.
@@ -304,11 +305,11 @@ public interface Role
 	 */
 	public static Role New(final String name, final Permission... permissions)
 	{
-		return new Role.Implementation(name, Collections.emptySet(),
+		return new Role.Default(name, Collections.emptySet(),
 			permissions == null ? Collections.emptySet()
 				: new HashSet<>(Arrays.asList(permissions)));
 	}
-	
+
 	/**
 	 * Validates and returns a passed non-null {@link Role} instance or creates
 	 * a new one in case of a null refrence. In this simple defeault
@@ -338,23 +339,23 @@ public interface Role
 			// refactored to proper types
 			throw new IllegalArgumentException("No role name given.");
 		}
-		
+
 		if(role != null)
 		{
 			if(!name.equals(role.name()))
 			{
 				throw new IllegalArgumentException("Invalid name for existing role: " + name);
 			}
-			
+
 			// (25.06.2014 TM)TODO: validate parent roles and permissions by
 			// name
 			return role;
 		}
-		
+
 		// instantiate only with name, roles and permissions get updated later
 		return New(name);
 	}
-	
+
 	/**
 	 * Updates the passed {@link Role} instance for the given values. If
 	 * inconsistencies are detected or the instance is not {@link Mutable}, an
@@ -384,18 +385,18 @@ public interface Role
 		{
 			throw new IllegalArgumentException("No role name given.");
 		}
-		
+
 		if(!name.equals(role.name()))
 		{
 			throw new IllegalArgumentException("Invalid name for role: " + name);
 		}
-		
+
 		if(!(role instanceof Mutable))
 		{
 			throw new IllegalArgumentException(
 				"Passed subject is not of a generically mutable type");
 		}
-		
+
 		// ensure that all updating methods are called atomically
 		synchronized(role)
 		{
@@ -403,11 +404,11 @@ public interface Role
 			((Mutable)role).setPermissions(permissions);
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// member types //
 	/////////////////////
-	
+
 	/**
 	 * Interface equivalent of a constructor for the interface type {@link Role}
 	 * .
@@ -422,7 +423,7 @@ public interface Role
 			Set<? extends Role> roles,
 			Set<? extends Permission> permissions);
 	}
-	
+
 	/**
 	 * Extension of the type {@link Role} with mutability methods. This concept
 	 * is useful to have a properly typed representation of optional mutability.
@@ -439,7 +440,7 @@ public interface Role
 		 *            the {@link Permission} instances to be set.
 		 */
 		public void setPermissions(Collection<? extends Permission> permissions);
-		
+
 		/**
 		 * Sets the passed {@link Role} instances as the new parent roles for
 		 * this {@link Role} instance.
@@ -449,30 +450,30 @@ public interface Role
 		 */
 		public void setRoles(Collection<? extends Role> roles);
 	}
-	
+
 	/**
 	 * A simple {@link Role.Mutable} default implementation.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public class Implementation implements Role.Mutable
+	public class Default implements Role.Mutable
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		private final String                    name;
 		private volatile Collection<Role>       roles;
 		private volatile Collection<Permission> permissions;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final String name,
 			final Collection<? extends Role> roles,
 			final Collection<? extends Permission> permissions)
@@ -481,14 +482,14 @@ public interface Role
 			this.name = requireNonNull(name);
 			this.setRoles(roles);
 			this.setPermissions(permissions);
-			
+
 			/*
 			 * note: cannot cache effective items immediately in unupdatable /
 			 * immutable implementation as the referenced roles might not be
 			 * complete yet.
 			 */
 		}
-		
+
 		/**
 		 * Sets the passed {@link Permission} instances in a internally newly
 		 * instantiated collection.
@@ -502,7 +503,7 @@ public interface Role
 			this.permissions = permissions == null ? Collections.emptySet()
 				: new HashSet<>(permissions);
 		}
-		
+
 		/**
 		 * Sets the passed {@link Role} instances in a internally newly
 		 * instantiated collection.
@@ -515,11 +516,11 @@ public interface Role
 		{
 			this.roles = roles == null ? Collections.emptySet() : new HashSet<>(roles);
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -528,7 +529,7 @@ public interface Role
 		{
 			return this.name;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -537,7 +538,7 @@ public interface Role
 		{
 			return this.roles;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -546,12 +547,12 @@ public interface Role
 		{
 			return this.permissions;
 		}
-		
+
 		@Override
 		public String toString()
 		{
 			return this.name;
 		}
 	}
-	
+
 }

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit;
 
 import java.util.Map;
@@ -23,37 +24,37 @@ import java.util.Map;
 public interface MobileServiceConfiguration
 {
 	public Class<? extends MobileService> getServiceClass();
-	
+
 	public Map<String, String> getParameters();
-	
+
 	public static MobileServiceConfiguration New(
 		final Class<? extends MobileService> serviceClass,
 		final Map<String, String> params)
 	{
-		return new Implementation(serviceClass, params);
+		return new Default(serviceClass, params);
 	}
-	
-	public static class Implementation implements MobileServiceConfiguration
+
+	public static class Default implements MobileServiceConfiguration
 	{
 		private final Class<? extends MobileService> serviceClass;
 		private final Map<String, String>            params;
-		
-		public Implementation(
+
+		protected Default(
 			final Class<? extends MobileService> serviceClass,
 			final Map<String, String> params)
 		{
 			super();
-			
+
 			this.serviceClass = serviceClass;
 			this.params       = params;
 		}
-		
+
 		@Override
 		public Class<? extends MobileService> getServiceClass()
 		{
 			return this.serviceClass;
 		}
-		
+
 		@Override
 		public Map<String, String> getParameters()
 		{

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import javax.persistence.EntityManager;
@@ -31,9 +32,9 @@ import org.hibernate.Session;
 public interface SessionStrategy
 {
 	public void requestStart(Conversationables conversationables, String persistenceUnit);
-	
+
 	public void requestEnd(Conversationables conversationables, String persistenceUnit);
-	
+
 	/**
 	 * Request / Response propagation to avoid session per operation anti
 	 * pattern.
@@ -51,17 +52,17 @@ public interface SessionStrategy
 			final EntityManagerFactory factory = Jpa.getPersistenceManager()
 				.getEntityManagerFactory(persistenceUnit);
 			final EntityManager        manager = factory.createEntityManager();
-			
+
 			// instantiate conversationable wrapper with entity manager.
-			final Conversationable.Implementation conversationable = new Conversationable.Implementation();
+			final Conversationable conversationable = Conversationable.New();
 			conversationable.setEntityManager(manager);
-			
+
 			// Begin a database transaction, start the unit of work
 			manager.getTransaction().begin();
-			
+
 			conversationables.put(persistenceUnit, conversationable);
 		}
-		
+
 		@Override
 		public void requestEnd(
 			final Conversationables conversationables,
@@ -83,7 +84,7 @@ public interface SessionStrategy
 						 * handled by an appropriate conversation managing
 						 * strategy.
 						 */
-						
+
 						final EntityTransaction transaction = em.getTransaction();
 						if(transaction != null && transaction.isActive())
 						{
@@ -106,7 +107,7 @@ public interface SessionStrategy
 			}
 		}
 	}
-	
+
 	/**
 	 * Extended persistence context pattern.
 	 *
@@ -136,7 +137,7 @@ public interface SessionStrategy
 						 */
 						session.setHibernateFlushMode(FlushMode.MANUAL);
 					}
-					
+
 					/*
 					 * Begin a database transaction, reconnects Session -
 					 * continues the unit of work
@@ -149,7 +150,7 @@ public interface SessionStrategy
 				}
 			}
 		}
-		
+
 		@Override
 		public void requestEnd(
 			final Conversationables conversationables,
@@ -180,7 +181,7 @@ public interface SessionStrategy
 									transaction.rollback();
 								}
 							}
-							
+
 						}
 						else
 						{
@@ -207,7 +208,7 @@ public interface SessionStrategy
 			}
 		}
 	}
-	
+
 	/**
 	 * Extended persistence context pattern.
 	 *

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security;
 
 import static java.util.Objects.requireNonNull;
@@ -43,11 +44,11 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		final Authenticator<C, R> authenticator,
 		final AuthorizationManager authorizationManager)
 	{
-		return new Implementation<>(
+		return new Default<>(
 			requireNonNull(authenticator),
 			requireNonNull(authorizationManager));
 	}
-	
+
 	/**
 	 * Default {@link SecurityManager} implementation that wraps delegate {@link Authenticator} and
 	 * {@link AuthorizationManager} instances.
@@ -61,23 +62,23 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation<C, R> implements SecurityManager<C, R>
+	public final class Default<C, R> implements SecurityManager<C, R>
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		private final Authenticator<C, R>  authenticator;
 		private final AuthorizationManager authorizationManager;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final Authenticator<C, R> authenticator,
 			final AuthorizationManager authorizationManager)
 		{
@@ -85,11 +86,11 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 			this.authenticator        = authenticator;
 			this.authorizationManager = authorizationManager;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -98,7 +99,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authenticator.authenticate(credentials);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -107,7 +108,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.providePermission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -116,7 +117,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.roles();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -125,7 +126,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.subjects();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -134,7 +135,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.providePermission(resource);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -143,7 +144,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.permission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -152,7 +153,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.role(roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -161,7 +162,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.subject(subjectName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -170,7 +171,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.lockPermissionRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -179,7 +180,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.lockRoleRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -188,7 +189,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.lockSubjectRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -197,7 +198,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.permission(resource);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -206,7 +207,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.authorizationRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -215,7 +216,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			this.authorizationManager.reloadAuthorizations();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -224,7 +225,7 @@ public interface SecurityManager<C, R> extends Authenticator<C, R>, Authorizatio
 		{
 			return this.authorizationManager.resource(name);
 		}
-		
+
 	}
-	
+
 }

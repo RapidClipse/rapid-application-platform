@@ -32,20 +32,20 @@ public interface StartsWithIgnoreCaseItemFilter<T> extends ItemFilter<T>
 	public static <T> StartsWithIgnoreCaseItemFilter<T>
 		New(final Supplier<ItemLabelGenerator<T>> itemLabelGeneratorSupplier)
 	{
-		return new Implementation<>(itemLabelGeneratorSupplier);
+		return new Default<>(itemLabelGeneratorSupplier);
 	}
-
-	public static class Implementation<T> implements StartsWithIgnoreCaseItemFilter<T>
+	
+	public static class Default<T> implements StartsWithIgnoreCaseItemFilter<T>
 	{
 		private final Supplier<ItemLabelGenerator<T>> itemLabelGeneratorSupplier;
-		
-		protected Implementation(final Supplier<ItemLabelGenerator<T>> itemLabelGeneratorSupplier)
+
+		protected Default(final Supplier<ItemLabelGenerator<T>> itemLabelGeneratorSupplier)
 		{
 			super();
-
+			
 			this.itemLabelGeneratorSupplier = Objects.requireNonNull(itemLabelGeneratorSupplier);
 		}
-
+		
 		@Override
 		public boolean test(final T item, final String filterText)
 		{
@@ -53,7 +53,7 @@ public interface StartsWithIgnoreCaseItemFilter<T> extends ItemFilter<T>
 			{
 				return true;
 			}
-			
+
 			return StringUtils.startsWithIgnoreCase(this.itemLabelGeneratorSupplier.get().apply(item), filterText);
 		}
 	}

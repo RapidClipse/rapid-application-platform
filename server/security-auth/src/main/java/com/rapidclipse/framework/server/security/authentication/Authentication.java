@@ -38,7 +38,7 @@ public final class Authentication
 {
 	private final static String AUTHENTICATION_RESULT = Authentication.class.getName() + ".AUTHENTICATION_RESULT";
 	private final static String REDIRECT_VIEW         = Authentication.class.getName() + ".REDIRECT_VIEW";
-
+	
 	/**
 	 * A login with the given credentials is attempted. If successful the user
 	 * is registered in the current session and then the redirect view will be
@@ -54,7 +54,7 @@ public final class Authentication
 	{
 		return tryLogin(credentials, authenticatorProvider, null);
 	}
-
+	
 	/**
 	 * A login with the given credentials is attempted. If successful the user
 	 * is registered in the current session and then the redirect view will be
@@ -83,7 +83,7 @@ public final class Authentication
 			}
 			else
 			{
-				subject = new Subject.Implementation(credentials.username());
+				subject = Subject.New(credentials.username());
 			}
 			login(subject, authenticationResult);
 			return true;
@@ -93,7 +93,7 @@ public final class Authentication
 			return false;
 		}
 	}
-
+	
 	/**
 	 * Registers the <code>user</code> with the
 	 * <code>authenticationResult</code> in the current session and navigates to
@@ -112,7 +112,7 @@ public final class Authentication
 		setUser(user, authenticationResult);
 		navigateToRedirectView();
 	}
-
+	
 	/**
 	 * Removes the current user from the current session and redirects to the
 	 * login view.
@@ -125,7 +125,7 @@ public final class Authentication
 		setUser(null, null);
 		navigateToLoginView();
 	}
-
+	
 	/**
 	 * Registers the <code>user</code> with the
 	 * <code>authenticationResult</code> in the current session.
@@ -143,7 +143,7 @@ public final class Authentication
 		session.setAttribute(Subject.class, user);
 		session.setAttribute(AUTHENTICATION_RESULT, authenticationResult);
 	}
-
+	
 	/**
 	 * Returns the current user, which was registered with
 	 * {@link #setUser(Subject, Object)}.
@@ -155,7 +155,7 @@ public final class Authentication
 	{
 		return VaadinSession.getCurrent().getAttribute(Subject.class);
 	}
-
+	
 	/**
 	 * Returns the result of the last authentification of
 	 * {@link #setUser(Subject, Object)}.
@@ -167,7 +167,7 @@ public final class Authentication
 	{
 		return VaadinSession.getCurrent().getAttribute(AUTHENTICATION_RESULT);
 	}
-
+	
 	/**
 	 * Returns <code>true</code> if a user is registered in the current session,
 	 * <code>false</code> otherwise.
@@ -182,7 +182,7 @@ public final class Authentication
 	{
 		return getUser() != null;
 	}
-
+	
 	/**
 	 * Navigates to the application's {@link LoginView}.
 	 *
@@ -193,14 +193,14 @@ public final class Authentication
 	{
 		Navigation.navigateTo(LoginView.class);
 	}
-
+	
 	public static void rerouteToLoginView(final BeforeEvent event)
 	{
 		setRedirectView(event.getNavigationTarget());
-		
+
 		Navigation.rerouteTo(event, LoginView.class);
 	}
-
+	
 	/**
 	 * Navigates to the application's redirect view.
 	 * <p>
@@ -214,17 +214,17 @@ public final class Authentication
 	{
 		Navigation.navigateTo(getAndClearRedirectView());
 	}
-
+	
 	public static void rerouteToRedirectView(final BeforeEvent event)
 	{
 		Navigation.rerouteTo(event, getAndClearRedirectView());
 	}
-
+	
 	public static void setRedirectView(final Class<?> redirectView)
 	{
 		VaadinSession.getCurrent().setAttribute(REDIRECT_VIEW, redirectView);
 	}
-	
+
 	private static Class<?> getAndClearRedirectView()
 	{
 		final VaadinSession session   = VaadinSession.getCurrent();
@@ -234,11 +234,11 @@ public final class Authentication
 			? (Class<?>)attribute
 			: RedirectView.class;
 	}
-
+	
 	private static UnauthenticatedNavigationRequestHandler unauthenticatedNavigationRequestHandler =
 		UnauthenticatedNavigationRequestHandler
 			.Default();
-
+	
 	/**
 	 * @param unauthenticatedNavigationRequestHandler
 	 *            the unauthenticatedNavigationRequestHandler to set
@@ -249,7 +249,7 @@ public final class Authentication
 		Authentication.unauthenticatedNavigationRequestHandler =
 			requireNonNull(unauthenticatedNavigationRequestHandler);
 	}
-
+	
 	/**
 	 * @return the unauthenticatedNavigationRequestHandler
 	 */
@@ -257,7 +257,7 @@ public final class Authentication
 	{
 		return unauthenticatedNavigationRequestHandler;
 	}
-
+	
 	private Authentication()
 	{
 		throw new Error();

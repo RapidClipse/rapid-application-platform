@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.resources;
 
 import java.beans.BeanInfo;
@@ -39,10 +40,15 @@ public interface CaptionResolver
 	public String resolveCaption(Object element, Locale locale);
 
 	public String resolveCaption(Object element, String captionValue, Locale locale);
-
-	public static class Implementation implements CaptionResolver
+	
+	public static CaptionResolver New()
 	{
-		public Implementation()
+		return new Default();
+	}
+
+	public static class Default implements CaptionResolver
+	{
+		protected Default()
 		{
 			super();
 		}

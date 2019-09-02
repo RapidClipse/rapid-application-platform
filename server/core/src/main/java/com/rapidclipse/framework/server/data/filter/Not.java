@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 /**
@@ -21,11 +22,16 @@ public interface Not extends Filter
 {
 	public Filter filter();
 	
-	public static class Implementation implements Not
+	public static Not New(final Filter filter)
+	{
+		return new Default(filter);
+	}
+	
+	public static class Default implements Not
 	{
 		private final Filter filter;
 		
-		public Implementation(final Filter filter)
+		protected Default(final Filter filter)
 		{
 			super();
 			this.filter = filter;

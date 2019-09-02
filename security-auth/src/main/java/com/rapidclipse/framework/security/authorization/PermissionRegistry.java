@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -42,18 +43,18 @@ public interface PermissionRegistry
 	 * @return the associated {@link Permission} instance specified by the passed values.
 	 */
 	public Permission permission(Resource resource, Integer factor);
-	
+
 	/**
 	 * Returns the lock instance that is internally used by this registry instance.
 	 *
 	 * @return the lock.
 	 */
 	public Object lockPermissionRegistry();
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// default methods //
 	/////////////////////
-	
+
 	/**
 	 * Looks up the {@link Permission} instance representing the passed {@link Resource} instance with a factor of 0.
 	 * If no suitable {@link Permission} instance can be found, <tt>null</tt> is returned.
@@ -67,7 +68,7 @@ public interface PermissionRegistry
 	{
 		return this.permission(resource, 0);
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionRegistry} instance using the passed map instance as its internal datastructure
 	 * and the passed registryLock instance as the synchronization lock for accessing the registry.
@@ -82,11 +83,11 @@ public interface PermissionRegistry
 		final Map<Resource, ? extends Map<Integer, Permission>> registry,
 		final Object registryLock)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registry),
 			requireNonNull(registryLock));
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionRegistry} instance using the passed map instance as its internal datastructure
 	 * and an internally created instance as the synchronization lock for accessing the registry.
@@ -100,7 +101,7 @@ public interface PermissionRegistry
 	{
 		return New(registry, new Object());
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionRegistry} instance using the passed {@link Permission} instances to derive its
 	 * internal datastructure from and the passed registryLock instance as the synchronization lock for
@@ -117,10 +118,10 @@ public interface PermissionRegistry
 		final Object registryLock)
 	{
 		return New(
-			Implementation.buildRegistry(requireNonNull(permissions)),
+			Default.buildRegistry(requireNonNull(permissions)),
 			requireNonNull(registryLock));
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionRegistry} instance using the passed {@link Permission} instance to derive its
 	 * internal datastructure from and a newly instantiated object to be used as the synchronization lock.
@@ -133,7 +134,7 @@ public interface PermissionRegistry
 	{
 		return New(permissions, new Object());
 	}
-	
+
 	/**
 	 * A simple {@link PermissionRegistry} default implementation that synchronizes on a provided lock instance for
 	 * accessing the internal registry in order to avoid concurrency issues while the internal datastructure is
@@ -141,17 +142,17 @@ public interface PermissionRegistry
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements PermissionRegistry
+	public final class Default implements PermissionRegistry
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// static methods //
 		///////////////////
-		
+
 		static final HashMap<Resource, HashMap<Integer, Permission>> buildRegistry(
 			final Collection<? extends Permission> permissions)
 		{
 			final HashMap<Resource, HashMap<Integer, Permission>> registry = new HashMap<>();
-			
+
 			for(final Permission permission : permissions)
 			{
 				HashMap<Integer, Permission> map = registry.get(permission.resource());
@@ -161,25 +162,25 @@ public interface PermissionRegistry
 				}
 				map.put(permission.factor(), permission);
 			}
-			
+
 			return registry;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		private final Map<Resource, ? extends Map<Integer, Permission>> registry;
 		private final Object                                            registryLock;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final Map<Resource, ? extends Map<Integer, Permission>> registry,
 			final Object registryLock)
 		{
@@ -187,11 +188,11 @@ public interface PermissionRegistry
 			this.registry     = registry;
 			this.registryLock = registryLock;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -204,7 +205,7 @@ public interface PermissionRegistry
 				return resourceMap != null ? resourceMap.get(factor) : null;
 			}
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -213,7 +214,7 @@ public interface PermissionRegistry
 		{
 			return this.registryLock;
 		}
-		
+
 	}
-	
+
 }

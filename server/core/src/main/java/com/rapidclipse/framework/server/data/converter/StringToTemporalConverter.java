@@ -81,66 +81,66 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 		{
 			return (StringToTemporalConverter<MODEL>)YearMonth(formatterProvider, errorMessageProvider);
 		}
-		
+
 		throw new IllegalArgumentException("Unsupported temporal type: " + clazz);
 	}
-	
+
 	public static StringToTemporalConverter<LocalDate> LocalDate(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, LocalDate::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, LocalDate::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<LocalTime> LocalTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, LocalTime::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, LocalTime::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<LocalDateTime> LocalDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, LocalDateTime::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, LocalDateTime::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<OffsetTime> OffsetTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, OffsetTime::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, OffsetTime::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<OffsetDateTime> OffsetDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, OffsetDateTime::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, OffsetDateTime::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<ZonedDateTime> ZonedDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, ZonedDateTime::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, ZonedDateTime::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<Year> Year(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, Year::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, Year::parse, errorMessageProvider);
 	}
-	
+
 	public static StringToTemporalConverter<YearMonth> YearMonth(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final ErrorMessageProvider errorMessageProvider)
 	{
-		return new Implementation<>(formatterProvider, YearMonth::parse, errorMessageProvider);
+		return new Default<>(formatterProvider, YearMonth::parse, errorMessageProvider);
 	}
-	
+
 	public static <MODEL extends Temporal> StringToTemporalConverter<MODEL> New(
 		final Class<MODEL> clazz,
 		final Function<Locale, DateTimeFormatter> formatterProvider,
@@ -148,82 +148,82 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 	{
 		return New(clazz, formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<LocalDate> LocalDate(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return LocalDate(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<LocalTime> LocalTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return LocalTime(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<LocalDateTime> LocalDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return LocalDateTime(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<OffsetTime> OffsetTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return OffsetTime(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<OffsetDateTime> OffsetDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return OffsetDateTime(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<ZonedDateTime> ZonedDateTime(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return ZonedDateTime(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<Year> Year(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return Year(formatterProvider, ctx -> errorMessage);
 	}
-	
+
 	public static StringToTemporalConverter<YearMonth> YearMonth(
 		final Function<Locale, DateTimeFormatter> formatterProvider,
 		final String errorMessage)
 	{
 		return YearMonth(formatterProvider, ctx -> errorMessage);
 	}
-	
-	public static class Implementation<MODEL extends Temporal>
+
+	public static class Default<MODEL extends Temporal>
 		implements StringToTemporalConverter<MODEL>
 	{
 		private final Function<Locale, DateTimeFormatter>          formatterProvider;
 		private final BiFunction<String, DateTimeFormatter, MODEL> temporalParser;
 		private final ErrorMessageProvider                         errorMessageProvider;
-		
-		public Implementation(
+
+		public Default(
 			final Function<Locale, DateTimeFormatter> formatterProvider,
 			final BiFunction<String, DateTimeFormatter, MODEL> temporalParser,
 			final ErrorMessageProvider errorMessageProvider)
 		{
 			super();
-			
+
 			this.formatterProvider    = requireNonNull(formatterProvider);
 			this.temporalParser       = requireNonNull(temporalParser);
 			this.errorMessageProvider = requireNonNull(errorMessageProvider);
 		}
-		
+
 		@Override
 		public Result<MODEL> convertToModel(String value, final ValueContext context)
 		{
@@ -231,9 +231,9 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 			{
 				return Result.ok(null);
 			}
-			
+
 			value = value.trim();
-			
+
 			try
 			{
 				final Locale            locale    = context.getLocale().orElse(null);
@@ -245,7 +245,7 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 				return Result.error(this.errorMessageProvider.apply(context));
 			}
 		}
-		
+
 		@Override
 		public String convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -253,7 +253,7 @@ public interface StringToTemporalConverter<MODEL extends Temporal> extends Conve
 			{
 				return null;
 			}
-			
+
 			return this.formatterProvider.apply(context.getLocale().orElse(null)).format(value);
 		}
 	}

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authentication;
 
 import static java.util.Objects.requireNonNull;
@@ -29,12 +30,12 @@ public interface CredentialsUsernamePassword
 	 * @return the username.
 	 */
 	public String username();
-	
+
 	/**
 	 * @return the password.
 	 */
 	public byte[] password();
-	
+
 	/**
 	 * Wraps the passed username and password strings as a new
 	 * {@link CredentialsUsernamePassword} instance.
@@ -46,13 +47,13 @@ public interface CredentialsUsernamePassword
 	 * @return a new {@link CredentialsUsernamePassword} instance containing the
 	 *         passed credential values.
 	 */
-	public static CredentialsUsernamePassword.Implementation New(
+	public static CredentialsUsernamePassword New(
 		final String username,
 		final byte[] password)
 	{
-		return new CredentialsUsernamePassword.Implementation(requireNonNull(username), requireNonNull(password));
+		return new Default(requireNonNull(username), requireNonNull(password));
 	}
-	
+
 	/**
 	 * Wraps the passed username and password strings as a new
 	 * {@link CredentialsUsernamePassword} instance.
@@ -64,50 +65,50 @@ public interface CredentialsUsernamePassword
 	 * @return a new {@link CredentialsUsernamePassword} instance containing the
 	 *         passed credential values.
 	 */
-	public static CredentialsUsernamePassword.ImplementationString New(
+	public static CredentialsUsernamePassword New(
 		final String username,
 		final String password)
 	{
-		return new CredentialsUsernamePassword.ImplementationString(requireNonNull(username),
+		return new StringBased(requireNonNull(username),
 			requireNonNull(password));
 	}
-	
-	public final class ImplementationString implements CredentialsUsernamePassword
+
+	public final class StringBased implements CredentialsUsernamePassword
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final String username;
-		final String password;
-		
+
+		private final String username;
+		private final String password;
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
-		ImplementationString(final String username, final String password)
+
+		protected StringBased(final String username, final String password)
 		{
 			super();
 			this.username = username;
 			this.password = password;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		@Override
 		public String username()
 		{
 			return this.username;
 		}
-		
+
 		@Override
 		public byte[] password()
 		{
 			return this.password.getBytes(StandardCharsets.UTF_8);
 		}
-		
+
 		@Override
 		public String toString()
 		{
@@ -115,43 +116,43 @@ public interface CredentialsUsernamePassword
 			return this.username + " // (PWD length " + this.password.length() + ")";
 		}
 	}
-	
-	public final class Implementation implements CredentialsUsernamePassword
+
+	public final class Default implements CredentialsUsernamePassword
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final String username;
-		final byte[] password;
-		
+
+		private final String username;
+		private final byte[] password;
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
-		Implementation(final String username, final byte[] password)
+
+		protected Default(final String username, final byte[] password)
 		{
 			super();
 			this.username = username;
 			this.password = password;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		@Override
 		public String username()
 		{
 			return this.username;
 		}
-		
+
 		@Override
 		public byte[] password()
 		{
 			return this.password;
 		}
-		
+
 		@Override
 		public String toString()
 		{

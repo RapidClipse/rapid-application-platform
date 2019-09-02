@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -68,7 +69,7 @@ public interface SubjectManager extends SubjectRegistry
 	 */
 	public static SubjectManager New(final Object registryLock)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registryLock),
 			new HashMap<>());
 	}
@@ -83,7 +84,7 @@ public interface SubjectManager extends SubjectRegistry
 	 */
 	public static SubjectManager New(final Map<String, Subject> map)
 	{
-		return new Implementation(
+		return new Default(
 			new Object(),
 			requireNonNull(map));
 	}
@@ -100,7 +101,7 @@ public interface SubjectManager extends SubjectRegistry
 	 */
 	public static SubjectManager New(final Object registryLock, final Map<String, Subject> map)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registryLock),
 			requireNonNull(map));
 	}
@@ -111,16 +112,15 @@ public interface SubjectManager extends SubjectRegistry
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements SubjectManager
+	public final class Default implements SubjectManager
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
 		
-		final Map<String, Subject>       map;
-		final Object                     registryLock;
-		final LockedMap<String, Subject> lockedMap;
-		final SubjectRegistry            subjectRegistry;
+		private final Object                     registryLock;
+		private final LockedMap<String, Subject> lockedMap;
+		private final SubjectRegistry            subjectRegistry;
 		
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
@@ -129,11 +129,10 @@ public interface SubjectManager extends SubjectRegistry
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(final Object registryLock, final Map<String, Subject> map)
+		protected Default(final Object registryLock, final Map<String, Subject> map)
 		{
 			super();
 			this.registryLock    = registryLock;
-			this.map             = map;
 			this.lockedMap       = LockedMap.New(map, registryLock);
 			this.subjectRegistry = SubjectRegistry.New(map, registryLock);
 		}

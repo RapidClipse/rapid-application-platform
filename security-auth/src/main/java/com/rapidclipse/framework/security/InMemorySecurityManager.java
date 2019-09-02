@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security;
 
 import static java.util.Objects.requireNonNull;
@@ -59,7 +60,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 	{
 		return this.authenticate(CredentialsUsernamePassword.New(username, password));
 	}
-	
+
 	/**
 	 * A variation of {@link #login(String, String, Consumer, Consumer, BiConsumer)} that simply throws along any
 	 * encountered exception
@@ -83,7 +84,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 			throw e;
 		});
 	}
-	
+
 	/**
 	 * Specialized method for abstracting a typical login process:<br>
 	 * If the passed username and password are successfully authenticated, the {@link Subject} instance identified
@@ -131,7 +132,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 			return;
 		}
 	}
-	
+
 	/**
 	 * Creates a new {@link InMemorySecurityManager} instance using the passed {@link Authenticator} and
 	 * {@link AuthorizationManager} instances as its internal delegates.
@@ -146,11 +147,11 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		final Authenticator<CredentialsUsernamePassword, Boolean> authenticator,
 		final AuthorizationManager authorizationManager)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(authenticator),
 			requireNonNull(authorizationManager));
 	}
-	
+
 	/**
 	 * Creates a new {@link InMemorySecurityManager} instance by using default implementations to
 	 * load the required configurations from the passed xml {@link File}.
@@ -166,47 +167,47 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		final InMemoryAuthenticator authenticator        =
 			InMemoryAuthenticatorProvider.provideAuthenticatorFromFile(xmlFile);
 		final AuthorizationManager  authorizationManager = AuthorizationManager.NewFromXmlFile(xmlFile);
-		
+
 		return New(authenticator, authorizationManager);
 	}
-	
+
 	/**
 	 * Default {@link InMemorySecurityManager} implementation that wraps delegate {@link Authenticator} and
 	 * {@link AuthorizationManager} instances.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements InMemorySecurityManager
+	public final class Default implements InMemorySecurityManager
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		private final Authenticator<CredentialsUsernamePassword, Boolean> authenticator;
 		private final AuthorizationManager                                authorizationManager;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final Authenticator<CredentialsUsernamePassword, Boolean> authenticator,
 			final AuthorizationManager authorizationManager
-		
+
 		)
 		{
 			super();
 			this.authenticator        = authenticator;
 			this.authorizationManager = authorizationManager;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -216,7 +217,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authenticator.authenticate(credentials);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -225,7 +226,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.providePermission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -234,7 +235,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.roles();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -243,7 +244,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.subjects();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -252,7 +253,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.providePermission(resource);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -261,7 +262,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.permission(resource, factor);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -270,7 +271,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.role(roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -279,7 +280,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.subject(subjectName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -288,7 +289,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.lockPermissionRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -297,7 +298,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.lockRoleRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -306,7 +307,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.lockSubjectRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -315,7 +316,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.permission(resource);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -324,7 +325,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.authorizationRegistry();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -333,7 +334,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			this.authorizationManager.reloadAuthorizations();
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -342,7 +343,7 @@ public interface InMemorySecurityManager extends SecurityManager<CredentialsUser
 		{
 			return this.authorizationManager.resource(name);
 		}
-		
+
 	}
-	
+
 }

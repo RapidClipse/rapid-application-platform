@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import java.io.Serializable;
@@ -25,30 +26,40 @@ import javax.persistence.EntityManager;
 public interface Conversationable
 {
 	public void setEntityManager(EntityManager em);
-	
+
 	public EntityManager getEntityManager();
-	
+
 	public void setConversation(Conversation conversation);
-	
+
 	public Conversation getConversation();
-	
-	public class Implementation implements Conversationable, Serializable
+
+	public static Conversationable New()
+	{
+		return new Default();
+	}
+
+	public class Default implements Conversationable, Serializable
 	{
 		private EntityManager entityManager;
 		private Conversation  conversation;
-		
+
+		protected Default()
+		{
+			super();
+		}
+
 		@Override
 		public void setEntityManager(final EntityManager entityManager)
 		{
 			this.entityManager = entityManager;
 		}
-		
+
 		@Override
 		public EntityManager getEntityManager()
 		{
 			return this.entityManager;
 		}
-		
+
 		@Override
 		public void setConversation(final Conversation conversation)
 		{
@@ -57,10 +68,10 @@ public interface Conversationable
 				throw new RuntimeException(
 					"Another conversation is already running. Only one active conversation is allowed per conversationable.");
 			}
-			
+
 			this.conversation = conversation;
 		}
-		
+
 		@Override
 		public Conversation getConversation()
 		{

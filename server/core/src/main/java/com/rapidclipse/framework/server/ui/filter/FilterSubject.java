@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
 import static java.util.Collections.unmodifiableCollection;
@@ -32,48 +33,48 @@ public interface FilterSubject extends Serializable
 			.filter(property -> property.identifier().equals(identifier)).findFirst()
 			.orElse(null);
 	}
-	
+
 	public Collection<FilterProperty<?>> searchableProperties();
-	
+
 	public default FilterProperty<?> filterableProperty(final Object identifier)
 	{
 		return filterableProperties().stream()
 			.filter(property -> property.identifier().equals(identifier)).findFirst()
 			.orElse(null);
 	}
-	
+
 	public Collection<FilterProperty<?>> filterableProperties();
-	
+
 	public static FilterSubject New(
 		final Collection<FilterProperty<?>> searchableProperties,
 		final Collection<FilterProperty<?>> filterableProperties)
 	{
-		return new Implementation(searchableProperties, filterableProperties);
+		return new Default(searchableProperties, filterableProperties);
 	}
-	
-	public static class Implementation implements FilterSubject
+
+	public static class Default implements FilterSubject
 	{
 		private final Collection<FilterProperty<?>> searchableProperties;
 		private final Collection<FilterProperty<?>> filterableProperties;
-		
-		public Implementation(
+
+		protected Default(
 			final Collection<FilterProperty<?>> searchableProperties,
 			final Collection<FilterProperty<?>> filterableProperties)
 		{
 			super();
-			
+
 			this.searchableProperties = unmodifiableCollection(
 				requireNonNull(searchableProperties));
 			this.filterableProperties = unmodifiableCollection(
 				requireNonNull(filterableProperties));
 		}
-		
+
 		@Override
 		public Collection<FilterProperty<?>> searchableProperties()
 		{
 			return this.searchableProperties;
 		}
-		
+
 		@Override
 		public Collection<FilterProperty<?>> filterableProperties()
 		{

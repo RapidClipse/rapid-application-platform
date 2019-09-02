@@ -34,56 +34,56 @@ public interface ReadOnlyHasValueAdapter<C extends Component, V> extends HasValu
 	{
 		return null;
 	}
-
+	
 	@Override
 	public default void setReadOnly(final boolean readOnly)
 	{
 	}
-
+	
 	@Override
 	public default boolean isReadOnly()
 	{
 		return true;
 	}
-
+	
 	@Override
 	public default void setRequiredIndicatorVisible(final boolean requiredIndicatorVisible)
 	{
 	}
-
+	
 	@Override
 	public default boolean isRequiredIndicatorVisible()
 	{
 		return false;
 	}
-	
+
 	public static <C extends Component, V> ReadOnlyHasValueAdapter<C, V>
 		New(final C component, final ValueProvider<C, V> getter, final Setter<C, V> setter)
 	{
-		return new Implementation<>(component, getter, setter);
+		return new Default<>(component, getter, setter);
 	}
-	
-	public static class Implementation<C extends Component, V> implements ReadOnlyHasValueAdapter<C, V>
+
+	public static class Default<C extends Component, V> implements ReadOnlyHasValueAdapter<C, V>
 	{
 		private final C                   component;
 		private final ValueProvider<C, V> getter;
 		private final Setter<C, V>        setter;
-
-		protected Implementation(final C component, final ValueProvider<C, V> getter, final Setter<C, V> setter)
+		
+		protected Default(final C component, final ValueProvider<C, V> getter, final Setter<C, V> setter)
 		{
 			super();
-
+			
 			this.component = component;
 			this.getter    = getter;
 			this.setter    = setter;
 		}
-
+		
 		@Override
 		public void setValue(final V value)
 		{
 			this.setter.accept(this.component, value);
 		}
-
+		
 		@Override
 		public V getValue()
 		{

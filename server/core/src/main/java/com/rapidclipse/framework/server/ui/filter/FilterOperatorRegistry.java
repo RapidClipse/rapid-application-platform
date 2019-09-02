@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
 import java.io.Serializable;
@@ -55,25 +56,25 @@ public interface FilterOperatorRegistry extends Serializable
 	
 	public Collection<FilterOperator> getAll();
 	
-	public static FilterOperatorRegistry New()
+	public static FilterOperatorRegistry Empty()
 	{
-		return new Implementation();
+		return new Default();
 	}
 	
 	public static FilterOperatorRegistry Default()
 	{
-		final FilterOperatorRegistry registry = New();
+		final FilterOperatorRegistry registry = Empty();
 		
 		ServiceLoader.forType(FilterOperator.class).services().forEach(registry::put);
 		
 		return registry;
 	}
 	
-	public static class Implementation implements FilterOperatorRegistry
+	public static class Default implements FilterOperatorRegistry
 	{
 		private final Map<String, FilterOperator> registry = new LinkedHashMap<>();
 		
-		public Implementation()
+		protected Default()
 		{
 			super();
 		}

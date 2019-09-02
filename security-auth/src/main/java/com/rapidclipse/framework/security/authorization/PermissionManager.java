@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -41,11 +42,11 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 	 */
 	@Override
 	public Permission providePermission(Resource resource, Integer factor);
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// default methods //
 	/////////////////////
-	
+
 	/**
 	 * Provides a permission for the passed {@link Resource} instance and a factor of 0.
 	 *
@@ -59,11 +60,11 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 	{
 		return this.providePermission(resource, 0);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-	
+
 	/**
 	 * Creates a new {@link PermissionManager} instance with a {@link PermissionProvider} default implementation.
 	 * The {@link PermissionProvider} is used whenever {@link #providePermission(Resource, Integer)} is unable to find
@@ -78,7 +79,7 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 	{
 		return New(Permission::New);
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionManager} instance with the passed {@link PermissionProvider} instance.
 	 * The {@link PermissionProvider} is used whenever {@link #providePermission(Resource, Integer)} is unable to find
@@ -95,7 +96,7 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 	{
 		return New(new Object(), permissionProvider, new HashMap<>());
 	}
-	
+
 	/**
 	 * Creates a new {@link PermissionManager} instance with the passed {@link PermissionProvider} instance the passed
 	 * registry lock instance to be used as the internal synchronization lock and the passed table as its internal
@@ -117,51 +118,51 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 		final PermissionProvider permissionProvider,
 		final HashMap<Resource, HashMap<Integer, Permission>> table)
 	{
-		return new PermissionManager.Implementation(
+		return new Default(
 			requireNonNull(permissionProvider),
 			requireNonNull(registryLock),
 			requireNonNull(table));
 	}
-	
+
 	/**
 	 * A simple {@link PermissionManager} default implementation that uses a shared synchronization lock.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public class Implementation implements PermissionManager
+	public class Default implements PermissionManager
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final PermissionProvider                              permissionProvider;
-		final HashMap<Resource, HashMap<Integer, Permission>> table;
-		final Object                                          registryLock;
-		final PermissionRegistry                              registry;
-		
+
+		// private final PermissionProvider permissionProvider;
+		private final HashMap<Resource, HashMap<Integer, Permission>> table;
+		private final Object                                          registryLock;
+		private final PermissionRegistry                              registry;
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(
+		protected Default(
 			final PermissionProvider permissionProvider,
 			final Object registryLock,
 			final HashMap<Resource, HashMap<Integer, Permission>> table)
 		{
 			super();
-			this.permissionProvider = permissionProvider;
-			this.registryLock       = registryLock;
-			this.table              = table;
-			this.registry           = new PermissionRegistry.Implementation(this.table, registryLock);
+			// this.permissionProvider = permissionProvider;
+			this.registryLock = registryLock;
+			this.table        = table;
+			this.registry     = PermissionRegistry.New(this.table, registryLock);
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -184,7 +185,7 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 				return permission;
 			}
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -196,7 +197,7 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 				return this.registry.permission(resource, factor);
 			}
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -205,7 +206,7 @@ public interface PermissionManager extends PermissionRegistry, PermissionProvide
 		{
 			return this.registryLock;
 		}
-		
+
 	}
-	
+
 }

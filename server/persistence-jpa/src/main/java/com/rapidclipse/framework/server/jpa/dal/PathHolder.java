@@ -32,33 +32,33 @@ import com.rapidclipse.framework.server.jpa.Jpa;
 public interface PathHolder extends Serializable
 {
 	public AttributeChain<?, ?> getAttributes();
-
-	public String getPath();
 	
+	public String getPath();
+
 	public static PathHolder New(final AttributeChain<?, ?> attributeChain)
 	{
-		return new Implementation(attributeChain);
-	}
-	
-	public static PathHolder New(final String path, final Class<?> from)
-	{
-		return new Implementation(path, from);
+		return new Default(attributeChain);
 	}
 
-	public static class Implementation implements PathHolder
+	public static PathHolder New(final String path, final Class<?> from)
+	{
+		return new Default(path, from);
+	}
+	
+	public static class Default implements PathHolder
 	{
 		private final String                   path;
 		private final Class<?>                 from;
 		private transient AttributeChain<?, ?> attributeChain;
-		
-		public Implementation(final AttributeChain<?, ?> attributeChain)
+
+		protected Default(final AttributeChain<?, ?> attributeChain)
 		{
 			this.attributeChain = attributeChain;
 			this.path           = attributeChain.path();
 			this.from           = attributeChain.first().getDeclaringType().getJavaType();
 		}
-		
-		public Implementation(final String path, final Class<?> from)
+
+		protected Default(final String path, final Class<?> from)
 		{
 			this.path = path;
 			this.from = from;
@@ -67,7 +67,7 @@ public interface PathHolder extends Serializable
 				throw new IllegalArgumentException();
 			}
 		}
-		
+
 		@Override
 		public AttributeChain<?, ?> getAttributes()
 		{
@@ -77,13 +77,13 @@ public interface PathHolder extends Serializable
 			}
 			return this.attributeChain;
 		}
-		
+
 		@Override
 		public String getPath()
 		{
 			return this.path;
 		}
-		
+
 		@Override
 		public int hashCode()
 		{
@@ -92,7 +92,7 @@ public interface PathHolder extends Serializable
 			result = prime * result + ((this.path == null) ? 0 : this.path.hashCode());
 			return result;
 		}
-		
+
 		@Override
 		public boolean equals(final Object obj)
 		{

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -45,7 +46,7 @@ public interface RoleManager extends RoleRegistry
 	 */
 	@Override
 	public Map<String, Role> roles();
-	
+
 	/**
 	 * Creates a new {@link RoleManager} instance with no entries and an exclusive locking instance.
 	 *
@@ -55,7 +56,7 @@ public interface RoleManager extends RoleRegistry
 	{
 		return New(new Object());
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleManager} instance with no entries and the passed instance as a shared locking instance.
 	 *
@@ -65,11 +66,11 @@ public interface RoleManager extends RoleRegistry
 	 */
 	public static RoleManager New(final Object registryLock)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registryLock),
 			new HashMap<>());
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleManager} instance with the passed map used as its internal entries datastructure
 	 * and an exclusive locking instance.
@@ -80,11 +81,11 @@ public interface RoleManager extends RoleRegistry
 	 */
 	public static RoleManager New(final Map<String, Role> map)
 	{
-		return new Implementation(
+		return new Default(
 			new Object(),
 			requireNonNull(map));
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleManager} instance with the passed map used as its internal entries datastructure
 	 * and the passed instance as a shared locking instance.
@@ -97,36 +98,36 @@ public interface RoleManager extends RoleRegistry
 	 */
 	public static RoleManager New(final Object registryLock, final Map<String, Role> map)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(registryLock),
 			requireNonNull(map));
 	}
-	
+
 	/**
 	 * A simple {@link RoleManager} default implementation that uses a shared synchronization lock and a
 	 * {@link LockedMap} implementation to allow locking-supervised access to the registry entries.
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements RoleManager
+	public final class Default implements RoleManager
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
-		final Map<String, Role>       map;
-		final Object                  registryLock;
-		final LockedMap<String, Role> lockedMap;
-		final RoleRegistry            roleRegistry;
-		
+
+		private final Map<String, Role>       map;
+		private final Object                  registryLock;
+		private final LockedMap<String, Role> lockedMap;
+		private final RoleRegistry            roleRegistry;
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(final Object registryLock, final Map<String, Role> map)
+		protected Default(final Object registryLock, final Map<String, Role> map)
 		{
 			super();
 			this.registryLock = registryLock;
@@ -134,11 +135,11 @@ public interface RoleManager extends RoleRegistry
 			this.lockedMap    = LockedMap.New(this.map, registryLock);
 			this.roleRegistry = RoleRegistry.New(this.map, registryLock);
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -147,7 +148,7 @@ public interface RoleManager extends RoleRegistry
 		{
 			return this.lockedMap;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -156,7 +157,7 @@ public interface RoleManager extends RoleRegistry
 		{
 			return this.roleRegistry.role(roleName);
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -165,7 +166,7 @@ public interface RoleManager extends RoleRegistry
 		{
 			return this.registryLock;
 		}
-		
+
 	}
-	
+
 }

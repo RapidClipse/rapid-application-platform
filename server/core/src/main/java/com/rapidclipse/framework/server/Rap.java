@@ -71,7 +71,7 @@ public final class Rap
 			}
 		}
 
-		return new RapExecutorService.Implementation(context);
+		return RapExecutorService.New(context);
 	}
 
 	/**

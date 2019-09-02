@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.mobilekit;
 
 import java.util.Collection;
@@ -23,24 +24,24 @@ import java.util.Collection;
 public interface MobileConfiguration
 {
 	public Collection<MobileServiceConfiguration> getMobileServices();
-	
+
 	public static MobileConfiguration New(
 		final Collection<MobileServiceConfiguration> mobileServices)
 	{
-		return new Implementation(mobileServices);
+		return new Default(mobileServices);
 	}
-	
-	public static class Implementation implements MobileConfiguration
+
+	public static class Default implements MobileConfiguration
 	{
 		private final Collection<MobileServiceConfiguration> mobileServices;
-		
-		public Implementation(final Collection<MobileServiceConfiguration> mobileServices)
+
+		protected Default(final Collection<MobileServiceConfiguration> mobileServices)
 		{
 			super();
-			
+
 			this.mobileServices = mobileServices;
 		}
-		
+
 		@Override
 		public Collection<MobileServiceConfiguration> getMobileServices()
 		{

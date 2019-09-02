@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import java.util.HashMap;
@@ -25,6 +26,8 @@ import javax.servlet.ServletContext;
  */
 public interface SessionStrategyProvider
 {
+	public static final String FACTORY_INIT_PARAMETER = "rap.sessionStrategyProvider.factory";
+
 	public static interface Factory
 	{
 		public SessionStrategyProvider createSessionStrategyProvider(final ServletContext context);
@@ -37,16 +40,24 @@ public interface SessionStrategyProvider
 	public SessionStrategy getRequestEndSessionStrategy(
 		Conversationables conversationables,
 		String persistenceUnit);
+
+	public static SessionStrategyProvider New()
+	{
+		return new Default();
+	}
 	
-	public static final String FACTORY_INIT_PARAMETER = "rap.sessionStrategyProvider.factory";
-	
-	public class Implementation implements SessionStrategyProvider
+	public class Default implements SessionStrategyProvider
 	{
 		protected final SessionStrategy              perRequest                 = new SessionStrategy.PerRequest();
 		protected final SessionStrategy              perConversation            = new SessionStrategy.PerConversation();
 		protected final SessionStrategy              perConversationPessimistic =
 			new SessionStrategy.PerConversationPessimistic();
 		protected final Map<String, SessionStrategy> currentStrategies          = new HashMap<>();
+		
+		protected Default()
+		{
+			super();
+		}
 		
 		protected SessionStrategy storeSessionStrategy(
 			final String persistenceUnit,

@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -29,28 +30,28 @@ import java.util.HashSet;
 public interface RoleBuilder
 {
 	public String name();
-	
+
 	public Collection<? extends Role> roles();
-	
+
 	public Collection<? extends Permission> permissions();
-	
+
 	public RoleBuilder name(String name);
-	
+
 	public RoleBuilder grant(Role role);
-	
+
 	public RoleBuilder grant(Permission permission);
-	
+
 	public RoleBuilder roles(Collection<? extends Role> roles);
-	
+
 	public RoleBuilder permissions(Collection<? extends Permission> permissions);
-	
+
 	/**
 	 * Resets this {@link RoleBuilder} instance's internal state to default values (effectively "clearing" the state).
 	 *
 	 * @return this.
 	 */
 	public RoleBuilder reset();
-	
+
 	/**
 	 * Builds a {@link Role} by creating a new instance of that type, using the assembly data currently available
 	 * to the builder instance. The builder's internal data is NOT resetted after the instantiation is completed.
@@ -62,7 +63,7 @@ public interface RoleBuilder
 	 * @see #reset()
 	 */
 	public Role buildUnresetted();
-	
+
 	/**
 	 * Builds a {@link Role} instance from the assembly data currently available to the builder instance and then
 	 * resets the builder internally.
@@ -77,7 +78,7 @@ public interface RoleBuilder
 		this.reset();
 		return newRole;
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleBuilder} instance connected to be passed {@link RoleManager}, using a
 	 * {@link Role.Creator} default implementation.
@@ -90,7 +91,7 @@ public interface RoleBuilder
 	{
 		return New(roleManager, Role::New);
 	}
-	
+
 	/**
 	 * Creates a new {@link RoleBuilder} instance connected to be passed {@link RoleManager}, using the passed
 	 * {@link Role.Creator} instance.
@@ -103,11 +104,11 @@ public interface RoleBuilder
 	 */
 	public static RoleBuilder New(final RoleManager roleManager, final Role.Creator roleCreator)
 	{
-		return new Implementation(
+		return new Default(
 			requireNonNull(roleCreator),
 			requireNonNull(roleManager));
 	}
-	
+
 	/**
 	 * A simple {@link RoleBuilder} default implementation.
 	 * All methods that are mutating state are synchronized and building a new {@link Role} instances participates
@@ -115,36 +116,36 @@ public interface RoleBuilder
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public final class Implementation implements RoleBuilder
+	public final class Default implements RoleBuilder
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
-		
+
 		private String                    buildingName        = null;
 		private final HashSet<Role>       buildingRoles       = new HashSet<>();
 		private final HashSet<Permission> buildingPermissions = new HashSet<>();
 		private final Role.Creator        roleCreator;
 		private final RoleManager         roleManager;
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
 		/////////////////
-		
+
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		Implementation(final Role.Creator roleCreator, final RoleManager roleManager)
+		protected Default(final Role.Creator roleCreator, final RoleManager roleManager)
 		{
 			super();
 			this.roleCreator = roleCreator;
 			this.roleManager = roleManager;
 		}
-		
+
 		///////////////////////////////////////////////////////////////////////////
 		// override methods //
 		/////////////////////
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -153,7 +154,7 @@ public interface RoleBuilder
 		{
 			return this.buildingName;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -162,7 +163,7 @@ public interface RoleBuilder
 		{
 			return this.buildingRoles;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -171,7 +172,7 @@ public interface RoleBuilder
 		{
 			return this.buildingPermissions;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -183,7 +184,7 @@ public interface RoleBuilder
 			this.buildingPermissions.clear();
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -193,7 +194,7 @@ public interface RoleBuilder
 			this.buildingName = name;
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -203,7 +204,7 @@ public interface RoleBuilder
 			this.buildingRoles.add(role);
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -213,7 +214,7 @@ public interface RoleBuilder
 			this.buildingPermissions.add(permission);
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -223,7 +224,7 @@ public interface RoleBuilder
 			this.buildingRoles.addAll(roles);
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -233,7 +234,7 @@ public interface RoleBuilder
 			this.buildingPermissions.addAll(permissions);
 			return this;
 		}
-		
+
 		/**
 		 * {@inheritDoc}
 		 */
@@ -248,11 +249,11 @@ public interface RoleBuilder
 					// (10.06.2014 TM)TODO: proper exception
 					throw new RuntimeException("Role already exists with name " + this.buildingName);
 				}
-				
+
 				// call creator only when lock and validation guarantee viability
 				final Role role =
 					this.roleCreator.createRole(this.buildingName, this.buildingRoles, this.buildingPermissions);
-				
+
 				// if add fails nevertheless, something is wrong (e.g. inconsistent use of lock instance or lock
 				// loophole)
 				if(this.roleManager.roles().putIfAbsent(this.buildingName, role) != role)
@@ -260,12 +261,12 @@ public interface RoleBuilder
 					// (10.06.2014 TM)TODO: proper exception
 					throw new ConcurrentModificationException("Illegal registry state for role " + this.buildingName);
 				}
-				
+
 				// at this point, the role has been consistently created and registered
 				return role;
 			}
 		}
-		
+
 	}
-	
+
 }

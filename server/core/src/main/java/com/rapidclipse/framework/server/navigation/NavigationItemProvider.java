@@ -45,7 +45,7 @@ import com.vaadin.flow.router.RouteData;
 public interface NavigationItemProvider extends Serializable
 {
 	public List<NavigationItem> getItems();
-	
+
 	public static SerializableComparator<NavigationItem> PositionSorter()
 	{
 		return (item1, item2) -> {
@@ -54,50 +54,50 @@ public interface NavigationItemProvider extends Serializable
 			return pos1 == pos2 ? 0 : pos1 < 0 ? 1 : pos2 < 0 ? -1 : pos1 < pos2 ? -1 : 1;
 		};
 	}
-	
+
 	public static SerializableComparator<NavigationItem> LexicalSorter()
 	{
 		return (item1, item2) -> item1.displayName().compareTo(item2.displayName());
 	}
-	
+
 	public static NavigationItemProvider New()
 	{
-		return new Implementation(NavigationItemFilter.RegisteredFilters(), PositionSorter());
+		return new Default(NavigationItemFilter.RegisteredFilters(), PositionSorter());
 	}
-	
+
 	public static NavigationItemProvider New(final SerializablePredicate<NavigationItem> itemFilter)
 	{
-		return new Implementation(itemFilter, PositionSorter());
+		return new Default(itemFilter, PositionSorter());
 	}
-	
+
 	public static NavigationItemProvider New(final SerializableComparator<NavigationItem> itemSorter)
 	{
-		return new Implementation(NavigationItemFilter.RegisteredFilters(), itemSorter);
+		return new Default(NavigationItemFilter.RegisteredFilters(), itemSorter);
 	}
-	
+
 	public static NavigationItemProvider
 		New(
 			final SerializablePredicate<NavigationItem> itemFilter,
 			final SerializableComparator<NavigationItem> itemSorter)
 	{
-		return new Implementation(itemFilter, itemSorter);
+		return new Default(itemFilter, itemSorter);
 	}
-	
-	public static class Implementation implements NavigationItemProvider
+
+	public static class Default implements NavigationItemProvider
 	{
 		private final SerializablePredicate<NavigationItem>  itemFilter;
 		private final SerializableComparator<NavigationItem> itemSorter;
-		
-		protected Implementation(
+
+		protected Default(
 			final SerializablePredicate<NavigationItem> itemFilter,
 			final SerializableComparator<NavigationItem> itemSorter)
 		{
 			super();
-			
+
 			this.itemFilter = requireNonNull(itemFilter);
 			this.itemSorter = requireNonNull(itemSorter);
 		}
-		
+
 		@Override
 		public List<NavigationItem> getItems()
 		{
@@ -107,26 +107,26 @@ public interface NavigationItemProvider extends Serializable
 				.sorted(this.itemSorter)
 				.collect(Collectors.toList());
 		}
-		
+
 		protected NavigationItem toItem(final RouteData data)
 		{
 			final Class<? extends Component> target = data.getNavigationTarget();
-			
+
 			final NavigationItemProperties propertiesAnnotation =
 				target.getAnnotation(NavigationItemProperties.class);
-			
+
 			final Supplier<Component> icon        = resolveIcon(target);
 			String                    displayName = null;
 			int                       position    = -1;
 			String                    category    = null;
-			
+
 			if(propertiesAnnotation != null)
 			{
 				displayName = propertiesAnnotation.displayName();
 				position    = propertiesAnnotation.position();
 				category    = propertiesAnnotation.category();
 			}
-			
+
 			if(StringUtils.isEmpty(displayName))
 			{
 				final PageTitle pageTitle = target.getAnnotation(PageTitle.class);
@@ -139,10 +139,10 @@ public interface NavigationItemProvider extends Serializable
 					displayName = CaptionUtils.resolveCaption(target);
 				}
 			}
-			
+
 			return NavigationItem.New(icon, displayName, data, position, category);
 		}
-		
+
 		protected Supplier<Component> resolveIcon(final Class<? extends Component> target)
 		{
 			final NavigationIconFactory factory = target.getAnnotation(NavigationIconFactory.class);
@@ -157,7 +157,7 @@ public interface NavigationItemProvider extends Serializable
 					throw new RuntimeException(e);
 				}
 			}
-			
+
 			for(final Annotation annotation : target.getAnnotations())
 			{
 				final Class<? extends Annotation> annotationType = annotation.annotationType();
@@ -183,7 +183,7 @@ public interface NavigationItemProvider extends Serializable
 					}
 				}
 			}
-			
+
 			return null;
 		}
 	}

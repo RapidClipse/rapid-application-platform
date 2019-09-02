@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import java.util.Collection;
@@ -118,7 +119,7 @@ public interface Subject
 	 * Generic subject updating logic operating in three steps:
 	 * <ol>
 	 * <li>If the passed existing subject instance is <tt>null</tt>, a new
-	 * instance of type {@link Subject.Implementation} with the passed name and
+	 * instance of type {@link Subject.Default} with the passed name and
 	 * roles is returned</li>
 	 * <li>If the passed existing subject instance is {@link Subject.Mutable},
 	 * its roles are updated by calling
@@ -151,7 +152,7 @@ public interface Subject
 	{
 		if(existingSubject == null)
 		{
-			return new Implementation(subjectName, roles);
+			return new Default(subjectName, roles);
 		}
 		
 		if(!(existingSubject instanceof Mutable))
@@ -162,6 +163,16 @@ public interface Subject
 		((Mutable)existingSubject).setRoles(roles);
 		return existingSubject;
 	}
+
+	public static Subject New(final String name, final Set<Role> roles)
+	{
+		return new Default(name, roles);
+	}
+
+	public static Subject New(final String name)
+	{
+		return new Default(name);
+	}
 	
 	/**
 	 * Simple default implementation for a {@link Mutable} {@link Subject}.
@@ -171,7 +182,7 @@ public interface Subject
 	 * @author XDEV Software (TM)
 	 *
 	 */
-	public class Implementation implements Subject.Mutable
+	public class Default implements Subject.Mutable
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
@@ -188,7 +199,7 @@ public interface Subject
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		public Implementation(final String name, final Set<Role> roles)
+		protected Default(final String name, final Set<Role> roles)
 		{
 			super();
 			this.name  = name;
@@ -198,7 +209,7 @@ public interface Subject
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		public Implementation(final String name)
+		protected Default(final String name)
 		{
 			super();
 			this.name = name;

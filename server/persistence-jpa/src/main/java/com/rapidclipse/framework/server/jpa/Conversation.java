@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import javax.persistence.LockModeType;
@@ -35,12 +36,22 @@ public interface Conversation
 	public void start();
 	
 	public void end();
+
+	public static Conversation New()
+	{
+		return new Default();
+	}
 	
-	public class Implementation implements Conversation
+	public class Default implements Conversation
 	{
 		private boolean      isActive        = false;
 		private boolean      pessimisticUnit = false;
 		private LockModeType lockModeType;
+		
+		protected Default()
+		{
+			super();
+		}
 		
 		@Override
 		public LockModeType getLockModeType()

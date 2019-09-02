@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 /**
@@ -21,16 +22,21 @@ public interface IsNull extends Filter
 {
 	public Object identifier();
 	
-	public static class Implementation implements IsNull
+	public static IsNull New(final Object identifier)
+	{
+		return new Default(identifier);
+	}
+
+	public static class Default implements IsNull
 	{
 		private final Object identifier;
-		
-		public Implementation(final Object identifier)
+
+		protected Default(final Object identifier)
 		{
 			super();
 			this.identifier = identifier;
 		}
-		
+
 		@Override
 		public Object identifier()
 		{

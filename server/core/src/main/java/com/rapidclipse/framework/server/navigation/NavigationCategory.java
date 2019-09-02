@@ -27,32 +27,32 @@ public interface NavigationCategory extends NavigationElement
 {
 	public static NavigationCategory New(final String displayName)
 	{
-		return new Implementation(null, displayName);
+		return new Default(null, displayName);
 	}
-
+	
 	public static NavigationCategory New(
 		final Supplier<Component> icon,
 		final String displayName)
 	{
-		return new Implementation(icon, displayName);
+		return new Default(icon, displayName);
 	}
-
-	public static class Implementation extends NavigationElement.Abstract implements NavigationCategory
+	
+	public static class Default extends NavigationElement.Abstract implements NavigationCategory
 	{
-		protected Implementation(
+		protected Default(
 			final Supplier<Component> icon,
 			final String displayName)
 		{
 			super(icon, displayName);
 		}
-
+		
 		@Override
 		public boolean equals(final Object obj)
 		{
 			return obj == this ||
 				(obj instanceof NavigationCategory && ((NavigationCategory)obj).displayName().equals(displayName()));
 		}
-		
+
 		@Override
 		public int hashCode()
 		{

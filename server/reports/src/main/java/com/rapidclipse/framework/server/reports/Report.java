@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports;
 
 import java.io.InputStream;
@@ -37,11 +38,6 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
  */
 public interface Report
 {
-	public static Report New()
-	{
-		return new Implementation();
-	}
-	
 	public Report jrxml(final InputStream jrxmlInputStream);
 	
 	public Report jrxml(final String jrxmlPath);
@@ -75,13 +71,23 @@ public interface Report
 	
 	public StreamResource exportToResource(final Format format, final String fileNamePrefix);
 	
-	public static class Implementation implements Report
+	public static Report New()
+	{
+		return new Default();
+	}
+	
+	public static class Default implements Report
 	{
 		private InputStream               jrxmlInputStream;
 		private String                    jrxmlPath;
 		private JRDataSource              dataSource;
 		private final Map<String, Object> parameters       = new HashMap<>();
 		private final Map<String, String> fieldNameMapping = new HashMap<>();
+
+		protected Default()
+		{
+			super();
+		}
 		
 		@Override
 		public Report jrxml(final InputStream jrxmlInputStream)
@@ -174,25 +180,25 @@ public interface Report
 		@Override
 		public void export(final Format format, final OutputStream stream)
 		{
-			format.createExporter().export(getJrxml(), getDataSource(), parameters, stream);
+			format.createExporter().export(getJrxml(), getDataSource(), this.parameters, stream);
 		}
 		
 		@Override
 		public byte[] exportToBytes(final Format format)
 		{
-			return format.createExporter().exportToBytes(getJrxml(), getDataSource(), parameters);
+			return format.createExporter().exportToBytes(getJrxml(), getDataSource(), this.parameters);
 		}
 		
 		@Override
 		public StreamResource exportToResource(final Format format)
 		{
-			return format.createExporter().exportToResource(getJrxml(), getDataSource(), parameters);
+			return format.createExporter().exportToResource(getJrxml(), getDataSource(), this.parameters);
 		}
 		
 		@Override
 		public StreamResource exportToResource(final Format format, final String fileNamePrefix)
 		{
-			return format.createExporter().exportToResource(getJrxml(), getDataSource(), parameters,
+			return format.createExporter().exportToResource(getJrxml(), getDataSource(), this.parameters,
 				fileNamePrefix);
 		}
 		
@@ -248,7 +254,7 @@ public interface Report
 			}
 			if(!this.fieldNameMapping.isEmpty())
 			{
-				dataSource = MappedDataSource.create(dataSource, fieldNameMapping);
+				dataSource = MappedDataSource.create(dataSource, this.fieldNameMapping);
 			}
 			return dataSource;
 		}

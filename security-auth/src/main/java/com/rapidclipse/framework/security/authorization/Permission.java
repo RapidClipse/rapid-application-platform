@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authorization;
 
 import static java.util.Objects.requireNonNull;
@@ -83,7 +84,7 @@ public interface Permission
 	 */
 	public static Permission New(final Resource resource, final int factor)
 	{
-		return new Permission.Implementation(resource, factor);
+		return new Default(resource, factor);
 	}
 	
 	/**
@@ -105,14 +106,14 @@ public interface Permission
 	 *
 	 * @author XDEV Software (TM)
 	 */
-	public class Implementation implements Permission
+	public class Default implements Permission
 	{
 		///////////////////////////////////////////////////////////////////////////
 		// instance fields //
 		////////////////////
 		
-		final Resource resource;
-		final int      factor;
+		private final Resource resource;
+		private final int      factor;
 		
 		///////////////////////////////////////////////////////////////////////////
 		// constructors //
@@ -121,7 +122,7 @@ public interface Permission
 		/**
 		 * Implementation detail constructor that might change in the future.
 		 */
-		protected Implementation(final Resource resource, final int factor)
+		protected Default(final Resource resource, final int factor)
 		{
 			super();
 			this.resource = requireNonNull(resource);

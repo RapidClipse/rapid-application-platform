@@ -60,57 +60,57 @@ public interface DoubleToNumberConverter<MODEL extends Number> extends Converter
 		{
 			return (DoubleToNumberConverter<MODEL>)BigDecimal();
 		}
-		
+
 		throw new IllegalArgumentException("Unsupported number type: " + clazz);
 	}
-	
+
 	public static DoubleToNumberConverter<Byte> Byte()
 	{
-		return new Implementation<>(Double::byteValue);
+		return new Default<>(Double::byteValue);
 	}
-	
+
 	public static DoubleToNumberConverter<Short> Short()
 	{
-		return new Implementation<>(Double::shortValue);
+		return new Default<>(Double::shortValue);
 	}
-	
+
 	public static DoubleToNumberConverter<Integer> Integer()
 	{
-		return new Implementation<>(Double::intValue);
+		return new Default<>(Double::intValue);
 	}
-	
+
 	public static DoubleToNumberConverter<Long> Long()
 	{
-		return new Implementation<>(Double::longValue);
+		return new Default<>(Double::longValue);
 	}
-	
+
 	public static DoubleToNumberConverter<Float> Float()
 	{
-		return new Implementation<>(Double::floatValue);
+		return new Default<>(Double::floatValue);
 	}
-	
+
 	public static DoubleToNumberConverter<BigInteger> BigInteger()
 	{
-		return new Implementation<>(d -> BigInteger.valueOf(d.longValue()));
+		return new Default<>(d -> BigInteger.valueOf(d.longValue()));
 	}
-	
+
 	public static DoubleToNumberConverter<BigDecimal> BigDecimal()
 	{
-		return new Implementation<>(BigDecimal::valueOf);
+		return new Default<>(BigDecimal::valueOf);
 	}
-	
-	public static class Implementation<MODEL extends Number>
+
+	public static class Default<MODEL extends Number>
 		implements DoubleToNumberConverter<MODEL>
 	{
 		private final Function<Double, MODEL> doubleConverter;
-		
-		protected Implementation(final Function<Double, MODEL> doubleConverter)
+
+		protected Default(final Function<Double, MODEL> doubleConverter)
 		{
 			super();
-			
+
 			this.doubleConverter = doubleConverter;
 		}
-		
+
 		@Override
 		public Result<MODEL> convertToModel(final Double value, final ValueContext context)
 		{
@@ -118,10 +118,10 @@ public interface DoubleToNumberConverter<MODEL extends Number> extends Converter
 			{
 				return Result.ok(null);
 			}
-			
+
 			return Result.ok(this.doubleConverter.apply(value));
 		}
-		
+
 		@Override
 		public Double convertToPresentation(final MODEL value, final ValueContext context)
 		{
@@ -129,7 +129,7 @@ public interface DoubleToNumberConverter<MODEL extends Number> extends Converter
 			{
 				return null;
 			}
-			
+
 			return value.doubleValue();
 		}
 	}

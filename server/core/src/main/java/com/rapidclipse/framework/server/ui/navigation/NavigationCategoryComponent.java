@@ -28,38 +28,38 @@ import com.vaadin.flow.component.HasComponents;
 public interface NavigationCategoryComponent extends Serializable
 {
 	public Component component();
-
-	public Consumer<Component[]> contentAdder();
 	
+	public Consumer<Component[]> contentAdder();
+
 	public static NavigationCategoryComponent New(final Component component, final Consumer<Component[]> contentAdder)
 	{
-		return new Implementation(component, contentAdder);
+		return new Default(component, contentAdder);
 	}
-	
+
 	public static <C extends Component & HasComponents> NavigationCategoryComponent New(final C component)
 	{
-		return new Implementation(component, component::add);
+		return new Default(component, component::add);
 	}
-	
-	public static class Implementation implements NavigationCategoryComponent
+
+	public static class Default implements NavigationCategoryComponent
 	{
 		private final Component             component;
 		private final Consumer<Component[]> contentAdder;
-		
-		protected Implementation(final Component component, final Consumer<Component[]> contentAdder)
+
+		protected Default(final Component component, final Consumer<Component[]> contentAdder)
 		{
 			super();
-
+			
 			this.component    = component;
 			this.contentAdder = contentAdder;
 		}
-		
+
 		@Override
 		public Component component()
 		{
 			return this.component;
 		}
-		
+
 		@Override
 		public Consumer<Component[]> contentAdder()
 		{
