@@ -55,12 +55,9 @@ public abstract class NavigationCompositeHierarchical<T extends Component & HasC
 
 	public NavigationHierarchyProvider getHierarchyProvider()
 	{
-		if(this.hierarchyProvider == null)
-		{
-			this.hierarchyProvider = NavigationHierarchyProvider.ForItems(getItemProvider().getItems());
-		}
-
-		return this.hierarchyProvider;
+		return this.hierarchyProvider != null
+			? this.hierarchyProvider
+			: (this.hierarchyProvider = NavigationHierarchyProvider.ForItems(getItemProvider().getItems()));
 	}
 
 	public void setHierarchyLevelSorter(final NavigationHierarchyLevelSorter hierarchyLevelSorter)
@@ -70,12 +67,9 @@ public abstract class NavigationCompositeHierarchical<T extends Component & HasC
 
 	public NavigationHierarchyLevelSorter getHierarchyLevelSorter()
 	{
-		if(this.hierarchyLevelSorter == null)
-		{
-			this.hierarchyLevelSorter = NavigationHierarchyLevelSorter.Default();
-		}
-
-		return this.hierarchyLevelSorter;
+		return this.hierarchyLevelSorter != null
+			? this.hierarchyLevelSorter
+			: (this.hierarchyLevelSorter = NavigationHierarchyLevelSorter.Default());
 	}
 
 	public void setCategoryComponentFactory(final NavigationCategoryComponentFactory categoryComponentFactory)
@@ -85,12 +79,9 @@ public abstract class NavigationCompositeHierarchical<T extends Component & HasC
 
 	public NavigationCategoryComponentFactory getCategoryComponentFactory()
 	{
-		if(this.categoryComponentFactory == null)
-		{
-			this.categoryComponentFactory = NavigationCategoryComponentFactory.DetailsFactory();
-		}
-
-		return this.categoryComponentFactory;
+		return this.categoryComponentFactory != null
+			? this.categoryComponentFactory
+			: (this.categoryComponentFactory = NavigationCategoryComponentFactory.DetailsFactory());
 	}
 
 	public void setItemComponentFactory(final NavigationItemComponentFactory itemComponentFactory)
@@ -100,12 +91,9 @@ public abstract class NavigationCompositeHierarchical<T extends Component & HasC
 
 	public NavigationItemComponentFactory getItemComponentFactory()
 	{
-		if(this.itemComponentFactory == null)
-		{
-			this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory();
-		}
-
-		return this.itemComponentFactory;
+		return this.itemComponentFactory != null
+			? this.itemComponentFactory
+			: (this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory());
 	}
 
 	@Override

@@ -46,14 +46,14 @@ public class NavigationMenuBar extends NavigationComposite<MenuBar>
 		{
 			return new Default();
 		}
-		
+
 		public static class Default implements MenuItemFactory
 		{
 			protected Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public MenuItem apply(final NavigationItem item, final HasMenuItems parent)
 			{
@@ -64,76 +64,67 @@ public class NavigationMenuBar extends NavigationComposite<MenuBar>
 			}
 		}
 	}
-	
+
 	private NavigationHierarchyProvider    hierarchyProvider;
 	private NavigationHierarchyLevelSorter hierarchyLevelSorter;
 	private MenuItemFactory                menuItemFactory;
-	
+
 	public NavigationMenuBar()
 	{
 		super();
 	}
-	
+
 	public void setHierarchyProvider(final NavigationHierarchyProvider hierarchyProvider)
 	{
 		this.hierarchyProvider = requireNonNull(hierarchyProvider);
 	}
-	
+
 	public NavigationHierarchyProvider getHierarchyProvider()
 	{
-		if(this.hierarchyProvider == null)
-		{
-			this.hierarchyProvider = NavigationHierarchyProvider.ForItems(getItemProvider().getItems());
-		}
-		
-		return this.hierarchyProvider;
+		return this.hierarchyProvider != null
+			? this.hierarchyProvider
+			: (this.hierarchyProvider = NavigationHierarchyProvider.ForItems(getItemProvider().getItems()));
 	}
-	
+
 	public void setMenuItemFactory(final MenuItemFactory menuItemFactory)
 	{
 		this.menuItemFactory = requireNonNull(menuItemFactory);
 	}
-	
+
 	public MenuItemFactory getMenuItemFactory()
 	{
-		if(this.menuItemFactory == null)
-		{
-			this.menuItemFactory = MenuItemFactory.Default();
-		}
-		
-		return this.menuItemFactory;
+		return this.menuItemFactory != null
+			? this.menuItemFactory
+			: (this.menuItemFactory = MenuItemFactory.Default());
 	}
-	
+
 	public void setHierarchyLevelSorter(final NavigationHierarchyLevelSorter hierarchyLevelSorter)
 	{
 		this.hierarchyLevelSorter = requireNonNull(hierarchyLevelSorter);
 	}
-	
+
 	public NavigationHierarchyLevelSorter getHierarchyLevelSorter()
 	{
-		if(this.hierarchyLevelSorter == null)
-		{
-			this.hierarchyLevelSorter = NavigationHierarchyLevelSorter.Default();
-		}
-		
-		return this.hierarchyLevelSorter;
+		return this.hierarchyLevelSorter != null
+			? this.hierarchyLevelSorter
+			: (this.hierarchyLevelSorter = NavigationHierarchyLevelSorter.Default());
 	}
-	
+
 	@Override
 	protected void updateContent()
 	{
 		final MenuBar menuBar = getContent();
 		menuBar.removeAll();
-		
+
 		final NavigationHierarchyProvider    hierarchyProvider    = getHierarchyProvider();
 		final NavigationHierarchyLevelSorter hierarchyLevelSorter = getHierarchyLevelSorter();
 		final List<NavigationItem>           items                = getItemProvider().getItems();
 		final MenuItemFactory                menuItemFactory      = getMenuItemFactory();
-		
+
 		createContent(menuBar, hierarchyProvider.getRootCategories(), item -> StringUtils.isEmpty(item.category()),
 			items, hierarchyProvider, hierarchyLevelSorter, menuItemFactory);
 	}
-	
+
 	protected void createContent(
 		final HasMenuItems parent,
 		final Collection<NavigationCategory> categories,
@@ -150,7 +141,7 @@ public class NavigationMenuBar extends NavigationComposite<MenuBar>
 			.forEach(element -> createMenuElement(element, parent, items, hierarchyProvider,
 				hierarchyLevelSorter, menuItemFactory));
 	}
-	
+
 	protected void createMenuElement(
 		final NavigationElement element,
 		final HasMenuItems parent,
@@ -162,7 +153,7 @@ public class NavigationMenuBar extends NavigationComposite<MenuBar>
 		if(element instanceof NavigationCategory)
 		{
 			final NavigationCategory category = (NavigationCategory)element;
-			
+
 			MenuItem categoryItem = null;
 			if(parent instanceof MenuBar)
 			{
@@ -173,7 +164,7 @@ public class NavigationMenuBar extends NavigationComposite<MenuBar>
 				categoryItem = ((SubMenu)parent).addItem(category.displayName());
 			}
 			final SubMenu categoryMenu = categoryItem.getSubMenu();
-			
+
 			createContent(categoryMenu, hierarchyProvider.getChildCategories(category),
 				item -> category.displayName().equals(item.category()), items, hierarchyProvider,
 				hierarchyLevelSorter, menuItemFactory);

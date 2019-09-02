@@ -21,13 +21,17 @@ import java.beans.Beans;
 import com.rapidclipse.framework.server.navigation.NavigationItemProvider;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.HasStyle;
 
 
 /**
  * @author XDEV Software
  *
  */
-public abstract class NavigationComposite<T extends Component> extends Composite<T>
+public abstract class NavigationComposite<T extends Component>
+	extends Composite<T>
+	implements HasSize, HasStyle
 {
 	private NavigationItemProvider itemProvider;
 	
@@ -48,12 +52,9 @@ public abstract class NavigationComposite<T extends Component> extends Composite
 	
 	public NavigationItemProvider getItemProvider()
 	{
-		if(this.itemProvider == null)
-		{
-			this.itemProvider = NavigationItemProvider.New();
-		}
-
-		return this.itemProvider;
+		return this.itemProvider != null
+			? this.itemProvider
+			: (this.itemProvider = NavigationItemProvider.New());
 	}
 	
 	protected abstract void updateContent();

@@ -34,72 +34,63 @@ public abstract class NavigationCompositeCategorized<T extends Component & HasCo
 	private NavigationCategoriesProvider       categoriesProvider;
 	private NavigationCategoryComponentFactory categoryComponentFactory;
 	private NavigationItemComponentFactory     itemComponentFactory;
-
+	
 	protected NavigationCompositeCategorized()
 	{
 		super();
 	}
-	
+
 	public void setCategoriesProvider(final NavigationCategoriesProvider categoriesProvider)
 	{
 		this.categoriesProvider = requireNonNull(categoriesProvider);
 	}
-	
+
 	public NavigationCategoriesProvider getCategoriesProvider()
 	{
-		if(this.categoriesProvider == null)
-		{
-			this.categoriesProvider = NavigationCategoriesProvider.ForItems(getItemProvider().getItems());
-		}
-
-		return this.categoriesProvider;
+		return this.categoriesProvider != null
+			? this.categoriesProvider
+			: (this.categoriesProvider = NavigationCategoriesProvider.ForItems(getItemProvider().getItems()));
 	}
-
+	
 	public void setCategoryComponentFactory(final NavigationCategoryComponentFactory categoryComponentFactory)
 	{
 		this.categoryComponentFactory = requireNonNull(categoryComponentFactory);
 	}
-
+	
 	public NavigationCategoryComponentFactory getCategoryComponentFactory()
 	{
-		if(this.categoryComponentFactory == null)
-		{
-			this.categoryComponentFactory = NavigationCategoryComponentFactory.DetailsFactory();
-		}
-
-		return this.categoryComponentFactory;
+		return this.categoryComponentFactory != null
+			? this.categoryComponentFactory
+			: (this.categoryComponentFactory = NavigationCategoryComponentFactory.DetailsFactory());
 	}
-
+	
 	public void setItemComponentFactory(final NavigationItemComponentFactory itemComponentFactory)
 	{
 		this.itemComponentFactory = requireNonNull(itemComponentFactory);
 	}
-
+	
 	public NavigationItemComponentFactory getItemComponentFactory()
 	{
-		if(this.itemComponentFactory == null)
-		{
-			this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory();
-		}
-
-		return this.itemComponentFactory;
+		return this.itemComponentFactory != null
+			? this.itemComponentFactory
+			: (this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory());
 	}
-
+	
 	@Override
 	protected void updateContent()
 	{
 		final T content = getContent();
 		content.removeAll();
-
+		
 		final List<NavigationItem>               items                    = getItemProvider().getItems();
 		final NavigationCategoryComponentFactory categoryComponentFactory = getCategoryComponentFactory();
 		final NavigationItemComponentFactory     itemComponentFactory     = getItemComponentFactory();
-
+		
 		for(final NavigationCategory category : getCategoriesProvider().getRootCategories())
 		{
 			final NavigationCategoryComponent categoryComponent = categoryComponentFactory.apply(category);
 			content.add(categoryComponent.component());
-			
+
 			final Component[] itemComponents = items.stream()
 				.filter(item -> category.displayName().equals(item.category()))
 				.map(itemComponentFactory)

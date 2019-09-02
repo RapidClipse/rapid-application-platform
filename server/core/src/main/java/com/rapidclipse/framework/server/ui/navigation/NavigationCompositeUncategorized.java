@@ -29,35 +29,32 @@ public abstract class NavigationCompositeUncategorized<T extends Component & Has
 	extends NavigationComposite<T>
 {
 	private NavigationItemComponentFactory itemComponentFactory;
-	
+
 	protected NavigationCompositeUncategorized()
 	{
 		super();
 	}
-	
+
 	public void setItemComponentFactory(final NavigationItemComponentFactory itemComponentFactory)
 	{
 		this.itemComponentFactory = requireNonNull(itemComponentFactory);
 	}
-
+	
 	public NavigationItemComponentFactory getItemComponentFactory()
 	{
-		if(this.itemComponentFactory == null)
-		{
-			this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory();
-		}
-
-		return this.itemComponentFactory;
+		return this.itemComponentFactory != null
+			? this.itemComponentFactory
+			: (this.itemComponentFactory = NavigationItemComponentFactory.LinkFactory());
 	}
-	
+
 	@Override
 	protected void updateContent()
 	{
 		final T content = getContent();
 		content.removeAll();
-		
+
 		final NavigationItemComponentFactory itemComponentFactory = getItemComponentFactory();
-		
+
 		for(final NavigationItem item : getItemProvider().getItems())
 		{
 			content.add(itemComponentFactory.apply(item));
