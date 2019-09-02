@@ -22,7 +22,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>00.09.04-RAP-SNAPSHOT</version>
+	<version>10.00.00-RAP-RC1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
@@ -86,7 +86,7 @@
 				<artifactId>vaadin-bom</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
-      			<version>14.0.0</version>
+      			<version>14.0.2</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
