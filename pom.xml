@@ -22,7 +22,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>10.00.00-RAP-RC1-SNAPSHOT</version>
+	<version>10.00.00-RAP-RC2-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
