@@ -14,14 +14,17 @@
 
 package com.rapidclipse.framework.server.data.validator;
 
+import java.text.MessageFormat;
 import java.util.Arrays;
-import java.util.ResourceBundle;
+import java.util.Locale;
+import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.data.binder.ValidationResult;
 import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.validator.AbstractValidator;
@@ -38,23 +41,27 @@ public class PasswordValidator extends AbstractValidator<String>
 		LOWERCASE_LETTERS("[a-z]"),
 		NUMBERS("\\d"),
 		SPECIAL_CHARACTERS("[^\\w\\s]");
-
+		
 		private Pattern pattern;
-
+		
 		private Condition(final String regex)
 		{
 			this.pattern = Pattern.compile(regex);
 		}
+		
+		public Pattern getPattern()
+		{
+			return this.pattern;
+		}
 	}
-
-	private final static Pattern        whiteSpacePattern = Pattern.compile("\\s");
-	private final static ResourceBundle resourceBundle    = ResourceBundle.getBundle(PasswordValidator.class.getName());
-
+	
+	private final static Pattern whiteSpacePattern = Pattern.compile("\\s");
+	
 	private final int         minLength;
 	private final boolean     whitespacesAllowed;
 	private final int         minCompliedConditions;
 	private final Condition[] conditions;
-
+	
 	public PasswordValidator(
 		final int minLength,
 		final boolean whitespacesAllowed,
@@ -63,7 +70,7 @@ public class PasswordValidator extends AbstractValidator<String>
 	{
 		this("", minLength, whitespacesAllowed, minCompliedConditions, conditions);
 	}
-
+	
 	public PasswordValidator(
 		final String errorMessage,
 		final int minLength,
@@ -72,58 +79,55 @@ public class PasswordValidator extends AbstractValidator<String>
 		final Condition... conditions)
 	{
 		super(errorMessage);
-
+		
 		this.minLength             = minLength;
 		this.whitespacesAllowed    = whitespacesAllowed;
 		this.minCompliedConditions = minCompliedConditions;
 		this.conditions            = conditions;
 	}
-
+	
 	public int getMinLength()
 	{
 		return this.minLength;
 	}
-
+	
 	public boolean isWhitespacesAllowed()
 	{
 		return this.whitespacesAllowed;
 	}
-
+	
 	public Condition[] getConditions()
 	{
 		return this.conditions;
 	}
-
+	
 	public int getMinCompliedConditions()
 	{
 		return this.minCompliedConditions;
 	}
-
+	
 	@Override
 	public ValidationResult apply(final String value, final ValueContext context)
 	{
 		if(this.minLength > 0 && value.length() < this.minLength)
 		{
 			return ValidationResult.error(getErrorMessage(value,
-				() -> "Password must have at least " + this.minLength + " characters."));
+				() -> MessageFormat.format(getResourceString(context, "passwordTooShort"), this.minLength)));
 		}
-
-		if(!isWhitespacesAllowed())
+		
+		if(!isWhitespacesAllowed() && whiteSpacePattern.matcher(value).find())
 		{
-			if(whiteSpacePattern.matcher(value).find())
-			{
-				return ValidationResult.error(getErrorMessage(value,
-					() -> "No whitespaces allowed in password."));
-			}
+			return ValidationResult.error(getErrorMessage(value,
+				() -> getResourceString(context, "noWhitespaceAllowed")));
 		}
-
+		
 		if(this.minCompliedConditions > 0 && this.conditions != null)
 		{
 			int compliedConditions = 0;
-
+			
 			for(final Condition condition : this.conditions)
 			{
-				if(condition.pattern.matcher(value).find())
+				if(condition.getPattern().matcher(value).find())
 				{
 					compliedConditions++;
 					if(compliedConditions == this.minCompliedConditions)
@@ -133,30 +137,36 @@ public class PasswordValidator extends AbstractValidator<String>
 					}
 				}
 			}
-
+			
 			if(compliedConditions < this.minCompliedConditions)
 			{
 				return ValidationResult.error(getErrorMessage(value,
-					() -> "The password must meet at least " + this.minCompliedConditions + " of these criteria:" +
-						Arrays.stream(this.conditions)
-							.map(this::getCaption)
-							.collect(Collectors.joining(", "))));
+					() -> {
+						final String conditionsStr = Arrays.stream(this.conditions)
+							.map(condition -> getResourceString(context, "Condition." + condition.name()))
+							.collect(Collectors.joining(", "));
+						return MessageFormat.format(getResourceString(context, "conditionsNotMet"),
+							this.minCompliedConditions, conditionsStr);
+					}));
 			}
 		}
-
+		
 		return ValidationResult.ok();
 	}
-
+	
+	protected String getResourceString(final ValueContext context, final String name)
+	{
+		final Optional<Locale> optLocale = context.getLocale();
+		return optLocale.isPresent()
+			? StringResourceUtils.getResourceString(name, optLocale.get(), this)
+			: StringResourceUtils.getResourceString(name, this);
+	}
+	
 	protected String getErrorMessage(final String value, final Supplier<String> alternative)
 	{
 		final String message = getMessage(value);
 		return !StringUtils.isEmpty(message)
 			? message
 			: alternative.get();
-	}
-
-	protected String getCaption(final Condition condition)
-	{
-		return resourceBundle.getString(condition.name());
 	}
 }
