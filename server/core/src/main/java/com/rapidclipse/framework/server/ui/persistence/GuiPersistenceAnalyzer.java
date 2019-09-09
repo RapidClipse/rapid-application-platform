@@ -32,21 +32,21 @@ public interface GuiPersistenceAnalyzer
 		map.put(name, root);
 		return createPersister(map);
 	}
-
+	
 	public GuiPersister createPersister(Map<String, Component> roots);
-
+	
 	public static GuiPersistenceAnalyzer New()
 	{
 		return new Default();
 	}
-
+	
 	public static class Default implements GuiPersistenceAnalyzer
 	{
 		protected Default()
 		{
 			super();
 		}
-
+		
 		@Override
 		public GuiPersister createPersister(final Map<String, Component> roots)
 		{
@@ -58,10 +58,10 @@ public interface GuiPersistenceAnalyzer
 					.collect(Collectors.toMap(c -> getIdentifier(c), c -> c));
 				entries.put(name, map);
 			});
-
+			
 			return GuiPersister.New(entries);
 		}
-
+		
 		private String getIdentifier(final Component component)
 		{
 			final String identifier = componentIdentifier(component);
@@ -71,7 +71,7 @@ public interface GuiPersistenceAnalyzer
 			}
 			return identifier;
 		}
-
+		
 		protected boolean persist(final Component component)
 		{
 			if(GuiPersistenceHandlerRegistry.getInstance().lookupHandler(component) == null)
@@ -85,21 +85,20 @@ public interface GuiPersistenceAnalyzer
 			final String identifier = componentIdentifier(component);
 			return identifier != null && identifier.length() > 0;
 		}
-
+		
 		protected String componentIdentifier(final Component component)
 		{
 			return component.getId().orElse(null);
 		}
-
+		
 		protected Collection<Component> collectComponents(final Component root)
 		{
 			final Collection<Component> collection = new HashSet<>();
-			UIUtils.lookupComponentTree(root, cpn -> {
+			UIUtils.traverseComponentTree(root, cpn -> {
 				if(persist(cpn))
 				{
 					collection.add(cpn);
 				}
-				return null;
 			});
 			return collection;
 		}

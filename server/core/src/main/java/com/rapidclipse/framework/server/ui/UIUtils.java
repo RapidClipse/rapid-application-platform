@@ -11,6 +11,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui;
 
 import java.util.Objects;
@@ -19,7 +20,6 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasComponents;
 
 
 /**
@@ -33,7 +33,7 @@ public final class UIUtils
 	{
 		return (T)getNextParent(c, type::isInstance);
 	}
-	
+
 	public static Component getNextParent(final Component c, final Predicate<Component> predicate)
 	{
 		Component parent = c;
@@ -43,13 +43,13 @@ public final class UIUtils
 			{
 				return parent;
 			}
-			
+
 			parent = parent.getParent().orElse(null);
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 *
 	 * @param parent
@@ -61,7 +61,7 @@ public final class UIUtils
 	{
 		lookupComponentTree(parent, toFunction(visitor));
 	}
-	
+
 	/**
 	 *
 	 * @param parent
@@ -75,7 +75,7 @@ public final class UIUtils
 	{
 		lookupComponentTree(parent, type, toFunction(visitor));
 	}
-	
+
 	private static <C, T> Function<C, T> toFunction(final Consumer<C> consumer)
 	{
 		return c -> {
@@ -83,7 +83,7 @@ public final class UIUtils
 			return null;
 		};
 	}
-	
+
 	/**
 	 * Shortcut for <code>lookupComponentTree(parent,visitor,null)</code>.
 	 *
@@ -96,14 +96,14 @@ public final class UIUtils
 	 * @return
 	 * @see #lookupComponentTree(Component, Function, Class)
 	 */
-	
+
 	public static <T> T lookupComponentTree(
 		final Component parent,
 		final Function<Component, T> visitor)
 	{
 		return lookupComponentTree(parent, null, visitor);
 	}
-	
+
 	/**
 	 * Walks through the <code>parent</code>'s component tree hierarchy.
 	 * <p>
@@ -128,7 +128,7 @@ public final class UIUtils
 	 * @return
 	 * @see {@link ComponentTreeVisitor}
 	 */
-	
+
 	@SuppressWarnings("unchecked")
 	public static <C, T> T lookupComponentTree(
 		final Component parent,
@@ -136,40 +136,24 @@ public final class UIUtils
 		final Function<C, T> visitor)
 	{
 		T value = null;
-		
+
 		if(type == null || type.isInstance(parent))
 		{
 			value = visitor.apply((C)parent);
 		}
-		
+
 		if(value == null)
 		{
-			value = parent.getChildren().map(child -> traverse(child, type, visitor))
-				.filter(Objects::nonNull).findFirst().orElse(null);
+			value = parent.getChildren()
+				.map(child -> lookupComponentTree(child, type, visitor))
+				.filter(Objects::nonNull)
+				.findFirst()
+				.orElse(null);
 		}
-		
+
 		return value;
 	}
-	
-	@SuppressWarnings("unchecked")
-	private static <C, T> T traverse(
-		final Component child,
-		final Class<C> type,
-		final Function<C, T> visitor)
-	{
-		if(child instanceof HasComponents)
-		{
-			return lookupComponentTree(child, type, visitor);
-		}
-		
-		if(type == null || type.isInstance(child))
-		{
-			return visitor.apply((C)child);
-		}
-		
-		return null;
-	}
-	
+
 	private UIUtils()
 	{
 		throw new Error();
