@@ -24,4 +24,17 @@ import java.io.Serializable;
 public interface FilterSubjectFactory<S> extends Serializable
 {
 	public FilterSubject createFilterSubject(S source);
+
+	public static abstract class Abstract<S> implements FilterSubjectFactory<S>
+	{
+		protected boolean isSearchable(final Class<?> type)
+		{
+			return String.class.equals(type);
+		}
+
+		protected boolean isFilterable(final Class<?> type)
+		{
+			return !type.isArray();
+		}
+	}
 }

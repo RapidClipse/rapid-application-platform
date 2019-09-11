@@ -32,20 +32,20 @@ import com.rapidclipse.framework.server.resources.CaptionUtils;
  * @author XDEV Software
  *
  */
-public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
+public class PojoFilterSubjectFactory extends FilterSubjectFactory.Abstract<Object>
 {
 	public static PojoFilterSubjectFactory New()
 	{
 		return new PojoFilterSubjectFactory();
 	}
-	
+
 	public static PojoFilterSubjectFactory New(
 		final Predicate<PropertyDescriptor> searchablePropertyFilter,
 		final Predicate<PropertyDescriptor> filterablePropertyFilter)
 	{
 		return new PojoFilterSubjectFactory(searchablePropertyFilter, filterablePropertyFilter);
 	}
-	
+
 	public static PojoFilterSubjectFactory New(
 		final Collection<String> searchableProperties,
 		final Collection<String> filterableProperties)
@@ -54,12 +54,12 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
 			d -> searchableProperties.contains(d.getName()),
 			d -> filterableProperties.contains(d.getName()));
 	}
-	
+
 	public static FilterSubject CreateFilterSubject(final Class<?> type)
 	{
 		return New().createFilterSubject(type);
 	}
-	
+
 	public static FilterSubject CreateFilterSubject(
 		final Class<?> type,
 		final Collection<String> searchableProperties,
@@ -67,25 +67,25 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
 	{
 		return New(searchableProperties, filterableProperties).createFilterSubject(type);
 	}
-	
+
 	private final Predicate<PropertyDescriptor> searchablePropertyFilter;
 	private final Predicate<PropertyDescriptor> filterablePropertyFilter;
-	
+
 	public PojoFilterSubjectFactory()
 	{
 		this(d -> true, d -> true);
 	}
-	
+
 	public PojoFilterSubjectFactory(
 		final Predicate<PropertyDescriptor> searchablePropertyFilter,
 		final Predicate<PropertyDescriptor> filterablePropertyFilter)
 	{
 		super();
-
+		
 		this.searchablePropertyFilter = requireNonNull(searchablePropertyFilter);
 		this.filterablePropertyFilter = requireNonNull(filterablePropertyFilter);
 	}
-	
+
 	@Override
 	public FilterSubject createFilterSubject(final Object source)
 	{
@@ -93,20 +93,22 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
 		{
 			final Class<?> clazz =
 				source instanceof Class ? (Class<?>)source : source.getClass();
-			
+
 			final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(clazz)
 				.getPropertyDescriptors();
-			
+
 			final List<FilterProperty<?>> searchableProperties = Arrays.stream(propertyDescriptors)
-				.filter(d -> String.class.equals(d.getPropertyType()))
+				.filter(d -> isSearchable(d.getPropertyType()))
 				.filter(this.searchablePropertyFilter)
-				.map(d -> toFilterProperty(clazz, d)).collect(toList());
-			
+				.map(d -> toFilterProperty(clazz, d))
+				.collect(toList());
+
 			final List<FilterProperty<?>> filterableProperties = Arrays.stream(propertyDescriptors)
-				.filter(d -> Comparable.class.isAssignableFrom(d.getPropertyType()))
+				.filter(d -> isFilterable(d.getPropertyType()))
 				.filter(this.filterablePropertyFilter)
-				.map(d -> toFilterProperty(clazz, d)).collect(toList());
-			
+				.map(d -> toFilterProperty(clazz, d))
+				.collect(toList());
+
 			return FilterSubject.New(searchableProperties, filterableProperties);
 		}
 		catch(final IntrospectionException e)
@@ -114,7 +116,7 @@ public class PojoFilterSubjectFactory implements FilterSubjectFactory<Object>
 			throw new RuntimeException(e);
 		}
 	}
-	
+
 	protected FilterProperty<?> toFilterProperty(
 		final Class<?> clazz,
 		final PropertyDescriptor beanProperty)

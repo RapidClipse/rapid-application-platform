@@ -262,7 +262,7 @@ public class FilterComponent
 		{
 			final String res         = StringResourceUtils.getResourceString("searchTextFieldInputPrompt",
 				this);
-			final String properties  = filterSubject.filterableProperties().stream()
+			final String properties  = filterSubject.searchableProperties().stream()
 				.map(p -> p.caption()).collect(Collectors.joining(", "));
 			final String placeholder = MessageFormat.format(res, properties);
 			this.searchTextField.setPlaceholder(placeholder);
