@@ -52,53 +52,55 @@ import com.rapidclipse.framework.server.util.ReflectionUtils;
 public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAccessObject<T>
 {
 	public void beginTransaction();
-	
+
 	public void rollback();
-	
+
 	public void commit();
-	
+
 	public CriteriaQuery<T> buildCriteriaQuery(Class<T> exampleType);
-	
+
 	public T find(ID id);
-	
+
 	public T[] find(@SuppressWarnings("unchecked") ID... ids);
-	
+
 	public List<T> findAll();
-	
+
+	public CriteriaQuery<T> findAllQuery();
+
 	public void flush();
-	
+
 	public T reattach(T object);
-	
+
 	public T getReference(ID id);
-	
+
 	public T[] getReferences(@SuppressWarnings("unchecked") ID... ids);
-	
+
 	public boolean isAttached(T entity);
-	
+
 	public void refresh(@SuppressWarnings("unchecked") T... entities);
-	
+
 	public boolean remove(T entity);
-	
+
 	public void remove(@SuppressWarnings("unchecked") T... entities);
-	
+
 	public boolean removeById(ID id);
-	
+
 	public void removeByIds(@SuppressWarnings("unchecked") ID... ids);
-	
+
 	public T merge(T entity);
-	
+
 	public T[] merge(@SuppressWarnings("unchecked") T... entities);
-	
+
 	public void persist(T entity);
-	
+
 	public void persist(@SuppressWarnings("unchecked") T... entities);
-	
+
 	public T save(T entity);
-	
+
 	public T[] save(@SuppressWarnings("unchecked") T... entities);
-	
+
 	public boolean contains(Object entity);
-	
+
 	/**
 	 * Find and load a list of entities.
 	 *
@@ -108,7 +110,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 	 * @return the entities matching the search.
 	 */
 	public List<T> findByExample(T entity);
-	
+
 	/**
 	 * Find and load a list of entities.
 	 *
@@ -120,7 +122,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 	 * @return the entities matching the search.
 	 */
 	public List<T> findByExample(T entity, SearchParameters searchParameters);
-	
+
 	/**
 	 * Count the number of instances.
 	 *
@@ -130,7 +132,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 	 * @return the number of entities matching the search
 	 */
 	public int countByExample(T entity);
-	
+
 	/**
 	 * Count the number of instances.
 	 *
@@ -142,26 +144,26 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 	 * @return the number of entities matching the search.
 	 */
 	public int countByExample(T entity, SearchParameters searchParameters);
-
+	
 	public static class Default<T, ID extends Serializable> implements JpaDataAccessObject<T, ID>
 	{
 		private final Class<T> persistentClass;
-		
+
 		protected Default(final Class<T> persistentClass)
 		{
 			this.persistentClass = requireNonNull(persistentClass);
 		}
-		
+
 		protected Class<T> persistentClass()
 		{
 			return this.persistentClass;
 		}
-		
+
 		protected EntityManager em()
 		{
 			return Jpa.getEntityManager(this.persistentClass);
 		}
-		
+
 		protected Attribute<?, ?> idAttribute()
 		{
 			Attribute<?, ?> idAttribute = Jpa.getIdAttribute(this.persistentClass);
@@ -171,49 +173,49 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return idAttribute;
 		}
-		
+
 		@SuppressWarnings("unchecked")
 		protected ID id(final T entity)
 		{
 			return (ID)ReflectionUtils.getMemberValue(entity, idAttribute().getJavaMember());
 		}
-		
+
 		protected void applyCacheHints(final TypedQuery<?> typedQuery, final CacheableQuery.Kind kind)
 		{
 			Jpa.applyCacheHints(typedQuery, kind, this.persistentClass);
 		}
-		
+
 		@Override
 		public void beginTransaction()
 		{
 			em().getTransaction().begin();
 		}
-		
+
 		@Override
 		public void rollback()
 		{
 			em().getTransaction().rollback();
 		}
-		
+
 		@Override
 		public void commit()
 		{
 			em().getTransaction().commit();
 		}
-		
+
 		@Override
 		public CriteriaQuery<T> buildCriteriaQuery(final Class<T> exampleType)
 		{
 			final CriteriaBuilder cb = em().getCriteriaBuilder();
 			return cb.createQuery(exampleType);
 		}
-		
+
 		@Override
 		public T find(final ID id)
 		{
 			return em().find(this.persistentClass, id);
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public T[] find(final ID... ids)
@@ -225,25 +227,30 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return array;
 		}
-		
+
 		@Override
 		public List<T> findAll()
 		{
-			final EntityManager    entityManager = em();
-			final CriteriaQuery<T> criteriaQuery = entityManager.getCriteriaBuilder()
-				.createQuery(this.persistentClass);
-			criteriaQuery.from(this.persistentClass);
-			final TypedQuery<T> typedQuery = entityManager.createQuery(criteriaQuery);
+			final TypedQuery<T> typedQuery = em().createQuery(findAllQuery());
 			applyCacheHints(typedQuery, CacheableQuery.Kind.FIND_ALL);
 			return typedQuery.getResultList();
 		}
 		
 		@Override
+		public CriteriaQuery<T> findAllQuery()
+		{
+			final CriteriaQuery<T> criteriaQuery = em().getCriteriaBuilder()
+				.createQuery(this.persistentClass);
+			criteriaQuery.from(this.persistentClass);
+			return criteriaQuery;
+		}
+
+		@Override
 		public void flush()
 		{
 			em().flush();
 		}
-		
+
 		@Override
 		public T reattach(final T object)
 		{
@@ -255,13 +262,13 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return object;
 		}
-		
+
 		@Override
 		public T getReference(final ID id)
 		{
 			return em().getReference(this.persistentClass, id);
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public T[] getReferences(final ID... ids)
@@ -273,13 +280,13 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return array;
 		}
-		
+
 		@Override
 		public boolean isAttached(final T entity)
 		{
 			return em().contains(entity);
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public void refresh(final T... entities)
@@ -290,7 +297,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 				entityManager.refresh(entity);
 			}
 		}
-		
+
 		@Override
 		public boolean remove(final T entity)
 		{
@@ -309,7 +316,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return false;
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public void remove(final T... entities)
@@ -319,7 +326,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 				remove(entity);
 			}
 		}
-		
+
 		@Override
 		public boolean removeById(final ID id)
 		{
@@ -341,7 +348,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return false;
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public void removeByIds(final ID... ids)
@@ -351,13 +358,13 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 				removeById(id);
 			}
 		}
-		
+
 		@Override
 		public T merge(final T entity)
 		{
 			return em().merge(entity);
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public T[] merge(final T... entities)
@@ -369,13 +376,13 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return array;
 		}
-		
+
 		@Override
 		public final void persist(final T entity)
 		{
 			em().persist(entity);
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public final void persist(final T... entities)
@@ -385,7 +392,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 				persist(entity);
 			}
 		}
-		
+
 		@Override
 		public T save(final T entity)
 		{
@@ -414,7 +421,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 				return merge(entity);
 			}
 		}
-		
+
 		private boolean validId(final Serializable id)
 		{
 			if(id == null)
@@ -431,7 +438,7 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return true;
 		}
-		
+
 		@Override
 		@SuppressWarnings("unchecked")
 		public T[] save(final T... entities)
@@ -443,32 +450,32 @@ public interface JpaDataAccessObject<T, ID extends Serializable> extends DataAcc
 			}
 			return array;
 		}
-		
+
 		@Override
 		public boolean contains(final Object entity)
 		{
 			return em().contains(entity);
 		}
-		
+
 		@Override
 		public List<T> findByExample(final T entity)
 		{
 			return findByExample(entity, SearchParameters.New());
 		}
-		
+
 		@Override
 		public List<T> findByExample(final T entity, final SearchParameters searchParameters)
 		{
 			return new FindByExample<T>(this.persistentClass, em(), searchParameters)
 				.findByExample(entity);
 		}
-		
+
 		@Override
 		public int countByExample(final T entity)
 		{
 			return countByExample(entity, SearchParameters.New());
 		}
-		
+
 		@Override
 		public int countByExample(final T entity, final SearchParameters searchParameters)
 		{
