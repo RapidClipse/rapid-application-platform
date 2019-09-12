@@ -1,1 +1,1 @@
-# Rapid Application Platform
+# RapidClipse Application Platform
