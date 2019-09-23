@@ -36,6 +36,7 @@
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
+	<description>Rapid Application Platform</description>
 	<url>http://www.rapidclipse.com</url>
 
 	<modules>

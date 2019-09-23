@@ -40,6 +40,7 @@
 	<artifactId>rap-security-auth-ldap</artifactId>
 
 	<name>Rapid Application Platform / Security / Authentication and Authorization / LDAP</name>
+	<description>Rapid Application Platform / Security / Authentication and Authorization / LDAP</description>
 
 	<url>http://www.rapidclipse.com</url>
 	<scm>

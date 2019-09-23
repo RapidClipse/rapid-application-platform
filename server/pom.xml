@@ -42,5 +42,6 @@
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform / Server</name>
+	<description>Rapid Application Platform / Server</description>
 
 </project>
