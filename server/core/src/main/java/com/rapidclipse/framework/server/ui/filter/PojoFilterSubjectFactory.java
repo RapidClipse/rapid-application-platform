@@ -21,20 +21,10 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
-import static java.util.Objects.requireNonNull;
-import static java.util.stream.Collectors.toList;
-
-import java.beans.IntrospectionException;
-import java.beans.Introspector;
-import java.beans.PropertyDescriptor;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
-import java.util.function.Predicate;
-
-import com.rapidclipse.framework.server.resources.CaptionUtils;
 
 
 /**
@@ -45,14 +35,7 @@ public class PojoFilterSubjectFactory extends FilterSubjectFactory.Abstract<Obje
 {
 	public static PojoFilterSubjectFactory New()
 	{
-		return new PojoFilterSubjectFactory();
-	}
-
-	public static PojoFilterSubjectFactory New(
-		final Predicate<PropertyDescriptor> searchablePropertyFilter,
-		final Predicate<PropertyDescriptor> filterablePropertyFilter)
-	{
-		return new PojoFilterSubjectFactory(searchablePropertyFilter, filterablePropertyFilter);
+		return new PojoFilterSubjectFactory(null, null);
 	}
 
 	public static PojoFilterSubjectFactory New(
@@ -60,13 +43,13 @@ public class PojoFilterSubjectFactory extends FilterSubjectFactory.Abstract<Obje
 		final Collection<String> filterableProperties)
 	{
 		return new PojoFilterSubjectFactory(
-			d -> searchableProperties.contains(d.getName()),
-			d -> filterableProperties.contains(d.getName()));
+			searchableProperties,
+			filterableProperties);
 	}
 
 	public static FilterSubject CreateFilterSubject(final Class<?> type)
 	{
-		return New().createFilterSubject(type);
+		return New().createFilterSubjectForType(type);
 	}
 
 	public static FilterSubject CreateFilterSubject(
@@ -74,64 +57,20 @@ public class PojoFilterSubjectFactory extends FilterSubjectFactory.Abstract<Obje
 		final Collection<String> searchableProperties,
 		final Collection<String> filterableProperties)
 	{
-		return New(searchableProperties, filterableProperties).createFilterSubject(type);
+		return New(searchableProperties, filterableProperties).createFilterSubjectForType(type);
 	}
 
-	private final Predicate<PropertyDescriptor> searchablePropertyFilter;
-	private final Predicate<PropertyDescriptor> filterablePropertyFilter;
-
-	public PojoFilterSubjectFactory()
+	protected PojoFilterSubjectFactory(
+		final Collection<String> searchablePropertyNames,
+		final Collection<String> filterablePropertyNames)
 	{
-		this(d -> true, d -> true);
-	}
-
-	public PojoFilterSubjectFactory(
-		final Predicate<PropertyDescriptor> searchablePropertyFilter,
-		final Predicate<PropertyDescriptor> filterablePropertyFilter)
-	{
-		super();
-		
-		this.searchablePropertyFilter = requireNonNull(searchablePropertyFilter);
-		this.filterablePropertyFilter = requireNonNull(filterablePropertyFilter);
+		super(searchablePropertyNames, filterablePropertyNames);
 	}
 
 	@Override
 	public FilterSubject createFilterSubject(final Object source)
 	{
-		try
-		{
-			final Class<?> clazz =
-				source instanceof Class ? (Class<?>)source : source.getClass();
-
-			final PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(clazz)
-				.getPropertyDescriptors();
-
-			final List<FilterProperty<?>> searchableProperties = Arrays.stream(propertyDescriptors)
-				.filter(d -> isSearchable(d.getPropertyType()))
-				.filter(this.searchablePropertyFilter)
-				.map(d -> toFilterProperty(clazz, d))
-				.collect(toList());
-
-			final List<FilterProperty<?>> filterableProperties = Arrays.stream(propertyDescriptors)
-				.filter(d -> isFilterable(d.getPropertyType()))
-				.filter(this.filterablePropertyFilter)
-				.map(d -> toFilterProperty(clazz, d))
-				.collect(toList());
-
-			return FilterSubject.New(searchableProperties, filterableProperties);
-		}
-		catch(final IntrospectionException e)
-		{
-			throw new RuntimeException(e);
-		}
-	}
-
-	protected FilterProperty<?> toFilterProperty(
-		final Class<?> clazz,
-		final PropertyDescriptor beanProperty)
-	{
-		final String name = beanProperty.getName();
-		return FilterProperty.New(name, beanProperty.getPropertyType(),
-			CaptionUtils.resolveCaption(clazz, name));
+		final Class<?> type = source instanceof Class ? (Class<?>)source : source.getClass();
+		return createFilterSubjectForType(type);
 	}
 }
