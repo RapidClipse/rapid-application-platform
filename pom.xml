@@ -95,7 +95,7 @@
 				<artifactId>vaadin-bom</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
-      			<version>14.0.3</version>
+      			<version>14.0.6</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
