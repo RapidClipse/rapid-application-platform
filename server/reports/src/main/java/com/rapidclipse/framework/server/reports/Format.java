@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports;
 
 import net.sf.dynamicreports.design.transformation.StyleResolver;
@@ -52,95 +53,150 @@ import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 public interface Format
 {
 	public String name();
-	
+
 	public String fileSuffix();
-	
+
 	public String mimeType();
-	
+
 	public Exporter createExporter();
-	
+
+	public static Format Csv()
+	{
+		return new Csv();
+	}
+
+	public static Format Docx()
+	{
+		return new Docx();
+	}
+
+	public static Format Ods()
+	{
+		return new Ods();
+	}
+
+	public static Format Odt()
+	{
+		return new Odt();
+	}
+
+	public static Format Pdf()
+	{
+		return new Pdf();
+	}
+
+	public static Format Pptx()
+	{
+		return new Pptx();
+	}
+
+	public static Format Rtf()
+	{
+		return new Rtf();
+	}
+
+	public static Format Text()
+	{
+		return new Text();
+	}
+
+	public static Format Xls()
+	{
+		return new Xls();
+	}
+
+	public static Format Xlsx()
+	{
+		return new Xlsx();
+	}
+
+	public static Format Xml()
+	{
+		return new Xml();
+	}
+
 	public static abstract class Abstract implements Format
 	{
 		private final String name;
 		private final String fileSuffix;
 		private final String mimeType;
-		
+
 		public Abstract(final String name, final String fileSuffix, final String mimeType)
 		{
 			super();
-			
+
 			this.name       = name;
 			this.fileSuffix = fileSuffix;
 			this.mimeType   = mimeType;
 		}
-		
+
 		@Override
 		public String name()
 		{
 			return this.name;
 		}
-		
+
 		@Override
 		public String fileSuffix()
 		{
 			return this.fileSuffix;
 		}
-		
+
 		@Override
 		public String mimeType()
 		{
 			return this.mimeType;
 		}
-		
+
 		@Override
 		public Exporter createExporter()
 		{
 			return Exporter.New(this, createDynamicExporter(), createPlainExporter());
 		}
-		
+
 		protected abstract DynamicExporter createDynamicExporter();
-		
+
 		protected abstract PlainExporter createPlainExporter();
 	}
-	
+
 	public static class Pdf extends Abstract
 	{
 		public Pdf()
 		{
 			super("PDF", "pdf", "application/pdf");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toPdf(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> JasperExportManager.exportReportToPdfStream(print, stream);
 		}
 	}
-	
+
 	public static class Xml extends Abstract
 	{
 		public Xml()
 		{
 			super("XML", "xml", "text/xml");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toHtml(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final HtmlExporter exporter = new HtmlExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -149,25 +205,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Text extends Abstract
 	{
 		public Text()
 		{
 			super("Text", "txt", "text/plain");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toText(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRTextExporter exporter = new JRTextExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -181,25 +237,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Rtf extends Abstract
 	{
 		public Rtf()
 		{
 			super("Rich Text", "rtf", "text/rtf");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toRtf(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRRtfExporter exporter = new JRRtfExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -208,25 +264,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Csv extends Abstract
 	{
 		public Csv()
 		{
 			super("CSV", "csv", "text/comma-separated-values");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toCsv(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRCsvExporter exporter = new JRCsvExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -235,25 +291,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Xls extends Abstract
 	{
 		public Xls()
 		{
 			super("Excel (xls)", "xls", "application/msexcel");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toXls(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRXlsExporter exporter = new JRXlsExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -262,7 +318,7 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Xlsx extends Abstract
 	{
 		public Xlsx()
@@ -270,18 +326,18 @@ public interface Format
 			super("Excel (xlsx)", "xlsx",
 				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toXlsx(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRXlsxExporter exporter = new JRXlsxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -290,7 +346,7 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Docx extends Abstract
 	{
 		public Docx()
@@ -298,18 +354,18 @@ public interface Format
 			super("Word (docx)", "docx",
 				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toDocx(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRDocxExporter exporter = new JRDocxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -318,25 +374,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Pptx extends Abstract
 	{
 		public Pptx()
 		{
 			super("Powerpoint (pptx)", "pptx", "application/mspowerpoint");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toPptx(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRPptxExporter exporter = new JRPptxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -345,25 +401,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Odt extends Abstract
 	{
 		public Odt()
 		{
 			super("Open Document (odt)", "odt", "application/vnd.oasis.opendocument.text");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toOdt(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JROdtExporter exporter = new JROdtExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -372,25 +428,25 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Ods extends Abstract
 	{
 		public Ods()
 		{
 			super("Open Document (ods)", "ods", "vnd.oasis.opendocument.spreadsheet");
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return (builder, stream) -> builder.toOds(stream);
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JROdsExporter exporter = new JROdsExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
