@@ -21,7 +21,10 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.provider;
+
+import java.io.Serializable;
 
 import com.rapidclipse.framework.server.data.filter.Filter;
 import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
@@ -31,9 +34,9 @@ import com.vaadin.flow.data.provider.ConfigurableFilterDataProvider;
  * @author XDEV Software
  *
  */
-public interface DataProviderFilterAdapter<D extends ConfigurableFilterDataProvider<?, ?, ?>>
+public interface DataProviderFilterAdapter<D extends ConfigurableFilterDataProvider<?, ?, ?>> extends Serializable
 {
 	public boolean supports(ConfigurableFilterDataProvider<?, ?, ?> dataProvider);
-
+	
 	public void updateFilter(D dataProvider, Filter filter);
 }
