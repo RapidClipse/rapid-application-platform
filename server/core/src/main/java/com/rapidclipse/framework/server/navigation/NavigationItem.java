@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.navigation;
 
 import java.util.function.Supplier;
@@ -41,14 +42,17 @@ public interface NavigationItem extends NavigationElement
 
 	public String category();
 
+	public boolean isHidden();
+
 	public static NavigationItem New(
 		final Supplier<Component> icon,
 		final String displayName,
 		final RouteData routeData,
 		final int position,
-		final String category)
+		final String category,
+		final boolean hidden)
 	{
-		return new Default(icon, displayName, routeData, position, category);
+		return new Default(icon, displayName, routeData, position, category, hidden);
 	}
 
 	public static class Default extends NavigationElement.Abstract implements NavigationItem
@@ -56,19 +60,22 @@ public interface NavigationItem extends NavigationElement
 		private final RouteData routeData;
 		private final int       position;
 		private final String    category;
+		private final boolean   hidden;
 
 		protected Default(
 			final Supplier<Component> icon,
 			final String displayName,
 			final RouteData routeData,
 			final int position,
-			final String category)
+			final String category,
+			final boolean hidden)
 		{
 			super(icon, displayName);
 
 			this.routeData = routeData;
 			this.position  = position;
 			this.category  = category;
+			this.hidden    = hidden;
 		}
 
 		@Override
@@ -87,6 +94,12 @@ public interface NavigationItem extends NavigationElement
 		public String category()
 		{
 			return this.category;
+		}
+
+		@Override
+		public boolean isHidden()
+		{
+			return this.hidden;
 		}
 	}
 }

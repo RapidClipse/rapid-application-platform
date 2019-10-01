@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.navigation;
 
 import static java.util.Objects.requireNonNull;
@@ -128,12 +129,14 @@ public interface NavigationItemProvider extends Serializable
 			String                    displayName = null;
 			int                       position    = -1;
 			String                    category    = null;
+			boolean                   hidden      = false;
 
 			if(propertiesAnnotation != null)
 			{
 				displayName = propertiesAnnotation.displayName();
 				position    = propertiesAnnotation.position();
 				category    = propertiesAnnotation.category();
+				hidden      = propertiesAnnotation.hidden();
 			}
 
 			if(StringUtils.isEmpty(displayName))
@@ -149,7 +152,7 @@ public interface NavigationItemProvider extends Serializable
 				}
 			}
 
-			return NavigationItem.New(icon, displayName, data, position, category);
+			return NavigationItem.New(icon, displayName, data, position, category, hidden);
 		}
 
 		protected Supplier<Component> resolveIcon(final Class<? extends Component> target)

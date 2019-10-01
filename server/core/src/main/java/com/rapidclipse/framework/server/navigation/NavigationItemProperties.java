@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.navigation;
 
 import java.lang.annotation.ElementType;
@@ -38,8 +39,10 @@ import java.lang.annotation.Target;
 public @interface NavigationItemProperties
 {
 	int position() default -1;
-	
+
 	String category() default "";
-	
+
 	String displayName() default "";
+
+	boolean hidden() default false;
 }
