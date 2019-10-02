@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.resources;
 
 import java.io.File;
@@ -45,7 +46,7 @@ public class ApplicationResource extends StreamResource
 	{
 		super(getFileName(path), () -> createInputStream(requestor, path));
 	}
-	
+
 	private static String getFileName(final String path)
 	{
 		int i = path.lastIndexOf('/');
@@ -59,7 +60,7 @@ public class ApplicationResource extends StreamResource
 		}
 		return path;
 	}
-	
+
 	public static InputStream createInputStream(final Class<?> requestor, final String path)
 	{
 		InputStream stream = getInputStream(requestor, path);
@@ -67,7 +68,7 @@ public class ApplicationResource extends StreamResource
 		{
 			return stream;
 		}
-		
+
 		final String webContent = "WebContent/";
 		if(path.startsWith(webContent))
 		{
@@ -77,10 +78,10 @@ public class ApplicationResource extends StreamResource
 				return stream;
 			}
 		}
-		
+
 		throw new RuntimeException("'" + path + "' could not be found in application.");
 	}
-	
+
 	private static InputStream getInputStream(final Class<?> requestor, final String path)
 	{
 		try
@@ -95,21 +96,28 @@ public class ApplicationResource extends StreamResource
 		catch(final IOException e)
 		{
 		}
-		
+
 		Class<?> clazz = requestor;
 		if(clazz == null)
 		{
 			clazz = ApplicationResource.class;
 		}
-		final InputStream stream = clazz.getResourceAsStream(path);
-		if(stream != null)
+		InputStream stream = clazz.getResourceAsStream(path);
+		if(stream == null)
 		{
-			return stream;
+			if(path.startsWith("/"))
+			{
+				stream = clazz.getResourceAsStream(path.substring(1));
+			}
+			else
+			{
+				stream = clazz.getResourceAsStream("/" + path);
+			}
 		}
-		
-		return null;
+
+		return stream;
 	}
-	
+
 	private static String getRootPath(final ServletContext servletContext)
 		throws MalformedURLException
 	{
@@ -118,7 +126,7 @@ public class ApplicationResource extends StreamResource
 		{
 			return rootPath;
 		}
-		
+
 		return servletContext.getResource("/").getFile();
 	}
 }
