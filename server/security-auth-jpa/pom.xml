@@ -40,6 +40,7 @@
 	<artifactId>rap-server-security-auth-jpa</artifactId>
 
 	<name>Rapid Application Platform / Server / Security / Authentication and Authorization / JPA</name>
+	<description>Rapid Application Platform / Server / Security / Authentication and Authorization / JPA</description>
 
 	<url>http://www.rapidclipse.com</url>
 	<scm>

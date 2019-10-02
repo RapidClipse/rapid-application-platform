@@ -40,6 +40,7 @@
 	<artifactId>rap-security-auth</artifactId>
 
 	<name>Rapid Application Platform / Security / Authentication and Authorization</name>
+	<description>Rapid Application Platform / Security / Authentication and Authorization</description>
 
 	<url>http://www.rapidclipse.com</url>
 	<scm>
