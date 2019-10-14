@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.action;
 
 import java.io.Serializable;
@@ -56,17 +57,17 @@ public final class ActionRegistry implements Serializable
 	{
 		getCurrent().getAction(actionType).connectWith(component);
 	}
-	
+
 	private final static List<Class<? extends Action>>                              actionTypes          =
 		new ArrayList<>();
 	private final static Map<Class<? extends Action.ContextSensitive<?>>, Class<?>> actionContextMapping =
 		new HashMap<>();
-	
+
 	static void registerActionType(final Class<? extends Action> type)
 	{
 		actionTypes.add(type);
 	}
-	
+
 	private static Class<?> getContextType(final Class<? extends Action.ContextSensitive<?>> contextSensitiveType)
 	{
 		if(!actionContextMapping.containsKey(contextSensitiveType))
@@ -75,7 +76,7 @@ public final class ActionRegistry implements Serializable
 		}
 		return actionContextMapping.get(contextSensitiveType);
 	}
-	
+
 	private static Class<?> resolveContextType(final Class<? extends Action.ContextSensitive<?>> contextSensitiveType)
 	{
 		Type type = GenericTypeReflector.getExactSuperType(contextSensitiveType, ContextSensitive.class);
@@ -99,14 +100,14 @@ public final class ActionRegistry implements Serializable
 			contextSensitiveType.getName() + " implements " + ContextSensitive.class.getName()
 				+ " without type parameter");
 	}
-	
+
 	private final Map<Class<? extends Action>, Action> registry       = new HashMap<>();
 	private final Map<Class<?>, Object>                activeContexts = new HashMap<>();
-	
+
 	private ActionRegistry(final VaadinSession session)
 	{
 		super();
-		
+
 		for(final Class<? extends Action> type : actionTypes)
 		{
 			try
@@ -120,46 +121,37 @@ public final class ActionRegistry implements Serializable
 			}
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public <A extends Action> A getAction(final Class<A> type)
 	{
 		return (A)this.registry.get(type);
 	}
-	
+
 	void updateActions(final List<HasElement> activeChain)
 	{
 		this.activeContexts.clear();
-		
+
 		this.registry.values().stream()
 			.filter(Action.ContextSensitive.class::isInstance)
 			.map(Action.ContextSensitive.class::cast)
 			.forEach(action -> {
-				
+
 				final Class<?> type = getContextType(action);
-				final Object context = activeChain.stream()
+				activeChain.stream()
 					.filter(type::isInstance)
-					.map(type::cast)
 					.findFirst()
-					.orElse(null);
-				if(context != null)
-				{
-					this.activeContexts.put(type, context);
-					action.setEnabled(true);
-				}
-				else
-				{
-					action.setEnabled(false);
-				}
+					.ifPresent(context -> this.activeContexts.put(type, context));
+				action.updateConnectedComponents();
 			});
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	<C> C getContext(final Action.ContextSensitive<?> action)
 	{
 		return (C)this.activeContexts.get(getContextType(action));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private Class<?> getContextType(final Action.ContextSensitive<?> action)
 	{

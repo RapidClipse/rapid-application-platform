@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.action;
 
 import java.io.Serializable;
@@ -56,70 +57,72 @@ import com.vaadin.flow.shared.Registration;
 public interface Action extends Serializable
 {
 	public String getText();
-	
+
 	public Action setText(String text);
-	
+
 	public SerializableSupplier<Component> getIcon();
-	
+
 	public Action setIcon(SerializableSupplier<Component> icon);
-	
+
 	public default Action setIcon(final IconFactory factory)
 	{
 		return setIcon((SerializableSupplier<Component>)factory::create);
 	}
-	
+
 	public default Action setIcon(final IronIconEnum ironIcon)
 	{
 		return setIcon((SerializableSupplier<Component>)ironIcon::create);
 	}
-	
+
 	public Key getShortcutKey();
-	
+
 	public Action setShortcutKey(Key shortcutKey);
-	
+
 	public Collection<KeyModifier> getShortcutKeyModifiers();
-	
+
 	public Action setShortcutKeyModifiers(Collection<KeyModifier> shortcutKeyModifiers);
-	
+
 	public default Action setShortcutKeyModifiers(final KeyModifier... shortcutKeyModifiers)
 	{
 		setShortcutKeyModifiers(Arrays.asList(shortcutKeyModifiers));
 		return this;
 	}
-	
+
 	public default Action setShortcut(final Key shortcutKey, final KeyModifier... shortcutKeyModifiers)
 	{
 		return setShortcutKey(shortcutKey).setShortcutKeyModifiers(shortcutKeyModifiers);
 	}
-	
+
 	public boolean isEnabled();
-	
+
 	public Action setEnabled(boolean b);
-	
+
 	public void execute(ComponentEvent<?> event);
-	
+
 	public <C extends Component & ClickNotifier<?>> Registration connectWith(C component);
-	
+
+	public void updateConnectedComponents();
+
 	public static abstract class Abstract implements Action
 	{
 		private String                                     text;
 		private SerializableSupplier<Component>            icon;
 		private Key                                        shortcutKey;
 		private Collection<KeyModifier>                    shortcutKeyModifiers;
-		private boolean                                    enabled;
+		private boolean                                    enabled             = true;
 		private final Map<Component, ShortcutRegistration> connectedComponents = new HashMap<>();
-		
+
 		protected Abstract()
 		{
 			super();
 		}
-		
+
 		@Override
 		public String getText()
 		{
 			return this.text;
 		}
-		
+
 		@Override
 		public Action setText(final String text)
 		{
@@ -128,16 +131,16 @@ public interface Action extends Serializable
 				this.text = text;
 				updateConnectedComponents();
 			}
-			
+
 			return this;
 		}
-		
+
 		@Override
 		public SerializableSupplier<Component> getIcon()
 		{
 			return this.icon;
 		}
-		
+
 		@Override
 		public Action setIcon(final SerializableSupplier<Component> icon)
 		{
@@ -146,16 +149,16 @@ public interface Action extends Serializable
 				this.icon = icon;
 				updateConnectedComponents();
 			}
-			
+
 			return this;
 		}
-		
+
 		@Override
 		public Key getShortcutKey()
 		{
 			return this.shortcutKey;
 		}
-		
+
 		@Override
 		public Action setShortcutKey(final Key shortcutKey)
 		{
@@ -166,7 +169,7 @@ public interface Action extends Serializable
 			}
 			return this;
 		}
-		
+
 		@Override
 		public Collection<KeyModifier> getShortcutKeyModifiers()
 		{
@@ -174,7 +177,7 @@ public interface Action extends Serializable
 				? this.shortcutKeyModifiers
 				: Collections.emptyList();
 		}
-		
+
 		@Override
 		public Action setShortcutKeyModifiers(final Collection<KeyModifier> shortcutKeyModifiers)
 		{
@@ -187,13 +190,13 @@ public interface Action extends Serializable
 			}
 			return this;
 		}
-		
+
 		@Override
 		public boolean isEnabled()
 		{
 			return this.enabled;
 		}
-		
+
 		@Override
 		public Action setEnabled(final boolean enabled)
 		{
@@ -204,18 +207,18 @@ public interface Action extends Serializable
 			}
 			return this;
 		}
-		
+
 		@Override
 		public <C extends Component & ClickNotifier<?>> Registration connectWith(final C component)
 		{
 			final Registration clickRegistration = component.addClickListener(Abstract.this::execute);
-			
+
 			this.connectedComponents.put(component, null);
-			
+
 			updateComponent(component);
-			
+
 			return () -> {
-				
+
 				final ShortcutRegistration shortcutRegistration = this.connectedComponents.remove(component);
 				if(shortcutRegistration != null)
 				{
@@ -224,19 +227,20 @@ public interface Action extends Serializable
 				}
 			};
 		}
-		
-		protected void updateConnectedComponents()
+
+		@Override
+		public void updateConnectedComponents()
 		{
 			this.connectedComponents.keySet().forEach(this::updateComponent);
 		}
-		
+
 		protected void updateComponent(final Component component)
 		{
 			if(component instanceof HasText)
 			{
 				((HasText)component).setText(getText());
 			}
-			
+
 			// Interface HasIcon still missing
 			if(component instanceof Button)
 			{
@@ -248,12 +252,19 @@ public interface Action extends Serializable
 					button.setIcon(icon);
 				}
 			}
-			
+
 			if(component instanceof HasEnabled)
 			{
-				((HasEnabled)component).setEnabled(isEnabled());
+				boolean enabled = isEnabled();
+				if(enabled
+					&& this instanceof ContextSensitive
+					&& ((ContextSensitive<?>)this).getContext() == null)
+				{
+					enabled = false;
+				}
+				((HasEnabled)component).setEnabled(enabled);
 			}
-			
+
 			final ShortcutRegistration shortcutRegistration = this.connectedComponents.get(component);
 			if(shortcutRegistration == null)
 			{
@@ -265,13 +276,13 @@ public interface Action extends Serializable
 				updateShortcutRegistration(component);
 			}
 		}
-		
+
 		protected boolean equalsShortcut(final ShortcutRegistration reg)
 		{
 			return Objects.equals(this.shortcutKey, reg.getKey()) &&
 				Arrays.equals(getShortcutKeyModifiers().toArray(), reg.getModifiers().toArray());
 		}
-		
+
 		protected void updateShortcutRegistration(final Component component)
 		{
 			final Key shortcutKey = getShortcutKey();
@@ -286,7 +297,7 @@ public interface Action extends Serializable
 			}
 		}
 	}
-	
+
 	public static interface ContextSensitive<C> extends Action
 	{
 		public default C getContext()
