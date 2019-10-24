@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
 import static java.util.stream.Collectors.toList;
@@ -37,7 +38,7 @@ import com.vaadin.flow.component.HasValue.ValueChangeEvent;
 import com.vaadin.flow.component.HasValue.ValueChangeListener;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.shared.Registration;
 
 
@@ -46,7 +47,7 @@ import com.vaadin.flow.shared.Registration;
  *
  */
 @SuppressWarnings("rawtypes")
-public class FilterEntryEditor extends HorizontalLayout
+public class FilterEntryEditor extends FormLayout
 {
 	private final FilterContext context;
 	
@@ -85,7 +86,7 @@ public class FilterEntryEditor extends HorizontalLayout
 		this.operatorComboBox.setVisible(false);
 		
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
-		
+
 		add(this.propertyComboBox, this.operatorComboBox);
 	}
 	
