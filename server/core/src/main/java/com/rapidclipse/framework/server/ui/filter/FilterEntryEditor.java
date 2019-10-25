@@ -63,8 +63,9 @@ public class FilterEntryEditor extends FormLayout
 	public FilterEntryEditor(final FilterContext context, final Runnable filterChangeHandler)
 	{
 		super();
-		
+		setResponsiveSteps();
 		this.context = context;
+		this.setWidthFull();
 		
 		this.propertyComboBox = createPropertyComboBox();
 		this.propertyComboBox.setItems(context.getFilterSubject().filterableProperties());
@@ -86,8 +87,8 @@ public class FilterEntryEditor extends FormLayout
 		this.operatorComboBox.setVisible(false);
 		
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
-
 		add(this.propertyComboBox, this.operatorComboBox);
+		
 	}
 	
 	protected ComboBox<FilterProperty<?>> createPropertyComboBox()
@@ -97,6 +98,13 @@ public class FilterEntryEditor extends FormLayout
 		combo.setAllowCustomValue(false);
 		combo.setPlaceholder(getComboBoxPlaceholder());
 		return combo;
+	}
+	
+	protected void setResponsiveSteps()
+	{
+		this.setResponsiveSteps(new ResponsiveStep("0", 1),
+			new ResponsiveStep("800", 2),
+			new ResponsiveStep("1000", 3));
 	}
 	
 	protected ComboBox<FilterOperator> createOperatorComboBox()

@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server;
 
 import static com.rapidclipse.framework.server.util.StacktraceUtils.cutStacktraceByOne;

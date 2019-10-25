@@ -1,0 +1,34 @@
+.checkbox {
+	font-size: 23px;
+	min-height: 5px;
+	min-width: 5px;
+	height: 30px;
+	width: 40px;
+}
+
+.deleteButton {
+	min-height: 5px;
+	min-width: 5px;
+	width: 25px;
+	height: 25px;
+}
+
+.finalLayout {
+	align-items: center;
+	width: 100%;
+}
+
+.filterEntryRow {
+	margin-left: 5px;
+	width: 100%;
+
+}
+
+.finalButtonLayout {
+	max-width: 50px;
+	align-items: center;
+}
+
+.editor {
+	width: 100%;
+}

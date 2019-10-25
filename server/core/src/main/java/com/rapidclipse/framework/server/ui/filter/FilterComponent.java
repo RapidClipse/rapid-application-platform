@@ -44,8 +44,9 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -65,6 +66,7 @@ import com.vaadin.flow.shared.Registration;
  * @author XDEV Software
  *
  */
+@StyleSheet("FilterComponent.css")
 public class FilterComponent
 	extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
 	implements FilterContext, HasSize
@@ -112,6 +114,7 @@ public class FilterComponent
 		this.searchTextField.setEnabled(false);
 
 		this.hideFilterButton = createHideFilterButton();
+		this.hideFilterButton.addClassName("hideFilterButton");
 		this.hideFilterButton.addClickListener(listener -> hideButtonClickListener());
 
 		this.addFilterButton = createAddFilterButton();
@@ -119,7 +122,8 @@ public class FilterComponent
 		this.addFilterButton.setEnabled(false);
 
 		this.filterDiv.setVisible(true);
-		
+		this.filterDiv.setWidthFull();
+
 		final HorizontalLayout searchBar = new HorizontalLayout(this.searchTextField, this.hideFilterButton,
 			this.addFilterButton);
 		searchBar.setMargin(false);
@@ -145,7 +149,7 @@ public class FilterComponent
 			closeDiv();
 		}
 	}
-	
+
 	protected void openDiv()
 	{
 		this.hideFilterButton.setIcon(VaadinIcon.ANGLE_DOUBLE_DOWN.create());
@@ -167,7 +171,7 @@ public class FilterComponent
 		button.setOpen(false);
 		return button;
 	}
-	
+
 	protected TextField createSearchTextField()
 	{
 		final TextField textField = new TextField();
@@ -373,25 +377,25 @@ public class FilterComponent
 
 	protected FilterEntryEditor addFilterEntryEditor(final int index)
 	{
-		final FilterEntryEditor editor       = new FilterEntryEditor(this, this::updateFilterData);
-		final Checkbox          checkbox     = new Checkbox();
-		final Button            deleteButton = new Button();
+		final FilterEntryEditor editor = new FilterEntryEditor(this, this::updateFilterData);
+		editor.addClassName("editor");
+		final Checkbox checkbox = new Checkbox();
+		checkbox.addClassName("checkbox");
+		final Button deleteButton = new Button();
+		deleteButton.addClassName("deleteButton");
 		deleteButton.setIcon(VaadinIcon.MINUS.create());
 		UI.getCurrent().getPage().retrieveExtendedClientDetails(detail -> {
 			if(detail.getBodyClientWidth() <= 800)
 			{
-
 				final Dialog dialog = new Dialog(new Label("Test"));
 				dialog.setCloseOnEsc(false);
 				dialog.setCloseOnOutsideClick(true);
 
 				Notification.show("Under800: " + detail.getBodyClientWidth());
 
-				editor.setWidth("100%");
-
 				this.filterEntryEditors.add(index, editor);
-				
-				final FormLayout filterEntryRow = new FormLayout(editor);
+
+				final HorizontalLayout filterEntryRow = new HorizontalLayout(editor);
 
 				final NativeButton confirmButton = new NativeButton("Übernehmen", event -> {
 					// +1 because of search bar at top
@@ -404,28 +408,28 @@ public class FilterComponent
 					}
 				});
 
+				confirmButton.addClassName("confirmButton");
 				dialog.add(filterEntryRow, confirmButton);
 				dialog.open();
 			}
 			else if(detail.getBodyClientWidth() > 800)
 			{
-				Notification.show("Over800");
 
-				editor.setWidth("100%");
+				/*
+				 * TODO: JavaScript nutzen, um das Zeug responsive zu designen ...
+				 * Außerdem nachsehen, warum die CSS nicht eingebunden wird.
+				 */
+
+				openDiv();
 				this.filterEntryEditors.add(index, editor);
 
-				final Button addFilterButton = createAddFilterButton();
-				addFilterButton.addClickListener(event -> addFilterEntryEditor(index + 1));
-
 				final Button removeFilterButton = createRemoveFilterButton();
-				removeFilterButton.addClickListener(event -> removeFilterEntryEditor(editor));
-				
-				final VerticalLayout buttonLayout = new VerticalLayout();
-				buttonLayout.add(addFilterButton, removeFilterButton);
 
-				final FormLayout filterEntryRow = new FormLayout(editor, buttonLayout);
+				final HorizontalLayout filterEntryRow = new HorizontalLayout(editor);
+
 				// +1 because of search bar at top
-				this.filterDiv.addComponentAtIndex(index, filterEntryRow);
+				this.filterDiv.addComponentAtIndex(index,
+					createFinalRow(removeFilterButton, checkbox, filterEntryRow, editor, index));
 
 			}
 
@@ -434,52 +438,52 @@ public class FilterComponent
 
 	}
 
-	protected FormLayout createFinalRow(
+	/**
+	 * @param removeFilterButton
+	 * @param checkbox
+	 * @param filterEntryRow
+	 * @param editor
+	 * @param index
+	 * @return
+	 */
+	private Component createFinalRow(
 		final Button deleteButton,
 		final Checkbox checkbox,
-		final FormLayout filterEntryRow,
+		final HorizontalLayout filterEntryRow,
 		final FilterEntryEditor editor,
 		final int index)
 	{
-		
 		defineCheckBox(checkbox);
 		checkbox
 			.addValueChangeListener(listener -> checkboxValueChanceForEntryEditor(checkbox, index, editor));
-		
+
 		defineDeleteButton(deleteButton);
 		deleteButton.addClickListener(listener -> deleteButtonClickListener(editor));
 
-		final HorizontalLayout finalButtonLayout = new HorizontalLayout();
+		final VerticalLayout finalButtonLayout = new VerticalLayout();
+		finalButtonLayout.addClassName("finalButtonLayout");
 		finalButtonLayout.add(checkbox, deleteButton);
 
-		filterEntryRow.setEnabled(false);
+		filterEntryRow.setEnabled(true);
+		filterEntryRow.addClassName("filterEntryRow");
 
-		final FormLayout finalLayout = new FormLayout();
+		final HorizontalLayout finalLayout = new HorizontalLayout();
 		finalLayout.add(finalButtonLayout, filterEntryRow);
-		finalLayout.setId("" + index);
+		finalLayout.addClassName("finalLayout");
 		return finalLayout;
 	}
 
 	protected void defineCheckBox(final Checkbox checkbox)
 	{
 		checkbox.setValue(true);
-		checkbox.getStyle().set("font-size", "23px");
-		checkbox.setMinHeight("5px");
-		checkbox.setMinWidth("5px");
-		checkbox.setWidth("25px");
-		checkbox.setHeight("25px");
 	}
 
 	protected void defineDeleteButton(final Button deleteButton)
 	{
-		deleteButton.setMinHeight("5px");
-		deleteButton.setMinWidth("5px");
-		deleteButton.setWidth("25px");
-		deleteButton.setHeight("25px");
-		deleteButton.getStyle().set("background-color", "red");
-		deleteButton.getStyle().set("color", "black");
+		deleteButton.setIcon(VaadinIcon.MINUS.create());
+
 	}
-	
+
 	protected void deleteButtonClickListener(final FilterEntryEditor editor)
 	{
 		final Dialog       dialog       = new Dialog(new Label("Wollen Sie diese Zeile wirklich lösen?"));
@@ -529,7 +533,7 @@ public class FilterComponent
 
 	protected void removeFilterEntryEditorComponent(final FilterEntryEditor editor)
 	{
-		
+
 		final Component filterEntryRow = editor.getParent().get();
 		final Component finalRow       = filterEntryRow.getParent().get();
 		this.filterDiv.remove(finalRow);
