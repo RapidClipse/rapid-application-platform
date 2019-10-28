@@ -85,8 +85,9 @@ public class FilterEntryEditor extends FormLayout
 			filterChangeHandler.run();
 		});
 		this.operatorComboBox.setVisible(false);
-		
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
+		this.propertyComboBox.addClassName("propertyComboBox");
+		this.operatorComboBox.addClassName("operatorComboBox");
 		add(this.propertyComboBox, this.operatorComboBox);
 		
 	}
@@ -204,7 +205,6 @@ public class FilterEntryEditor extends FormLayout
 			{
 				this.valueEditors.get(i).setValue(lastValues.get(i));
 			}
-			
 			this.valueEditorRegistrations = this.valueEditors.stream().map(editor -> {
 				final HasValueAndElement<?, ?> component = editor.component();
 				add((Component)component);

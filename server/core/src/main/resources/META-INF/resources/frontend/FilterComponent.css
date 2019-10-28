@@ -32,3 +32,44 @@
 .editor {
 	width: 100%;
 }
+
+div[part="overlay"] {
+	background: blue !important;
+}
+
+@media only screen and (min-width: 727px) {
+
+	vaadin-combo-box {
+		width: calc(49.95% - 1rem) !important;
+		margin-right: 10px !important;
+	}
+
+	.TextFieldWithNull {
+		width: calc(49.95% - 1rem) !important;
+	}
+
+	vaadin-date-picker {
+		width: calc(49.95% - 1rem) !important;
+		margin-right: 10px !important;
+	}
+
+}
+
+@media only screen and (min-width: 900px) {
+
+	vaadin-combo-box {
+		width: calc(33% - 1rem) !important;
+		margin-right: 10px !important;
+	}
+
+	.TextFieldWithNull {
+		width: calc(33% - 1rem) !important;
+	}
+
+	vaadin-date-picker {
+		width: calc(33% - 1rem) !important;
+		margin-right: 10px !important;
+	}
+
+}
+

@@ -44,15 +44,15 @@ import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.dialog.Dialog;
-import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -67,6 +67,7 @@ import com.vaadin.flow.shared.Registration;
  *
  */
 @StyleSheet("FilterComponent.css")
+@JavaScript("FilterComponent.js")
 public class FilterComponent
 	extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
 	implements FilterContext, HasSize
@@ -94,6 +95,7 @@ public class FilterComponent
 	private HideButton                    hideFilterButton;
 	private final Div                     filterDiv          = new Div();
 	private final List<FilterEntryEditor> filterEntryEditors = new ArrayList<>();
+	private int                           index              = 0;
 
 	public FilterComponent()
 	{
@@ -118,7 +120,7 @@ public class FilterComponent
 		this.hideFilterButton.addClickListener(listener -> hideButtonClickListener());
 
 		this.addFilterButton = createAddFilterButton();
-		this.addFilterButton.addClickListener(event -> addFilterEntryEditor(0));
+		this.addFilterButton.addClickListener(event -> addFilterEntryEditor(this.index));
 		this.addFilterButton.setEnabled(false);
 
 		this.filterDiv.setVisible(true);
@@ -391,8 +393,6 @@ public class FilterComponent
 				dialog.setCloseOnEsc(false);
 				dialog.setCloseOnOutsideClick(true);
 
-				Notification.show("Under800: " + detail.getBodyClientWidth());
-
 				this.filterEntryEditors.add(index, editor);
 
 				final HorizontalLayout filterEntryRow = new HorizontalLayout(editor);
@@ -415,18 +415,13 @@ public class FilterComponent
 			else if(detail.getBodyClientWidth() > 800)
 			{
 
-				/*
-				 * TODO: JavaScript nutzen, um das Zeug responsive zu designen ...
-				 * Außerdem nachsehen, warum die CSS nicht eingebunden wird.
-				 */
-
 				openDiv();
 				this.filterEntryEditors.add(index, editor);
 
 				final Button removeFilterButton = createRemoveFilterButton();
 
 				final HorizontalLayout filterEntryRow = new HorizontalLayout(editor);
-
+				
 				// +1 because of search bar at top
 				this.filterDiv.addComponentAtIndex(index,
 					createFinalRow(removeFilterButton, checkbox, filterEntryRow, editor, index));
@@ -460,7 +455,7 @@ public class FilterComponent
 		defineDeleteButton(deleteButton);
 		deleteButton.addClickListener(listener -> deleteButtonClickListener(editor));
 
-		final VerticalLayout finalButtonLayout = new VerticalLayout();
+		final FormLayout finalButtonLayout = new FormLayout();
 		finalButtonLayout.addClassName("finalButtonLayout");
 		finalButtonLayout.add(checkbox, deleteButton);
 
@@ -468,8 +463,9 @@ public class FilterComponent
 		filterEntryRow.addClassName("filterEntryRow");
 
 		final HorizontalLayout finalLayout = new HorizontalLayout();
-		finalLayout.add(finalButtonLayout, filterEntryRow);
+		finalLayout.add(filterEntryRow, finalButtonLayout);
 		finalLayout.addClassName("finalLayout");
+		this.index++;
 		return finalLayout;
 	}
 
@@ -489,6 +485,7 @@ public class FilterComponent
 		final Dialog       dialog       = new Dialog(new Label("Wollen Sie diese Zeile wirklich lösen?"));
 		final NativeButton deleteButton = new NativeButton("Ja", event -> {
 											removeFilterEntryEditor(editor);
+											this.index--;
 											dialog.close();
 										});
 		final NativeButton cancelButton = new NativeButton("Nein", event -> dialog.close());

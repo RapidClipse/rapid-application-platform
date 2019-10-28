@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui;
 
 import com.vaadin.flow.component.textfield.TextField;
@@ -35,6 +36,10 @@ import com.vaadin.flow.component.textfield.TextField;
  */
 public class TextFieldWithNull extends TextField
 {
+	{
+		addClassName("TextFieldWithNull");
+	}
+	
 	/**
 	 *
 	 */
@@ -42,7 +47,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super();
 	}
-	
+
 	/**
 	 * @param label
 	 * @param initialValue
@@ -55,7 +60,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(label, initialValue, placeholder);
 	}
-	
+
 	/**
 	 * @param label
 	 * @param initialValue
@@ -68,7 +73,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(label, initialValue, listener);
 	}
-	
+
 	/**
 	 * @param label
 	 * @param placeholder
@@ -77,7 +82,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(label, placeholder);
 	}
-	
+
 	/**
 	 * @param label
 	 * @param listener
@@ -88,7 +93,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(label, listener);
 	}
-	
+
 	/**
 	 * @param label
 	 */
@@ -96,7 +101,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(label);
 	}
-	
+
 	/**
 	 * @param listener
 	 */
@@ -105,7 +110,7 @@ public class TextFieldWithNull extends TextField
 	{
 		super(listener);
 	}
-	
+
 	@Override
 	public void setValue(final String value)
 	{
