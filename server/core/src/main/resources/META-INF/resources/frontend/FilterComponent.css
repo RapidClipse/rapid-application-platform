@@ -1,21 +1,28 @@
+:root {
+	--dieter: 727px;
+	--hans: 1000px;
+}
+
+.filterDivLabel{
+	background: lightblue;
+}
 .checkbox {
-	font-size: 23px;
-	min-height: 5px;
-	min-width: 5px;
-	height: 30px;
-	width: 40px;
+	font-size: 30px;
+	margin-left: -5.5px !important;
+	height: 2.5rem !important;
 }
 
 .deleteButton {
 	min-height: 5px;
 	min-width: 5px;
-	width: 25px;
-	height: 25px;
+	width: 2rem !important;
+	height: 2rem !important;
 }
 
 .finalLayout {
 	align-items: center;
 	width: 100%;
+	margin-left: 10px;
 }
 
 .filterEntryRow {
@@ -25,7 +32,7 @@
 }
 
 .finalButtonLayout {
-	max-width: 50px;
+	max-width: 100px;
 	align-items: center;
 }
 
@@ -33,12 +40,62 @@
 	width: 100%;
 }
 
-div[part="overlay"] {
-	background: blue !important;
+.operatorComboBox {
+	width: 99.99% ;
+	margin-left: 0px ;
+}
+
+#overlay::part(overlay) {
+	width: 500px !important;
+}
+
+.confirmButton:hover {
+	color: green;
+
+}
+
+.cancelButton:hover {
+	color: red;
+}
+
+.deleteButton:hover {
+	color: green;
+}
+
+@media only screen and (min-width:0px) {
+	.deleteButton {
+		top: 0px;
+	}
+
+	.checkbox {
+		margin-right: 0px !important;
+		width: calc(99.95% - 0rem) !important;
+	}
+}
+
+@media only screen and (min-width: 1000px) {
+	.deleteButton {
+		top: -8px !important;
+		margin-left: 10px !important;
+		margin-right: 10px !important;
+	}
+
+	.checkbox {
+		margin-right: 0px !important;
+		width: calc(49.95% - 0.5rem) !important;
+	}
+
+	.finalButtonLayout {
+		margin-right: 0px !important;
+	}
 }
 
 @media only screen and (min-width: 727px) {
 
+	.operatorComboBox {
+		width: calc(49.95% - 1rem);
+	}
+
 	vaadin-combo-box {
 		width: calc(49.95% - 1rem) !important;
 		margin-right: 10px !important;
@@ -55,7 +112,11 @@ div[part="overlay"] {
 
 }
 
-@media only screen and (min-width: 900px) {
+@media only screen and (min-width: 1000px) {
+
+	.operatorComboBox {
+		width: calc(33% - 1rem);
+	}
 
 	vaadin-combo-box {
 		width: calc(33% - 1rem) !important;
@@ -72,4 +133,3 @@ div[part="overlay"] {
 	}
 
 }
-
