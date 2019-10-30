@@ -21,8 +21,10 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.authentication;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -115,7 +117,9 @@ public final class InMemoryAuthenticator
 	public final boolean authenticate(final String username, final String password)
 		throws AuthenticationFailedException
 	{
-		return this.authenticate(CredentialsUsernamePassword.New(username, password.getBytes()));
+		return this.authenticate(CredentialsUsernamePassword.New(
+			username,
+			password.getBytes(StandardCharsets.UTF_8)));
 	}
 	
 	///////////////////////////////////////////////////////////////////////////
@@ -146,7 +150,8 @@ public final class InMemoryAuthenticator
 		 * intentionally NOT give any clue about why username and password are
 		 * not valid.
 		 */
-		return storedPassword != null && storedPassword.equals(new String(credentials.password()));
+		return storedPassword != null
+			&& storedPassword.equals(new String(credentials.password(), StandardCharsets.UTF_8));
 	}
 	
 	/**
