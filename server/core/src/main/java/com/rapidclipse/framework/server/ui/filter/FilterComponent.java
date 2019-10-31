@@ -38,7 +38,6 @@ import com.rapidclipse.framework.server.data.filter.Composite.Connector;
 import com.rapidclipse.framework.server.data.filter.Filter;
 import com.rapidclipse.framework.server.data.provider.DataProviderFilterAdapter;
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
-import com.rapidclipse.framework.server.ui.TextFieldWithNull;
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.component.AbstractCompositeField;
 import com.vaadin.flow.component.Component;
@@ -47,7 +46,6 @@ import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
-import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -56,7 +54,6 @@ import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
@@ -98,15 +95,15 @@ public class FilterComponent
 	private Button                        addFilterButton;
 	private HideButton                    hideFilterButton;
 	private Div                           filterDivComboBox;
-	private Div                           filterDivLabel;
+	private Div                           filterDivLabel     = new Div();
 	private final List<FilterEntryEditor> filterEntryEditors = new ArrayList<>();
 	private int                           index              = 0;
 	private int                           width;
 	
-	private String                      filterProperty = "";
-	private String                      filterOperator = "";
-	private String                      thirdBox       = "";
-	private String                      fourthBox      = "";
+	protected String                    filterProperty = "";
+	protected String                    filterOperator = "";
+	protected final String              thirdBox       = "";
+	protected final String              fourthBox      = "";
 	private final int                   comboIndex     = 0;
 	HashMap<Integer, FilterEntryEditor> editors        = new HashMap<>();
 	private final List<Label>           labels         = new ArrayList<>();
@@ -187,7 +184,7 @@ public class FilterComponent
 		filter.addClassName("filterDivLabel");
 		return filter;
 	}
-
+	
 	private Div createFilterDivComboBox()
 	{
 		final Div filter = new Div();
@@ -483,13 +480,16 @@ public class FilterComponent
 			// +1 because of search bar at top
 			this.filterDivComboBox.addComponentAtIndex(index,
 				createFinalRow(deleteButton, checkbox, filterEntryRow, editor, index));
+			this.filterDivLabel.addComponentAtIndex(index,
+				createFinalRowLabel(editor, index));
 			
 		}
 		// this.filterDivLabel.addComponentAtIndex(index,);
+		this.index++;
 		return editor;
 		
 	}
-
+	
 	private Button createDeleteButton()
 	{
 		final Button button = new Button();
@@ -536,13 +536,37 @@ public class FilterComponent
 		}
 	}
 	
+	private String getSelectedOperator(final FilterEntryEditor editor)
+	{
+		if(editor.getSelectedOperator().name().equals(null))
+		{
+			return "";
+		}
+		return editor.getSelectedOperator().name();
+	}
+	
+	private String getSelectedProperty(final FilterEntryEditor editor)
+	{
+		if(editor.getSelectedProperty().caption() == null)
+		{
+			return "";
+		}
+		return editor.getSelectedProperty().caption();
+	}
+	
 	/**
-	 * @param removeFilterButton
-	 * @param checkbox
-	 * @param filterEntryRow
-	 * @param editor
+	 * Creates the Row which is seen from the User.
+	 *
+	 *
+	 * @param removeFilterButton:
+	 *            A Button which will be more defined in this method -> DeleteButton
+	 * @param checkbox:
+	 *            A Checkbox which will be more defined in this method -> Checkbox to temporarily uncheck a filter
+	 * @param filterEntryRow:
+	 * @param editor:
+	 *            The FilterEntryEditor from which you want to create a row
 	 * @param index
-	 * @return
+	 * @return finalLayout: A Horizontal Layout
 	 */
 	private Component createFinalRow(
 		final Button deleteButton,
@@ -569,7 +593,6 @@ public class FilterComponent
 		final HorizontalLayout finalLayout = new HorizontalLayout();
 		finalLayout.add(filterEntryRow, finalButtonLayout);
 		finalLayout.addClassName("finalLayout");
-		this.index++;
 		return finalLayout;
 	}
 	
@@ -614,10 +637,16 @@ public class FilterComponent
 			dialog.close();
 		});
 		button.addClassName("deleteButton");
-		
 		return button;
 	}
 	
+	/**
+	 * Creates the Cancel Button within an PopUp Dialog.
+	 *
+	 * @param dialog:
+	 *            The given PopUp Dialog
+	 * @return A Button you can click on
+	 */
 	private Button createCancelButton(final Dialog dialog)
 	{
 		final Button button = new Button();
@@ -778,105 +807,10 @@ public class FilterComponent
 		return Composite.New(getFilterPropertiesConnector(), valueFilters);
 	}
 	
-	@SuppressWarnings({"unlikely-arg-type", "null"})
-	private Div comboBoxToLabel()
-	{
-		final Div div = new Div();
-		for(final Object wholeRow : this.filterDivComboBox.getChildren().toArray())
-		{
-			try
-			{
-				
-				final FormLayout editor        = getEditor(wholeRow, this.comboIndex);
-				int              comboBoxCount = 0;
-				for(final Object comboBox : editor.getChildren().toArray())
-				{
-					if(comboBoxCount < 2)
-					{
-						try
-						{
-							final ComboBox<?> combo = (ComboBox<?>)comboBox;
-							
-							if(comboBoxCount == 0)
-							{
-								final FilterProperty<?> property = (FilterProperty<?>)combo.getValue();
-								this.filterProperty = property.caption();
-								comboBoxCount++;
-							}
-							else if(comboBoxCount == 1)
-							{
-								final FilterOperator operator = (FilterOperator)combo.getValue();
-								this.filterOperator = operator.name();
-								comboBoxCount++;
-							}
-							
-						}
-						catch(final Exception e)
-						{
-							throw e;
-						}
-					}
-					else if(comboBoxCount == 2)
-					{
-						TextFieldWithNull compareText = new TextFieldWithNull();
-						DatePicker        compareDate = new DatePicker();
-						if(comboBox.getClass().equals(compareText.getClass()))
-						{
-							compareText = (TextFieldWithNull)comboBox;
-							
-							this.thirdBox = compareText.getValue();
-							comboBoxCount++;
-						}
-						else if(comboBox.getClass().equals(compareDate.getClass()))
-						{
-							compareDate   = (DatePicker)comboBox;
-							this.thirdBox = compareDate.getValue().toString();
-							comboBoxCount++;
-						}
-					}
-					else if(comboBoxCount == 3)
-					{
-						DatePicker compareDate = new DatePicker();
-						if(comboBox.getClass().equals(compareDate.getClass()))
-						{
-							compareDate    = (DatePicker)comboBox;
-							this.fourthBox = compareDate.getValue().toString();
-						}
-					}
-					
-				}
-				
-				div.add(createNewDiv(this.filterProperty, this.filterOperator, this.thirdBox, this.fourthBox));
-			}
-			catch(final Exception e)
-			{
-				throw e;
-			}
-			
-		}
-		return div;
-		
-	}
-	
-	private Component createNewDiv(
-		final String filterProperty,
-		final String filterOperator,
-		final String thirdBox,
-		final String fourthBox)
-	{
-		final Div filter = new Div();
-		filter.add(filterProperty + "->" + filterOperator + "->" + thirdBox + "->" + fourthBox);
-		return filter;
-	}
-	
-	private FormLayout getEditor(final Object wholeRow, final int index)
-	{
-		final HorizontalLayout finalLayout    = (HorizontalLayout)wholeRow;
-		final HorizontalLayout filterEntryRow = (HorizontalLayout)finalLayout.getComponentAt(index);
-		final FormLayout       editor         = (FormLayout)filterEntryRow.getComponentAt(index);
-		return editor;
-	}
-
+	/**
+	 * This Method will switch from the Div with <b>ComboBoxes</b>
+	 * to the Div with <b>Labels</b>
+	 */
 	private void swapToLabel()
 	{
 		this.filterDivLabel.setVisible(true);
@@ -884,57 +818,117 @@ public class FilterComponent
 		this.getContent().replace(this.filterDivComboBox, this.filterDivLabel);
 	}
 	
+	/**
+	 * This Method will switch from the Div with <b>Labels</b>
+	 * to the Div with <b>ComboBoxes</b>
+	 */
 	private void swapToComboBox()
 	{
 		this.filterDivLabel.setVisible(false);
 		this.filterDivComboBox.setVisible(true);
 		this.getContent().replace(this.filterDivLabel, this.filterDivComboBox);
 	}
-
-	protected void updateFilterDivLabel(final FilterEntryEditor editor, final ComboBox combo)
+	
+	protected void updateFilterDivLabel(
+		final int index,
+		final FilterEntryEditor fee,
+		final ComboBox<?> combo)
 	{
-		Notification.show("UpdateFilterDIv");
-		if(combo.getValue() instanceof FilterOperator)
-		{
-			Notification.show("ComboBox = FilterOperator");
-			final FilterOperator filterOperator = (FilterOperator)combo.getValue();
-			this.filterOperator = filterOperator.name();
-			refreshFilterDivLabel(combo, editor);
-		}
-		else if(combo.getValue() instanceof FilterProperty<?>)
-		{
-			Notification.show("ComboBox = FilterProperty");
-			final FilterProperty<?> filterProperty = (FilterProperty<?>)combo.getValue();
-			this.filterProperty = filterProperty.caption();
-			refreshFilterDivLabel(combo, editor);
-		}
-	}
-
-	private void refreshFilterDivLabel(final ComboBox combo, final FilterEntryEditor editor)
-	{
-		/*
-		 * die filterDivLabel komplett von der filterDivComboBox ableiten.
-		 * Hier also jedes Mal alle werte der filterDivComboBox auslesen
-		 * und in die filterDivLabel übertragen
-		 */
-
-		/*
-		 * TODO: FilderDivLabel mit 'createFinalLabelRow' erweitern und somit
-		 * Zugang zu Werten erhalten
-		 */
-		// this.filterDivLabel.addComponentAtIndex(this.index, );
 		
+		/*
+		 * TODO:
+		 * Irgendwie funktioniert es doch es muss noch angepasst werden, dass die Labels entsprechen leer werden
+		 * wenn die Propertie geändert werden und somit der opertator null wird.
+		 * Außerdem sind die weiteren comboboxen nicht mit drin
+		 * 
+		 *
+		 */
+		
+		final Object comboObject = combo.getValue();
+		
+		if(comboObject instanceof FilterProperty<?>)
+		{
+			final FilterProperty<?> property = (FilterProperty<?>)comboObject;
+			this.filterProperty = property.caption();
+			int counter = 1;
+			for(final Object c : this.filterDivLabel.getChildren().toArray())
+			{
+				if(counter == index)
+				{
+					final HorizontalLayout finalLayout    = (HorizontalLayout)c;
+					final HorizontalLayout filterEntryRow = (HorizontalLayout)finalLayout.getComponentAt(0);
+					filterEntryRow.removeAll();
+					filterEntryRow.add(new Label(this.filterProperty + " -> " + this.filterOperator));
+				}
+				counter++;
+			}
+		}
+		else if(comboObject instanceof FilterOperator)
+		{
+			final FilterOperator operator = (FilterOperator)comboObject;
+			this.filterOperator = operator.name();
+			int counter = 1;
+			for(final Object c : this.filterDivLabel.getChildren().toArray())
+			{
+				if(counter == index)
+				{
+					final HorizontalLayout finalLayout    = (HorizontalLayout)c;
+					final HorizontalLayout filterEntryRow = (HorizontalLayout)finalLayout.getComponentAt(0);
+					filterEntryRow.removeAll();
+					filterEntryRow.add(new Label(this.filterProperty + " -> " + this.filterOperator));
+				}
+				counter++;
+			}
+		}
+
 	}
 
-	private Component createFinalLabelRow(final FilterEntryEditor editor)
+	private Component getComponentFromEditorAtIndex(final int index, final FilterEntryEditor editor)
 	{
-		final Checkbox         checkbox       = new Checkbox();
-		final Button           deleteButton   = new Button();
-		final HorizontalLayout filterEntryRow = new HorizontalLayout();
-
+		
+		Component component = null;
+		final int count     = 0;
+		for(final Object c : editor.getChildren().toArray())
+		{
+			if(count == index)
+			{
+				component = (Component)c;
+			}
+		}
+		return component;
+	}
+	
+	private FormLayout getEditorFromDiv(final int index, final Div filter)
+	{
+		FormLayout editor = null;
+		int        count  = 1;
+		for(final Object component : filter.getChildren().toArray())
+		{
+			if(count == index)
+			{
+				final HorizontalLayout finalLayout    = (HorizontalLayout)component;
+				final HorizontalLayout filterEntryRow = (HorizontalLayout)finalLayout.getComponentAt(0);
+				editor = (FormLayout)filterEntryRow.getComponentAt(0);
+			}
+			else
+			{
+				count++;
+			}
+		}
+		return editor;
+	}
+	
+	private Component createFinalRowLabel(
+		final FilterEntryEditor editor,
+		final int index)
+	{
+		
+		final Button   deleteButton = createDeleteButton();
+		final Checkbox checkbox     = new Checkbox();
+		editor.addClassName("editor");
 		defineCheckBox(checkbox);
 		checkbox
-			.addValueChangeListener(listener -> checkboxValueChanceForEntryEditor(checkbox, this.index, editor));
+			.addValueChangeListener(listener -> checkboxValueChanceForEntryEditor(checkbox, index, editor));
 		
 		defineDeleteButton(deleteButton);
 		deleteButton.addClickListener(listener -> deleteButtonClickListener(editor));
@@ -943,15 +937,21 @@ public class FilterComponent
 		finalButtonLayout.addClassName("finalButtonLayout");
 		finalButtonLayout.add(checkbox, deleteButton);
 		
-		filterEntryRow.setEnabled(true);
+		final HorizontalLayout filterEntryRow = new HorizontalLayout();
 		filterEntryRow.addClassName("filterEntryRow");
+		filterEntryRow.setEnabled(true);
+		filterEntryRow.add(new Label(this.filterProperty));
+		filterEntryRow.add(new Label(this.filterOperator));
 		
 		final HorizontalLayout finalLayout = new HorizontalLayout();
 		finalLayout.add(filterEntryRow, finalButtonLayout);
 		finalLayout.addClassName("finalLayout");
-		this.index++;
 		return finalLayout;
-		
+	}
+	
+	public int getIndex()
+	{
+		return this.index;
 	}
 	
 }
