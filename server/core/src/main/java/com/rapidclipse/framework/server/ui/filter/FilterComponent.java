@@ -74,48 +74,49 @@ public class FilterComponent
 {
 	private boolean caseSensitive = false;
 	private char    wildcard      = '*';
-	
+
 	private Connector searchPropertiesConnector = Connector.OR;
 	private Connector searchMultiWordConnector  = Connector.OR;
 	private Connector filterPropertiesConnector = Connector.AND;
 	private Connector searchAndFilterConnector  = Connector.AND;
-	
+
 	private SearchFilterGenerator searchFilterGenerator = SearchFilterGenerator
 		.New();
-	
+
 	private FilterOperatorRegistry            filterOperatorRegistry            = FilterOperatorRegistry
 		.Default();
 	private SubsetDataProviderFactoryRegistry subsetDataProviderFactoryRegistry = SubsetDataProviderFactoryRegistry
 		.Default();
-	
+
 	private FilterSubject filterSubject;
-	
+
 	private TextField                     searchTextField;
 	private Button                        addFilterButton;
 	private HideButton                    hideFilterButton;
-	private Div                           filterDivComboBox;
-	private Div                           filterDivLabel     = new Div();
+	private Div                           filterDiv;
+	private Div                           comboDiv;
+	private Div                           labelDiv           = new Div();
 	private final List<FilterEntryEditor> filterEntryEditors = new ArrayList<>();
 	private int                           rowIndex           = 0;
 	private int                           windowWidth;
 	private static final int              BREAKPOINT         = 727;
 	protected List<String>                filterProperty     = new ArrayList<>();
 	protected List<String>                filterOperator     = new ArrayList<>();
-	
+
 	public FilterComponent()
 	{
 		super(new FilterData("", null));
-		
+
 		/*
 		 * Init UI
 		 */
 		getContent();
 	}
-	
+
 	@Override
 	protected VerticalLayout initContent()
 	{
-		
+
 		UI.getCurrent().getPage()
 			.retrieveExtendedClientDetails(detail -> {
 				this.windowWidth = detail.getWindowInnerWidth();
@@ -128,32 +129,32 @@ public class FilterComponent
 		this.searchTextField = createSearchTextField();
 		this.searchTextField.addValueChangeListener(event -> updateFilterData());
 		this.searchTextField.setEnabled(false);
-		
+
 		this.hideFilterButton = createHideButton();
 		this.hideFilterButton.addClickListener(listener -> hideButtonClickListener());
-		
-		this.filterDivComboBox = createFilterDivComboBox();
-		this.filterDivLabel    = createFilterDivLabel();
-		
+
+		this.comboDiv = createFilterDivComboBox();
+		this.labelDiv = createFilterDivLabel();
+
 		this.addFilterButton = createAddButton();
 		this.addFilterButton.addClickListener(event -> addFilterEntryEditor(this.rowIndex));
 		this.addFilterButton.setEnabled(false);
-		
+
 		final HorizontalLayout searchBar = createSearchBar();
-		
+
 		return createContent(searchBar);
 	}
-	
+
 	public Registration connectWith(final Grid<?> grid)
 	{
 		final Registration registration = connectWith(grid.getDataProvider());
-		
+
 		// set subject after successful registration
 		setFilterSubject(GridFilterSubjectFactory.CreateFilterSubject(grid));
-		
+
 		return registration;
 	}
-	
+
 	@SuppressWarnings({"unchecked"})
 	public Registration connectWith(final DataProvider<?, ?> dataProvider)
 	{
@@ -171,16 +172,16 @@ public class FilterComponent
 					event -> filterAdapter.updateFilter(configurableFilterDataProvider, getFilter()));
 			}
 		}
-		
+
 		throw new IllegalArgumentException("Unsupported data provider: " + dataProvider.getClass().getName());
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Creating Stuff***********
 	 **************************************/
-	
+
 	/**
 	 * Create the TopContent with the searchbar and the filterDiv
 	 *
@@ -189,13 +190,13 @@ public class FilterComponent
 	 */
 	private VerticalLayout createContent(final HorizontalLayout searchBar)
 	{
-		final VerticalLayout content = new VerticalLayout(searchBar, this.filterDivComboBox);
+		final VerticalLayout content = new VerticalLayout(searchBar, this.comboDiv);
 		content.setMargin(false);
 		content.setPadding(false);
 		content.setSpacing(true);
 		return content;
 	}
-	
+
 	/**
 	 * Creating the Searchbar
 	 *
@@ -211,7 +212,7 @@ public class FilterComponent
 		searchBar.setWidth("100%");
 		return searchBar;
 	}
-	
+
 	/**
 	 * Creating the Search Text Field
 	 *
@@ -223,7 +224,7 @@ public class FilterComponent
 		textField.setValueChangeMode(ValueChangeMode.EAGER);
 		return textField;
 	}
-	
+
 	/**
 	 * Creates the Layout which is then seen from the User inside the Div
 	 *
@@ -240,23 +241,23 @@ public class FilterComponent
 		layout.addClassName("finalLayout");
 		return layout;
 	}
-	
+
 	private Dialog createPopUpDialog()
 	{
-		
+
 		final Dialog dialog = new Dialog(new Label(StringResourceUtils.getResourceString("filterLabel", this)));
 		dialog.setCloseOnEsc(false);
 		dialog.setCloseOnOutsideClick(false);
 		return dialog;
 	}
-	
+
 	protected Filter createValueFilter()
 	{
 		if(this.filterEntryEditors == null || this.filterEntryEditors.isEmpty())
 		{
 			return null;
 		}
-		
+
 		final List<Filter> valueFilters = this.filterEntryEditors.stream()
 			.map(editor -> editor.getFilter()).filter(Objects::nonNull)
 			.collect(Collectors.toList());
@@ -264,26 +265,26 @@ public class FilterComponent
 		{
 			return null;
 		}
-		
+
 		final int count = valueFilters.size();
 		if(count == 1)
 		{
 			return valueFilters.get(0);
 		}
-		
+
 		return Composite.New(getFilterPropertiesConnector(), valueFilters);
 	}
-	
+
 	protected Filter createSearchFilter()
 	{
 		if(this.searchFilterGenerator != null)
 		{
 			return this.searchFilterGenerator.createSearchFilter(getSearchText(), this);
 		}
-		
+
 		return null;
 	}
-	
+
 	/**
 	 * Creating the Div which is used to hold the labels within the small view
 	 *
@@ -297,7 +298,7 @@ public class FilterComponent
 		filter.addClassName("filterDivLabel");
 		return filter;
 	}
-	
+
 	/**
 	 * Creating the Div which is used to hold the ComboBoxes within the normal view
 	 *
@@ -311,7 +312,7 @@ public class FilterComponent
 		filter.addClassName("filterDivComboBox");
 		return filter;
 	}
-	
+
 	/**
 	 * Creates the Filter Entry Row for the <b> Label Div</b>
 	 *
@@ -323,28 +324,28 @@ public class FilterComponent
 		final HorizontalLayout row = new HorizontalLayout();
 		row.addClassName("filterEntryRow");
 		row.setEnabled(true);
-		
+
 		if(editor.getSelectedProperty() != null)
 		{
 			final List<FilterValueEditorComposite> values = editor.getValueEditors();
-			
+
 			row.add(new Label("" + editor.getSelectedProperty().caption()));
 			row.add(new Label("\t -> " + editor.getSelectedOperator().name()));
-			
+
 			if(values != null)
 			{
 				for(final FilterValueEditorComposite<?, ?> value : values)
 				{
-					
+
 					row.add(new Label("\t -> " + value.getValue()));
 				}
 			}
 		}
-		
+
 		return row;
-		
+
 	}
-	
+
 	private HorizontalLayout createEntryRowCombo(final FilterEntryEditor editor)
 	{
 		final HorizontalLayout layout = new HorizontalLayout(editor);
@@ -352,7 +353,7 @@ public class FilterComponent
 		layout.addClassName("filterEntryRow");
 		return layout;
 	}
-	
+
 	/**
 	 * Create the ButtonLayout for the LabelDiv
 	 *
@@ -369,7 +370,7 @@ public class FilterComponent
 		layout.add(editButton, checkbox, deleteButton);
 		return layout;
 	}
-	
+
 	private FormLayout createButtonLayoutCombo(final Component checkbox, final Component deleteButton)
 	{
 		final FormLayout layout = new FormLayout();
@@ -377,7 +378,7 @@ public class FilterComponent
 		layout.add(checkbox, deleteButton);
 		return layout;
 	}
-	
+
 	/**
 	 * Creates the Row which is seen from the User.
 	 *
@@ -396,18 +397,18 @@ public class FilterComponent
 		final FilterEntryEditor editor,
 		final int index)
 	{
-		
+
 		final Button   deleteButton = createDeleteButton();
 		final Checkbox checkbox     = new Checkbox();
-		
+
 		defineComponentsAtIndex(editor, deleteButton, checkbox, null, index);
-		
+
 		final FormLayout       finalButtonLayout = createButtonLayoutCombo(checkbox, deleteButton);
 		final HorizontalLayout filterEntryRow    = createEntryRowCombo(editor);
-		
+
 		return createFinalLayout(filterEntryRow, finalButtonLayout);
 	}
-	
+
 	/**
 	 * Creates the Row which is then seen by the user.
 	 * This Row holds the usable Buttons and the Labels which name the filter.
@@ -425,16 +426,16 @@ public class FilterComponent
 		final Button   deleteButton = createDeleteButton();
 		final Checkbox checkbox     = new Checkbox();
 		final Button   editButton   = createEditButton();
-		
+
 		defineComponentsAtIndex(editor, deleteButton, checkbox, editButton, index);
-		
+
 		final HorizontalLayout finalButtonLayout = createButtonLayoutLabel(editButton, checkbox, deleteButton);
-		
+
 		final HorizontalLayout filterEntryRow = createEntryRowLabel(index, editor);
-		
+
 		return createFinalLayout(filterEntryRow, finalButtonLayout);
 	}
-	
+
 	/**
 	 * Creates the Cancel Button within an PopUp Dialog.
 	 *
@@ -445,14 +446,14 @@ public class FilterComponent
 	private Button createCancelButton(final Dialog dialog)
 	{
 		final Button button = new Button();
-		
+
 		button.setIcon(VaadinIcon.CLOSE.create());
 		button.addClickListener(event -> dialog.close());
 		button.addClassName("cancelButton");
-		
+
 		return button;
 	}
-	
+
 	/**
 	 * Creates the Confirm Button within the Dialog of the small view.
 	 * <br>
@@ -467,7 +468,7 @@ public class FilterComponent
 		button.addClassName("confirmButton");
 		return button;
 	}
-	
+
 	/**
 	 * Creates the Hide-Button which is used to 'open' or 'close' the current Div
 	 *
@@ -481,7 +482,7 @@ public class FilterComponent
 		button.addClassName("hideFilterButton");
 		return button;
 	}
-	
+
 	/**
 	 * Creates the 'Add-Button' which is used to add a new Filter Row
 	 *
@@ -493,7 +494,7 @@ public class FilterComponent
 		button.setIcon(VaadinIcon.PLUS.create());
 		return button;
 	}
-	
+
 	/**
 	 * Creates the 'Remove-Button' which is used to remove the selected Row from the View and the Filter
 	 *
@@ -505,7 +506,7 @@ public class FilterComponent
 		button.setIcon(VaadinIcon.MINUS.create());
 		return button;
 	}
-	
+
 	/**
 	 * Creates the Edit Button which is only available in the small View
 	 *
@@ -518,7 +519,7 @@ public class FilterComponent
 		button.setClassName("editButton");
 		return button;
 	}
-	
+
 	/**
 	 * Creates the DeleteButton which is used to remove a specific row
 	 */
@@ -529,7 +530,7 @@ public class FilterComponent
 		button.setIcon(VaadinIcon.MINUS.create());
 		return button;
 	}
-	
+
 	/**
 	 * Creates the CheckButton within the Dialog to confirm the task of deleting the row
 	 *
@@ -541,7 +542,7 @@ public class FilterComponent
 	private Button createCheckButtonDialog(final FilterEntryEditor editor, final Dialog dialog, final int index)
 	{
 		final Button button = new Button();
-		
+
 		button.setIcon(VaadinIcon.CHECK.create());
 		button.addClickListener(event -> {
 			removeFilterEntryEditor(editor, index);
@@ -551,13 +552,13 @@ public class FilterComponent
 		button.addClassName("checkButton");
 		return button;
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Defining Stuff***********
 	 **************************************/
-	
+
 	private void defineComponentsAtIndex(
 		final FilterEntryEditor editor,
 		final Button deleteButton,
@@ -570,33 +571,33 @@ public class FilterComponent
 			editButton.addClickListener(listener -> editButtonClickListener(editor, index));
 		}
 		editor.addClassName("editor");
-		
+
 		defineCheckBox(checkbox);
 		checkbox
 			.addValueChangeListener(listener -> checkboxValueChanceListener(checkbox, index, editor));
-		
+
 		defineDeleteButton(deleteButton);
 		deleteButton.addClickListener(listener -> deleteButtonClickListener(editor, index));
 	}
-	
+
 	protected void defineCheckBox(final Checkbox checkbox)
 	{
 		checkbox.setValue(true);
 		checkbox.addClassName("checkbox");
 	}
-	
+
 	protected void defineDeleteButton(final Button deleteButton)
 	{
 		deleteButton.setIcon(VaadinIcon.MINUS.create());
-		
+
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Listener***********
 	 **************************************/
-	
+
 	/**
 	 * * The Listener for the confirm Button inside the PopUp-Window of the small view.
 	 * It's creating the see Filter Row
@@ -614,17 +615,17 @@ public class FilterComponent
 		final Dialog dialog)
 	{
 		// +1 because of search bar at top
-		this.filterDivComboBox.addComponentAtIndex(index,
+		this.comboDiv.addComponentAtIndex(index,
 			createFinalRow(editor, index));
-		this.filterDivLabel.addComponentAtIndex(index, createFinalRowLabel(editor, index));
-		
+		this.labelDiv.addComponentAtIndex(index, createFinalRowLabel(editor, index));
+
 		dialog.close();
-		if(this.filterDivComboBox.isVisible())
+		if(this.comboDiv.isVisible())
 		{
 			closeDiv();
 		}
 	}
-	
+
 	/**
 	 * Create the Click-Event for the Edit Button.
 	 * This Button is only available in the small View.
@@ -638,13 +639,13 @@ public class FilterComponent
 		final Button            confirmButton = createConfirmButton();
 		final Dialog            dialog        = createPopUpDialog();
 		confirmButton.addClickListener(listener -> {
-			replaceDivEditor(this.filterDivComboBox, oldEditor, editor, index);
+			replaceDivEditor(this.comboDiv, oldEditor, editor, index);
 			dialog.close();
 		});
 		dialog.add(editor, confirmButton);
 		dialog.open();
 	}
-	
+
 	/**
 	 * Creates a saftey Message to check, if the row should really be deleted
 	 *
@@ -656,17 +657,17 @@ public class FilterComponent
 		final Label  label        = new Label(StringResourceUtils.getResourceString("deleteMessage", this));
 		final Button deleteButton = createCheckButtonDialog(editor, dialog, index);
 		final Button cancelButton = createCancelButton(dialog);
-		
+
 		final HorizontalLayout buttonLayout = new HorizontalLayout();
 		buttonLayout.add(deleteButton, cancelButton);
-		
+
 		final VerticalLayout dialogLayout = new VerticalLayout();
 		dialogLayout.add(label, buttonLayout);
-		
+
 		dialog.add(dialogLayout);
 		dialog.open();
 	}
-	
+
 	/**
 	 * Defines the ClickEvent which is activated by clicking on the 'Hide-Button'
 	 */
@@ -681,7 +682,7 @@ public class FilterComponent
 			closeDiv();
 		}
 	}
-	
+
 	protected void
 		checkboxValueChanceListener(final Checkbox checkbox, final int index, final FilterEntryEditor editor)
 	{
@@ -695,13 +696,13 @@ public class FilterComponent
 			deactivateFilterEntryEditor(editor);
 		}
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Updating Stuff***********
 	 **************************************/
-	
+
 	protected void updateFilterData()
 	{
 		final String        searchTerm = this.searchTextField.getValue();
@@ -710,12 +711,12 @@ public class FilterComponent
 			.toArray(FilterEntry[]::new);
 		setModelValue(new FilterData(searchTerm, entries), false);
 	}
-	
+
 	public void reset()
 	{
 		setValue(new FilterData());
 	}
-	
+
 	/**
 	 * updates the LabelDiv if something's change in a ComboBox
 	 * Neverthless where this ComboBox is
@@ -735,10 +736,10 @@ public class FilterComponent
 		final ComboBox<?> combo,
 		final List<FilterValueEditorComposite> values)
 	{
-
+		
 		// Notification.show("Index of Row" + index);
 		final Object comboObject = combo.getValue();
-		
+
 		if(comboObject instanceof FilterProperty<?>)
 		{
 			final FilterProperty<?> property = (FilterProperty<?>)comboObject;
@@ -749,9 +750,9 @@ public class FilterComponent
 			final FilterOperator operator = (FilterOperator)comboObject;
 			setFilterLabelDivByOperator(operator, values, index);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Searches for the old Editor inside the filterDiv<b>ComboBox</b>
 	 * and replace it with the new one
@@ -777,7 +778,7 @@ public class FilterComponent
 			count++;
 		}
 	}
-	
+
 	/**
 	 * Add the Filter to the List.
 	 * <br>
@@ -790,7 +791,7 @@ public class FilterComponent
 		this.filterEntryEditors.add(index, editor);
 		updateFilterData();
 	}
-	
+
 	/**
 	 * Removes the Filter from the List. This just deselect the Filter but allows the User to reactivate it.
 	 * <br>
@@ -803,13 +804,13 @@ public class FilterComponent
 		this.filterEntryEditors.remove(editor);
 		updateFilterData();
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Removing Stuff***********
 	 **************************************/
-	
+
 	/**
 	 * Removes the selected Filter from the list and the view
 	 *
@@ -821,12 +822,12 @@ public class FilterComponent
 	protected void removeFilterEntryEditor(final FilterEntryEditor editor, final int index)
 	{
 		removeFilterEntryEditorComponent(editor, index);
-		
+
 		this.filterEntryEditors.remove(editor);
-		
+
 		updateFilterData();
 	}
-	
+
 	/**
 	 * Remove the FilterEntryEditor Object from the whole Div (index < 0)
 	 * or from the specific index
@@ -840,18 +841,18 @@ public class FilterComponent
 	{
 		if(index > -1)
 		{
-			removeFromDivAtIndex(this.filterDivComboBox, index);
-			removeFromDivAtIndex(this.filterDivLabel, index);
+			removeFromDivAtIndex(this.comboDiv, index);
+			removeFromDivAtIndex(this.labelDiv, index);
 		}
 		else
 		{
 			final Component filterEntryRow = editor.getParent().get();
 			final Component finalRow       = filterEntryRow.getParent().get();
-			this.filterDivComboBox.remove(finalRow);
+			this.comboDiv.remove(finalRow);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Go through given List and removes the one on the correct index
 	 *
@@ -869,13 +870,13 @@ public class FilterComponent
 			count++;
 		}
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Swapping Stuff***********
 	 **************************************/
-	
+
 	/**
 	 * Switches the Divs depending on the current width.
 	 * Breakpoint for a small view -> 727 px
@@ -891,7 +892,7 @@ public class FilterComponent
 			swapToComboBox();
 		}
 	}
-	
+
 	/**
 	 * This Method will switch from the Div with <b>ComboBoxes</b>
 	 * to the Div with <b>Labels</b>
@@ -900,35 +901,35 @@ public class FilterComponent
 	{
 		if(this.hideFilterButton.isOpen())
 		{
-			this.filterDivLabel.setVisible(true);
+			this.labelDiv.setVisible(true);
 		}
 		else
 		{
-			this.filterDivLabel.setVisible(false);
+			this.labelDiv.setVisible(false);
 		}
-		this.filterDivComboBox.setVisible(false);
-		this.getContent().replace(this.filterDivComboBox, this.filterDivLabel);
+		this.comboDiv.setVisible(false);
+		this.getContent().replace(this.comboDiv, this.labelDiv);
 	}
-	
+
 	/**
 	 * This Method will switch from the Div with <b>Labels</b>
 	 * to the Div with <b>ComboBoxes</b>
 	 */
 	private void swapToComboBox()
 	{
-		
+
 		if(this.hideFilterButton.isOpen())
 		{
-			this.filterDivComboBox.setVisible(true);
+			this.comboDiv.setVisible(true);
 		}
 		else
 		{
-			this.filterDivComboBox.setVisible(false);
+			this.comboDiv.setVisible(false);
 		}
-		this.filterDivLabel.setVisible(false);
-		this.getContent().replace(this.filterDivLabel, this.filterDivComboBox);
+		this.labelDiv.setVisible(false);
+		this.getContent().replace(this.labelDiv, this.comboDiv);
 	}
-	
+
 	/**
 	 * Opens the current Div by clicking on the Hide-Button
 	 */
@@ -938,17 +939,17 @@ public class FilterComponent
 		{
 			this.hideFilterButton.setIcon(VaadinIcon.ANGLE_DOUBLE_DOWN.create());
 			this.hideFilterButton.setOpen(true);
-			this.filterDivComboBox.setVisible(true);
+			this.comboDiv.setVisible(true);
 		}
 		else
 		{
 			this.hideFilterButton.setIcon(VaadinIcon.ANGLE_DOUBLE_DOWN.create());
 			this.hideFilterButton.setOpen(true);
-			this.filterDivLabel.setVisible(true);
+			this.labelDiv.setVisible(true);
 		}
-		
+
 	}
-	
+
 	/**
 	 * Closes the current Div by clicking on the Hide-Button
 	 */
@@ -956,29 +957,29 @@ public class FilterComponent
 	{
 		if(this.windowWidth >= BREAKPOINT)
 		{
-			this.filterDivComboBox.setVisible(false);
+			this.comboDiv.setVisible(false);
 			this.hideFilterButton.setIcon(VaadinIcon.ANGLE_DOUBLE_LEFT.create());
 			this.hideFilterButton.setOpen(false);
 		}
 		else
 		{
-			this.filterDivLabel.setVisible(false);
+			this.labelDiv.setVisible(false);
 			this.hideFilterButton.setIcon(VaadinIcon.ANGLE_DOUBLE_LEFT.create());
 			this.hideFilterButton.setOpen(false);
 		}
-		
+
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
 	 ************ Getter / Adder / Setter**
 	 **************************************/
-	
+
 	/**************************************
 	 * More Important***********
 	 **************************************/
-	
+
 	/**
 	 * Updates the Entry Row inside the LabelDiv with the given FilterProperty
 	 *
@@ -988,7 +989,7 @@ public class FilterComponent
 	{
 		this.filterProperty.add(index, property.caption());
 		int counter = 0;
-		for(final Object obj : this.filterDivLabel.getChildren().toArray())
+		for(final Object obj : this.labelDiv.getChildren().toArray())
 		{
 			if(counter == index)
 			{
@@ -999,7 +1000,7 @@ public class FilterComponent
 			counter++;
 		}
 	}
-	
+
 	/**
 	 * Updates the Filter Entry Row inside the LabelDiv with the given Operator and
 	 * - if present -
@@ -1018,7 +1019,7 @@ public class FilterComponent
 			final int index)
 	{
 		int counter = 0;
-		for(final Object obj : this.filterDivLabel.getChildren().toArray())
+		for(final Object obj : this.labelDiv.getChildren().toArray())
 		{
 			if(counter == index)
 			{
@@ -1030,7 +1031,7 @@ public class FilterComponent
 				{
 					for(final FilterValueEditorComposite<?, ?> value : values)
 					{
-						
+
 						filterEntryRow.add(new Label(" -> " + value.getValue()));
 					}
 				}
@@ -1038,7 +1039,7 @@ public class FilterComponent
 			counter++;
 		}
 	}
-	
+
 	/**
 	 * Return the filterEntryRow from an Object,
 	 * which is a Child of either the ComboBoxDiv or the LabelDiv
@@ -1052,7 +1053,7 @@ public class FilterComponent
 		final HorizontalLayout row = (HorizontalLayout)obj;
 		return (HorizontalLayout)row.getComponentAt(0);
 	}
-	
+
 	@Override
 	protected void setPresentationValue(final FilterData filterData)
 	{
@@ -1061,11 +1062,11 @@ public class FilterComponent
 			removeFilterEntryEditorComponent(editor, -1);
 		}
 		this.filterEntryEditors.clear();
-		
+
 		if(filterData != null)
 		{
 			this.searchTextField.setValue(filterData.getSearchTerm());
-			
+
 			final FilterEntry[] filterEntries = filterData.getEntries();
 			if(filterEntries != null)
 			{
@@ -1081,7 +1082,7 @@ public class FilterComponent
 			this.searchTextField.setValue("");
 		}
 	}
-	
+
 	public Filter getFilter()
 	{
 		final Filter searchFilter = createSearchFilter();
@@ -1100,15 +1101,15 @@ public class FilterComponent
 		}
 		return null;
 	}
-	
+
 	public void setFilterSubject(final FilterSubject filterSubject)
 	{
 		this.filterSubject = filterSubject;
-		
+
 		final boolean hasSubject = this.filterSubject != null;
 		this.searchTextField.setEnabled(hasSubject);
 		this.addFilterButton.setEnabled(hasSubject);
-		
+
 		if(hasSubject)
 		{
 			final String res         = StringResourceUtils.getResourceString("searchTextFieldInputPrompt",
@@ -1122,15 +1123,15 @@ public class FilterComponent
 		{
 			this.searchTextField.setPlaceholder("");
 		}
-		
+
 		reset();
 	}
-	
+
 	public <T> void addSubsetDataProvider(final Class<T> type, final SubsetDataProvider<T> provider)
 	{
 		getSubsetDataProviderFactoryRegistry().put(SubsetDataProviderFactory.New(type, provider));
 	}
-	
+
 	public void addSubsetDataProvider(
 		final BiPredicate<FilterContext, FilterProperty<?>> predicate,
 		final SubsetDataProvider<?> provider)
@@ -1138,7 +1139,7 @@ public class FilterComponent
 		getSubsetDataProviderFactoryRegistry()
 			.put(SubsetDataProviderFactory.New(predicate, provider));
 	}
-	
+
 	public void addSubsetDataProvider(
 		final Predicate<FilterProperty<?>> predicate,
 		final SubsetDataProvider<?> provider)
@@ -1146,7 +1147,7 @@ public class FilterComponent
 		getSubsetDataProviderFactoryRegistry()
 			.put(SubsetDataProviderFactory.New(predicate, provider));
 	}
-	
+
 	/**
 	 * Main Method to initialize the Filter Components
 	 *
@@ -1157,160 +1158,160 @@ public class FilterComponent
 	{
 		final FilterEntryEditor editor = new FilterEntryEditor(this, this, this::updateFilterData);
 		this.filterEntryEditors.add(index, editor);
-		
+
 		final HorizontalLayout filterEntryRow = new HorizontalLayout(editor);
-		
+
 		if(this.windowWidth < 727)
 		{
 			final Dialog dialog = createPopUpDialog();
-			
+
 			final Button confirmButton = createConfirmButton();
 			confirmButton.addClickListener(
 				e -> createConfirmButtonListener(editor, index,
 					dialog));
-			
+
 			dialog.add(filterEntryRow, confirmButton);
 			dialog.open();
 		}
 		else if(this.windowWidth >= 727)
 		{
 			openDiv();
-			
-			this.filterDivComboBox.addComponentAtIndex(index,
+
+			this.comboDiv.addComponentAtIndex(index,
 				createFinalRow(editor, index));
-			this.filterDivLabel.addComponentAtIndex(index,
+			this.labelDiv.addComponentAtIndex(index,
 				createFinalRowLabel(editor, index));
-			
+
 		}
 		this.rowIndex++;
 		return editor;
-		
+
 	}
-	
+
 	/**************************************
 	 * Less Important***********
 	 **************************************/
-	
+
 	public void setSearchText(final String searchText)
 	{
 		this.searchTextField.setValue(searchText != null ? searchText : "");
-		
+
 		updateFilterData();
 	}
-	
+
 	@Override
 	public boolean isCaseSensitive()
 	{
 		return this.caseSensitive;
 	}
-	
+
 	public void setCaseSensitive(final boolean caseSensitive)
 	{
 		this.caseSensitive = caseSensitive;
 	}
-	
+
 	@Override
 	public char getWildcard()
 	{
 		return this.wildcard;
 	}
-	
+
 	public void setWildcard(final char wildcard)
 	{
 		this.wildcard = wildcard;
 	}
-	
+
 	@Override
 	public Connector getSearchPropertiesConnector()
 	{
 		return this.searchPropertiesConnector;
 	}
-	
+
 	public void setSearchPropertiesConnector(final Connector searchPropertiesConnector)
 	{
 		this.searchPropertiesConnector = searchPropertiesConnector;
 	}
-	
+
 	@Override
 	public Connector getSearchMultiWordConnector()
 	{
 		return this.searchMultiWordConnector;
 	}
-	
+
 	public void setSearchMultiWordConnector(final Connector searchMultiWordConnector)
 	{
 		this.searchMultiWordConnector = searchMultiWordConnector;
 	}
-	
+
 	@Override
 	public Connector getFilterPropertiesConnector()
 	{
 		return this.filterPropertiesConnector;
 	}
-	
+
 	public void setFilterPropertiesConnector(final Connector filterPropertiesConnector)
 	{
 		this.filterPropertiesConnector = filterPropertiesConnector;
 	}
-	
+
 	@Override
 	public Connector getSearchAndFilterConnector()
 	{
 		return this.searchAndFilterConnector;
 	}
-	
+
 	public void setSearchAndFilterConnector(final Connector searchAndFilterConnector)
 	{
 		this.searchAndFilterConnector = searchAndFilterConnector;
 	}
-	
+
 	public SearchFilterGenerator getSearchFilterGenerator()
 	{
 		return this.searchFilterGenerator;
 	}
-	
+
 	public void setSearchFilterGenerator(final SearchFilterGenerator searchFilterGenerator)
 	{
 		this.searchFilterGenerator = searchFilterGenerator;
 	}
-	
+
 	@Override
 	public FilterOperatorRegistry getFilterOperatorRegistry()
 	{
 		return this.filterOperatorRegistry;
 	}
-	
+
 	public void setFilterOperatorRegistry(final FilterOperatorRegistry filterOperatorRegistry)
 	{
 		this.filterOperatorRegistry = filterOperatorRegistry;
 	}
-	
+
 	@Override
 	public SubsetDataProviderFactoryRegistry getSubsetDataProviderFactoryRegistry()
 	{
 		return this.subsetDataProviderFactoryRegistry;
 	}
-	
+
 	public void setSubsetDataProviderFactoryRegistry(
 		final SubsetDataProviderFactoryRegistry subsetDataProviderFactoryRegistry)
 	{
 		this.subsetDataProviderFactoryRegistry = subsetDataProviderFactoryRegistry;
 	}
-	
+
 	@Override
 	public FilterSubject getFilterSubject()
 	{
 		return this.filterSubject;
 	}
-	
+
 	public int getIndex()
 	{
 		return this.rowIndex;
 	}
-	
+
 	public String getSearchText()
 	{
 		return this.searchTextField != null ? this.searchTextField.getValue() : "";
 	}
-	
+
 }
