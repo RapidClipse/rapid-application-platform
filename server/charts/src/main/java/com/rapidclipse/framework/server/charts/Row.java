@@ -36,41 +36,35 @@ import java.util.Set;
 public class Row implements Serializable
 {
 	private List<Value> c = new ArrayList<>();
-	
+
 	public Row()
 	{
 		// Standart Konstruktor
 	}
-	
+
 	public static Row create(final Object... v)
 	{
-		
+
 		final Row row = new Row();
-		
+
 		for(int i = 0; i < v.length; i++)
 		{
 			row.c.add(new Value(v[i]));
 		}
-		
-		return row;
-	}
-	
-	public static Row create(final MultiValue v)
-	{
-		final Row row = new Row();
-		
-		v.getV().forEach(value -> row.c.add(value));
-		
+
 		return row;
 	}
 
+	public static Row create(final MultiValue v)
+	{
+		final Row row = new Row();
+
+		v.getV().forEach(value -> row.c.add(value));
+
+		return row;
+	}
+	
 	/*
-	 * TODO Diese Methode ist echt noch ein Monster muss umbedingt Lesbarer geschrieben werden
-	 * Soweit ich das nun verstanden habe X werte ->
-	 * 1. Object Wert 1
-	 * 2. HashMap mit X Values
-	 * 3. Wert n hinzugefügt
-	 *
 	 * Eigentlich ist die 2 hashmap unnötig? eine liste von Objects würde ausreichen, da der 2te Key ignoriert wird
 	 */
 	public static List<Row> createFromHashmap(
@@ -78,16 +72,16 @@ public class Row implements Serializable
 	{
 		final Set<Object> keySet = mapValues.keySet();
 		final List<Row>   rows   = new ArrayList<>();
-		
+
 		keySet.forEach(key -> {
 			final Row row = new Row();
-			
+
 			// 1.
 			row.c.add(new Value(key));
-			
+
 			// 2.
 			final HashMap<String, Object> multiValues = mapValues.get(key); // ergibt die Values der übergebenen HashMap
-			
+
 			// 3.
 			multiValues.forEach((k, multiValuesData) -> {
 				if(multiValuesData instanceof Object[])
@@ -101,20 +95,20 @@ public class Row implements Serializable
 				{
 					row.c.add(new Value(multiValuesData));
 				}
-				
+
 			});
-			
+
 			rows.add(row);
 		});
-		
+
 		return rows;
 	}
-	
+
 	public List<Value> getC()
 	{
 		return this.c;
 	}
-	
+
 	public void setC(final List<Value> c)
 	{
 		this.c = c;

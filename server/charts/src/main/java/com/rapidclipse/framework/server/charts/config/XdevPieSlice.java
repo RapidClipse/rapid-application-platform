@@ -97,9 +97,9 @@ public class XdevPieSlice implements Serializable
 	@Override
 	public String toString()
 	{
-		return "[ {color: " + this.color + "}, " +
+		return " {color: '" + this.color + "'}, " +
 			"{offset: " + this.offset + "}, "
-			+ this.textStyle + " ]";
+			+ this.textStyle + " ";
 	}
 	
 }

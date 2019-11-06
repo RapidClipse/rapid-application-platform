@@ -20,6 +20,9 @@
 
 package com.rapidclipse.framework.server.charts;
 
+import org.apache.commons.lang3.StringUtils;
+
+
 /**
  *
  * @author XDEV Software (SS)
@@ -28,17 +31,17 @@ package com.rapidclipse.framework.server.charts;
 public class ChartArea
 {
 	private String backgroundColor = "white";
-	private String left;
-	private String top;
-	private String right;
-	private String width;
-	private String heigth;
-	
+	private String left            = "auto";
+	private String right           = "auto";
+	private String top             = "auto";
+	private String width           = "auto";
+	private String height          = "auto";
+
 	public String getBackgroundColor()
 	{
 		return this.backgroundColor;
 	}
-	
+
 	/**
 	 * Chart area background color. When a string is used, it can be either a hex
 	 * string (e.g., '#fdc') or an English color name. <br>
@@ -49,14 +52,15 @@ public class ChartArea
 	{
 		this.backgroundColor = backgroundColor;
 	}
-	
+
 	public String getLeft()
 	{
 		return this.left;
 	}
-	
+
 	/**
 	 * How far to draw the chart from the left border. <br>
+	 * Left distance in pixel or percentage(0-100%)
 	 *
 	 * @param left
 	 */
@@ -64,55 +68,120 @@ public class ChartArea
 	{
 		this.left = left;
 	}
-	
+
 	public String getRight()
 	{
 		return this.right;
 	}
-	
+
 	/**
 	 * How far to draw the chart from the right border. <br>
+	 * Right distance in pixel or percentage(0-100%)
 	 *
-	 * @param left
+	 * @param right
 	 */
 	public void setRight(final String right)
 	{
 		this.right = right;
 	}
-	
+
 	public String getTop()
 	{
 		return this.top;
 	}
-	
+
 	/**
 	 * How far to draw the chart from the top border. <br>
+	 * Top distance in pixel or percentage(0-100%)
 	 *
-	 * @param top
+	 * @param Top
 	 */
 	public void setTop(final String top)
 	{
 		this.top = top;
 	}
-	
+
 	public String getWidth()
 	{
 		return this.width;
 	}
-	
+
 	public void setWidth(final String width)
 	{
 		this.width = width;
 	}
-	
-	public String getHeigth()
+
+	public String getHeight()
 	{
-		return this.heigth;
+		return this.height;
 	}
-	
-	public void setHeigth(final String heigth)
+
+	public void setHeight(final String heigth)
 	{
-		this.heigth = heigth;
+		this.height = heigth;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+
+		str.append("{ ");
+
+		str.append("left: ");
+
+		if(StringUtils.isNumeric(this.left))
+		{
+			str.append(this.left);
+		}
+		else
+		{
+			str.append("'" + this.left + "'");
+		}
+
+		str.append(", right: ");
+		if(StringUtils.isNumeric(this.right))
+		{
+			str.append(this.right);
+		}
+		else
+		{
+			str.append("'" + this.right + "'");
+		}
+
+		str.append(", top: ");
+		if(StringUtils.isNumeric(this.top))
+		{
+			str.append(this.top);
+		}
+		else
+		{
+			str.append("'" + this.top + "'");
+		}
+
+		str.append(", width: ");
+		if(StringUtils.isNumeric(this.width))
+		{
+			str.append(this.width);
+		}
+		else
+		{
+			str.append("'" + this.width + "'");
+		}
+
+		str.append(", height: ");
+		if(StringUtils.isNumeric(this.height))
+		{
+			str.append(this.height);
+		}
+		else
+		{
+			str.append("'" + this.height + "'");
+		}
+
+		str.append("}");
+		return str.toString();
+
 	}
 
 }

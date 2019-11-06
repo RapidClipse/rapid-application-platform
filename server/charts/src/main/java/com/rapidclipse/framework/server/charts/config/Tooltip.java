@@ -20,6 +20,9 @@
 
 package com.rapidclipse.framework.server.charts.config;
 
+import com.rapidclipse.framework.server.charts.TextStyle;
+
+
 /**
  *
  * @author XDEV Software (SS)
@@ -27,19 +30,95 @@ package com.rapidclipse.framework.server.charts.config;
  */
 public class Tooltip
 {
-	private boolean isHtml  = false;
-	private String  trigger = "focus";
-	
+	private boolean   isHtml        = false;
+	private String    trigger       = "focus";
+	private boolean   ignoreBounds  = false;
+	private boolean   showColorCode = false;
+	private String    text          = "both";
+	private TextStyle textStyle;
+
 	public boolean getisHtml()
 	{
 		return this.isHtml;
 	}
-	
+
+	/**
+	 * If set to true, use HTML-rendered (rather than SVG-rendered) tooltips
+	 *
+	 * @param isHtml
+	 */
 	public void setisHtml(final boolean isHtml)
 	{
 		this.isHtml = isHtml;
 	}
 	
+	public boolean isIgnoreBounds()
+	{
+		return this.ignoreBounds;
+	}
+
+	/**
+	 * If set to true, allows the drawing of tooltips to flow outside of the bounds of the chart on all sides.
+	 *
+	 * @param ignoreBounds
+	 */
+	public void setIgnoreBounds(final boolean ignoreBounds)
+	{
+		this.ignoreBounds = ignoreBounds;
+	}
+
+	public boolean isShowColorCode()
+	{
+		return this.showColorCode;
+	}
+
+	/**
+	 * If true, show colored squares next to the slice information in the tooltip.
+	 *
+	 * @param showColorCode
+	 */
+	public void setShowColorCode(final boolean showColorCode)
+	{
+		this.showColorCode = showColorCode;
+	}
+
+	public String getText()
+	{
+		return this.text;
+	}
+
+	/**
+	 * What information to display when the user hovers over a pie slice. The following values are supported:
+	 * <ul>
+	 * <li>'both' - [Default] Display both the absolute value of the slice and the percentage of the whole.</li>
+	 * <li>'value' - Display only the absolute value of the slice.</li>
+	 * <li>'percentage' - Display only the percentage of the whole represented by the slice.</li>
+	 * </ul>
+	 *
+	 * @param text
+	 *            'both', 'value' or 'percentage'
+	 */
+	public void setText(final String text)
+	{
+		this.text = text;
+	}
+
+	public TextStyle getTextStyle()
+	{
+		return this.textStyle;
+	}
+
+	/**
+	 * An object that specifies the tooltip text style.
+	 *
+	 * @param textStyle
+	 *            the Style to set
+	 */
+	public void setTextStyle(final TextStyle textStyle)
+	{
+		this.textStyle = textStyle;
+	}
+
 	/**
 	 * @return the trigger
 	 */
@@ -47,7 +126,7 @@ public class Tooltip
 	{
 		return this.trigger;
 	}
-	
+
 	/**
 	 * The user interaction that causes the tooltip to be displayed: <br>
 	 * <ul>
@@ -67,4 +146,18 @@ public class Tooltip
 		this.trigger = trigger;
 	}
 	
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{ isHtml :" + this.isHtml + ", trigger: '" + this.trigger + "', ignoreBounds: " + this.ignoreBounds
+			+ ", showColorCode: " + this.showColorCode + ", text: '" + this.text + "'");
+		if(this.textStyle != null)
+		{
+			str.append(", textStyle: " + this.textStyle);
+		}
+		str.append(" } ");
+		return str.toString();
+	}
+
 }
