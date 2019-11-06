@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.concurrent;
 
 import com.rapidclipse.framework.server.jpa.Conversationables;
@@ -36,42 +37,41 @@ import com.vaadin.flow.internal.CurrentInstance;
  */
 public class JpaExecutionWrapperParticipant implements ExecutionWrapper.Participant
 {
+	private Conversationables conversationables;
+
 	public JpaExecutionWrapperParticipant()
 	{
 		super();
 	}
-	
+
 	@Override
 	public void before()
 	{
-		final PersistenceManager persistenceManager = Jpa.getPersistenceManager();
-		
-		final Conversationables conversationables = Conversationables.New();
-		CurrentInstance.set(Conversationables.class, conversationables);
-		
+		CurrentInstance.set(Conversationables.class, this.conversationables = Conversationables.New());
+
+		final PersistenceManager      persistenceManager      = Jpa.getPersistenceManager();
 		final SessionStrategyProvider sessionStrategyProvider = Jpa.getSessionStrategyProvider();
-		
+
 		for(final String persistenceUnit : persistenceManager.getPersistenceUnits())
 		{
 			sessionStrategyProvider
-				.getRequestStartSessionStrategy(conversationables, persistenceUnit)
-				.requestStart(conversationables, persistenceUnit);
+				.getRequestStartSessionStrategy(this.conversationables, persistenceUnit)
+				.requestStart(this.conversationables, persistenceUnit);
 		}
 	}
-	
+
 	@Override
 	public void after()
 	{
 		final PersistenceManager      persistenceManager      = Jpa.getPersistenceManager();
 		final SessionStrategyProvider sessionStrategyProvider = Jpa.getSessionStrategyProvider();
-		final Conversationables       conversationables       = CurrentInstance.get(Conversationables.class);
-		
+
 		for(final String persistenceUnit : persistenceManager.getPersistenceUnits())
 		{
-			sessionStrategyProvider.getRequestEndSessionStrategy(conversationables, persistenceUnit)
-				.requestEnd(conversationables, persistenceUnit);
+			sessionStrategyProvider.getRequestEndSessionStrategy(this.conversationables, persistenceUnit)
+				.requestEnd(this.conversationables, persistenceUnit);
 		}
-		
-		CurrentInstance.set(Conversationables.class, null);
+
+		CurrentInstance.set(Conversationables.class, this.conversationables = null);
 	}
 }
