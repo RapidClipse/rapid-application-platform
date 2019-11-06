@@ -68,7 +68,8 @@ public class JpaExecutionWrapperParticipant implements ExecutionWrapper.Particip
 
 		for(final String persistenceUnit : persistenceManager.getPersistenceUnits())
 		{
-			sessionStrategyProvider.getRequestEndSessionStrategy(this.conversationables, persistenceUnit)
+			sessionStrategyProvider
+				.getRequestEndSessionStrategy(this.conversationables, persistenceUnit)
 				.requestEnd(this.conversationables, persistenceUnit);
 		}
 
