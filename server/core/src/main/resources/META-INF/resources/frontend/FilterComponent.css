@@ -1,15 +1,14 @@
 .checkbox {
 	font-size: 30px;
-	margin-left: -5.5px !important;
 	height: 2.8rem !important;
 }
 
-.deleteButton {
+/* .deleteButton {
 	min-height: 5px;
 	min-width: 5px;
 	width: 2rem !important;
 	height: 2rem !important;
-}
+} */
 
 .cancelButton {
 	min-height: 5px;
@@ -19,19 +18,28 @@
 
 }
 
+.labelDiv{
+	--lumo-size: small;
+}
+
+.entryRowLabel{
+	width:100%;
+}
+
 .finalLayout {
 	align-items: center;
 	width: 100%;
 	margin-left: 10px;
 }
 
-.filterEntryRow {
+.entryRowComboBox {
 	margin-left: 5px;
 	width: 100%;
 }
 
+
 .buttonLayout {
-	max-width: 200px;
+	margin-right:10px;
 	align-items: center;
 }
 
@@ -61,28 +69,10 @@
 	color: green;
 }
 
-@media only screen and (min-width:0px) {
-	.deleteButton {
-		top: 0px;
-		width: 50% !important;
-		height: 2rem !important;
-	}
 
-	.checkbox {
-		margin-left: 5.5px !important;
-		margin-right: -20px !important;
-		width: calc(99.95% - 0rem) !important;
-	}
-
-	.buttonLayout {
-		margin-right: 20px !important;
-	}
-}
 
  @media only screen and (min-width: 727px) {
-	/* .filterEntryRow {
-		width: 80%;
-	} */
+
 	.operatorComboBox {
 		width: calc(49.95% - 1rem);
 	}
@@ -101,50 +91,13 @@
 		margin-right: 10px !important;
 	}
 
-	.buttonLayout {
-		margin-right: 10px !important;
-	}
 
-	.deleteButton {
-		width: 35px !important;
-		margin-left: 10px !important;
-		min-width: 35px;
-	}
-	.checkbox{
-		margin-right: 0px;
-	}
-
-}
-@media only screen and (min-width: 728px){
-	.buttonLayout{
-		min-width: 50px !important;
-		margin-right: 0px !important;
-	}
 }
 
 @media only screen and (min-width: 1000px) {
-	.filterEntryRow {
+	.entryRowComboBox {
 		width: 100%;
 		/* margin-right: 0px; */
-	}
-	
-	.deleteButton {
-		top: -8px !important;
-		margin-left: 10px !important;
-		margin-right: 0px !important;
-		margin-top: 10px !important;
-		width: 35px !important;
-	}
-
-	.checkbox {
-		margin-right: 10px !important;
-		width: calc(33%) !important;
-
-	}
-
-	.buttonLayout {
-		margin-right: 10px !important;
-		max-width: 120px !important;
 	}
 
 	.operatorComboBox {

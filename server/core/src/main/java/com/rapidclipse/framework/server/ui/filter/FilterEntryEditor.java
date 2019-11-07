@@ -39,6 +39,7 @@ import com.vaadin.flow.component.HasValue.ValueChangeListener;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.notification.Notification;
 import com.vaadin.flow.shared.Registration;
 
 
@@ -68,12 +69,18 @@ public class FilterEntryEditor extends FormLayout
 		final Runnable filterChangeHandler)
 	{
 		super();
+		Notification.show("Top of Constructor");
 		this.rowIndex        = filterComponent.getIndex();
 		this.filterComponent = filterComponent;
 		this.context         = context;
+
 		this.setWidthFull();
 		this.propertyComboBox = createPropertyComboBox();
+		/*
+		 * FIXME: here is a problem, with setting the Items
+		 */
 		this.propertyComboBox.setItems(context.getFilterSubject().filterableProperties());
+		
 		this.propertyComboBox.addValueChangeListener(event -> {
 			this.filterComponent.updateFilterDivLabel(this.rowIndex, this.propertyComboBox,
 				this.valueEditors);
@@ -94,11 +101,11 @@ public class FilterEntryEditor extends FormLayout
 				this.valueEditors);
 			filterChangeHandler.run();
 		});
-
+		
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
 		this.selectedOperator          = this.operatorComboBox.getValue();
 		this.selectedProperty          = this.propertyComboBox.getValue();
-
+		
 		// add the ComboBoxes to the FormLayout
 		add(this.propertyComboBox, this.operatorComboBox);
 	}
