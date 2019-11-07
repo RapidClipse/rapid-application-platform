@@ -31,6 +31,10 @@ import java.util.List;
  */
 public class HAxis implements Serializable
 {
+	/*
+	 * There are way more Options for hAxis possible
+	 * TODO adding more options
+	 */
 	private String      title;
 	private List<Ticks> ticks;
 	private Integer     minValue;
@@ -194,5 +198,59 @@ public class HAxis implements Serializable
 	public void setTicks(final List<Ticks> ticks)
 	{
 		this.ticks = ticks;
+	}
+
+	/*
+	 * private String title;
+	 * private List<Ticks> ticks;
+	 * private Integer minValue;
+	 * private Integer maxValue;
+	 * private TextStyle titleTextStyle;
+	 * private TextStyle textStyle;
+	 * private boolean slantedText;
+	 * private Integer slantedTextAngle = 30;
+	 * private String textPosition = "out";
+	 */
+	
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{ ");
+		if(this.title != null)
+		{
+			str.append("title: '" + this.title + "', ");
+		}
+		if(this.titleTextStyle != null)
+		{
+			str.append("titleTextStyle: " + this.titleTextStyle + ", ");
+		}
+		if(this.minValue != null)
+		{
+			str.append("minValue: " + this.minValue + ", ");
+		}
+		if(this.maxValue != null)
+		{
+			str.append("maxValue: " + this.maxValue + ", ");
+		}
+		if(this.textStyle != null)
+		{
+			str.append("textStyle: " + this.textStyle + ", ");
+		}
+		if(this.ticks != null)
+		{
+			str.append("ticks: " + this.ticks + ", ");
+		}
+		if(this.slantedText && this.textPosition.equals("out"))
+		{
+			str.append("slantedText: " + this.slantedText + ", ");
+		}
+		if(this.slantedText)
+		{
+			str.append("slantedTextAngle: " + this.slantedTextAngle + ", ");
+		}
+		str.append("textPosition: '" + this.textPosition + "' }");
+
+		return str.toString();
 	}
 }

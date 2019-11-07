@@ -29,24 +29,53 @@ public class Ticks
 {
 	private Object v;
 	private String f;
+
+	public Ticks()
+	{
+
+	}
 	
+	public Ticks(final Object v, final String f)
+	{
+		this.v = v;
+		this.f = f;
+	}
+
 	public Object getV()
 	{
 		return this.v;
 	}
-	
+
 	public void setV(final Object v)
 	{
 		this.v = v;
 	}
-	
+
 	public String getF()
 	{
 		return this.f;
 	}
-	
+
 	public void setF(final String f)
 	{
 		this.f = f;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{v: ");
+		if(this.v instanceof Number)
+		{
+			str.append(this.v);
+		}
+		else
+		{
+			str.append("'" + this.v + "'");
+		}
+		str.append(", f:'" + this.f + "'}");
+
+		return str.toString();
 	}
 }

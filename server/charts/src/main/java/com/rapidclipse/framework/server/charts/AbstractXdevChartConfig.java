@@ -37,17 +37,17 @@ public class AbstractXdevChartConfig
 	private Integer      fontSize;
 	private List<String> colors;
 	private Tooltip      tooltip;
-	
+
 	private BackgroundStyle backgroundColor = new BackgroundStyle();
 	private TextStyle       titleTextStyle  = new TextStyle();
 	private LegendOptions   legend          = new LegendOptions();
 	private ChartArea       chartArea;
-	
+
 	public String getTitle()
 	{
 		return this.title;
 	}
-	
+
 	/**
 	 * Text to display above the chart.
 	 *
@@ -57,12 +57,12 @@ public class AbstractXdevChartConfig
 	{
 		this.title = title;
 	}
-	
+
 	public String getFontName()
 	{
 		return this.fontName;
 	}
-	
+
 	/**
 	 * The default font face for all text in the chart.
 	 *
@@ -72,12 +72,12 @@ public class AbstractXdevChartConfig
 	{
 		this.fontName = fontName;
 	}
-	
+
 	public Integer getFontSize()
 	{
 		return this.fontSize;
 	}
-	
+
 	/**
 	 * The default font size, in pixels, of all text in the chart.
 	 *
@@ -87,63 +87,84 @@ public class AbstractXdevChartConfig
 	{
 		this.fontSize = fontSize;
 	}
-	
+
 	public List<String> getColors()
 	{
 		return this.colors;
 	}
 	
+	public String getColorsString()
+	{
+		if(this.colors != null)
+		{
+			final StringBuilder print = new StringBuilder();
+			print.append("[");
+			for(final String str : this.colors)
+			{
+				print.append("'" + str + "',");
+			}
+			print.delete(print.length() - 1, print.length());
+			print.append("]");
+			return print.toString();
+		}
+		else
+		{
+			return "null";
+		}
+		
+	}
+
 	public void setColors(final List<String> colors)
 	{
 		this.colors = colors;
 	}
-	
+
 	public Tooltip getTooltip()
 	{
 		return this.tooltip;
 	}
-	
+
 	public void setTooltip(final Tooltip tooltip)
 	{
 		this.tooltip = tooltip;
 	}
-	
+
 	// Options
 	public BackgroundStyle getBackgroundColor()
 	{
 		return this.backgroundColor;
 	}
-	
+
 	public void setBackgroundColor(final BackgroundStyle backgroundColor)
 	{
 		this.backgroundColor = backgroundColor;
 	}
-	
+
 	public TextStyle getTitleTextStyle()
 	{
 		return this.titleTextStyle;
 	}
-	
+
 	public void setTitleTextStyle(final TextStyle titleTextStyle)
 	{
 		this.titleTextStyle = titleTextStyle;
 	}
-	
+
 	public LegendOptions getLegend()
 	{
 		return this.legend;
 	}
-	
+
 	public void setLegend(final LegendOptions legend)
 	{
 		this.legend = legend;
 	}
-	
+
 	public ChartArea getChartArea()
 	{
 		return this.chartArea;
 	}
-	
+
 	/**
 	 * An object with members to configure the placement and size of the chart area
 	 * (where the chart itself is drawn, excluding axis and legends). <br>
@@ -154,5 +175,5 @@ public class AbstractXdevChartConfig
 	{
 		this.chartArea = chartArea;
 	}
-	
+
 }

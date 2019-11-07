@@ -30,28 +30,28 @@ import java.io.Serializable;
  */
 public class Value implements Serializable
 {
-
-	private Object valueObject; // string, number, date, datetime
 	
+	private Object valueObject; // string, number, date, datetime
+
 	public Value(final Object v)
 	{
 		this.valueObject = v;
 	}
-	
+
 	public Object getValueObject()
 	{
 		return this.valueObject;
 	}
-	
+
 	public void setVAlueObject(final Object v)
 	{
 		this.valueObject = v;
 	}
-
+	
 	@Override
 	public String toString()
 	{
-		if(this.valueObject instanceof Number)
+		if(this.valueObject instanceof Number || this.valueObject == null)
 		{
 			return "" + this.valueObject;
 		}
@@ -59,6 +59,6 @@ public class Value implements Serializable
 		{
 			return "'" + this.valueObject + "'";
 		}
-
+		
 	}
 }

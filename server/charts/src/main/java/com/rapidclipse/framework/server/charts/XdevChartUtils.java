@@ -26,7 +26,7 @@ import java.util.List;
 
 /**
  * @author XDEV Software
- *
+ *         TODO Check and implement
  */
 public class XdevChartUtils
 {
@@ -59,11 +59,13 @@ public class XdevChartUtils
 		final Integer min,
 		final Integer max)
 	{
-		final List<Integer> list = new ArrayList<>();
+		final List<Ticks> list = new ArrayList<>();
 		
 		for(Integer i = min; i <= max; i = i + range)
 		{
-			list.add(i);
+			final Ticks ticks = new Ticks();
+			ticks.setV(i);
+			list.add(ticks);
 		}
 
 		vAxis.setTicks(list);

@@ -18,11 +18,11 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.pie;
+package com.rapidclipse.framework.server.charts.area;
 
 import java.util.Optional;
 
-import com.rapidclipse.framework.server.charts.DataTable;
+import com.rapidclipse.framework.server.charts.Row;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.vaadin.flow.component.Component;
@@ -36,45 +36,35 @@ import com.vaadin.flow.component.page.Page;
  *
  * @author XDEV Software (SS)
  * @since 4.0
- *
- *
- *        TODO: connect with XdevChart
- *        DONE: JavaScriptComponentState.getState() dosn't exist anymore, new PieChartComponentState object needed
  */
-@Tag("pie-chart")
+@Tag("Area-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevPieChart extends Component
+public class XdevAreaChart extends Component
 {
-	private final PieChartComponentState pieState = new PieChartComponentState();
-	private final XdevPieChartJsBuilder  jsBuilder;
-	private final String                 id;
+	private final AreaChartComponentState areaState = new AreaChartComponentState();
+	private final XdevAreaChartJsBuilder  jsBuilder;
+	private final String                  id;
 
-	public XdevPieChart()
+	public XdevAreaChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 
-		this.pieState.setConfig(new XdevPieChartConfig());
-		this.jsBuilder = new XdevPieChartJsBuilder(this.pieState, this.id);
-		
+		this.areaState.setConfig(new XdevAreaChartConfig());
+		this.jsBuilder = new XdevAreaChartJsBuilder(this.areaState, this.id);
 	}
 	
-	public void setConfig(final XdevPieChartConfig config)
+	public void setConfig(final XdevAreaChartConfig config)
 	{
-		this.pieState.setConfig(config);
+		this.areaState.setConfig(config);
 	}
-
+	
 	public void setModel(final XdevChartModel model)
 	{
-		final XdevPieChartModel pieModel = (XdevPieChartModel)model;
+		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
 
-		final DataTable table = new DataTable();
-		table.setColumns(pieModel.getDataTable().getColumns());
-		table.setRows(pieModel.getDataTable().getRows());
-		
-		this.pieState.setDataTable(table);
-		this.pieState.setSlices(pieModel.getSlices());
-		
+		this.areaState.setDataTable(model.getDataTable());
+
 		final Optional<Component> parent = this.getParent();
 		if(parent.isPresent())
 		{
@@ -87,4 +77,5 @@ public class XdevPieChart extends Component
 		final Page page = UI.getCurrent().getPage();
 		page.executeJs(this.jsBuilder.constructChart());
 	}
+	
 }

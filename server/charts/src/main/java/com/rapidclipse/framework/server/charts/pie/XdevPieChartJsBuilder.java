@@ -34,6 +34,16 @@ public class XdevPieChartJsBuilder
 		bld.append(this.makeFunction());
 		bld.append(this.makeOptions());
 		bld.append(this.makeDataTable());
+		/*
+		 * this is how a listener is implemented in JS for google charts
+		 */
+		// bld.append("function selectHandler() {"
+		// + " var selectedItem = chart.getSelection()[0];"
+		// + " if (selectedItem) {"
+		// + " var select = data.getValue(selectedItem.row, 0);"
+		// + " alert(data.getValue(selectedItem.row, 0)+' '+data.getValue(selectedItem.row, 1));"
+		// + " } }");
+		// bld.append("google.visualization.events.addListener(chart, 'select', selectHandler);");
 		bld.append("chart.draw(view, options); }");
 
 		return bld.toString();
@@ -55,8 +65,6 @@ public class XdevPieChartJsBuilder
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var options ={ ");
 
-		// bld.append("width: 600, ");
-		// bld.append("height: 300, ");
 		bld.append("title: '" + this.pieState.getConfig().getTitle() + "', ");
 		bld.append("titleTextStyle: " + this.pieState.getConfig().getTitleTextStyle() + ", ");
 		bld.append("is3D: " + this.pieState.getConfig().getIs3D() + ", ");
