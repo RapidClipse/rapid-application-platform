@@ -35,11 +35,11 @@ import com.rapidclipse.framework.server.charts.XdevChartModel;
  */
 public class XdevAreaChartModel implements XdevChartModel
 {
-
+	
 	private DataTable                                                  dataTable  = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data       = new LinkedHashMap<>();
 	private final LinkedHashMap<String, Object>                        categories = new LinkedHashMap<>();
-
+	
 	/**
 	 *
 	 * @param typ
@@ -50,7 +50,7 @@ public class XdevAreaChartModel implements XdevChartModel
 		this.getDataTable().getColumns()
 			.add(Column.create("xcaption", "xcaption", typ));
 	}
-
+	
 	@Override
 	public DataTable getDataTable()
 	{
@@ -60,13 +60,13 @@ public class XdevAreaChartModel implements XdevChartModel
 		}
 		return this.dataTable;
 	}
-
+	
 	@Override
 	public LinkedHashMap<Object, LinkedHashMap<String, Object>> getData()
 	{
 		return this.data;
 	}
-
+	
 	/**
 	 * Adds a new category to the XdevAreaChartModel.<br>
 	 *
@@ -77,17 +77,17 @@ public class XdevAreaChartModel implements XdevChartModel
 		this.categories.put(category, null);
 		this.getDataTable().getColumns().add(Column.create(category, category, ColumnType.NUMBER));
 	}
-
+	
 	public void addItem(final Object group, final String category, final Integer value)
 	{
 		this.addItemInternal(group, category, value);
 	}
-
+	
 	public void addItem(final Object group, final String category, final Double value)
 	{
 		this.addItemInternal(group, category, value);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private void addItemInternal(final Object group, final String category, final Object value)
 	{

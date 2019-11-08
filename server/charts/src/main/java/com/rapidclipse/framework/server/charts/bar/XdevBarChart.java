@@ -18,11 +18,12 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.area;
+package com.rapidclipse.framework.server.charts.bar;
 
 import java.util.Optional;
 
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
+import com.rapidclipse.framework.server.charts.DataTable;
 import com.rapidclipse.framework.server.charts.Row;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
@@ -38,29 +39,30 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-@Tag("Area-chart")
+@Tag("Bar-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevAreaChart extends Component
+public class XdevBarChart extends Component
 {
-	private final AreaChartComponentState areaState = new AreaChartComponentState();
-	private final String                  id;
+	private final BarChartComponentState barState = new BarChartComponentState();
 	
-	public XdevAreaChart()
+	private final String id;
+	
+	public XdevBarChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 		
-		this.areaState.setConfig(new XdevAreaChartConfig());
+		this.barState.setConfig(new XdevBarChartConfig());
 	}
-
+	
 	/**
 	 * Override the default options
 	 *
 	 * @param config
 	 */
-	public void setConfig(final XdevAreaChartConfig config)
+	public void setConfig(final XdevBarChartConfig config)
 	{
-		this.areaState.setConfig(config);
+		this.barState.setConfig(config);
 	}
 
 	/**
@@ -70,9 +72,13 @@ public class XdevAreaChart extends Component
 	 */
 	public void setModel(final XdevChartModel model)
 	{
-		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
+		final DataTable table = new DataTable();
+
+		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
 		
-		this.areaState.setDataTable(model.getDataTable());
+		Row.createFromHashmap(model.getData()).forEach(row -> table.getRows().add(row));
+		
+		this.barState.setDataTable(table);
 		
 		final Optional<Component> parent = this.getParent();
 		if(parent.isPresent())
@@ -84,12 +90,13 @@ public class XdevAreaChart extends Component
 			this.setId(this.id);
 		}
 		this.buildChart();
+
 	}
-	
+
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.areaState.getDataTable(),
-			this.areaState.getConfig().getOptions(), this.id, "AreaChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.barState.getDataTable(),
+			this.barState.getConfig().getOptions(), this.id, "BarChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

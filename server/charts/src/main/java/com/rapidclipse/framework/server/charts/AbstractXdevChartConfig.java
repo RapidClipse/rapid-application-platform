@@ -20,6 +20,8 @@
 
 package com.rapidclipse.framework.server.charts;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.config.Tooltip;
@@ -30,7 +32,7 @@ import com.rapidclipse.framework.server.charts.config.Tooltip;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class AbstractXdevChartConfig
+public abstract class AbstractXdevChartConfig
 {
 	private String       title;
 	private String       fontName = "Arial";
@@ -42,6 +44,22 @@ public class AbstractXdevChartConfig
 	private TextStyle       titleTextStyle  = new TextStyle();
 	private LegendOptions   legend          = new LegendOptions();
 	private ChartArea       chartArea;
+	
+	public HashMap<String, Object> getOptions()
+	{
+		final HashMap<String, Object> options = new HashMap<>();
+		options.put("titel", this.title);
+		options.put("fontName", this.fontName);
+		options.put("fontSize", this.fontSize);
+		options.put("colors", this.colors);
+		options.put("tooltip", this.tooltip);
+		options.put("backgroundColor", this.backgroundColor);
+		options.put("titleTextStyle", this.titleTextStyle);
+		options.put("legend", this.legend);
+		options.put("chartArea", this.chartArea);
+
+		return options;
+	}
 
 	public String getTitle()
 	{
@@ -93,30 +111,14 @@ public class AbstractXdevChartConfig
 		return this.colors;
 	}
 	
-	public String getColorsString()
-	{
-		if(this.colors != null)
-		{
-			final StringBuilder print = new StringBuilder();
-			print.append("[");
-			for(final String str : this.colors)
-			{
-				print.append("'" + str + "',");
-			}
-			print.delete(print.length() - 1, print.length());
-			print.append("]");
-			return print.toString();
-		}
-		else
-		{
-			return "null";
-		}
-		
-	}
-
 	public void setColors(final List<String> colors)
 	{
-		this.colors = colors;
+		final List<String> colorString = new ArrayList<>();
+		for(final String color : colors)
+		{
+			colorString.add("'" + color + "'");
+		}
+		this.colors = colorString;
 	}
 
 	public Tooltip getTooltip()
@@ -129,7 +131,6 @@ public class AbstractXdevChartConfig
 		this.tooltip = tooltip;
 	}
 
-	// Options
 	public BackgroundStyle getBackgroundColor()
 	{
 		return this.backgroundColor;

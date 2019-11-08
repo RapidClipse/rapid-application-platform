@@ -21,6 +21,7 @@
 package com.rapidclipse.framework.server.charts.pie;
 
 import java.io.Serializable;
+import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
 import com.rapidclipse.framework.server.charts.TextStyle;
@@ -33,12 +34,12 @@ import com.rapidclipse.framework.server.charts.TextStyle;
  */
 public class XdevPieChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	
+
 	public static final String PIESLICETEXT_PERCENTAGE = "percentage";
 	public static final String PIESLICETEXT_VALUE      = "value";
 	public static final String PIESLICETEXT_LABEL      = "label";
 	public static final String PIESLICETEXT_NONE       = "none";
-	
+
 	private Boolean is3D                 = false;
 	private Double  pieHole              = 0.0;
 	private String  pieSliceText         = XdevPieChartConfig.PIESLICETEXT_PERCENTAGE;
@@ -47,24 +48,40 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	private String  pieResidueSliceColor = "#ccc";
 	private String  pieResidueSliceLabel = "Other";
 	private Integer pieStartAngle        = 0;
-	
+
 	private TextStyle pieSliceTextStyle = new TextStyle();
-	
+
+	@Override
+	public HashMap<String, Object> getOptions()
+	{
+		final HashMap<String, Object> options = super.getOptions();
+		options.put("is3D", this.is3D);
+		options.put("pieHole", this.pieHole);
+		options.put("pieSliceText", this.pieSliceText);
+		options.put("pieSliceBorderColor", this.pieSliceBorderColor);
+		options.put("sliceVisibilityThreshold", this.sliceVisibilityThreshold);
+		options.put("pieResidueSliceColor", this.pieResidueSliceColor);
+		options.put("pieResidueSliceLabel", this.pieResidueSliceLabel);
+		options.put("pieStartAngle", this.pieStartAngle);
+		options.put("pieSliceTextStyle", this.pieSliceTextStyle);
+		return options;
+	}
+
 	public Boolean getIs3D()
 	{
 		return this.is3D;
 	}
-	
+
 	public void setIs3D(final Boolean is3d)
 	{
 		this.is3D = is3d;
 	}
-	
+
 	public Double getPieHole()
 	{
 		return this.pieHole;
 	}
-	
+
 	/**
 	 * If between 0 and 1, displays a donut chart. The hole with have a radius equal
 	 * to number times the radius of the chart. <br>
@@ -76,12 +93,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieHole = pieHole;
 	}
-	
+
 	public String getPieSliceText()
 	{
 		return this.pieSliceText;
 	}
-	
+
 	/**
 	 * The content of the text displayed on the slice. Can be one of the following:
 	 * <br>
@@ -98,12 +115,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceText = pieSliceText;
 	}
-	
+
 	public String getPieSliceBorderColor()
 	{
 		return this.pieSliceBorderColor;
 	}
-	
+
 	/**
 	 * The color of the slice borders. Only applicable when the chart is
 	 * two-dimensional. <br>
@@ -115,12 +132,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceBorderColor = pieSliceBorderColor;
 	}
-	
+
 	public Double getSliceVisibilityThreshold()
 	{
 		return this.sliceVisibilityThreshold;
 	}
-	
+
 	/**
 	 * The fractional value of the pie, below which a slice will not show
 	 * individually. All slices that have not passed this threshold will be combined
@@ -133,12 +150,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.sliceVisibilityThreshold = sliceVisibilityThreshold;
 	}
-	
+
 	public String getPieResidueSliceColor()
 	{
 		return this.pieResidueSliceColor;
 	}
-	
+
 	/**
 	 * Color for the combination slice that holds all slices below
 	 * sliceVisibilityThreshold.
@@ -149,12 +166,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieResidueSliceColor = pieResidueSliceColor;
 	}
-	
+
 	public String getPieResidueSliceLabel()
 	{
 		return this.pieResidueSliceLabel;
 	}
-	
+
 	/**
 	 * A label for the combination slice that holds all slices below
 	 * sliceVisibilityThreshold.
@@ -165,12 +182,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieResidueSliceLabel = pieResidueSliceLabel;
 	}
-	
+
 	public TextStyle getPieSliceTextStyle()
 	{
 		return this.pieSliceTextStyle;
 	}
-	
+
 	/**
 	 * An object that specifies the slice text style.
 	 *
@@ -180,7 +197,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceTextStyle = pieSliceTextStyle;
 	}
-	
+
 	/**
 	 * @return the pieStartAngle
 	 */
@@ -188,7 +205,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		return this.pieStartAngle;
 	}
-	
+
 	/**
 	 * The angle, in degrees, to rotate the chart by. The default of 0 will orient
 	 * the leftmost edge of the first slice directly up. <br>
@@ -200,5 +217,5 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieStartAngle = pieStartAngle;
 	}
-
+	
 }

@@ -22,6 +22,7 @@ package com.rapidclipse.framework.server.charts.pie;
 
 import java.util.Optional;
 
+import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.DataTable;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
@@ -46,8 +47,8 @@ import com.vaadin.flow.component.page.Page;
 public class XdevPieChart extends Component
 {
 	private final PieChartComponentState pieState = new PieChartComponentState();
-	private final XdevPieChartJsBuilder  jsBuilder;
-	private final String                 id;
+	
+	private final String id;
 
 	public XdevPieChart()
 	{
@@ -55,8 +56,6 @@ public class XdevPieChart extends Component
 		this.id = IdGenerator.generateId();
 
 		this.pieState.setConfig(new XdevPieChartConfig());
-		this.jsBuilder = new XdevPieChartJsBuilder(this.pieState, this.id);
-		
 	}
 	
 	public void setConfig(final XdevPieChartConfig config)
@@ -84,7 +83,15 @@ public class XdevPieChart extends Component
 		{
 			this.setId(this.id);
 		}
-		final Page page = UI.getCurrent().getPage();
-		page.executeJs(this.jsBuilder.constructChart());
+		this.buildChart();
+		
+	}
+
+	public void buildChart()
+	{
+		final ChartJsBuilder js   = new ChartJsBuilder(this.pieState.getDataTable(),
+			this.pieState.getConfig().getOptions(), this.id, "PieChart");
+		final Page           page = UI.getCurrent().getPage();
+		page.executeJs(js.constructChart());
 	}
 }

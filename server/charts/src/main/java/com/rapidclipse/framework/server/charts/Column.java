@@ -174,15 +174,7 @@ public class Column implements Serializable
 		}
 		else
 		{
-			// if(this.id != null)
-			// {
-			// print.append("'" + this.type + "', '" + this.id + "', '" + this.label + "'");
-			// }
-			// else
-			// {
 			print.append("'" + this.type + "', '" + this.label + "'");
-			// }
-
 		}
 		return print.toString();
 	}
