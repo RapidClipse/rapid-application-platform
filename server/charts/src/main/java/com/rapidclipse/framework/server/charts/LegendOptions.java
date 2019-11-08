@@ -32,6 +32,7 @@ public class LegendOptions
 	private String    position = "right";
 	private Integer   maxLines = 1;
 	private TextStyle textStyle;
+	private boolean   noLegend;
 
 	public String getAlignment()
 	{
@@ -122,18 +123,41 @@ public class LegendOptions
 	public String toString()
 	{
 		final StringBuilder str = new StringBuilder();
-		str.append("{ ");
-		if(this.alignment != null)
+		if(!this.noLegend)
 		{
-			str.append("alignment: '" + this.alignment + "', ");
+			str.append("{ ");
+			if(this.alignment != null)
+			{
+				str.append("alignment: '" + this.alignment + "', ");
+			}
+			str.append("position: '" + this.position + "', " +
+				"maxLines: " + this.maxLines);
+			if(this.textStyle != null)
+			{
+				str.append(", textStyle: " + this.textStyle);
+			}
+			str.append(" }");
 		}
-		str.append("position: '" + this.position + "', " +
-			"maxLines: " + this.maxLines);
-		if(this.textStyle != null)
+		else
 		{
-			str.append(", textStyle: " + this.textStyle);
+			str.append("'none'");
 		}
-		str.append(" }");
+
 		return str.toString();
+	}
+
+	public boolean isNoLegend()
+	{
+		return this.noLegend;
+	}
+
+	/**
+	 * Disables the Legend of a chart with 'none'
+	 * 
+	 * @param noLegend
+	 */
+	public void setNoLegend(final boolean noLegend)
+	{
+		this.noLegend = noLegend;
 	}
 }
