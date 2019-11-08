@@ -199,7 +199,7 @@ public class HAxis implements Serializable
 	{
 		this.ticks = ticks;
 	}
-	
+
 	@Override
 	public String toString()
 	{
