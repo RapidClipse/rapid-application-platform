@@ -45,7 +45,10 @@ public interface PasswordHasher
 	/**
 	 * @since 10.01.00
 	 */
-	public boolean validatePassword(final byte[] password, final byte[] hash);
+	public default boolean validatePassword(final byte[] password, final byte[] hash)
+	{
+		return Arrays.equals(hashPassword(password), hash);
+	}
 
 	public static PasswordHasher Md5()
 	{
@@ -89,12 +92,6 @@ public interface PasswordHasher
 			{
 				throw new RuntimeException(e);
 			}
-		}
-
-		@Override
-		public boolean validatePassword(final byte[] password, final byte[] hash)
-		{
-			return Arrays.equals(hashPassword(password), hash);
 		}
 	}
 
