@@ -20,13 +20,11 @@
 
 package com.rapidclipse.framework.server.charts.bubble;
 
-import java.util.Optional;
-
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -40,7 +38,7 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("Bubble-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevBubbleChart extends Component
+public class XdevBubbleChart extends HtmlContainer
 {
 	private final BubbleChartComponentState bubbleState = new BubbleChartComponentState();
 	private final String                    id;
@@ -76,19 +74,14 @@ public class XdevBubbleChart extends Component
 		model.getDataTable().getRows().forEach(row -> table.getRows().add(row));
 		
 		this.bubbleState.setDataTable(table);
-		
-		final Optional<Component> parent = this.getParent();
-		if(parent.isPresent())
-		{
-			parent.get().setId(this.id);
-		}
-		else
-		{
-			this.setId(this.id);
-		}
+		this.setId(this.id);
 		this.buildChart();
 	}
 
+	/**
+	 * Draws the chart.
+	 * setModel or buildChart should be the last methods to call.
+	 */
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.bubbleState.getDataTable(),

@@ -20,13 +20,11 @@
 
 package com.rapidclipse.framework.server.charts.pie;
 
-import java.util.Optional;
-
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -37,14 +35,10 @@ import com.vaadin.flow.component.page.Page;
  *
  * @author XDEV Software (SS)
  * @since 4.0
- *
- *
- *        TODO: connect with XdevChart
- *        DONE: JavaScriptComponentState.getState() dosn't exist anymore, new PieChartComponentState object needed
  */
 @Tag("pie-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevPieChart extends Component
+public class XdevPieChart extends HtmlContainer
 {
 	private final PieChartComponentState pieState = new PieChartComponentState();
 	
@@ -58,11 +52,21 @@ public class XdevPieChart extends Component
 		this.pieState.setConfig(new XdevPieChartConfig());
 	}
 	
+	/**
+	 * Setting options for the chart.
+	 *
+	 * @param config
+	 */
 	public void setConfig(final XdevPieChartConfig config)
 	{
 		this.pieState.setConfig(config);
 	}
-
+	
+	/**
+	 * Setting a model for the chart and will draw it new.
+	 *
+	 * @param model
+	 */
 	public void setModel(final XdevChartModel model)
 	{
 		final XdevPieChartModel pieModel = (XdevPieChartModel)model;
@@ -73,20 +77,15 @@ public class XdevPieChart extends Component
 		
 		this.pieState.setDataTable(table);
 		this.pieState.setSlices(pieModel.getSlices());
-		
-		final Optional<Component> parent = this.getParent();
-		if(parent.isPresent())
-		{
-			parent.get().setId(this.id);
-		}
-		else
-		{
-			this.setId(this.id);
-		}
+		this.setId(this.id);
 		this.buildChart();
 		
 	}
 
+	/**
+	 * Draws the chart.
+	 * setModel or buildChart should be the last methods to call.
+	 */
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.pieState.getDataTable(),

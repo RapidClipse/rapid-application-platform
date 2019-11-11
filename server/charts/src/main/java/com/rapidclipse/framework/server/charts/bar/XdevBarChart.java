@@ -20,14 +20,12 @@
 
 package com.rapidclipse.framework.server.charts.bar;
 
-import java.util.Optional;
-
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -41,7 +39,7 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("Bar-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevBarChart extends Component
+public class XdevBarChart extends HtmlContainer
 {
 	private final BarChartComponentState barState = new BarChartComponentState();
 	
@@ -79,20 +77,15 @@ public class XdevBarChart extends Component
 		Row.createFromHashmap(model.getData()).forEach(row -> table.getRows().add(row));
 		
 		this.barState.setDataTable(table);
-		
-		final Optional<Component> parent = this.getParent();
-		if(parent.isPresent())
-		{
-			parent.get().setId(this.id);
-		}
-		else
-		{
-			this.setId(this.id);
-		}
+		this.setId(this.id);
 		this.buildChart();
 
 	}
 
+	/**
+	 * Draws the chart.
+	 * setModel or buildChart should be the last methods to call.
+	 */
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.barState.getDataTable(),

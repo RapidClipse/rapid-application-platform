@@ -20,12 +20,10 @@
 
 package com.rapidclipse.framework.server.charts.candlestick;
 
-import java.util.Optional;
-
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
-import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -39,7 +37,7 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("CandleStick-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevCandleStickChart extends Component
+public class XdevCandleStickChart extends HtmlContainer
 {
 	private final CandleStickChartComponentState candleState = new CandleStickChartComponentState();
 	private final String                         id;
@@ -51,26 +49,32 @@ public class XdevCandleStickChart extends Component
 		this.candleState.setConfig(new XdevCandleStickChartConfig());
 	}
 
+	/**
+	 * Setting options for the chart.
+	 *
+	 * @param config
+	 */
 	public void setConfig(final XdevCandleStickChartConfig config)
 	{
 		this.candleState.setConfig(config);
 	}
 
+	/**
+	 * Setting a model for the chart and will draw it new.
+	 *
+	 * @param model
+	 */
 	public void setModel(final XdevChartModel model)
 	{
 		this.candleState.setDataTable(model.getDataTable());
-		final Optional<Component> parent = this.getParent();
-		if(parent.isPresent())
-		{
-			parent.get().setId(this.id);
-		}
-		else
-		{
-			this.setId(this.id);
-		}
+		this.setId(this.id);
 		this.buildChart();
 	}
 
+	/**
+	 * Draws the chart.
+	 * setModel or buildChart should be the last methods to call.
+	 */
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.candleState.getDataTable(),

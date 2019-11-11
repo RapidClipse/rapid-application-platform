@@ -55,6 +55,11 @@ public class ChartJsBuilder
 		return bld.toString();
 	}
 
+	/**
+	 * phase 1
+	 *
+	 * @return
+	 */
 	private String makeFunction()
 	{
 		final StringBuilder bld = new StringBuilder();
@@ -67,6 +72,11 @@ public class ChartJsBuilder
 		return bld.toString();
 	}
 
+	/**
+	 * phase 2
+	 *
+	 * @return
+	 */
 	private String makeOptions()
 	{
 		final StringBuilder bld = new StringBuilder();
@@ -89,6 +99,11 @@ public class ChartJsBuilder
 		return bld.toString();
 	}
 	
+	/**
+	 * phase 3
+	 *
+	 * @return
+	 */
 	private String makeDataTable()
 	{
 		final StringBuilder bld = new StringBuilder();
