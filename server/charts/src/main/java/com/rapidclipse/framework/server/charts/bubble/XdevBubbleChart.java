@@ -24,6 +24,8 @@ import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
+import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -38,18 +40,18 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("Bubble-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevBubbleChart extends HtmlContainer
+public class XdevBubbleChart extends Composite<HtmlContainer> implements HasSize
 {
 	private final BubbleChartComponentState bubbleState = new BubbleChartComponentState();
 	private final String                    id;
-
+	
 	public XdevBubbleChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 		this.bubbleState.setConfig(new XdevBubbleChartConfig());
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -59,7 +61,7 @@ public class XdevBubbleChart extends HtmlContainer
 	{
 		this.bubbleState.setConfig(config);
 	}
-	
+
 	/**
 	 * Set a model for the chart.
 	 *
@@ -68,16 +70,16 @@ public class XdevBubbleChart extends HtmlContainer
 	public void setModel(final XdevChartModel model)
 	{
 		final DataTable table = new DataTable();
-		
+
 		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
-		
+
 		model.getDataTable().getRows().forEach(row -> table.getRows().add(row));
-		
+
 		this.bubbleState.setDataTable(table);
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -89,5 +91,5 @@ public class XdevBubbleChart extends HtmlContainer
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }

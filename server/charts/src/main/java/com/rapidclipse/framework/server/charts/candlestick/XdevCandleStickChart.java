@@ -23,6 +23,8 @@ package com.rapidclipse.framework.server.charts.candlestick;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -37,18 +39,18 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("CandleStick-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevCandleStickChart extends HtmlContainer
+public class XdevCandleStickChart extends Composite<HtmlContainer> implements HasSize
 {
 	private final CandleStickChartComponentState candleState = new CandleStickChartComponentState();
 	private final String                         id;
-
+	
 	public XdevCandleStickChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 		this.candleState.setConfig(new XdevCandleStickChartConfig());
 	}
-
+	
 	/**
 	 * Setting options for the chart.
 	 *
@@ -58,7 +60,7 @@ public class XdevCandleStickChart extends HtmlContainer
 	{
 		this.candleState.setConfig(config);
 	}
-
+	
 	/**
 	 * Setting a model for the chart and will draw it new.
 	 *
@@ -70,7 +72,7 @@ public class XdevCandleStickChart extends HtmlContainer
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -82,5 +84,5 @@ public class XdevCandleStickChart extends HtmlContainer
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

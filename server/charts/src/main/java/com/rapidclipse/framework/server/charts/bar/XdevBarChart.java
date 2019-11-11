@@ -25,6 +25,8 @@ import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
+import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -39,20 +41,20 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("Bar-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevBarChart extends HtmlContainer
+public class XdevBarChart extends Composite<HtmlContainer> implements HasSize
 {
 	private final BarChartComponentState barState = new BarChartComponentState();
-	
+
 	private final String id;
-	
+
 	public XdevBarChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
+
 		this.barState.setConfig(new XdevBarChartConfig());
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -62,7 +64,7 @@ public class XdevBarChart extends HtmlContainer
 	{
 		this.barState.setConfig(config);
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -71,17 +73,17 @@ public class XdevBarChart extends HtmlContainer
 	public void setModel(final XdevChartModel model)
 	{
 		final DataTable table = new DataTable();
-
+		
 		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
-		
+
 		Row.createFromHashmap(model.getData()).forEach(row -> table.getRows().add(row));
-		
+
 		this.barState.setDataTable(table);
 		this.setId(this.id);
 		this.buildChart();
-
+		
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -93,5 +95,5 @@ public class XdevBarChart extends HtmlContainer
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

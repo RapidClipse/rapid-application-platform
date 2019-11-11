@@ -24,6 +24,8 @@ import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.Row;
+import com.vaadin.flow.component.Composite;
+import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -38,19 +40,19 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("Area-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevAreaChart extends HtmlContainer
+public class XdevAreaChart extends Composite<HtmlContainer> implements HasSize
 {
 	private final AreaChartComponentState areaState = new AreaChartComponentState();
 	private final String                  id;
-	
+
 	public XdevAreaChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
+
 		this.areaState.setConfig(new XdevAreaChartConfig());
 	}
-
+	
 	/**
 	 * Override the default options
 	 *
@@ -60,7 +62,7 @@ public class XdevAreaChart extends HtmlContainer
 	{
 		this.areaState.setConfig(config);
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -69,12 +71,12 @@ public class XdevAreaChart extends HtmlContainer
 	public void setModel(final XdevChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-		
+
 		this.areaState.setDataTable(model.getDataTable());
 		this.setId(this.id);
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -86,5 +88,5 @@ public class XdevAreaChart extends HtmlContainer
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }
