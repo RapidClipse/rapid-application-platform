@@ -24,11 +24,11 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Optional;
 
-import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.charts.ColumnType;
-import com.rapidclipse.framework.server.charts.DataRoleType;
-import com.rapidclipse.framework.server.charts.DataTable;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
+import com.rapidclipse.framework.server.charts.data.Column;
+import com.rapidclipse.framework.server.charts.data.ColumnType;
+import com.rapidclipse.framework.server.charts.data.DataRoleType;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**

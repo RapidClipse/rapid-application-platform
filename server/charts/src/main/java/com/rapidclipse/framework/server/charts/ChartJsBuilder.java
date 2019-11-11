@@ -4,6 +4,11 @@ package com.rapidclipse.framework.server.charts;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.rapidclipse.framework.server.charts.data.Column;
+import com.rapidclipse.framework.server.charts.data.DataTable;
+import com.rapidclipse.framework.server.charts.data.Row;
+import com.rapidclipse.framework.server.charts.data.Value;
+
 
 public class ChartJsBuilder
 {

@@ -22,11 +22,11 @@ package com.rapidclipse.framework.server.charts.bubble;
 
 import java.util.LinkedHashMap;
 
-import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.charts.ColumnType;
-import com.rapidclipse.framework.server.charts.DataTable;
-import com.rapidclipse.framework.server.charts.Row;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
+import com.rapidclipse.framework.server.charts.data.Column;
+import com.rapidclipse.framework.server.charts.data.ColumnType;
+import com.rapidclipse.framework.server.charts.data.DataTable;
+import com.rapidclipse.framework.server.charts.data.Row;
 
 
 /**

@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.data;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -30,26 +30,28 @@ import java.util.List;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class MultiValue implements Serializable
+public class DataTable implements Serializable
 {
-	private List<Value> v = new ArrayList<>();
+	private List<Column> columns = new ArrayList<>();
+	private List<Row>    rows    = new ArrayList<>();
 	
-	public MultiValue(final Object... v)
+	public List<Column> getColumns()
 	{
-		for(int i = 0; i < v.length; i++)
-		{
-			this.v.add(new Value(v[i]));
-		}
+		return this.columns;
 	}
 	
-	public List<Value> getV()
+	public void setColumns(final List<Column> columns)
 	{
-		return this.v;
+		this.columns = columns;
 	}
 	
-	public void setV(final List<Value> v)
+	public List<Row> getRows()
 	{
-		this.v = v;
+		return this.rows;
 	}
 	
+	public void setRows(final List<Row> rows)
+	{
+		this.rows = rows;
+	}
 }

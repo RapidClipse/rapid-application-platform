@@ -20,7 +20,7 @@
 
 package com.rapidclipse.framework.server.charts.area;
 
-import com.rapidclipse.framework.server.charts.DataTable;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**

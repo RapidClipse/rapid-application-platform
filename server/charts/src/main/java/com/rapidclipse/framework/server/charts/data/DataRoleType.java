@@ -18,47 +18,39 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
-
-import java.io.Serializable;
-
+package com.rapidclipse.framework.server.charts.data;
 
 /**
  *
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class DataRole implements Serializable
+public enum DataRoleType
 {
-	private String  role;
-	private boolean html = false;
+	ANNOTATION("annotation"),
+	ANNOTATION_TEXT("annotationText"),
+	CERTAINTY("certainty"),
+	EMPHASIS("emphasis"),
+	INTERVALE("interval"),
+	SCOPE("scope"),
+	STYLE("style"),
+	TOOLTIP("tooltip");
+
+	private final String text;
 	
-	public DataRole(final DataRoleType role)
+	private DataRoleType(final String text)
 	{
-		this.role = role.text();
-		if(role.equals(DataRoleType.TOOLTIP))
-		{
-			this.html = true;
-		}
+		this.text = text;
 	}
 	
-	public String getRole()
+	public String text()
 	{
-		return this.role;
+		return this.text;
 	}
 	
-	public void setRole(final String role)
+	@Override
+	public String toString()
 	{
-		this.role = role;
-	}
-	
-	public boolean gethtml()
-	{
-		return this.html;
-	}
-	
-	public void sethtml(final boolean isHtml)
-	{
-		this.html = isHtml;
+		return this.text;
 	}
 }

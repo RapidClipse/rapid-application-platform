@@ -18,11 +18,9 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.data;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 
 /**
@@ -30,28 +28,37 @@ import java.util.List;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class DataTable implements Serializable
+public class DataRole implements Serializable
 {
-	private List<Column> columns = new ArrayList<>();
-	private List<Row>    rows    = new ArrayList<>();
+	private String  role;
+	private boolean html = false;
 	
-	public List<Column> getColumns()
+	public DataRole(final DataRoleType role)
 	{
-		return this.columns;
+		this.role = role.text();
+		if(role.equals(DataRoleType.TOOLTIP))
+		{
+			this.html = true;
+		}
 	}
 	
-	public void setColumns(final List<Column> columns)
+	public String getRole()
 	{
-		this.columns = columns;
+		return this.role;
 	}
 	
-	public List<Row> getRows()
+	public void setRole(final String role)
 	{
-		return this.rows;
+		this.role = role;
 	}
 	
-	public void setRows(final List<Row> rows)
+	public boolean gethtml()
 	{
-		this.rows = rows;
+		return this.html;
+	}
+	
+	public void sethtml(final boolean isHtml)
+	{
+		this.html = isHtml;
 	}
 }

@@ -18,39 +18,38 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.data;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  *
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public enum DataRoleType
+public class MultiValue implements Serializable
 {
-	ANNOTATION("annotation"),
-	ANNOTATION_TEXT("annotationText"),
-	CERTAINTY("certainty"),
-	EMPHASIS("emphasis"),
-	INTERVALE("interval"),
-	SCOPE("scope"),
-	STYLE("style"),
-	TOOLTIP("tooltip");
-
-	private final String text;
+	private List<Value> v = new ArrayList<>();
 	
-	private DataRoleType(final String text)
+	public MultiValue(final Object... v)
 	{
-		this.text = text;
+		for(int i = 0; i < v.length; i++)
+		{
+			this.v.add(new Value(v[i]));
+		}
 	}
 	
-	public String text()
+	public List<Value> getV()
 	{
-		return this.text;
+		return this.v;
 	}
 	
-	@Override
-	public String toString()
+	public void setV(final List<Value> v)
 	{
-		return this.text;
+		this.v = v;
 	}
+	
 }

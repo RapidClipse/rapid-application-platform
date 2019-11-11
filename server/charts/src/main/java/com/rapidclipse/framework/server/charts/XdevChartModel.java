@@ -22,6 +22,8 @@ package com.rapidclipse.framework.server.charts;
 
 import java.util.LinkedHashMap;
 
+import com.rapidclipse.framework.server.charts.data.DataTable;
+
 
 /**
  *

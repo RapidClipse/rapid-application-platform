@@ -18,19 +18,14 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.config;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import com.rapidclipse.framework.server.charts.config.HAxis;
-import com.rapidclipse.framework.server.charts.config.Ticks;
-import com.rapidclipse.framework.server.charts.config.VAxis;
-
 
 /**
  * @author XDEV Software
- *         TODO Check and implement
  */
 public class XdevChartUtils
 {
@@ -38,7 +33,7 @@ public class XdevChartUtils
 	{
 		// Private Constructor for Utility class
 	}
-
+	
 	public static void setHAxisScaling(
 		final HAxis hAxis,
 		final Double range,
@@ -46,17 +41,17 @@ public class XdevChartUtils
 		final Double max)
 	{
 		final List<Ticks> list = new ArrayList<>();
-
+		
 		for(Double i = min; i <= max; i = i + range)
 		{
 			final Ticks ticks = new Ticks();
 			ticks.setV(i);
 			list.add(ticks);
 		}
-		
+
 		hAxis.setTicks(list);
 	}
-
+	
 	public static void setVAxisScaling(
 		final VAxis vAxis,
 		final Integer range,
@@ -64,14 +59,14 @@ public class XdevChartUtils
 		final Integer max)
 	{
 		final List<Ticks> list = new ArrayList<>();
-		
+
 		for(Integer i = min; i <= max; i = i + range)
 		{
 			final Ticks ticks = new Ticks();
 			ticks.setV(i);
 			list.add(ticks);
 		}
-
+		
 		vAxis.setTicks(list);
 	}
 }

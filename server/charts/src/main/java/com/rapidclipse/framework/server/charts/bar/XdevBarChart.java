@@ -23,10 +23,10 @@ package com.rapidclipse.framework.server.charts.bar;
 import java.util.Optional;
 
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
-import com.rapidclipse.framework.server.charts.DataTable;
-import com.rapidclipse.framework.server.charts.Row;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
+import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;

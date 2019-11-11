@@ -22,8 +22,8 @@ package com.rapidclipse.framework.server.charts.pie;
 
 import java.util.List;
 
-import com.rapidclipse.framework.server.charts.DataTable;
 import com.rapidclipse.framework.server.charts.config.XdevPieSlice;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**
