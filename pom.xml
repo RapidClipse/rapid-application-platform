@@ -32,7 +32,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>10.00.02-RAP-SNAPSHOT</version>
+	<version>10.01.00-RAP-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
