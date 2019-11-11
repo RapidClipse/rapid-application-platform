@@ -42,14 +42,14 @@ import com.vaadin.flow.function.ValueProvider;
  * @param <SOURCE>
  *            the type of the input item, from which the {@link Instant} is
  *            extracted
- * 
- * @since 10.00.02
+ *
+ * @since 10.01.00
  */
 public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 {
 	private DateTimeFormatter formatter;
 	private String            nullRepresentation;
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -68,7 +68,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	{
 		this(valueProvider, DateTimeFormatter.ofLocalizedTime(FormatStyle.LONG), "");
 	}
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -93,7 +93,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	{
 		this(valueProvider, formatPattern, Locale.getDefault());
 	}
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -121,7 +121,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	{
 		this(valueProvider, formatPattern, locale, "");
 	}
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -150,13 +150,13 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 		final String nullRepresentation)
 	{
 		super(valueProvider);
-		
+
 		this.formatter          = DateTimeFormatter.ofPattern(
 			Objects.requireNonNull(formatPattern, "format pattern may not be null"),
 			Objects.requireNonNull(locale, "locale may not be null"));
 		this.nullRepresentation = nullRepresentation;
 	}
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -175,7 +175,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	{
 		this(valueProvider, formatter, "");
 	}
-	
+
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
@@ -196,10 +196,10 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 		final String nullRepresentation)
 	{
 		super(valueProvider);
-
+		
 		this.formatter = Objects.requireNonNull(formatter, "formatter may not be null");
 	}
-	
+
 	@Override
 	protected String getFormattedValue(final Instant instant)
 	{
