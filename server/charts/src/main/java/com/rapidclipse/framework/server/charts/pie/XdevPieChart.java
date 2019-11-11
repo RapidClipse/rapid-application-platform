@@ -26,10 +26,10 @@ import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.HtmlContainer;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.dependency.JavaScript;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -40,20 +40,20 @@ import com.vaadin.flow.component.page.Page;
  */
 @Tag("pie-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevPieChart extends Composite<HtmlContainer> implements HasSize
+public class XdevPieChart extends Composite<Div> implements HasSize
 {
 	private final PieChartComponentState pieState = new PieChartComponentState();
-
-	private final String id;
 	
+	private final String id;
+
 	public XdevPieChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
+
 		this.pieState.setConfig(new XdevPieChartConfig());
 	}
-
+	
 	/**
 	 * Setting options for the chart.
 	 *
@@ -63,7 +63,7 @@ public class XdevPieChart extends Composite<HtmlContainer> implements HasSize
 	{
 		this.pieState.setConfig(config);
 	}
-
+	
 	/**
 	 * Setting a model for the chart and will draw it new.
 	 *
@@ -72,18 +72,18 @@ public class XdevPieChart extends Composite<HtmlContainer> implements HasSize
 	public void setModel(final XdevChartModel model)
 	{
 		final XdevPieChartModel pieModel = (XdevPieChartModel)model;
-		
+
 		final DataTable table = new DataTable();
 		table.setColumns(pieModel.getDataTable().getColumns());
 		table.setRows(pieModel.getDataTable().getRows());
-
+		
 		this.pieState.setDataTable(table);
 		this.pieState.setSlices(pieModel.getSlices());
 		this.setId(this.id);
 		this.buildChart();
-
+		
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

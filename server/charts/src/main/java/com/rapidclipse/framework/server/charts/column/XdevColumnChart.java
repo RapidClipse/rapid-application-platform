@@ -18,12 +18,11 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.bar;
+package com.rapidclipse.framework.server.charts.column;
 
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
-import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
@@ -39,49 +38,32 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-@Tag("Bar-chart")
+@Tag("Column-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevBarChart extends Composite<Div> implements HasSize
+public class XdevColumnChart extends Composite<Div> implements HasSize
 {
-	private final BarChartComponentState barState = new BarChartComponentState();
-	
-	private final String id;
-	
-	public XdevBarChart()
+	private final ColumnChartComponentState columnState = new ColumnChartComponentState();
+	private final String                    id;
+
+	public XdevColumnChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
-		this.barState.setConfig(new XdevBarChartConfig());
+		this.columnState.setConfig(new XdevColumnChartConfig());
 	}
 	
-	/**
-	 * Override the default options
-	 *
-	 * @param config
-	 */
-	public void setConfig(final XdevBarChartConfig config)
+	public void setConfig(final XdevColumnChartConfig config)
 	{
-		this.barState.setConfig(config);
+		this.columnState.setConfig(config);
 	}
-
-	/**
-	 * Set a model for the chart
-	 *
-	 * @param model
-	 */
+	
 	public void setModel(final XdevChartModel model)
 	{
-		final DataTable table = new DataTable();
-
-		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
+		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
 		
-		Row.createFromHashmap(model.getData()).forEach(row -> table.getRows().add(row));
-		
-		this.barState.setDataTable(table);
+		this.columnState.setDataTable(model.getDataTable());
 		this.setId(this.id);
 		this.buildChart();
-
 	}
 
 	/**
@@ -90,10 +72,10 @@ public class XdevBarChart extends Composite<Div> implements HasSize
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.barState.getDataTable(),
-			this.barState.getConfig().getOptions(), this.id, "BarChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.columnState.getDataTable(),
+			this.columnState.getConfig().getOptions(), this.id, "ColumnChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }
