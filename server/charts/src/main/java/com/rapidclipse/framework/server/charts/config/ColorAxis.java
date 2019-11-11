@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.config;
 
 import java.util.ArrayList;
 import java.util.List;

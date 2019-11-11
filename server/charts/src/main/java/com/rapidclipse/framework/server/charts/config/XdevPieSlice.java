@@ -22,8 +22,6 @@ package com.rapidclipse.framework.server.charts.config;
 
 import java.io.Serializable;
 
-import com.rapidclipse.framework.server.charts.TextStyle;
-
 
 /**
  * @author XDEV Software

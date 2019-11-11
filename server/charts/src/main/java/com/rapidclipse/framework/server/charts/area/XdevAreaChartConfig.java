@@ -25,9 +25,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
-import com.rapidclipse.framework.server.charts.HAxis;
-import com.rapidclipse.framework.server.charts.Options;
-import com.rapidclipse.framework.server.charts.VAxis;
+import com.rapidclipse.framework.server.charts.config.HAxis;
+import com.rapidclipse.framework.server.charts.config.Options;
+import com.rapidclipse.framework.server.charts.config.VAxis;
 
 
 /**

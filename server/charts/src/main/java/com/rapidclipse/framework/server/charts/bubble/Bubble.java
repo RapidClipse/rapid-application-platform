@@ -20,7 +20,7 @@
 
 package com.rapidclipse.framework.server.charts.bubble;
 
-import com.rapidclipse.framework.server.charts.TextStyle;
+import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 
 /**

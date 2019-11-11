@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
-import com.rapidclipse.framework.server.charts.TextStyle;
+import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 
 /**

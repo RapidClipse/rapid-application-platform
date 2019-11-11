@@ -23,8 +23,6 @@ package com.rapidclipse.framework.server.charts.config;
 import java.io.Serializable;
 import java.util.List;
 
-import com.rapidclipse.framework.server.charts.Options;
-
 
 /**
  * @author XDEV Software

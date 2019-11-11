@@ -20,9 +20,6 @@
 
 package com.rapidclipse.framework.server.charts.config;
 
-import com.rapidclipse.framework.server.charts.TextStyle;
-
-
 /**
  *
  * @author XDEV Software (SS)

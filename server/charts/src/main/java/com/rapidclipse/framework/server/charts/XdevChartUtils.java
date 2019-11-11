@@ -23,6 +23,10 @@ package com.rapidclipse.framework.server.charts;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.config.HAxis;
+import com.rapidclipse.framework.server.charts.config.Ticks;
+import com.rapidclipse.framework.server.charts.config.VAxis;
+
 
 /**
  * @author XDEV Software

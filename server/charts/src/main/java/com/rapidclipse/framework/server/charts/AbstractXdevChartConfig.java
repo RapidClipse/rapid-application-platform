@@ -24,6 +24,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.config.BackgroundStyle;
+import com.rapidclipse.framework.server.charts.config.ChartArea;
+import com.rapidclipse.framework.server.charts.config.LegendOptions;
+import com.rapidclipse.framework.server.charts.config.TextStyle;
 import com.rapidclipse.framework.server.charts.config.Tooltip;
 
 

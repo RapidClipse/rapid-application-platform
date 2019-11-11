@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.config;
 
 import java.io.Serializable;
 import java.util.List;
@@ -33,7 +33,6 @@ public class HAxis implements Serializable
 {
 	/*
 	 * There are way more Options for hAxis possible
-	 * TODO adding more options
 	 */
 	private String      title;
 	private List<Ticks> ticks;
@@ -44,18 +43,18 @@ public class HAxis implements Serializable
 	private boolean     slantedText;
 	private Integer     slantedTextAngle = 30;
 	private String      textPosition     = "out";
-
+	
 	public HAxis(final String title)
 	{
 		this.title    = title;
 		this.minValue = 0;
 	}
-
+	
 	public String getTitle()
 	{
 		return this.title;
 	}
-
+	
 	/**
 	 * Title property that specifies a title for the horizontal axis. <br>
 	 *
@@ -65,12 +64,12 @@ public class HAxis implements Serializable
 	{
 		this.title = title;
 	}
-
+	
 	public Integer getMinValue()
 	{
 		return this.minValue;
 	}
-
+	
 	/**
 	 * Moves the min value of the horizontal axis to the specified value; this will
 	 * be leftward in most charts. Ignored if this is set to a value greater than
@@ -82,7 +81,7 @@ public class HAxis implements Serializable
 	{
 		this.minValue = minValue;
 	}
-
+	
 	/**
 	 * @return the maxValue
 	 */
@@ -90,7 +89,7 @@ public class HAxis implements Serializable
 	{
 		return this.maxValue;
 	}
-
+	
 	/**
 	 * Moves the max value of the horizontal axis to the specified value; this will
 	 * be rightward in most charts. Ignored if this is set to a value smaller than
@@ -102,12 +101,12 @@ public class HAxis implements Serializable
 	{
 		this.maxValue = maxValue;
 	}
-
+	
 	public TextStyle getTextStyle()
 	{
 		return this.textStyle;
 	}
-
+	
 	/**
 	 * An 'TextStyle' object that specifies the horizontal axis text style. <br>
 	 *
@@ -117,12 +116,12 @@ public class HAxis implements Serializable
 	{
 		this.textStyle = textStyle;
 	}
-
+	
 	public boolean isSlantedText()
 	{
 		return this.slantedText;
 	}
-
+	
 	/**
 	 * If true, draw the horizontal axis text at an angle, to help fit more text
 	 * along the axis; if false, draw horizontal axis text upright. <br>
@@ -133,12 +132,12 @@ public class HAxis implements Serializable
 	{
 		this.slantedText = slantedText;
 	}
-
+	
 	public Integer getSlantedTextAngle()
 	{
 		return this.slantedTextAngle;
 	}
-
+	
 	/**
 	 * The angle of the horizontal axis text, if it's drawn slanted. Ignored if
 	 * hAxis.slantedText is false, or is in auto mode, and the chart decided to draw
@@ -151,12 +150,12 @@ public class HAxis implements Serializable
 	{
 		this.slantedTextAngle = slantedTextAngle;
 	}
-
+	
 	public TextStyle getTitleTextStyle()
 	{
 		return this.titleTextStyle;
 	}
-
+	
 	/**
 	 * An object that specifies the horizontal axis title text style. <br>
 	 *
@@ -166,12 +165,12 @@ public class HAxis implements Serializable
 	{
 		this.titleTextStyle = titleTextStyle;
 	}
-
+	
 	public String getTextPosition()
 	{
 		return this.textPosition;
 	}
-
+	
 	/**
 	 * Position of the horizontal axis text, relative to the chart area. Supported
 	 * values: 'out', 'in', 'none'. <br>
@@ -182,12 +181,12 @@ public class HAxis implements Serializable
 	{
 		this.textPosition = textPosition;
 	}
-
+	
 	public List<Ticks> getTicks()
 	{
 		return this.ticks;
 	}
-
+	
 	/**
 	 * Replaces the automatically generated X-axis ticks with the specified array.
 	 * Each element of the array should be either a valid tick value (such as a
@@ -199,7 +198,7 @@ public class HAxis implements Serializable
 	{
 		this.ticks = ticks;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -238,7 +237,7 @@ public class HAxis implements Serializable
 			str.append("slantedTextAngle: " + this.slantedTextAngle + ", ");
 		}
 		str.append("textPosition: '" + this.textPosition + "' }");
-		
+
 		return str.toString();
 	}
 }

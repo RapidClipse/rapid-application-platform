@@ -1,7 +1,7 @@
 
 package com.rapidclipse.framework.server.charts.candlestick;
 
-import com.rapidclipse.framework.server.charts.BackgroundStyle;
+import com.rapidclipse.framework.server.charts.config.BackgroundStyle;
 
 
 public class Candlestick

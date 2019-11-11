@@ -18,20 +18,64 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.config;
 
-// import com.xdev.ui.XdevComponent;
-//
-//
-/// **
-// *
-// * @author XDEV Software (SS)
-// * @since 4.0
-// */
-//
-//
-//// TODO: Schnittstelle zu XdevComponent schaffen!
-// public interface XdevChart extends XdevComponent
-// {
-// public void setModel(XdevChartModel model);
-// }
+/**
+ *
+ * @author XDEV Software (SS)
+ * @since 4.0
+ */
+public class Ticks
+{
+	private Object v;
+	private String f;
+
+	public Ticks()
+	{
+
+	}
+	
+	public Ticks(final Object v, final String f)
+	{
+		this.v = v;
+		this.f = f;
+	}
+
+	public Object getV()
+	{
+		return this.v;
+	}
+
+	public void setV(final Object v)
+	{
+		this.v = v;
+	}
+
+	public String getF()
+	{
+		return this.f;
+	}
+
+	public void setF(final String f)
+	{
+		this.f = f;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{v: ");
+		if(this.v instanceof Number)
+		{
+			str.append(this.v);
+		}
+		else
+		{
+			str.append("'" + this.v + "'");
+		}
+		str.append(", f:'" + this.f + "'}");
+
+		return str.toString();
+	}
+}
