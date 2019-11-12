@@ -16,6 +16,7 @@ public class ChartJsBuilder
 	private final HashMap<String, Object> options;
 	private final String                  id;
 	private final String                  type;
+	private String                        apiKey;
 
 	/**
 	 *
@@ -36,6 +37,21 @@ public class ChartJsBuilder
 		this.options = options;
 		this.id      = id;
 		this.type    = type;
+	}
+
+	public ChartJsBuilder(
+		final DataTable data,
+		final HashMap<String, Object> options,
+		final String id,
+		final String type,
+		final String apiKey)
+	{
+		super();
+		this.data    = data;
+		this.options = options;
+		this.id      = id;
+		this.type    = type;
+		this.apiKey  = apiKey;
 	}
 
 	/**
@@ -67,6 +83,12 @@ public class ChartJsBuilder
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
+		}
+		else if(this.type.equalsIgnoreCase("geochart"))
+		{
+			bld.append(
+				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase()
+					+ "'], 'mapsApiKey': '" + this.apiKey + "'}); ");
 		}
 		else
 		{
