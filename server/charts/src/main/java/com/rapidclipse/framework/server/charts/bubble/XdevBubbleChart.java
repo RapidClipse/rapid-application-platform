@@ -42,16 +42,17 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevBubbleChart extends Composite<Div> implements HasSize
 {
-	private final BubbleChartComponentState bubbleState = new BubbleChartComponentState();
-	private final String                    id;
-
+	private final String          id;
+	private XdevBubbleChartConfig config;
+	private DataTable             dataTable;
+	
 	public XdevBubbleChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		this.bubbleState.setConfig(new XdevBubbleChartConfig());
+		this.id     = IdGenerator.generateId();
+		this.config = new XdevBubbleChartConfig();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -59,9 +60,9 @@ public class XdevBubbleChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevBubbleChartConfig config)
 	{
-		this.bubbleState.setConfig(config);
+		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart.
 	 *
@@ -70,26 +71,26 @@ public class XdevBubbleChart extends Composite<Div> implements HasSize
 	public void setModel(final XdevChartModel model)
 	{
 		final DataTable table = new DataTable();
-		
+
 		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
-		
+
 		model.getDataTable().getRows().forEach(row -> table.getRows().add(row));
-		
-		this.bubbleState.setDataTable(table);
+
+		this.dataTable = table;
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.bubbleState.getDataTable(),
-			this.bubbleState.getConfig().getOptions(), this.id, "BubbleChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "BubbleChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }

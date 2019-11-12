@@ -20,9 +20,12 @@
 
 package com.rapidclipse.framework.server.charts.pie;
 
+import java.util.List;
+
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
@@ -42,16 +45,17 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevPieChart extends Composite<Div> implements HasSize
 {
-	private final PieChartComponentState pieState = new PieChartComponentState();
-	
-	private final String id;
+	private XdevPieChartConfig config;
+	private DataTable          dataTable;
+	private List<XdevPieSlice> slices;
+	private final String       id;
 
 	public XdevPieChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 
-		this.pieState.setConfig(new XdevPieChartConfig());
+		this.config = new XdevPieChartConfig();
 	}
 	
 	/**
@@ -61,7 +65,11 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevPieChartConfig config)
 	{
-		this.pieState.setConfig(config);
+		this.config = config;
+		if(this.slices != null)
+		{
+			this.config.setSlices(new Slices(this.slices));
+		}
 	}
 	
 	/**
@@ -77,8 +85,9 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 		table.setColumns(pieModel.getDataTable().getColumns());
 		table.setRows(pieModel.getDataTable().getRows());
 		
-		this.pieState.setDataTable(table);
-		this.pieState.setSlices(pieModel.getSlices());
+		this.dataTable = table;
+		this.slices    = pieModel.getSlices();
+		this.config.setSlices(new Slices(this.slices));
 		this.setId(this.id);
 		this.buildChart();
 		
@@ -90,8 +99,8 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.pieState.getDataTable(),
-			this.pieState.getConfig().getOptions(), this.id, "PieChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "PieChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

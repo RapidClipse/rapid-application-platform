@@ -23,6 +23,7 @@ package com.rapidclipse.framework.server.charts.candlestick;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
@@ -41,16 +42,17 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevCandleStickChart extends Composite<Div> implements HasSize
 {
-	private final CandleStickChartComponentState candleState = new CandleStickChartComponentState();
-	private final String                         id;
-
+	private final String               id;
+	private XdevCandleStickChartConfig config;
+	private DataTable                  dataTable;
+	
 	public XdevCandleStickChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		this.candleState.setConfig(new XdevCandleStickChartConfig());
+		this.id     = IdGenerator.generateId();
+		this.config = new XdevCandleStickChartConfig();
 	}
-
+	
 	/**
 	 * Setting options for the chart.
 	 *
@@ -58,9 +60,9 @@ public class XdevCandleStickChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevCandleStickChartConfig config)
 	{
-		this.candleState.setConfig(config);
+		this.config = config;
 	}
-
+	
 	/**
 	 * Setting a model for the chart and will draw it new.
 	 *
@@ -68,21 +70,21 @@ public class XdevCandleStickChart extends Composite<Div> implements HasSize
 	 */
 	public void setModel(final XdevChartModel model)
 	{
-		this.candleState.setDataTable(model.getDataTable());
+		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.candleState.getDataTable(),
-			this.candleState.getConfig().getOptions(), this.id, "CandlestickChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "CandlestickChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

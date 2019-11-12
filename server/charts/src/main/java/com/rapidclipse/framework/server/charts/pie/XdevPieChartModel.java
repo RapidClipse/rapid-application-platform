@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.XdevChartModel;
-import com.rapidclipse.framework.server.charts.config.XdevPieSlice;
 import com.rapidclipse.framework.server.charts.data.Column;
 import com.rapidclipse.framework.server.charts.data.ColumnType;
 import com.rapidclipse.framework.server.charts.data.DataTable;

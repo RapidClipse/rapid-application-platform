@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
+import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 
@@ -48,6 +49,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	private String  pieResidueSliceColor = "#ccc";
 	private String  pieResidueSliceLabel = "Other";
 	private Integer pieStartAngle        = 0;
+	private Slices  slices;
 
 	private TextStyle pieSliceTextStyle = new TextStyle();
 
@@ -64,6 +66,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 		options.put("pieResidueSliceLabel", this.pieResidueSliceLabel);
 		options.put("pieStartAngle", this.pieStartAngle);
 		options.put("pieSliceTextStyle", this.pieSliceTextStyle);
+		options.put("slices", this.slices);
 		return options;
 	}
 
@@ -81,7 +84,17 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		return this.pieHole;
 	}
-
+	
+	public Slices getSlices()
+	{
+		return this.slices;
+	}
+	
+	public void setSlices(final Slices slices)
+	{
+		this.slices = slices;
+	}
+	
 	/**
 	 * If between 0 and 1, displays a donut chart. The hole with have a radius equal
 	 * to number times the radius of the chart. <br>

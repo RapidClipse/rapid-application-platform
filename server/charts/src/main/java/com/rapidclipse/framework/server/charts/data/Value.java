@@ -31,24 +31,24 @@ import java.time.LocalDate;
  */
 public class Value implements Serializable
 {
-	
-	private Object valueObject; // string, number, date, datetime
 
+	private Object valueObject; // string, number, date, datetime
+	
 	public Value(final Object v)
 	{
 		this.valueObject = v;
 	}
-
+	
 	public Object getValueObject()
 	{
 		return this.valueObject;
 	}
-
+	
 	public void setVAlueObject(final Object v)
 	{
 		this.valueObject = v;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -58,13 +58,17 @@ public class Value implements Serializable
 		}
 		else if(this.valueObject instanceof LocalDate)
 		{
-			final LocalDate date = (LocalDate)this.valueObject;
-			return "new Date(" + date.getYear() + "," + date.getMonthValue() + "," + date.getDayOfMonth() + ")";
+			final LocalDate date  = (LocalDate)this.valueObject;
+			final int       year  = date.getYear();
+			final int       month = date.getMonthValue() - 1;
+			final int       day   = date.getDayOfMonth();
+
+			return "new Date(" + year + "," + month + "," + day + ")";
 		}
 		else
 		{
 			return "'" + this.valueObject + "'";
 		}
-		
+
 	}
 }

@@ -43,18 +43,19 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevBarChart extends Composite<Div> implements HasSize
 {
-	private final BarChartComponentState barState = new BarChartComponentState();
-	
+	private XdevBarChartConfig config;
+	private DataTable          dataTable;
+
 	private final String id;
-	
+
 	public XdevBarChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
-		this.barState.setConfig(new XdevBarChartConfig());
+
+		this.config = new XdevBarChartConfig();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -62,9 +63,9 @@ public class XdevBarChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevBarChartConfig config)
 	{
-		this.barState.setConfig(config);
+		this.config = config;
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -73,27 +74,27 @@ public class XdevBarChart extends Composite<Div> implements HasSize
 	public void setModel(final XdevChartModel model)
 	{
 		final DataTable table = new DataTable();
-
+		
 		model.getDataTable().getColumns().forEach(column -> table.getColumns().add(column));
-		
+
 		Row.createFromHashmap(model.getData()).forEach(row -> table.getRows().add(row));
-		
-		this.barState.setDataTable(table);
+
+		this.dataTable = table;
 		this.setId(this.id);
 		this.buildChart();
-
+		
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.barState.getDataTable(),
-			this.barState.getConfig().getOptions(), this.id, "BarChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "BarChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

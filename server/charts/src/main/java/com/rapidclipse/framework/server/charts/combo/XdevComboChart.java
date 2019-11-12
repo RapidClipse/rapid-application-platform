@@ -23,6 +23,7 @@ package com.rapidclipse.framework.server.charts.combo;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
@@ -42,17 +43,18 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevComboChart extends Composite<Div> implements HasSize
 {
-	private final ComboChartComponentState comboState = new ComboChartComponentState();
-	private final String                   id;
-	private Series                         series;
-	
+	private final String         id;
+	private Series               series;
+	private XdevComboChartConfig config;
+	private DataTable            dataTable;
+
 	public XdevComboChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		this.comboState.setConfig(new XdevComboChartConfig());
+		this.id     = IdGenerator.generateId();
+		this.config = new XdevComboChartConfig();
 	}
-
+	
 	/**
 	 * Override the default options
 	 *
@@ -62,14 +64,14 @@ public class XdevComboChart extends Composite<Div> implements HasSize
 	{
 		if(config != null)
 		{
-			this.comboState.setConfig(config);
+			this.config = config;
 			if(this.series != null)
 			{
-				this.comboState.getConfig().setSeries(this.series);
+				this.config.setSeries(this.series);
 			}
 		}
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -80,23 +82,21 @@ public class XdevComboChart extends Composite<Div> implements HasSize
 		final XdevComboChartModel combo = (XdevComboChartModel)model;
 		this.series = new Series(combo.getSeries());
 		Row.createFromHashmap(combo.getData()).forEach(row -> combo.getDataTable().getRows().add(row));
-
-		this.comboState.setDataTable(combo.getDataTable());
-		this.comboState.setSeries(combo.getSeries());
-
-		this.comboState.getConfig().setSeries(this.series);
+		
+		this.dataTable = combo.getDataTable();
+		this.config.setSeries(this.series);
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.comboState.getDataTable(),
-			this.comboState.getConfig().getOptions(), this.id, "ComboChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "ComboChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

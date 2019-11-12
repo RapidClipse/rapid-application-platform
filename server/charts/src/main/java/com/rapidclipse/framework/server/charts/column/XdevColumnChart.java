@@ -23,6 +23,7 @@ package com.rapidclipse.framework.server.charts.column;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
@@ -42,40 +43,41 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevColumnChart extends Composite<Div> implements HasSize
 {
-	private final ColumnChartComponentState columnState = new ColumnChartComponentState();
-	private final String                    id;
-
+	private final String          id;
+	private XdevColumnChartConfig config;
+	private DataTable             dataTable;
+	
 	public XdevColumnChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		this.columnState.setConfig(new XdevColumnChartConfig());
+		this.id     = IdGenerator.generateId();
+		this.config = new XdevColumnChartConfig();
 	}
-	
+
 	public void setConfig(final XdevColumnChartConfig config)
 	{
-		this.columnState.setConfig(config);
+		this.config = config;
 	}
-	
+
 	public void setModel(final XdevChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-		
-		this.columnState.setDataTable(model.getDataTable());
+
+		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.columnState.getDataTable(),
-			this.columnState.getConfig().getOptions(), this.id, "ColumnChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "ColumnChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }

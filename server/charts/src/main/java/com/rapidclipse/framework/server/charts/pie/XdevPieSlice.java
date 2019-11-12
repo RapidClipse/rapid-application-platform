@@ -18,9 +18,11 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.pie;
 
 import java.io.Serializable;
+
+import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 
 /**

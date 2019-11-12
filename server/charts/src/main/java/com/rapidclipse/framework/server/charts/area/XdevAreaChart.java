@@ -23,6 +23,7 @@ package com.rapidclipse.framework.server.charts.area;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
@@ -42,15 +43,17 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevAreaChart extends Composite<Div> implements HasSize
 {
-	private final AreaChartComponentState areaState = new AreaChartComponentState();
-	private final String                  id;
+	
+	private final String        id;
+	private XdevAreaChartConfig config;
+	private DataTable           dataTable;
 	
 	public XdevAreaChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
 		
-		this.areaState.setConfig(new XdevAreaChartConfig());
+		this.config = new XdevAreaChartConfig();
 	}
 
 	/**
@@ -60,7 +63,7 @@ public class XdevAreaChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevAreaChartConfig config)
 	{
-		this.areaState.setConfig(config);
+		this.config = config;
 	}
 
 	/**
@@ -72,7 +75,7 @@ public class XdevAreaChart extends Composite<Div> implements HasSize
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
 		
-		this.areaState.setDataTable(model.getDataTable());
+		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
@@ -83,8 +86,8 @@ public class XdevAreaChart extends Composite<Div> implements HasSize
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.areaState.getDataTable(),
-			this.areaState.getConfig().getOptions(), this.id, "AreaChart");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "AreaChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

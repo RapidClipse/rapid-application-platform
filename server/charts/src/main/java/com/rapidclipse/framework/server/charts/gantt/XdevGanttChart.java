@@ -23,6 +23,7 @@ package com.rapidclipse.framework.server.charts.gantt;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.config.IdGenerator;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
@@ -41,16 +42,17 @@ import com.vaadin.flow.component.page.Page;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevGanttChart extends Composite<Div> implements HasSize
 {
-	private final GanttChartComponentState ganttState = new GanttChartComponentState();
-	private final String                   id;
-	
+	private final String         id;
+	private XdevGanttChartConfig config;
+	private DataTable            dataTable;
+
 	public XdevGanttChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		this.ganttState.setConfig(new XdevGanttChartConfig());
+		this.id     = IdGenerator.generateId();
+		this.config = new XdevGanttChartConfig();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -58,9 +60,9 @@ public class XdevGanttChart extends Composite<Div> implements HasSize
 	 */
 	public void setConfig(final XdevGanttChartConfig config)
 	{
-		this.ganttState.setConfig(config);
+		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -68,19 +70,19 @@ public class XdevGanttChart extends Composite<Div> implements HasSize
 	 */
 	public void setModel(final XdevChartModel model)
 	{
-		this.ganttState.setDataTable(model.getDataTable());
+		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
 	 */
 	public void buildChart()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.ganttState.getDataTable(),
-			this.ganttState.getConfig().getOptions(), this.id, "Gantt");
+		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
+			this.config.getOptions(), this.id, "Gantt");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
