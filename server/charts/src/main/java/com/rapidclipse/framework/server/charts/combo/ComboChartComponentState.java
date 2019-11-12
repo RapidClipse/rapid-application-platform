@@ -18,43 +18,59 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.data;
+package com.rapidclipse.framework.server.charts.combo;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
+
+import com.rapidclipse.framework.server.charts.config.XdevSeries;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**
+ * @author XDEV Software
  *
- * @author XDEV Software (SS)
- * @since 4.0
  */
-public class MultiValue implements Serializable
+public class ComboChartComponentState
 {
-	private List<Value> v = new ArrayList<>();
+	private XdevComboChartConfig config;
+	private DataTable            dataTable;
+	private List<XdevSeries>     series;
 
-	public MultiValue()
+	public XdevComboChartConfig getConfig()
 	{
+		return this.config;
+	}
 
+	public void setConfig(final XdevComboChartConfig config)
+	{
+		this.config = config;
+	}
+
+	public DataTable getDataTable()
+	{
+		return this.dataTable;
+	}
+
+	public void setDataTable(final DataTable dataTable)
+	{
+		this.dataTable = dataTable;
+	}
+
+	/**
+	 * @return the series
+	 */
+	public List<XdevSeries> getSeries()
+	{
+		return this.series;
+	}
+
+	/**
+	 * @param series
+	 *            the series to set
+	 */
+	public void setSeries(final List<XdevSeries> series)
+	{
+		this.series = series;
 	}
 	
-	public MultiValue(final Object... v)
-	{
-		for(int i = 0; i < v.length; i++)
-		{
-			this.v.add(new Value(v[i]));
-		}
-	}
-
-	public List<Value> getV()
-	{
-		return this.v;
-	}
-
-	public void setV(final List<Value> v)
-	{
-		this.v = v;
-	}
-
 }

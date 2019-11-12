@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.bar;
+package com.rapidclipse.framework.server.charts.combo;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -33,42 +33,48 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  *
  * @author XDEV Software (SS)
  * @since 4.0
+ *
  */
-public class XdevBarChartConfig extends AbstractXdevChartConfig implements Serializable
+public class XdevComboChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	private String  subtitle;
+	private String  seriesType = "bars";
 	private HAxis   hAxis;
 	private VAxis   vAxis;
-	private boolean isStacked   = false;
-	private String  orientation = "vertical";
+	private Series  series;
+	private boolean interpolateNulls;
 	private Bar     barGroupWidth;
-	
+
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
 		final HashMap<String, Object> options = super.getOptions();
-		options.put("subtitle", this.subtitle);
+		options.put("seriesType", this.seriesType);
+		options.put("series", this.series);
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
-		options.put("isStacked", this.isStacked);
-		options.put("orientation", this.orientation);
+		options.put("interpolateNulls", this.interpolateNulls);
 		options.put("bar", this.barGroupWidth);
 		return options;
 	}
+	
+	/**
+	 * @return the seriesType
+	 */
+	public String getSeriesType()
+	{
+		return this.seriesType;
+	}
 
-	public XdevBarChartConfig()
+	/**
+	 * The default line type for any series not specified in the series property.
+	 * Available values are 'line', 'area', 'bars' and 'steppedArea'. <br>
+	 *
+	 * @param seriesType
+	 *            the seriesType to set
+	 */
+	public void setSeriesType(final String seriesType)
 	{
-		this.subtitle = "";
-	}
-	
-	public String getSubtitle()
-	{
-		return this.subtitle;
-	}
-	
-	public void setSubtitle(final String subtitle)
-	{
-		this.subtitle = subtitle;
+		this.seriesType = seriesType;
 	}
 	
 	public HAxis gethAxis()
@@ -91,52 +97,37 @@ public class XdevBarChartConfig extends AbstractXdevChartConfig implements Seria
 		this.vAxis = vAxis;
 	}
 	
-	/**
-	 * @return the isStacked
-	 */
-	public boolean isStacked()
+	public Series getSeries()
 	{
-		return this.isStacked;
+		return this.series;
 	}
 	
-	/**
-	 * If set to true, stacks the elements for all series at each domain value. <br>
-	 *
-	 * @param isStacked
-	 *            the isStacked to set
-	 */
-	public void setStacked(final boolean isStacked)
+	public void setSeries(final Series series)
 	{
-		this.isStacked = isStacked;
+		this.series = series;
 	}
-
-	public String getOrientation()
+	
+	public boolean isInterpolateNulls()
 	{
-		return this.orientation;
+		return this.interpolateNulls;
 	}
-
-	/**
-	 * The orientation of the chart.
-	 *
-	 * @param orientation
-	 *            'horizontal' or 'vertical'
-	 */
-	public void setOrientation(final String orientation)
+	
+	public void setInterpolateNulls(final boolean interpolateNulls)
 	{
-		this.orientation = orientation;
+		this.interpolateNulls = interpolateNulls;
 	}
 	
 	public Bar getBarGroupWidth()
 	{
 		return this.barGroupWidth;
 	}
-
+	
 	/**
 	 * The width of a group of bars , specified in either of these formats:
 	 * <li>Pixels (e.g. 50)</li>
 	 * <li>Percentage of the available width for each group (e.g. '20%'), where '100%' means that groups have no space
 	 * between them.</li>
-	 *
+	 * 
 	 * @param barGroupWidth
 	 *            String
 	 */
@@ -144,5 +135,5 @@ public class XdevBarChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.barGroupWidth = new Bar(barGroupWidth);
 	}
-
+	
 }

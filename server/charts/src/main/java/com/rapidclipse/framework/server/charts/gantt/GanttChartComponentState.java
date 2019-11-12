@@ -18,10 +18,9 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.data;
+package com.rapidclipse.framework.server.charts.gantt;
 
-import java.io.Serializable;
-import java.time.LocalDate;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**
@@ -29,42 +28,29 @@ import java.time.LocalDate;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class Value implements Serializable
+public class GanttChartComponentState
 {
-	
-	private Object valueObject; // string, number, date, datetime
 
-	public Value(final Object v)
+	private XdevGanttChartConfig config;
+	private DataTable            dataTable;
+
+	public XdevGanttChartConfig getConfig()
 	{
-		this.valueObject = v;
+		return this.config;
 	}
 
-	public Object getValueObject()
+	public void setConfig(final XdevGanttChartConfig config)
 	{
-		return this.valueObject;
+		this.config = config;
 	}
 
-	public void setVAlueObject(final Object v)
+	public DataTable getDataTable()
 	{
-		this.valueObject = v;
+		return this.dataTable;
 	}
-	
-	@Override
-	public String toString()
+
+	public void setDataTable(final DataTable dataTable)
 	{
-		if(this.valueObject instanceof Number || this.valueObject == null)
-		{
-			return "" + this.valueObject;
-		}
-		else if(this.valueObject instanceof LocalDate)
-		{
-			final LocalDate date = (LocalDate)this.valueObject;
-			return "new Date(" + date.getYear() + "," + date.getMonthValue() + "," + date.getDayOfMonth() + ")";
-		}
-		else
-		{
-			return "'" + this.valueObject + "'";
-		}
-		
+		this.dataTable = dataTable;
 	}
 }

@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
+import com.rapidclipse.framework.server.charts.config.Bar;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -38,7 +39,8 @@ public class XdevColumnChartConfig extends AbstractXdevChartConfig implements Se
 	private HAxis   hAxis;
 	private VAxis   vAxis;
 	private boolean isStacked = false;
-	
+	private Bar     barGroupWidth;
+
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -46,37 +48,56 @@ public class XdevColumnChartConfig extends AbstractXdevChartConfig implements Se
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
 		options.put("isStacked", this.isStacked);
+		options.put("bar", this.barGroupWidth);
 		return options;
 	}
-	
+
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-	
+
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-	
+
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-
+	
 	public boolean isStacked()
 	{
 		return this.isStacked;
 	}
-	
+
 	public void setStacked(final boolean isStacked)
 	{
 		this.isStacked = isStacked;
 	}
-	
+
+	public Bar getBarGroupWidth()
+	{
+		return this.barGroupWidth;
+	}
+
+	/**
+	 * The width of a group of bars , specified in either of these formats:
+	 * <li>Pixels (e.g. 50)</li>
+	 * <li>Percentage of the available width for each group (e.g. '20%'), where '100%' means that groups have no space
+	 * between them.</li>
+	 *
+	 * @param barGroupWidth
+	 *            String
+	 */
+	public void setBarGroupWidth(final String barGroupWidth)
+	{
+		this.barGroupWidth = new Bar(barGroupWidth);
+	}
 }

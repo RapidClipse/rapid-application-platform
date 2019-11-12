@@ -18,10 +18,12 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.data;
+package com.rapidclipse.framework.server.charts.gantt;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.HashMap;
+
+import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
 
 
 /**
@@ -29,42 +31,26 @@ import java.time.LocalDate;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class Value implements Serializable
+public class XdevGanttChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	
-	private Object valueObject; // string, number, date, datetime
 
-	public Value(final Object v)
-	{
-		this.valueObject = v;
-	}
+	private Gantt gantt = new Gantt();
 
-	public Object getValueObject()
-	{
-		return this.valueObject;
-	}
-
-	public void setVAlueObject(final Object v)
-	{
-		this.valueObject = v;
-	}
-	
 	@Override
-	public String toString()
+	public HashMap<String, Object> getOptions()
 	{
-		if(this.valueObject instanceof Number || this.valueObject == null)
-		{
-			return "" + this.valueObject;
-		}
-		else if(this.valueObject instanceof LocalDate)
-		{
-			final LocalDate date = (LocalDate)this.valueObject;
-			return "new Date(" + date.getYear() + "," + date.getMonthValue() + "," + date.getDayOfMonth() + ")";
-		}
-		else
-		{
-			return "'" + this.valueObject + "'";
-		}
-		
+		final HashMap<String, Object> options = super.getOptions();
+		options.put("gantt", this.gantt);
+		return options;
+	}
+
+	public Gantt getGantt()
+	{
+		return this.gantt;
+	}
+
+	public void setGantt(final Gantt gantt)
+	{
+		this.gantt = gantt;
 	}
 }

@@ -24,6 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
+import com.rapidclipse.framework.server.charts.config.Bar;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -39,7 +40,8 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	private VAxis       vAxis;
 	private String      orientation = "horizontal";
 	private Candlestick candlestick;
-
+	private Bar         barGroupWidth;
+	
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -48,49 +50,50 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 		options.put("vAxis", this.vAxis);
 		options.put("orientation", this.orientation);
 		options.put("candlestick", this.candlestick);
+		options.put("bar", this.barGroupWidth);
 		return options;
 	}
-
+	
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-
+	
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-
+	
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-
+	
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-
+	
 	public String getOrientation()
 	{
 		return this.orientation;
 	}
-	
+
 	public Candlestick getCandlestick()
 	{
 		return this.candlestick;
 	}
-	
+
 	/**
 	 * for RisingColor or fallingColor
-	 * 
+	 *
 	 * @param candlestick
 	 */
 	public void setCandlestick(final Candlestick candlestick)
 	{
 		this.candlestick = candlestick;
 	}
-	
+
 	/**
 	 * The orientation of the chart.
 	 *
@@ -101,5 +104,24 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	{
 		this.orientation = orientation;
 	}
+	
+	public Bar getBarGroupWidth()
+	{
+		return this.barGroupWidth;
+	}
 
+	/**
+	 * The width of a group of bars , specified in either of these formats:
+	 * <li>Pixels (e.g. 50)</li>
+	 * <li>Percentage of the available width for each group (e.g. '20%'), where '100%' means that groups have no space
+	 * between them.</li>
+	 *
+	 * @param barGroupWidth
+	 *            String
+	 */
+	public void setBarGroupWidth(final String barGroupWidth)
+	{
+		this.barGroupWidth = new Bar(barGroupWidth);
+	}
+	
 }

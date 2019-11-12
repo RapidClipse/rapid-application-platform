@@ -18,53 +18,58 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.data;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-
+package com.rapidclipse.framework.server.charts.gantt;
 
 /**
  *
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class Value implements Serializable
+public class GridLine
 {
-	
-	private Object valueObject; // string, number, date, datetime
+	private String  stroke;
+	private Integer strokeWidth = 1;
 
-	public Value(final Object v)
+	public String getStroke()
 	{
-		this.valueObject = v;
+		return this.stroke;
 	}
 
-	public Object getValueObject()
+	/**
+	 * The color of the inner horizontal grid lines. <br>
+	 *
+	 * @param stroke
+	 */
+	public void setStroke(final String stroke)
 	{
-		return this.valueObject;
+		this.stroke = stroke;
 	}
 
-	public void setVAlueObject(final Object v)
+	public Integer getStrokeWidth()
 	{
-		this.valueObject = v;
+		return this.strokeWidth;
 	}
-	
+
+	/**
+	 * The width of the inner horizontal grid lines. <br>
+	 *
+	 * @param strokeWidth
+	 */
+	public void setStrokeWidth(final Integer strokeWidth)
+	{
+		this.strokeWidth = strokeWidth;
+	}
+
 	@Override
 	public String toString()
 	{
-		if(this.valueObject instanceof Number || this.valueObject == null)
-		{
-			return "" + this.valueObject;
-		}
-		else if(this.valueObject instanceof LocalDate)
-		{
-			final LocalDate date = (LocalDate)this.valueObject;
-			return "new Date(" + date.getYear() + "," + date.getMonthValue() + "," + date.getDayOfMonth() + ")";
-		}
-		else
-		{
-			return "'" + this.valueObject + "'";
-		}
-		
+		final StringBuilder str = new StringBuilder();
+		str.append("{");
+		str.append("stroke: '" + this.stroke + "',");
+		str.append("strokeWidth: " + this.strokeWidth);
+		str.append("}");
+
+		return str.toString();
 	}
+
 }
