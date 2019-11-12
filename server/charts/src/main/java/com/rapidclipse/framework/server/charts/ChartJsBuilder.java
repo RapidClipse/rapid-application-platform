@@ -17,7 +17,7 @@ public class ChartJsBuilder
 	private final String                  id;
 	private final String                  type;
 	private String                        apiKey;
-
+	
 	/**
 	 *
 	 * @param data
@@ -38,7 +38,7 @@ public class ChartJsBuilder
 		this.id      = id;
 		this.type    = type;
 	}
-
+	
 	public ChartJsBuilder(
 		final DataTable data,
 		final HashMap<String, Object> options,
@@ -53,7 +53,7 @@ public class ChartJsBuilder
 		this.type    = type;
 		this.apiKey  = apiKey;
 	}
-
+	
 	/**
 	 * Building a String for executeJs to make a JS page for the Chart
 	 *
@@ -62,15 +62,15 @@ public class ChartJsBuilder
 	public String constructChart()
 	{
 		final StringBuilder bld = new StringBuilder();
-
+		
 		bld.append(this.makeFunction());
 		bld.append(this.makeOptions());
 		bld.append(this.makeDataTable());
 		bld.append("chart.draw(view, options); }");
-
+		
 		return bld.toString();
 	}
-	
+
 	/**
 	 * phase 1
 	 *
@@ -84,7 +84,7 @@ public class ChartJsBuilder
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
 		}
-		else if(this.type.equalsIgnoreCase("geochart"))
+		else if(this.type.equalsIgnoreCase("geochart") || this.type.equalsIgnoreCase("map"))
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase()
@@ -99,10 +99,10 @@ public class ChartJsBuilder
 		bld.append("function drawChart(){ ");
 		bld.append(
 			"var chart = new google.visualization." + this.type + "(document.getElementById('" + this.id + "')); ");
-
+		
 		return bld.toString();
 	}
-	
+
 	/**
 	 * phase 2
 	 *
@@ -112,7 +112,7 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var options ={ ");
-		
+
 		for(final Map.Entry<String, Object> entry : this.options.entrySet())
 		{
 			bld.append(entry.getKey() + ": ");
@@ -129,7 +129,7 @@ public class ChartJsBuilder
 		bld.append("}; ");
 		return bld.toString();
 	}
-
+	
 	/**
 	 * phase 3
 	 *
@@ -139,12 +139,12 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var data = new google.visualization.DataTable(); ");
-
+		
 		for(final Column col : this.data.getColumns())
 		{
 			bld.append("data.addColumn(" + col.jsPrint() + "); ");
 		}
-
+		
 		bld.append("data.addRows([");
 		for(final Row row : this.data.getRows())
 		{
