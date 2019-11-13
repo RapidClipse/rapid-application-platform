@@ -1,20 +1,9 @@
-.checkbox {
+.checkBox {
 	font-size: 30px;
 	height: 2.8rem !important;
+	margin-right: -10px;
 }
-
-/* .deleteButton {
-	min-height: 5px;
-	min-width: 5px;
-	width: 2rem !important;
-	height: 2rem !important;
-} */
-
 .cancelButton {
-	min-height: 5px;
-	min-width: 5px;
-	width: 2rem !important;
-	height: 2rem !important;
 
 }
 
@@ -65,36 +54,40 @@
 	color: red;
 }
 
+.addButton:hover{
+	color: green;
+}
 .checkButton:hover {
 	color: green;
 }
 
 
 
- @media only screen and (min-width: 727px) {
+ @media only screen and (min-width: 0px) {
 
 	.operatorComboBox {
-		width: calc(49.95% - 1rem);
+		width: calc(99.99% - 1rem);
 	}
 
 	vaadin-combo-box {
-		width: calc(49.95% - 1rem) !important;
+		width: calc(99.99% - 1rem) !important;
 		margin-right: 10px !important;
 	}
 
 	.TextFieldWithNull {
-		width: calc(49.95% - 1rem) !important;
+		width: calc(99.99% - 1rem) !important;
 	}
 
 	vaadin-date-picker {
-		width: calc(49.95% - 1rem) !important;
+		width: calc(99.99% - 1rem) !important;
 		margin-right: 10px !important;
+				margin-left: 0px;
 	}
 
 
 }
 
-@media only screen and (min-width: 1000px) {
+@media only screen and (min-width: 800px) {
 	.entryRowComboBox {
 		width: 100%;
 		/* margin-right: 0px; */
@@ -116,5 +109,6 @@
 	vaadin-date-picker {
 		width: calc(33% - 1rem) !important;
 		margin-right: 10px !important;
+
 	}
 }
