@@ -1,7 +1,10 @@
 
 package com.rapidclipse.framework.server.charts;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.rapidclipse.framework.server.charts.data.Column;
@@ -12,11 +15,15 @@ import com.rapidclipse.framework.server.charts.data.Value;
 
 public class ChartJsBuilder
 {
-	private DataTable                     data = new DataTable();
+	private DataTable                     data  = new DataTable();
 	private final HashMap<String, Object> options;
 	private final String                  id;
 	private final String                  type;
 	private String                        apiKey;
+	private final List<String>            other =
+		new ArrayList<>(Arrays.asList("gantt", "orgchart", "timeline", "calendar", "gauge"));
+	private final List<String>            maps  =
+		new ArrayList<>(Arrays.asList("geochart", "map"));
 	
 	/**
 	 *
@@ -79,13 +86,13 @@ public class ChartJsBuilder
 	private String makeFunction()
 	{
 		final StringBuilder bld = new StringBuilder();
-		if(this.type.equalsIgnoreCase("gantt") || this.type.equalsIgnoreCase("orgchart")
-			|| this.type.equalsIgnoreCase("timeline"))
+		if(this.other.contains(this.type.toLowerCase()))
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
+
 		}
-		else if(this.type.equalsIgnoreCase("geochart") || this.type.equalsIgnoreCase("map"))
+		else if(this.maps.contains(this.type.toLowerCase()))
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase()
