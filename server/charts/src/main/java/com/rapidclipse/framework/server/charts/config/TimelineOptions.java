@@ -34,12 +34,12 @@ public class TimelineOptions
 	private boolean   showRowLabels   = true;
 	private String    singleColor;
 	private TextStyle barLabelStyle;
-	
+
 	public TextStyle getBarLabelStyle()
 	{
 		return this.barLabelStyle;
 	}
-	
+
 	/**
 	 * An 'TextStyle' object that specifies the bar label text style. <br>
 	 *
@@ -49,12 +49,12 @@ public class TimelineOptions
 	{
 		this.barLabelStyle = barLabelStyle;
 	}
-	
+
 	public boolean isColorByRowLabel()
 	{
 		return this.colorByRowLabel;
 	}
-	
+
 	/**
 	 * If set to true, colors every bar on the row the same. The default is to use
 	 * one color per bar label. <br>
@@ -65,12 +65,12 @@ public class TimelineOptions
 	{
 		this.colorByRowLabel = colorByRowLabel;
 	}
-	
+
 	public boolean isGroupByRowLabel()
 	{
 		return this.groupByRowLabel;
 	}
-	
+
 	/**
 	 * If set to false, creates one row for every entry. The default is to collect
 	 * bars with the same row label into one row. <br>
@@ -81,12 +81,12 @@ public class TimelineOptions
 	{
 		this.groupByRowLabel = groupByRowLabel;
 	}
-	
+
 	public TextStyle getRowLabelStyle()
 	{
 		return this.rowLabelStyle;
 	}
-	
+
 	/**
 	 * An 'TextStyle' object that specifies the bar label text style. <br>
 	 *
@@ -96,12 +96,12 @@ public class TimelineOptions
 	{
 		this.rowLabelStyle = rowLabelStyle;
 	}
-	
+
 	public boolean isShowBarLabels()
 	{
 		return this.showBarLabels;
 	}
-	
+
 	/**
 	 * If set to false, omits bar labels. The default is to show them. <br>
 	 *
@@ -111,12 +111,12 @@ public class TimelineOptions
 	{
 		this.showBarLabels = showBarLabels;
 	}
-	
+
 	public boolean isShowRowLabels()
 	{
 		return this.showRowLabels;
 	}
-	
+
 	/**
 	 * If set to false, omits row labels. The default is to show them. <br>
 	 *
@@ -126,12 +126,12 @@ public class TimelineOptions
 	{
 		this.showRowLabels = showRowLabels;
 	}
-	
+
 	public String getSingleColor()
 	{
 		return this.singleColor;
 	}
-	
+
 	/**
 	 * Colors all bars the same. Specified as a hex value (e.g., '#8d8'). <br>
 	 *
@@ -140,5 +140,25 @@ public class TimelineOptions
 	public void setSingleColor(final String singleColor)
 	{
 		this.singleColor = singleColor;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{");
+		str.append("colorByRowLabel: " + this.colorByRowLabel + ", ");
+		str.append("groupByRowLabel: " + this.groupByRowLabel + ", ");
+		str.append("rowLabelStyle: " + this.rowLabelStyle + ", ");
+		str.append("showBarLabels: " + this.showBarLabels + ", ");
+		str.append("showRowLabels: " + this.showRowLabels + ", ");
+		if(this.singleColor != null)
+		{
+			str.append("singleColor: '" + this.singleColor + "', ");
+		}
+		str.append("barLabelStyle: " + this.barLabelStyle);
+		str.append("}");
+		
+		return str.toString();
 	}
 }

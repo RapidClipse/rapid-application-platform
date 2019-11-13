@@ -79,7 +79,8 @@ public class ChartJsBuilder
 	private String makeFunction()
 	{
 		final StringBuilder bld = new StringBuilder();
-		if(this.type.equalsIgnoreCase("gantt"))
+		if(this.type.equalsIgnoreCase("gantt") || this.type.equalsIgnoreCase("orgchart")
+			|| this.type.equalsIgnoreCase("timeline"))
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
@@ -94,7 +95,6 @@ public class ChartJsBuilder
 		{
 			bld.append("google.charts.load('visualization', 'current', {'packages': ['corechart']}); ");
 		}
-		bld.append("google.charts.load('visualization', 'current', {'packages': ['corechart']}); ");
 		bld.append("google.charts.setOnLoadCallback(drawChart); ");
 		bld.append("function drawChart(){ ");
 		bld.append(
