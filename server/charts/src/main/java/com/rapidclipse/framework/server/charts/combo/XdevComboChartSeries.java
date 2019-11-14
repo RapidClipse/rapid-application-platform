@@ -1,36 +1,16 @@
-/*
- * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
- */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.combo;
 
 import java.io.Serializable;
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.config.Options;
 
-/**
- * @author XDEV Software
- *
- */
-public class XdevSeries implements Serializable
+
+public class XdevComboChartSeries implements Serializable
 {
 	private String        type            = "line";
+	private double        areaOpacity     = 0.3;
 	private String        color;
 	private String        labelInLegend;
 	private boolean       visibleInLegend = true;
@@ -60,7 +40,22 @@ public class XdevSeries implements Serializable
 	{
 		this.type = type;
 	}
-	
+
+	public double getAreaOpacity()
+	{
+		return this.areaOpacity;
+	}
+
+	/**
+	 * Overrides the global areaOpacity for this series.
+	 *
+	 * @param areaOpacity
+	 */
+	public void setAreaOpacity(final double areaOpacity)
+	{
+		this.areaOpacity = areaOpacity;
+	}
+
 	/**
 	 * @return the color
 	 */
@@ -211,6 +206,33 @@ public class XdevSeries implements Serializable
 	public void setLineDashStyle(final List<Integer> lineDashStyle)
 	{
 		this.lineDashStyle = lineDashStyle;
+	}
+
+	@Override
+	public String toString()
+	{
+		final StringBuilder str = new StringBuilder();
+		str.append("{");
+		str.append("type: '" + this.type + "', ");
+		str.append("areaOpacity: " + this.areaOpacity + ", ");
+		if(this.color != null)
+		{
+			str.append("color: '" + this.color + "', ");
+		}
+		str.append("labelInLegend: '" + this.labelInLegend + "', ");
+		str.append("visibleInLegend: " + this.visibleInLegend + ", ");
+		str.append("lineWidth: " + this.lineWidth + ", ");
+		str.append("pointSize: " + this.pointSize + ", ");
+		if(this.lineDashStyle != null)
+		{
+			str.append("lineDashStyle: " + this.lineDashStyle + ", ");
+		}
+		
+		str.append("curveType: '" + this.curveType + "', ");
+		str.append("pointShape: '" + this.pointShape + "' ");
+		str.append("}");
+		
+		return str.toString();
 	}
 
 }

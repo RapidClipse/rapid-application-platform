@@ -25,7 +25,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.XdevChartModel;
-import com.rapidclipse.framework.server.charts.config.XdevSeries;
 import com.rapidclipse.framework.server.charts.data.Column;
 import com.rapidclipse.framework.server.charts.data.ColumnType;
 import com.rapidclipse.framework.server.charts.data.DataTable;
@@ -40,7 +39,7 @@ public class XdevComboChartModel implements XdevChartModel
 	private DataTable                                                  dataTable  = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data       = new LinkedHashMap<>();
 	private final LinkedHashMap<String, Object>                        categories = new LinkedHashMap<>();
-	private final List<XdevSeries>                                     seriesList = new ArrayList<>();
+	private final List<Object>                                         seriesList = new ArrayList<>();
 
 	public XdevComboChartModel()
 	{
@@ -64,12 +63,12 @@ public class XdevComboChartModel implements XdevChartModel
 		return this.data;
 	}
 
-	public List<XdevSeries> getSeries()
+	public List<Object> getSeries()
 	{
 		return this.seriesList;
 	}
 
-	public void addCategory(final String caption, final XdevSeries series)
+	public void addCategory(final String caption, final XdevComboChartSeries series)
 	{
 		this.categories.put(caption, null);
 		this.getDataTable().getColumns()

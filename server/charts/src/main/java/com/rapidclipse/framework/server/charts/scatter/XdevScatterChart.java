@@ -18,7 +18,7 @@
  * <http://www.rapidclipse.com/en/legal/license/license.html>.
  */
 
-package com.rapidclipse.framework.server.charts.combo;
+package com.rapidclipse.framework.server.charts.scatter;
 
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
@@ -40,20 +40,20 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software (SS)
  * @since 4.0
  */
-@Tag("Combo-chart")
+@Tag("Scatter-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class XdevComboChart extends Composite<Div> implements HasSize
+public class XdevScatterChart extends Composite<Div> implements HasSize
 {
-	private final String         id;
-	private Series               series;
-	private XdevComboChartConfig config;
-	private DataTable            dataTable;
-
-	public XdevComboChart()
+	private final String           id;
+	private Series                 series;
+	private XdevScatterChartConfig config;
+	private DataTable              dataTable;
+	
+	public XdevScatterChart()
 	{
 		super();
 		this.id     = IdGenerator.generateId();
-		this.config = new XdevComboChartConfig();
+		this.config = new XdevScatterChartConfig();
 	}
 	
 	/**
@@ -61,7 +61,7 @@ public class XdevComboChart extends Composite<Div> implements HasSize
 	 *
 	 * @param config
 	 */
-	public void setConfig(final XdevComboChartConfig config)
+	public void setConfig(final XdevScatterChartConfig config)
 	{
 		if(config != null)
 		{
@@ -80,11 +80,11 @@ public class XdevComboChart extends Composite<Div> implements HasSize
 	 */
 	public void setModel(final XdevChartModel model)
 	{
-		final XdevComboChartModel combo = (XdevComboChartModel)model;
-		this.series = new Series(combo.getSeries());
-		Row.createFromHashmap(combo.getData()).forEach(row -> combo.getDataTable().getRows().add(row));
-		
-		this.dataTable = combo.getDataTable();
+		final XdevScatterChartModel scaModel = (XdevScatterChartModel)model;
+		this.series = new Series(scaModel.getSeries());
+		Row.createFromHashmap(scaModel.getData()).forEach(row -> scaModel.getDataTable().getRows().add(row));
+		this.dataTable = scaModel.getDataTable();
+
 		this.config.setSeries(this.series);
 		this.setId(this.id);
 		this.buildChart();
@@ -97,8 +97,9 @@ public class XdevComboChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "ComboChart");
+			this.config.getOptions(), this.id, "ScatterChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
+	
 }

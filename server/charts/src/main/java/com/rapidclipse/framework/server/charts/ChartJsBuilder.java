@@ -21,7 +21,7 @@ public class ChartJsBuilder
 	private final String                  type;
 	private String                        apiKey;
 	private final List<String>            other =
-		new ArrayList<>(Arrays.asList("gantt", "orgchart", "timeline", "calendar", "gauge"));
+		new ArrayList<>(Arrays.asList("gantt", "orgchart", "timeline", "calendar", "gauge", "sankey"));
 	private final List<String>            maps  =
 		new ArrayList<>(Arrays.asList("geochart", "map"));
 	
@@ -118,7 +118,7 @@ public class ChartJsBuilder
 	private String makeOptions()
 	{
 		final StringBuilder bld = new StringBuilder();
-		bld.append("var options ={ ");
+		bld.append("var options ={   ");
 
 		for(final Map.Entry<String, Object> entry : this.options.entrySet())
 		{
