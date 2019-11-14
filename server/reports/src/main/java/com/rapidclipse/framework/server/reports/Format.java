@@ -24,6 +24,8 @@
 
 package com.rapidclipse.framework.server.reports;
 
+import com.rapidclipse.framework.server.util.ServiceLoader;
+
 import net.sf.dynamicreports.design.transformation.StyleResolver;
 import net.sf.dynamicreports.report.base.style.DRFont;
 import net.sf.dynamicreports.report.defaults.Defaults;
@@ -115,6 +117,11 @@ public interface Format
 		return new Xml();
 	}
 
+	public static Format[] All()
+	{
+		return ServiceLoader.forType(Format.class).servicesStream().toArray(Format[]::new);
+	}
+
 	public static abstract class Abstract implements Format
 	{
 		private final String name;
@@ -157,13 +164,21 @@ public interface Format
 		protected abstract DynamicExporter createDynamicExporter();
 
 		protected abstract PlainExporter createPlainExporter();
+
+		@Override
+		public boolean equals(final Object obj)
+		{
+			return obj instanceof Format && this.name.equals(((Format)obj).name());
+		}
 	}
 
 	public static class Pdf extends Abstract
 	{
+		public final static String MIME_TYPE = "application/pdf";
+
 		public Pdf()
 		{
-			super("PDF", "pdf", "application/pdf");
+			super("PDF", "pdf", MIME_TYPE);
 		}
 
 		@Override
@@ -181,9 +196,11 @@ public interface Format
 
 	public static class Xml extends Abstract
 	{
+		public final static String MIME_TYPE = "text/xml";
+
 		public Xml()
 		{
-			super("XML", "xml", "text/xml");
+			super("XML", "xml", MIME_TYPE);
 		}
 
 		@Override
@@ -208,9 +225,11 @@ public interface Format
 
 	public static class Text extends Abstract
 	{
+		public final static String MIME_TYPE = "text/plain";
+
 		public Text()
 		{
-			super("Text", "txt", "text/plain");
+			super("Text", "txt", MIME_TYPE);
 		}
 
 		@Override
@@ -240,9 +259,11 @@ public interface Format
 
 	public static class Rtf extends Abstract
 	{
+		public final static String MIME_TYPE = "text/rtf";
+
 		public Rtf()
 		{
-			super("Rich Text", "rtf", "text/rtf");
+			super("Rich Text", "rtf", MIME_TYPE);
 		}
 
 		@Override
@@ -267,9 +288,11 @@ public interface Format
 
 	public static class Csv extends Abstract
 	{
+		public final static String MIME_TYPE = "text/comma-separated-values";
+
 		public Csv()
 		{
-			super("CSV", "csv", "text/comma-separated-values");
+			super("CSV", "csv", MIME_TYPE);
 		}
 
 		@Override
@@ -294,9 +317,11 @@ public interface Format
 
 	public static class Xls extends Abstract
 	{
+		public final static String MIME_TYPE = "application/vnd.ms-excel";
+
 		public Xls()
 		{
-			super("Excel (xls)", "xls", "application/msexcel");
+			super("Excel (xls)", "xls", MIME_TYPE);
 		}
 
 		@Override
@@ -321,10 +346,11 @@ public interface Format
 
 	public static class Xlsx extends Abstract
 	{
+		public final static String MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+
 		public Xlsx()
 		{
-			super("Excel (xlsx)", "xlsx",
-				"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+			super("Excel (xlsx)", "xlsx", MIME_TYPE);
 		}
 
 		@Override
@@ -349,10 +375,12 @@ public interface Format
 
 	public static class Docx extends Abstract
 	{
+		public final static String MIME_TYPE =
+			"application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+
 		public Docx()
 		{
-			super("Word (docx)", "docx",
-				"application/vnd.openxmlformats-officedocument.wordprocessingml.document");
+			super("Word (docx)", "docx", MIME_TYPE);
 		}
 
 		@Override
@@ -377,9 +405,12 @@ public interface Format
 
 	public static class Pptx extends Abstract
 	{
+		public final static String MIME_TYPE =
+			"application/vnd.openxmlformats-officedocument.presentationml.presentation";
+
 		public Pptx()
 		{
-			super("Powerpoint (pptx)", "pptx", "application/mspowerpoint");
+			super("Powerpoint (pptx)", "pptx", MIME_TYPE);
 		}
 
 		@Override
@@ -404,9 +435,11 @@ public interface Format
 
 	public static class Odt extends Abstract
 	{
+		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.text";
+
 		public Odt()
 		{
-			super("Open Document (odt)", "odt", "application/vnd.oasis.opendocument.text");
+			super("Open Document Text (odt)", "odt", MIME_TYPE);
 		}
 
 		@Override
@@ -431,9 +464,11 @@ public interface Format
 
 	public static class Ods extends Abstract
 	{
+		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.spreadsheet";
+
 		public Ods()
 		{
-			super("Open Document (ods)", "ods", "vnd.oasis.opendocument.spreadsheet");
+			super("Open Document Spreadsheet (ods)", "ods", MIME_TYPE);
 		}
 
 		@Override
