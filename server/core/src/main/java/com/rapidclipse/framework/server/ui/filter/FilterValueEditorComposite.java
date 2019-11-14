@@ -41,41 +41,41 @@ import com.vaadin.flow.data.converter.Converter;
 public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Serializable, Cloneable
 {
 	public HasValueAndElement<?, PRESENTATION> component();
-	
-	public MODEL getValue();
-	
-	public void setValue(MODEL value);
-	
-	public MODEL copie();
 
+	public MODEL getValue();
+
+	public void setValue(MODEL value);
+
+	public MODEL copie();
+	
 	public static <PRESENTATION, MODEL> FilterValueEditorComposite<PRESENTATION, MODEL> New(
 		final HasValueAndElement<?, PRESENTATION> component,
 		final Converter<PRESENTATION, MODEL> converter)
 	{
 		return new Default<>(component, converter);
 	}
-	
+
 	public static <MODEL> FilterValueEditorComposite<MODEL, MODEL> New(
 		final HasValueAndElement<?, MODEL> component)
 	{
 		return new Default<>(component, Converter.identity());
 	}
-	
+
 	public static class Default<PRESENTATION, MODEL>
 		implements FilterValueEditorComposite<PRESENTATION, MODEL>
 	{
 		private final HasValueAndElement<?, PRESENTATION>  component;
 		private final Binder<Default<PRESENTATION, MODEL>> binder;
 		private MODEL                                      value;
-		
+
 		protected Default(
 			final HasValueAndElement<?, PRESENTATION> component,
 			final Converter<PRESENTATION, MODEL> converter)
 		{
 			super();
-			
+
 			this.component = component;
-			
+
 			this.binder = new Binder<Default<PRESENTATION, MODEL>>()
 			{
 				@Override
@@ -95,34 +95,34 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 				Default<PRESENTATION, MODEL>::setModelValue);
 			this.binder.setBean(this);
 		}
-		
+
 		@Override
 		public HasValueAndElement<?, PRESENTATION> component()
 		{
 			return this.component;
 		}
-		
+
 		@Override
 		public MODEL getValue()
 		{
 			return this.value;
 		}
-		
+
 		@Override
 		public void setValue(final MODEL value)
 		{
 			this.value = value;
 			this.binder.readBean(this);
 		}
-		
+
 		private void setModelValue(final MODEL value)
 		{
 			this.value = value;
 		}
-		
+
 		/*
 		 * (non-Javadoc)
-		 * 
+		 *
 		 * @see com.rapidclipse.framework.server.ui.filter.FilterValueEditorComposite#copie()
 		 */
 		@SuppressWarnings("unchecked")
@@ -140,7 +140,7 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 			}
 			return clone;
 		}
-		
+
 	}
-	
+
 }

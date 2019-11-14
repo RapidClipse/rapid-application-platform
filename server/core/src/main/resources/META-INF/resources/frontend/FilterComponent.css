@@ -60,7 +60,9 @@
 .checkButton:hover {
 	color: green;
 }
-
+/* label{
+	min-width:max-content;
+} */
 
 
  @media only screen and (min-width: 0px) {

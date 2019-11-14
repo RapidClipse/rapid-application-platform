@@ -26,6 +26,7 @@ package com.rapidclipse.framework.server.ui.filter;
 
 import static java.util.stream.Collectors.toList;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -38,6 +39,7 @@ import com.vaadin.flow.component.HasValue.ValueChangeEvent;
 import com.vaadin.flow.component.HasValue.ValueChangeListener;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.shared.Registration;
 
@@ -50,10 +52,10 @@ import com.vaadin.flow.shared.Registration;
 public class FilterEntryEditor extends FormLayout
 {
 	private final FilterContext context;
-	
+
 	private final ComboBox<FilterProperty<?>> propertyComboBox;
 	private final ComboBox<FilterOperator>    operatorComboBox;
-	
+
 	private final ValueChangeListener<ValueChangeEvent<?>> filterValueChangeListener;
 	private FilterProperty<?>                              selectedProperty;
 	private FilterOperator                                 selectedOperator;
@@ -61,7 +63,7 @@ public class FilterEntryEditor extends FormLayout
 	private List<Registration>                             valueEditorRegistrations;
 	private final int                                      rowIndex;
 	private final Runnable                                 filterChangeHandler;
-
+	
 	public FilterEntryEditor(
 		final FilterComponent filterComponent,
 		final FilterContext context,
@@ -73,14 +75,14 @@ public class FilterEntryEditor extends FormLayout
 		this.filterChangeHandler = filterChangeHandler;
 		this.setWidthFull();
 		this.propertyComboBox = createPropertyComboBox();
-		
+
 		this.propertyComboBox.setItems(context.getFilterSubject().filterableProperties());
-		
+
 		this.propertyComboBox.addValueChangeListener(event -> {
 			propertySelectionChanged();
 			// filterChangeHandler.run();
 		});
-		
+
 		this.operatorComboBox = createOperatorComboBox();
 		/*
 		 * Workaround for
@@ -88,19 +90,19 @@ public class FilterEntryEditor extends FormLayout
 		 */
 		this.operatorComboBox.setItems(Collections.emptyList());
 		this.operatorComboBox.addValueChangeListener(event -> {
-			
+
 			operatorSelectionChanged();
 			// filterChangeHandler.run();
 		});
-		
+
 		this.filterValueChangeListener = event -> filterChangeHandler.run();
 		this.selectedOperator          = this.operatorComboBox.getValue();
 		this.selectedProperty          = this.propertyComboBox.getValue();
-		
+
 		// add the ComboBoxes to the FormLayout
 		add(this.propertyComboBox, this.operatorComboBox);
 	}
-	
+
 	protected ComboBox<FilterProperty<?>> createPropertyComboBox()
 	{
 		final ComboBox<FilterProperty<?>> combo = new ComboBox<>();
@@ -110,7 +112,7 @@ public class FilterEntryEditor extends FormLayout
 		combo.addClassName("propertyComboBox");
 		return combo;
 	}
-	
+
 	protected ComboBox<FilterOperator> createOperatorComboBox()
 	{
 		final ComboBox<FilterOperator> combo = new ComboBox<>();
@@ -121,7 +123,7 @@ public class FilterEntryEditor extends FormLayout
 		combo.addClassName("operatorComboBox");
 		return combo;
 	}
-	
+
 	/**
 	 * Set the Values of the Filter given by the data.
 	 * Sets Property, Operator and all Values.
@@ -136,14 +138,14 @@ public class FilterEntryEditor extends FormLayout
 			.filterableProperty(data.getPropertyIdentifier());
 		this.propertyComboBox.setValue(property);
 		propertySelectionChanged();
-		
+
 		if(property != null)
 		{
 			final FilterOperator operator = this.context.getFilterOperatorRegistry()
 				.get(data.getOperatorKey());
 			this.operatorComboBox.setValue(operator);
 			operatorSelectionChanged();
-			
+
 			if(operator != null)
 			{
 				final Object[] values = data.getValues();
@@ -153,13 +155,13 @@ public class FilterEntryEditor extends FormLayout
 					for(final Object value : values)
 					{
 						this.valueEditors.get(i++).setValue(value);
-						
+
 					}
 				}
 			}
 		}
 	}
-	
+
 	/**
 	 * Gets the setted Filters given by the ComboBoxes and ValueFields
 	 *
@@ -172,23 +174,23 @@ public class FilterEntryEditor extends FormLayout
 		{
 			return null;
 		}
-		
+
 		final Object[] values = this.valueEditors.stream().map(FilterValueEditorComposite::getValue)
 			.filter(Objects::nonNull).toArray();
 		if(values.length != this.valueEditors.size())
 		{
 			return null;
 		}
-		
+
 		return new FilterEntry(this.selectedProperty.identifier(), this.selectedOperator.key(),
 			values);
 	}
-	
+
 	protected String getComboBoxPlaceholder()
 	{
 		return StringResourceUtils.getResourceString("selectOption", this);
 	}
-	
+
 	/**
 	 * Changes the selectedProperty to the new Value of the ComboBox.
 	 * Also, if the Property != null
@@ -197,7 +199,7 @@ public class FilterEntryEditor extends FormLayout
 	protected void propertySelectionChanged()
 	{
 		removeValueEditors();
-		
+
 		this.selectedProperty = this.propertyComboBox.getValue();
 		if(this.selectedProperty != null)
 		{
@@ -205,14 +207,14 @@ public class FilterEntryEditor extends FormLayout
 			final List<FilterOperator> operators = this.context.getFilterOperatorRegistry().getAll()
 				.stream().filter(op -> op.isSupported(this.selectedProperty)).collect(toList());
 			this.operatorComboBox.setItems(operators);
-			
+
 		}
 		else
 		{
 			this.operatorComboBox.setVisible(false);
 		}
 	}
-	
+
 	/**
 	 * 'Event' which will be executed if the {@link FilterOperator} inside the operatorComboBox is chanced
 	 */
@@ -222,7 +224,7 @@ public class FilterEntryEditor extends FormLayout
 		final List<Object> lastValues = removeValueEditors();
 		
 		this.selectedOperator = this.operatorComboBox.getValue();
-
+		
 		if(this.selectedOperator != null)
 		{
 			this.valueEditors = this.selectedOperator.createComposites(this.context,
@@ -233,12 +235,22 @@ public class FilterEntryEditor extends FormLayout
 				this.valueEditors.get(i).setValue(lastValues.get(i));
 				
 			}
-
+			
 			for(final FilterValueEditorComposite obj : this.valueEditors)
 			{
 				
 				final HasValueAndElement<?, ?> component = obj.component();
-				add((Component)component);
+				try
+				{
+					final DatePicker date = (DatePicker)component;
+					date.setValue(LocalDate.now());
+					add(date);
+				}
+				catch(final ClassCastException e)
+				{
+					add((Component)component);
+				}
+				
 			}
 			
 			// this.valueEditorRegistrations = this.valueEditors.stream().map(editor -> {
@@ -248,11 +260,11 @@ public class FilterEntryEditor extends FormLayout
 			// }).collect(toList());
 		}
 	}
-	
+
 	protected List<Object> removeValueEditors()
 	{
 		final List<Object> lastValues = new ArrayList<>();
-		
+
 		if(this.valueEditors != null)
 		{
 			for(final FilterValueEditorComposite valueEditor : this.valueEditors)
@@ -262,16 +274,16 @@ public class FilterEntryEditor extends FormLayout
 			}
 			this.valueEditors = null;
 		}
-		
+
 		if(this.valueEditorRegistrations != null)
 		{
 			this.valueEditorRegistrations.forEach(Registration::remove);
 			this.valueEditorRegistrations = null;
 		}
-		
+
 		return lastValues;
 	}
-	
+
 	public Filter getFilter()
 	{
 		if(this.selectedProperty == null || this.selectedOperator == null
@@ -279,31 +291,31 @@ public class FilterEntryEditor extends FormLayout
 		{
 			return null;
 		}
-		
+
 		return this.selectedOperator.createFilter(this.context, this.selectedProperty,
 			this.valueEditors);
 	}
-	
+
 	public FilterProperty<?> getSelectedProperty()
 	{
 		return this.selectedProperty;
 	}
-	
+
 	public FilterOperator getSelectedOperator()
 	{
 		return this.selectedOperator;
 	}
-	
+
 	public List<FilterValueEditorComposite> getValueEditors()
 	{
 		return this.valueEditors;
 	}
-	
+
 	public void setValueEditors(final List<FilterValueEditorComposite> valueEditors)
 	{
 		this.valueEditors = valueEditors;
 	}
-	
+
 	/**
 	 * @return the valueEditorRegistrations
 	 */
@@ -311,7 +323,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.valueEditorRegistrations;
 	}
-	
+
 	/**
 	 * @param valueEditorRegistrations
 	 *            the valueEditorRegistrations to set
@@ -320,7 +332,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		this.valueEditorRegistrations = valueEditorRegistrations;
 	}
-	
+
 	/**
 	 * @return the context
 	 */
@@ -328,7 +340,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.context;
 	}
-	
+
 	/**
 	 * @return the propertyComboBox
 	 */
@@ -336,7 +348,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.propertyComboBox;
 	}
-	
+
 	/**
 	 * @return the operatorComboBox
 	 */
@@ -344,7 +356,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.operatorComboBox;
 	}
-	
+
 	/**
 	 * @return the filterValueChangeListener
 	 */
@@ -352,7 +364,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.filterValueChangeListener;
 	}
-	
+
 	/**
 	 * @return the rowIndex
 	 */
@@ -360,7 +372,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.rowIndex;
 	}
-	
+
 	/**
 	 * @return the filterChangeHandler
 	 */
@@ -368,7 +380,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.filterChangeHandler;
 	}
-	
+
 	/**
 	 * @param selectedProperty
 	 *            the selectedProperty to set
@@ -377,7 +389,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		this.selectedProperty = selectedProperty;
 	}
-	
+
 	/**
 	 * @param selectedOperator
 	 *            the selectedOperator to set
@@ -386,7 +398,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		this.selectedOperator = selectedOperator;
 	}
-
+	
 	/**
 	 * Method to Copy the given Object into a new {@link FilterEntryEditor}
 	 *
@@ -403,9 +415,9 @@ public class FilterEntryEditor extends FormLayout
 				original.getValueEditorRegistrations(),
 				original.getRowIndex(), original.getFilterChangeHandler(), original);
 		return editor;
-
+		
 	}
-	
+
 	/**
 	 * Constructor to copy an object
 	 *
@@ -452,11 +464,11 @@ public class FilterEntryEditor extends FormLayout
 		this.context             = context;
 		this.filterChangeHandler = filterChangeHandler;
 		this.rowIndex            = rowIndex;
-		
+
 		/*
 		 * Property Comob
 		 */
-		
+
 		this.propertyComboBox = createPropertyComboBox();
 		this.propertyComboBox.setItems(this.context.getFilterSubject().filterableProperties());
 		this.propertyComboBox.setValue(propertyComboBox.getValue());
@@ -464,7 +476,7 @@ public class FilterEntryEditor extends FormLayout
 			propertySelectionChanged();
 			// this.filterChangeHandler.run();
 		});
-		
+
 		/*
 		 * OperatorCombo
 		 */
@@ -473,18 +485,18 @@ public class FilterEntryEditor extends FormLayout
 		this.operatorComboBox.setItems(Collections.emptyList());
 		this.operatorComboBox.setValue(operatorComboBox.getValue());
 		this.operatorComboBox.addValueChangeListener(event -> {
-			
+
 			operatorSelectionChanged();
 			// this.filterChangeHandler.run();
 		});
-		
+
 		this.filterValueChangeListener = event -> this.filterChangeHandler.run();
 		this.selectedProperty          = this.propertyComboBox.getValue();
 		this.selectedOperator          = this.operatorComboBox.getValue();
-
+		
 		add(this.propertyComboBox, this.operatorComboBox);
 		this.setFilterEntry(original.getFilterEntry());
-
+		
 	}
-	
+
 }
