@@ -1,20 +1,25 @@
 
 package com.rapidclipse.framework.server.charts.scatter;
 
-import java.io.Serializable;
-
 import com.rapidclipse.framework.server.charts.config.Options;
+import com.rapidclipse.framework.server.charts.config.XdevSeries;
 
 
-public class XdevScatterChartSeries implements Serializable
+public class XdevScatterChartSeries extends XdevSeries
 {
+	
 	private String  color;
 	private String  labelInLegend;
 	private boolean visibleInLegend = true;
 	private Integer lineWidth       = 0;
 	private Integer pointSize       = 8;
 	private String  pointShape      = Options.POINTSHAPE_CIRCLE;
-
+	
+	public XdevScatterChartSeries(final int num)
+	{
+		super(num);
+	}
+	
 	/**
 	 * @return the color
 	 */
@@ -22,7 +27,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		return this.color;
 	}
-
+	
 	/**
 	 * The color to use for this series. Specify a valid HTML color string. <br>
 	 *
@@ -33,7 +38,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.color = color;
 	}
-
+	
 	/**
 	 * @return the labelInLegend
 	 */
@@ -41,7 +46,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		return this.labelInLegend;
 	}
-
+	
 	/**
 	 * The description of the series to appear in the chart legend. <br>
 	 *
@@ -52,7 +57,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.labelInLegend = labelInLegend;
 	}
-
+	
 	/**
 	 * @return the visibleInLegend
 	 */
@@ -60,7 +65,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		return this.visibleInLegend;
 	}
-
+	
 	/**
 	 * A boolean value, where true means that the series should have a legend entry,
 	 * and false means that it should not. Default is true. <br>
@@ -72,7 +77,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.visibleInLegend = visibleInLegend;
 	}
-
+	
 	/**
 	 * @return the lineWidth
 	 */
@@ -80,7 +85,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		return this.lineWidth;
 	}
-
+	
 	/**
 	 * Data line width in pixels. Use zero to hide all lines and show only the
 	 * points. <br>
@@ -92,7 +97,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.lineWidth = lineWidth;
 	}
-
+	
 	/**
 	 * @return the pointSize
 	 */
@@ -100,7 +105,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		return this.pointSize;
 	}
-
+	
 	/**
 	 * Diameter of displayed points in pixels. Use zero to hide all points. <br>
 	 *
@@ -111,12 +116,12 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.pointSize = pointSize;
 	}
-
+	
 	public String getPointShape()
 	{
 		return this.pointShape;
 	}
-
+	
 	/**
 	 * The shape of individual data elements: 'circle', 'triangle', 'square',
 	 * 'diamond', 'star', or 'polygon'. <br>
@@ -127,7 +132,7 @@ public class XdevScatterChartSeries implements Serializable
 	{
 		this.pointShape = pointShape;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -143,8 +148,8 @@ public class XdevScatterChartSeries implements Serializable
 		str.append("pointSize: " + this.pointSize + ", ");
 		str.append("pointShape: '" + this.pointShape + "' ");
 		str.append("}");
-
+		
 		return str.toString();
 	}
-	
+
 }

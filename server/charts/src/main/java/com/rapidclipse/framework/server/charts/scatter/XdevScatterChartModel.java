@@ -6,6 +6,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.XdevChartModel;
+import com.rapidclipse.framework.server.charts.config.XdevSeries;
 import com.rapidclipse.framework.server.charts.data.Column;
 import com.rapidclipse.framework.server.charts.data.ColumnType;
 import com.rapidclipse.framework.server.charts.data.DataTable;
@@ -18,14 +19,14 @@ public class XdevScatterChartModel implements XdevChartModel
 {
 	private DataTable                                                  dataTable  = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data       = new LinkedHashMap<>();
-	private final List<Object>                                         seriesList = new ArrayList<>();
-	
+	private final List<XdevSeries>                                     seriesList = new ArrayList<>();
+
 	public XdevScatterChartModel(final String xcap, final ColumnType xTyp)
 	{
 		this.getDataTable().getColumns()
 			.add(Column.create(xcap, xcap, xTyp));
 	}
-	
+
 	@Override
 	public DataTable getDataTable()
 	{
@@ -35,18 +36,18 @@ public class XdevScatterChartModel implements XdevChartModel
 		}
 		return this.dataTable;
 	}
-
-	public List<Object> getSeries()
+	
+	public List<XdevSeries> getSeries()
 	{
 		return this.seriesList;
 	}
-	
+
 	@Override
 	public LinkedHashMap<Object, LinkedHashMap<String, Object>> getData()
 	{
 		return this.data;
 	}
-
+	
 	public void addCategory(final String cap, final ColumnType typ, final XdevScatterChartSeries series)
 	{
 		this.getDataTable().getColumns()
@@ -60,7 +61,7 @@ public class XdevScatterChartModel implements XdevChartModel
 			this.seriesList.add(null);
 		}
 	}
-	
+
 	public void addItem(final Object... points)
 	{
 		final List<Value> values = new ArrayList<>();
@@ -72,5 +73,5 @@ public class XdevScatterChartModel implements XdevChartModel
 		mv.setV(values);
 		this.getDataTable().getRows().add(Row.create(mv));
 	}
-
+	
 }

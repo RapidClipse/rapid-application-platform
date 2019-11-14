@@ -1,14 +1,15 @@
 
 package com.rapidclipse.framework.server.charts.combo;
 
-import java.io.Serializable;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.config.Options;
+import com.rapidclipse.framework.server.charts.config.XdevSeries;
 
 
-public class XdevComboChartSeries implements Serializable
+public class XdevComboChartSeries extends XdevSeries
 {
+	
 	private String        type            = "line";
 	private double        areaOpacity     = 0.3;
 	private String        color;
@@ -19,6 +20,11 @@ public class XdevComboChartSeries implements Serializable
 	private List<Integer> lineDashStyle;
 	private String        curveType       = Options.CURVETYPE_NONE;
 	private String        pointShape      = Options.POINTSHAPE_CIRCLE;
+	
+	public XdevComboChartSeries(final int num)
+	{
+		super(num);
+	}
 	
 	/**
 	 * @return the type

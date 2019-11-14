@@ -72,7 +72,8 @@ public class ChartJsBuilder
 		
 		bld.append(this.makeFunction());
 		bld.append(this.makeOptions());
-		bld.append(this.makeDataTable());
+		bld.append(this.makeDataTable("data"));
+		bld.append("var view = new google.visualization.DataView(data); ");
 		bld.append("chart.draw(view, options); }");
 		
 		return bld.toString();
@@ -83,7 +84,7 @@ public class ChartJsBuilder
 	 *
 	 * @return
 	 */
-	private String makeFunction()
+	public String makeFunction()
 	{
 		final StringBuilder bld = new StringBuilder();
 		if(this.other.contains(this.type.toLowerCase()))
@@ -115,7 +116,7 @@ public class ChartJsBuilder
 	 *
 	 * @return
 	 */
-	private String makeOptions()
+	public String makeOptions()
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var options ={   ");
@@ -142,17 +143,17 @@ public class ChartJsBuilder
 	 *
 	 * @return
 	 */
-	private String makeDataTable()
+	public String makeDataTable(final String dataName)
 	{
 		final StringBuilder bld = new StringBuilder();
-		bld.append("var data = new google.visualization.DataTable(); ");
+		bld.append("var " + dataName + " = new google.visualization.DataTable(); ");
 		
 		for(final Column col : this.data.getColumns())
 		{
-			bld.append("data.addColumn(" + col.jsPrint() + "); ");
+			bld.append(dataName + ".addColumn(" + col.jsPrint() + "); ");
 		}
 		
-		bld.append("data.addRows([");
+		bld.append(dataName + ".addRows([");
 		for(final Row row : this.data.getRows())
 		{
 			bld.append("[");
@@ -167,7 +168,7 @@ public class ChartJsBuilder
 		}
 		bld.delete(bld.length() - 2, bld.length());
 		bld.append(" ]); ");
-		bld.append("var view = new google.visualization.DataView(data); ");
+		
 		return bld.toString();
 	}
 }

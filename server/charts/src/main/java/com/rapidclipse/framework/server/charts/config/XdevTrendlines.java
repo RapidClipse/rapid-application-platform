@@ -4,31 +4,29 @@ package com.rapidclipse.framework.server.charts.config;
 import java.util.List;
 
 
-public class Series
+public class XdevTrendlines
 {
-	private final List<XdevSeries> lines;
-
-	public Series(final List<XdevSeries> series)
-	{
-		super();
-		this.lines = series;
-
-	}
 	
+	private final List<Trendlines> lines;
+	
+	public XdevTrendlines(final List<Trendlines> lines)
+	{
+		this.lines = lines;
+	}
+
 	@Override
 	public String toString()
 	{
 		final StringBuilder str = new StringBuilder();
 		str.append("{ ");
-		for(final XdevSeries s : this.lines)
+		for(final Trendlines s : this.lines)
 		{
-			str.append(s.getNum() + ": " + s + ",");
+			str.append(s.getRowNumber() + ": " + s + ",");
 
 		}
 		str.delete(str.length() - 1, str.length());
 		str.append("}");
-		
+
 		return str.toString();
 	}
-
 }

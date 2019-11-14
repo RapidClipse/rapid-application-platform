@@ -49,15 +49,15 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 	private DataTable          dataTable;
 	private List<XdevPieSlice> slices;
 	private final String       id;
-
+	
 	public XdevPieChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-
+		
 		this.config = new XdevPieChartConfig();
 	}
-	
+
 	/**
 	 * Setting options for the chart.
 	 *
@@ -71,7 +71,7 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 			this.config.setSlices(new Slices(this.slices));
 		}
 	}
-	
+
 	/**
 	 * Setting a model for the chart and will draw it new.
 	 *
@@ -80,19 +80,19 @@ public class XdevPieChart extends Composite<Div> implements HasSize
 	public void setModel(final XdevChartModel model)
 	{
 		final XdevPieChartModel pieModel = (XdevPieChartModel)model;
-
+		
 		final DataTable table = new DataTable();
 		table.setColumns(pieModel.getDataTable().getColumns());
 		table.setRows(pieModel.getDataTable().getRows());
-		
+
 		this.dataTable = table;
 		this.slices    = pieModel.getSlices();
 		this.config.setSlices(new Slices(this.slices));
 		this.setId(this.id);
 		this.buildChart();
-		
-	}
 
+	}
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
