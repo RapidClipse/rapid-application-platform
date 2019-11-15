@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
 import com.rapidclipse.framework.server.charts.config.Bar;
+import com.rapidclipse.framework.server.charts.config.BarColumnDiff;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -36,12 +37,13 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  */
 public class XdevBarChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	private String  subtitle;
-	private HAxis   hAxis;
-	private VAxis   vAxis;
-	private boolean isStacked   = false;
-	private String  orientation = "vertical";
-	private Bar     barGroupWidth;
+	private String        subtitle;
+	private HAxis         hAxis;
+	private VAxis         vAxis;
+	private boolean       isStacked   = false;
+	private String        orientation = "vertical";
+	private Bar           barGroupWidth;
+	private BarColumnDiff diff;
 	
 	@Override
 	public HashMap<String, Object> getOptions()
@@ -53,7 +55,26 @@ public class XdevBarChartConfig extends AbstractXdevChartConfig implements Seria
 		options.put("isStacked", this.isStacked);
 		options.put("orientation", this.orientation);
 		options.put("bar", this.barGroupWidth);
+		if(this.diff != null)
+		{
+			options.put("diff", this.diff);
+		}
 		return options;
+	}
+
+	public BarColumnDiff getDiff()
+	{
+		return this.diff;
+	}
+
+	public void setDiff(final BarColumnDiff diff)
+	{
+		this.diff = diff;
+	}
+
+	public void setBarGroupWidth(final Bar barGroupWidth)
+	{
+		this.barGroupWidth = barGroupWidth;
 	}
 
 	public XdevBarChartConfig()

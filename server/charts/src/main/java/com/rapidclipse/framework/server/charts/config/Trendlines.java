@@ -14,6 +14,13 @@ public class Trendlines
 	private boolean visibleInLegend;
 	private String  labelInLegend = "";
 	
+	/**
+	 * Needs a row number for what data set should be used.
+	 * Will not work for Diff Charts
+	 *
+	 * @param rowNumber
+	 *
+	 */
 	public Trendlines(final int rowNumber)
 	{
 		this.rowNumber = rowNumber;

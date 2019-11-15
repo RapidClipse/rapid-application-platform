@@ -24,7 +24,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
-import com.rapidclipse.framework.server.charts.config.Diff;
+import com.rapidclipse.framework.server.charts.config.PieDiff;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.config.TextStyle;
 
@@ -51,7 +51,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	private String  pieResidueSliceLabel = "Other";
 	private Integer pieStartAngle        = 0;
 	private Slices  slices;
-	private Diff    diff;
+	private PieDiff    diff;
 
 	private TextStyle pieSliceTextStyle = new TextStyle();
 
@@ -237,7 +237,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 		this.pieStartAngle = pieStartAngle;
 	}
 
-	public Diff getDiff()
+	public PieDiff getDiff()
 	{
 		return this.diff;
 	}
@@ -247,7 +247,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	 *
 	 * @param diff
 	 */
-	public void setDiff(final Diff diff)
+	public void setDiff(final PieDiff diff)
 	{
 		this.diff = diff;
 	}

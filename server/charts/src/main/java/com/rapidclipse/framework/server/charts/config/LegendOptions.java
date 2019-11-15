@@ -153,7 +153,7 @@ public class LegendOptions
 
 	/**
 	 * Disables the Legend of a chart with 'none'
-	 * 
+	 *
 	 * @param noLegend
 	 */
 	public void setNoLegend(final boolean noLegend)

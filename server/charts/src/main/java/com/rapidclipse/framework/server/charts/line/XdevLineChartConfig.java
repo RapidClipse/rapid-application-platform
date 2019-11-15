@@ -26,6 +26,7 @@ import java.util.List;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
 import com.rapidclipse.framework.server.charts.config.HAxis;
+import com.rapidclipse.framework.server.charts.config.IntervalGlobal;
 import com.rapidclipse.framework.server.charts.config.Options;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -38,14 +39,15 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
 public class XdevLineChartConfig extends AbstractXdevChartConfig implements Serializable
 {
 	
-	private Integer       pointSize   = 0;
-	private Integer       lineWidth   = 2;
-	private List<Integer> lineDashStyle;
-	private HAxis         hAxis;
-	private VAxis         vAxis;
-	private String        curveType   = Options.CURVETYPE_NONE;
-	private String        orientation = Options.ORIENTATION_HORIZONTAL;
-	private String        pointShape  = Options.POINTSHAPE_CIRCLE;
+	private Integer        pointSize   = 0;
+	private Integer        lineWidth   = 2;
+	private List<Integer>  lineDashStyle;
+	private HAxis          hAxis;
+	private VAxis          vAxis;
+	private String         curveType   = Options.CURVETYPE_NONE;
+	private String         orientation = Options.ORIENTATION_HORIZONTAL;
+	private String         pointShape  = Options.POINTSHAPE_CIRCLE;
+	private IntervalGlobal intervals;
 	
 	@Override
 	public HashMap<String, Object> getOptions()
@@ -59,6 +61,10 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 		options.put("pointShape", this.pointShape);
 		options.put("curveType", this.curveType);
 		options.put("orientation", this.orientation);
+		if(this.intervals != null)
+		{
+			options.put("intervals", this.intervals);
+		}
 		return options;
 	}
 
@@ -80,6 +86,24 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
+	}
+
+	public IntervalGlobal getIntervals()
+	{
+		return this.intervals;
+	}
+
+	/**
+	 * Sets a list of Intervals
+	 * Intervals might be used to portray confidence intervals, minimum and maximum values around a value, percentile
+	 * sampling, or anything else that requires a varying margin around a series<br>
+	 * The first series of a line chart is the primary series, and the other will be compared to it via intervals
+	 *
+	 * @param intervals
+	 */
+	public void setIntervals(final IntervalGlobal intervals)
+	{
+		this.intervals = intervals;
 	}
 
 	public void sethAxis(final HAxis hAxis)

@@ -1,7 +1,7 @@
 
 package com.rapidclipse.framework.server.charts.config;
 
-public class Diff
+public class PieDiff
 {
 	private double  radiusFactor = 0.5;
 	private double  borderFactor = 0.02;
@@ -15,7 +15,7 @@ public class Diff
 	}
 
 	/**
-	 * !!PIE CHART!!
+	 * for Piechart
 	 * How big the inner circle should be displayed.
 	 *
 	 * @param radiusFactor
@@ -31,6 +31,7 @@ public class Diff
 	}
 	
 	/**
+	 * for Piechart
 	 * Thickness of the border.
 	 *
 	 * @param borderFactor
@@ -46,6 +47,7 @@ public class Diff
 	}
 	
 	/**
+	 * for Piechart
 	 * Opacity of the old data.
 	 *
 	 * @param oldOpacity
@@ -61,6 +63,7 @@ public class Diff
 	}
 	
 	/**
+	 * for Piechart
 	 * Opacity of the new data.
 	 *
 	 * @param newOpacity
@@ -76,7 +79,7 @@ public class Diff
 	}
 	
 	/**
-	 * !!PIE CHART!!
+	 * for Piechart
 	 * Switch the old data to the outside.
 	 *
 	 * @param inCenter

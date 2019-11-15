@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import com.rapidclipse.framework.server.charts.XdevChartModel;
 import com.rapidclipse.framework.server.charts.data.Column;
 import com.rapidclipse.framework.server.charts.data.ColumnType;
+import com.rapidclipse.framework.server.charts.data.DataRoleType;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
@@ -72,6 +73,13 @@ public class XdevLineChartModel implements XdevChartModel
 	public void addHiddenCategory(final String caption, final ColumnType type)
 	{
 		this.getDataTable().getColumns().add(Column.create(caption.toLowerCase(), "hidden", type));
+	}
+	
+	public void addIntervalCategory(final String caption)
+	{
+		this.categories.put(caption, null);
+		this.getDataTable().getColumns()
+			.add(Column.dataRoleColumn(caption.toLowerCase(), caption, ColumnType.NUMBER, DataRoleType.INTERVALE));
 	}
 
 	@SuppressWarnings("unchecked")

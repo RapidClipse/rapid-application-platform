@@ -24,7 +24,7 @@ public class ChartJsBuilder
 		new ArrayList<>(Arrays.asList("gantt", "orgchart", "timeline", "calendar", "gauge", "sankey"));
 	private final List<String>            maps  =
 		new ArrayList<>(Arrays.asList("geochart", "map"));
-	
+
 	/**
 	 *
 	 * @param data
@@ -45,7 +45,7 @@ public class ChartJsBuilder
 		this.id      = id;
 		this.type    = type;
 	}
-	
+
 	public ChartJsBuilder(
 		final DataTable data,
 		final HashMap<String, Object> options,
@@ -60,7 +60,7 @@ public class ChartJsBuilder
 		this.type    = type;
 		this.apiKey  = apiKey;
 	}
-	
+
 	/**
 	 * Building a String for executeJs to make a JS page for the Chart
 	 *
@@ -69,16 +69,16 @@ public class ChartJsBuilder
 	public String constructChart()
 	{
 		final StringBuilder bld = new StringBuilder();
-		
+
 		bld.append(this.makeFunction());
 		bld.append(this.makeOptions());
 		bld.append(this.makeDataTable("data"));
 		bld.append("var view = new google.visualization.DataView(data); ");
 		bld.append("chart.draw(view, options); }");
-		
+
 		return bld.toString();
 	}
-
+	
 	/**
 	 * phase 1
 	 *
@@ -91,7 +91,7 @@ public class ChartJsBuilder
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
-
+			
 		}
 		else if(this.maps.contains(this.type.toLowerCase()))
 		{
@@ -107,10 +107,10 @@ public class ChartJsBuilder
 		bld.append("function drawChart(){ ");
 		bld.append(
 			"var chart = new google.visualization." + this.type + "(document.getElementById('" + this.id + "')); ");
-		
+
 		return bld.toString();
 	}
-
+	
 	/**
 	 * phase 2
 	 *
@@ -120,7 +120,7 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var options ={   ");
-
+		
 		for(final Map.Entry<String, Object> entry : this.options.entrySet())
 		{
 			bld.append(entry.getKey() + ": ");
@@ -137,7 +137,7 @@ public class ChartJsBuilder
 		bld.append("}; ");
 		return bld.toString();
 	}
-	
+
 	/**
 	 * phase 3
 	 *
@@ -147,16 +147,16 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var " + dataName + " = new google.visualization.DataTable(); ");
-		
+
 		for(final Column col : this.data.getColumns())
 		{
 			bld.append(dataName + ".addColumn(" + col.jsPrint() + "); ");
 		}
-		
+
 		bld.append(dataName + ".addRows([");
 		for(final Row row : this.data.getRows())
 		{
-			bld.append("[");
+			bld.append("[  ");
 			for(final Value v : row.getC())
 			{
 				bld.append(v);
@@ -168,7 +168,7 @@ public class ChartJsBuilder
 		}
 		bld.delete(bld.length() - 2, bld.length());
 		bld.append(" ]); ");
-		
+
 		return bld.toString();
 	}
 }

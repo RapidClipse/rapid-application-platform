@@ -46,28 +46,27 @@ public class XdevColumnChart extends Composite<Div> implements HasSize
 	private final String          id;
 	private XdevColumnChartConfig config;
 	private DataTable             dataTable;
-	
+
 	public XdevColumnChart()
 	{
 		super();
 		this.id     = IdGenerator.generateId();
 		this.config = new XdevColumnChartConfig();
 	}
-
+	
 	public void setConfig(final XdevColumnChartConfig config)
 	{
 		this.config = config;
 	}
-
+	
 	public void setModel(final XdevChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-
 		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -79,5 +78,5 @@ public class XdevColumnChart extends Composite<Div> implements HasSize
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

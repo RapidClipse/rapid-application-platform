@@ -25,6 +25,7 @@ import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
 import com.rapidclipse.framework.server.charts.config.Bar;
+import com.rapidclipse.framework.server.charts.config.BarColumnDiff;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -36,11 +37,12 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  */
 public class XdevColumnChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	private HAxis   hAxis;
-	private VAxis   vAxis;
-	private boolean isStacked = false;
-	private Bar     barGroupWidth;
-
+	private HAxis         hAxis;
+	private VAxis         vAxis;
+	private boolean       isStacked = false;
+	private Bar           barGroupWidth;
+	private BarColumnDiff diff;
+	
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -49,42 +51,66 @@ public class XdevColumnChartConfig extends AbstractXdevChartConfig implements Se
 		options.put("vAxis", this.vAxis);
 		options.put("isStacked", this.isStacked);
 		options.put("bar", this.barGroupWidth);
+		if(this.diff != null)
+		{
+			options.put("diff", this.diff);
+		}
 		return options;
 	}
-
+	
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-
+	
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-
+	
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-
+	
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-	
+
 	public boolean isStacked()
 	{
 		return this.isStacked;
 	}
-
+	
 	public void setStacked(final boolean isStacked)
 	{
 		this.isStacked = isStacked;
 	}
-
+	
 	public Bar getBarGroupWidth()
 	{
 		return this.barGroupWidth;
+	}
+
+	public BarColumnDiff getDiff()
+	{
+		return this.diff;
+	}
+
+	/**
+	 * For DiffCharts
+	 * 
+	 * @param diff
+	 */
+	public void setDiff(final BarColumnDiff diff)
+	{
+		this.diff = diff;
+	}
+
+	public void setBarGroupWidth(final Bar barGroupWidth)
+	{
+		this.barGroupWidth = barGroupWidth;
 	}
 
 	/**
