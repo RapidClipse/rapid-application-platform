@@ -179,7 +179,7 @@
 				<version>${hibernate.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.hibernate</groupId>
+				<groupId>org.hibernate.validator</groupId>
 				<artifactId>hibernate-validator-cdi</artifactId>
 				<version>6.0.16.Final</version>
 			</dependency>
@@ -337,21 +337,33 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>3.0.1</version>
+					<version>3.1.1</version>
+					<configuration>
+						<doclint>none</doclint>
+						<failOnError>false</failOnError>
+						<notree>true</notree>
+						<additionalOptions>-html5</additionalOptions>
+						<javadocExecutable>${javadoc.executable}</javadocExecutable>
+						<source>8</source>
+						<doctitle>${project.name} API</doctitle>
+						<windowtitle>${project.name} API</windowtitle>
+						<stylesheetfile>${maven.multiModuleProjectDirectory}/../rap-dev/javadoc-stylesheet.css</stylesheetfile>
+						<archive>
+							<manifestEntries>
+								<built-by>${project.organization.name}</built-by>
+							</manifestEntries>
+						</archive>
+						<links>
+							<link>https://vaadin.com/api/platform/14.0.12/</link>
+						</links>
+					</configuration>
 					<executions>
 						<execution>
-							<id>attach-javadocs</id>
+							<id>aggregate</id>
 							<goals>
-								<goal>jar</goal>
+								<goal>aggregate</goal>
 							</goals>
-							<configuration>
-								<doclint>none</doclint>
-								<archive>
-									<manifestEntries>
-										<built-by>${project.organization.name}</built-by>
-									</manifestEntries>
-								</archive>
-							</configuration>
+							<phase>site</phase>
 						</execution>
 					</executions>
 				</plugin>
