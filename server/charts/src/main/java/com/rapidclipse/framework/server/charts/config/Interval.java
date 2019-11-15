@@ -9,8 +9,14 @@ public class Interval
 	private String  color;
 	private Integer pointSize;
 	private Integer lineWidth;
-	private String  curveType;
+	private String  curveType = "none";
 
+	/**
+	 * setting specific intervals for data rows
+	 * 
+	 * @param name
+	 *            caption name
+	 */
 	public Interval(final String name)
 	{
 		this.name = name;
@@ -86,6 +92,12 @@ public class Interval
 		return this.curveType;
 	}
 
+	/**
+	 * <li>'function' The angles of the line will be smoothed.</li>
+	 * <li>'none' Straight lines without curve.</li>
+	 *
+	 * @param curveType
+	 */
 	public void setCurveType(final String curveType)
 	{
 		this.curveType = curveType;

@@ -44,7 +44,7 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	private List<Integer>  lineDashStyle;
 	private HAxis          hAxis;
 	private VAxis          vAxis;
-	private String         curveType   = Options.CURVETYPE_NONE;
+	private String         curveType;
 	private String         orientation = Options.ORIENTATION_HORIZONTAL;
 	private String         pointShape  = Options.POINTSHAPE_CIRCLE;
 	private IntervalGlobal intervals;
@@ -59,7 +59,10 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
 		options.put("pointShape", this.pointShape);
-		options.put("curveType", this.curveType);
+		if(this.curveType != null)
+		{
+			options.put("curveType", this.curveType);
+		}
 		options.put("orientation", this.orientation);
 		if(this.intervals != null)
 		{
