@@ -78,6 +78,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<vaadin.version>14.0.12</vaadin.version>
 		<hibernate.version>5.4.2.Final</hibernate.version>
 	</properties>
 
@@ -96,7 +97,7 @@
 				<artifactId>vaadin-bom</artifactId>
 				<type>pom</type>
 				<scope>import</scope>
-				<version>14.0.6</version>
+				<version>${vaadin.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>com.vaadin</groupId>
@@ -353,8 +354,9 @@
 								<built-by>${project.organization.name}</built-by>
 							</manifestEntries>
 						</archive>
+						<detectLinks>true</detectLinks>
 						<links>
-							<link>https://vaadin.com/api/platform/14.0.12/</link>
+							<link>https://vaadin.com/api/platform/${vaadin.version}/</link>
 						</links>
 					</configuration>
 					<executions>
