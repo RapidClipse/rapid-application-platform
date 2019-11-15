@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 import java.io.Serializable;
@@ -190,7 +191,18 @@ public interface FilterConverter<R> extends SerializableFunction<Filter, R>
 					return null;
 				}
 				
-				return getGetter(bean).apply(bean);
+				try
+				{
+					return getGetter(bean).apply(bean);
+				}
+				catch(final NullPointerException e)
+				{
+					/*
+					 * XWS-1767
+					 * BeanPropertySet#NestedBeanPropertyDefinition doesn't handle null values in chained calls
+					 */
+					return null;
+				}
 			}
 		}
 		
@@ -281,7 +293,7 @@ public interface FilterConverter<R> extends SerializableFunction<Filter, R>
 				}
 				
 				if(this.value instanceof Comparable
-					&& other.getClass().isAssignableFrom(value.getClass()))
+					&& other.getClass().isAssignableFrom(this.value.getClass()))
 				{
 					return ((Comparable)this.value).compareTo(other) == 0;
 				}
