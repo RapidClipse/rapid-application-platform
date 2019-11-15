@@ -245,8 +245,8 @@ public class FilterComponent
 	 * @param finalButtonLayout
 	 *            -> The right part of the Layout with the needed Buttons as {@link Component}
 	 *            <br>
-	 *            Can be created with {@link #createButtonLayoutLabel(Component, Component, Component)} or
-	 *            {@link #createButtonLayoutCombo(Component, Component)}
+	 *            Can be created with {@link #createButtonLayout(Component, Component, Component)} or
+	 *            {@link #createButtonLayout(Component, Component)}
 	 * @return The final Layout as {@link HorizontalLayout}
 	 *         <br>
 	 *         Classname = finalLayout
@@ -362,7 +362,8 @@ public class FilterComponent
 	 *            -> {@link FilterEntryEditor}
 	 * @return The EntryRow as {@link HorizontalLayout}
 	 *         <br>
-	 *         Classname = entryRowLabel
+	 *         Classname = entryRowLabel -> getting through
+	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
 	@SuppressWarnings("rawtypes")
 	private HorizontalLayout createEntryRowLabel(final FilterEntryEditor editor)
@@ -381,9 +382,7 @@ public class FilterComponent
 		{
 			for(final FilterValueEditorComposite<?, ?> value : values)
 			{
-				
 				row.add(new Label("\t -> " + value.getValue()));
-				
 			}
 		}
 		
@@ -402,7 +401,8 @@ public class FilterComponent
 	 *            -> {@link FilterEntryEditor}
 	 * @return The Entry Row as {@link HorizontalLayout}
 	 *         <br>
-	 *         Classname = entryRowComboBox
+	 *         Classname = entryRowComboBox -> getting through
+	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
 	private HorizontalLayout createEntryRowCombo(final FilterEntryEditor editor)
 	{
@@ -413,7 +413,9 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Create the ButtonLayout for the LabelDiv
+	 * Create an {@link HorizontalLayout} which holds the given {@link Component}.
+	 * <br>
+	 * Mainly use for the <b> labelDiv</b>
 	 *
 	 * @param editButton
 	 *            -> {@link Component}
@@ -423,10 +425,11 @@ public class FilterComponent
 	 *            -> {@link Component}
 	 * @return The ButtonLayout as {@link HorizontalLayout}
 	 *         <br>
-	 *         Classname = buttonLayout
+	 *         Classname = buttonLayout -> getting through
+	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
 	private HorizontalLayout
-		createButtonLayoutLabel(final Component editButton, final Component checkbox, final Component deleteButton)
+		createButtonLayout(final Component editButton, final Component checkbox, final Component deleteButton)
 	{
 		final HorizontalLayout layout = new HorizontalLayout();
 		layout.addClassName(StringResourceUtils.getResourceString("buttonLayout", this));
@@ -435,18 +438,20 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Creates the finished ButtonLayout for the <b> ComboBox Div </b>.
-	 * Also it adds an ClassName.
+	 * Create an {@link HorizontalLayout} which holds the given {@link Component}
+	 * <br>
+	 * Mainly use for the <b> ComboBox Div </b>.
 	 *
 	 * @param checkbox
 	 *            -> {@link Component}
 	 * @param deleteButton
 	 *            -> {@link Component}
-	 * @return The Button Layout as {@link FormLayout}
+	 * @return The Button Layout as {@link HorizontalLayout}
 	 *         <br>
-	 *         Classname = buttonLayout
+	 *         Classname = buttonLayout -> getting through
+	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
-	private HorizontalLayout createButtonLayoutCombo(final Component checkbox, final Component deleteButton)
+	private HorizontalLayout createButtonLayout(final Component checkbox, final Component deleteButton)
 	{
 		final HorizontalLayout layout = new HorizontalLayout();
 		layout.addClassName(StringResourceUtils.getResourceString("buttonLayout", this));
@@ -462,6 +467,9 @@ public class FilterComponent
 	
 	/**
 	 * Defines the ComboDiv with ClassName, etc.
+	 * <br>
+	 * Classname = comboBoxDiv -> getting through
+	 * {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 *
 	 * @param div
 	 *            -> {@link Div}
@@ -475,6 +483,9 @@ public class FilterComponent
 	
 	/**
 	 * Defines the FilterDiv with ClassName, etc.
+	 * <br>
+	 * Classname = filterDiv -> getting through
+	 * {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 *
 	 * @param div
 	 *            -> {@link Div}
@@ -489,6 +500,10 @@ public class FilterComponent
 	
 	/**
 	 * Defines the Buttons inside the Label div. Those are needed to check the Filter, Edit or remove it.
+	 * <br>
+	 * To defining the objects are using their own 'define'-Metod.
+	 * <br>
+	 * Also adds the Listener to the given Objects
 	 *
 	 * @param checkbox
 	 *            -> {@link FilterCheckBox}
@@ -516,7 +531,11 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Defines the Buttons which are needed to edit a filter
+	 * Defines the Buttons which are needed to edit a filter.
+	 * <br>
+	 * To define the Buttons, the objects using their own 'define'-Method.
+	 * <br>
+	 * Also every object get's his individual listener
 	 *
 	 * @param updateButton
 	 *            -> {@link UpdateButton}
@@ -545,6 +564,13 @@ public class FilterComponent
 	/**
 	 * Defines the ClickEvent which is activated by clicking on the 'Hide-Button'.
 	 * This will hide or show the FilterDiv
+	 * <br>
+	 * Switching through:
+	 * <br>
+	 * {@link #openDiv()}
+	 * <br>
+	 * and <br>
+	 * {@link #closeDiv()}
 	 */
 	protected void hideButtonClickListener()
 	{
@@ -559,7 +585,14 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Defines the ValueChanceListener if the Checkbox of a row is selected or deselected
+	 * Defines the ValueChanceListener if the Checkbox of a row is selected or deselected.
+	 * <br>
+	 * Call either:
+	 * <br>
+	 * {@link #activateFilterEntryEditor(ReplaceabelEditor)}
+	 * <br>
+	 * or <br>
+	 * {@link #deactivateFilterEntryEditor(ReplaceabelEditor)}
 	 *
 	 * @param checkbox
 	 *            -> {@link Checkbox}
@@ -588,7 +621,7 @@ public class FilterComponent
 	
 	/**
 	 * Add a click listener to a {@link Button}.
-	 * This will remove the selected Filter from the filterList and the labelDiv
+	 * This will remove the selected Filter from the <b>filterList</b> and the <b>labelDiv</b>
 	 *
 	 * @param button
 	 *            -> {@link Button}
@@ -603,7 +636,8 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Add a clickListener to a {@link Button}. This will add a new Label to the labelDiv with the selected data.
+	 * Add a clickListener to a {@link Button}. This will add a new {@link Label} to the <b>labelDiv</b> with the
+	 * selected data.
 	 *
 	 * @param button
 	 *            -> {@link Button}
@@ -646,9 +680,9 @@ public class FilterComponent
 	
 	/**
 	 * Creates the ClickListener for a given {@link Button}. This method just removes the current Filter inside the
-	 * comboDiv
-	 * and add a new one.
-	 * This method is only used if the current Filter is a new one and not added to the filterList yet.
+	 * <b>comboDiv</b> and add a new one. <br>
+	 * This method is only used if the current Filter is a <b>new</b> one and <b>not</b> added to the
+	 * <b>filterEntryEditors List</b> yet.
 	 *
 	 * @param button
 	 *            -> {@link Button}
@@ -666,8 +700,8 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Add a clickListener to the given {@link Button}. It will remove the current filter inside the comboDiv
-	 * and creates a new Layout with the selected data inside the selected label.
+	 * Add a clickListener to the given {@link Button}. It will remove the current filter inside the <b>comboDiv</b>
+	 * and creates a new Layout with the selected data, inside the selected label.
 	 *
 	 * @param button
 	 *            -> {@link Button}
@@ -683,9 +717,10 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Add a clicklistener to the given {@link Button}
-	 * This Listener creates a new {@link HorizontalLayout}, swap the old one inside the labelDiv with the new one
-	 * and create a new FilterEntry to let the User select another Filter.
+	 * Add a clicklistener to the given {@link Button}. <br>
+	 * This Listener creates a new {@link HorizontalLayout}, swap the old one inside the <b>labelDiv</b> with the new
+	 * one
+	 * and create a new {@link FilterEntryEditor} to let the User select another Filter.
 	 *
 	 * @param updateButton
 	 *            -> {@link Button}
@@ -702,11 +737,9 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Creates the ClickListener for the {@link Button} inside the ComboDiv
-	 * <br>
-	 * This method is explicit needed if the data inside the Div is used to update something.
-	 * <br>
-	 * It just reset the Data within the orignial editor and creates a new FilterEntry,
+	 * Creates the ClickListener for the {@link Button} inside the ComboDiv <br>
+	 * This method is explicit needed, if the data inside the Div are used to update something. <br>
+	 * It just reset the Data within the orignial editor and creates a new {@link FilterEntryEditor},
 	 * so the user can add a new one.
 	 *
 	 * @param cancelButton
@@ -730,7 +763,8 @@ public class FilterComponent
 	 **************************************/
 	
 	/**
-	 * Updates the Data inside the grid, by checking the Filter inside the Searchbar and the filterList
+	 * Updates the Data inside the grid, by checking the Filter inside the <b>Searchbar</b> and the <b>filterEntryEditor
+	 * List</b>
 	 */
 	protected void updateFilterData()
 	{
@@ -815,7 +849,7 @@ public class FilterComponent
 		this.comboDiv.add(
 			createFinalLayout(
 				createEntryRowCombo(editor.getOriginal()),
-				createButtonLayoutCombo(updateButton, cancelButton)));
+				createButtonLayout(updateButton, cancelButton)));
 	}
 	
 	/**
@@ -829,17 +863,6 @@ public class FilterComponent
 		editor.updateCopy();
 	}
 	
-	/**
-	 * Replaces the original {@link FilterEntryEditor} with the given editor.
-	 * Thas can be the old one{@link ReplaceabelEdiotr #getCopy}, to reset the data, but also a new one to update the
-	 * filter entry.
-	 * Also the methods updates the copy, so both Filter (old and new) are the same.
-	 *
-	 * @param replace
-	 *            -> {@link ReplaceabelEditor}
-	 * @param editor
-	 *            -> {@link FilterEntryEditor}
-	 */
 	private void
 		updateReplaceableOriginal(final ReplaceabelEditor replace, final FilterEntryEditor editor)
 	{
@@ -848,13 +871,17 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Creates a new {@link HorizontalLayout} which will then replaces the old HorizontalLayout inside the
-	 * label{@link Div}.
+	 * Creates a new {@link HorizontalLayout} which will then replace the old {@link HorizontalLayout} inside the
+	 * label{@link Div}. This will update the labelRow which can be seen by the user, inside the <b> labelDiv</b>
 	 *
 	 * @param editor
+	 *            -> {@link ReplaceabelEditor}
 	 * @param checkbox
+	 *            -> {@link FilterCheckBox}
 	 * @param editButton
+	 *            -> {@link EditButton}
 	 * @param deleteButton
+	 *            -> {@link DeleteButton}
 	 */
 	private void updateLabelRow(
 		final ReplaceabelEditor editor,
@@ -865,7 +892,7 @@ public class FilterComponent
 		definingButtons(checkbox, editButton, deleteButton, editor);
 		
 		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor.getOriginal()),
-			createButtonLayoutLabel(checkbox, editButton, deleteButton));
+			createButtonLayout(checkbox, editButton, deleteButton));
 		
 		replaceLabelRow(editor.getLabelLayout(), finalLayout);
 		
@@ -925,7 +952,8 @@ public class FilterComponent
 	 **************************************/
 	
 	/**
-	 * Removes the selected Filter from the <b>filterEntryEditors List</b> and <b> labelDiv View </b>
+	 * Removes the selected Filter from the <b>filterEntryEditors List</b> and <b> labelDiv View </b>. <br>
+	 * Than updates the FilterData inside the Grid.
 	 *
 	 * @param editor
 	 *            -> {@link FilterEntryEditor}
@@ -959,7 +987,7 @@ public class FilterComponent
 	 **************************************/
 	
 	/**
-	 * Opens the filter Div by clicking on the Hide-Button
+	 * Opens the <b>filterDiv</b> by clicking on the {@link HideButton}
 	 * <br>
 	 * Also setting 'open' in the {@link HideButton} to true
 	 */
@@ -971,7 +999,7 @@ public class FilterComponent
 	}
 	
 	/**
-	 * Closes the filter Div by clicking on the Hide-Button
+	 * Closes the <b>filterDiv</b> by clicking on the {@link HideButton}
 	 * <br>
 	 * Also setting 'open' in the {@link HideButton} to false
 	 */
@@ -988,13 +1016,13 @@ public class FilterComponent
 	 ************ Getter / Adder / Setter**
 	 **************************************/
 	
-	/*
-	 * Main Method to initialize the Filter Components
+	/**
+	 * Main Method to initialize the Filterdata.<br>
+	 * Creates a new instance of {@link ReplaceabelEditor} and add all needed parts to the <b> comoDiv</b>
 	 *
+	 * @param editor
 	 * @param index
-	 * -> {@link Integer}
-	 *
-	 * @return The EntryEditor as {@link FilterEntryEditor}
+	 * @return
 	 */
 	protected FilterEntryEditor addFilterEntryEditor(final FilterEntryEditor editor, final int index)
 	{
@@ -1009,7 +1037,7 @@ public class FilterComponent
 		this.comboDiv.add(
 			createFinalLayout(
 				createEntryRowCombo(editor),
-				createButtonLayoutCombo(this.addFilterButton, cancelButton)));
+				createButtonLayout(this.addFilterButton, cancelButton)));
 		this.rowIndex++;
 		
 		openDiv();
@@ -1138,7 +1166,7 @@ public class FilterComponent
 		this.filterEntryEditors.add(editor);
 		
 		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor.getOriginal()),
-			createButtonLayoutLabel(checkbox, editButton, deleteButton));
+			createButtonLayout(checkbox, editButton, deleteButton));
 		
 		editor.setLabelLayout(finalLayout);
 		

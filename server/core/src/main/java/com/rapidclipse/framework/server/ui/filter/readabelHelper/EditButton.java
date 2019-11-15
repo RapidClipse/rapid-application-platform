@@ -1,6 +1,7 @@
 
 package com.rapidclipse.framework.server.ui.filter.readabelHelper;
 
+import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -11,10 +12,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class EditButton extends Button
 {
-	
+	/**
+	 * Defines the Button with Classname, etc.
+	 *
+	 * Classname= editButton -> getting through
+	 * {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
+	 */
 	public void defineButton()
 	{
-		this.setClassName("editButton");
+		this.setClassName(StringResourceUtils.getResourceString("editButton", this));
 		this.setIcon(VaadinIcon.EDIT.create());
 	}
 }
