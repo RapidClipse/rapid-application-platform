@@ -38,7 +38,12 @@ public class XdevGaugeChartConfig
 	{
 		return this.greenFrom;
 	}
-	
+
+	/**
+	 * The lowest value for a range marked by a green color.
+	 *
+	 * @param greenFrom
+	 */
 	public void setGreenFrom(final Integer greenFrom)
 	{
 		this.greenFrom = greenFrom;
@@ -49,6 +54,11 @@ public class XdevGaugeChartConfig
 		return this.greenTo;
 	}
 	
+	/**
+	 * The highest value for a range marked by a green color.
+	 *
+	 * @param greenTo
+	 */
 	public void setGreenTo(final Integer greenTo)
 	{
 		this.greenTo = greenTo;
@@ -59,6 +69,11 @@ public class XdevGaugeChartConfig
 		return this.max;
 	}
 	
+	/**
+	 * The maximal value of a gauge.
+	 *
+	 * @param max
+	 */
 	public void setMax(final Integer max)
 	{
 		this.max = max;
@@ -69,6 +84,11 @@ public class XdevGaugeChartConfig
 		return this.min;
 	}
 	
+	/**
+	 * The minimal value of a gauge.
+	 *
+	 * @param min
+	 */
 	public void setMin(final Integer min)
 	{
 		this.min = min;
@@ -79,6 +99,11 @@ public class XdevGaugeChartConfig
 		return this.redFrom;
 	}
 	
+	/**
+	 * The lowest value for a range marked by a red color.
+	 *
+	 * @param redFrom
+	 */
 	public void setRedFrom(final Integer redFrom)
 	{
 		this.redFrom = redFrom;
@@ -89,6 +114,11 @@ public class XdevGaugeChartConfig
 		return this.redTo;
 	}
 	
+	/**
+	 * The highest value for a range marked by a red color.
+	 *
+	 * @param redTo
+	 */
 	public void setRedTo(final Integer redTo)
 	{
 		this.redTo = redTo;
@@ -99,6 +129,11 @@ public class XdevGaugeChartConfig
 		return this.yellowFrom;
 	}
 	
+	/**
+	 * The lowest value for a range marked by a yellow color.
+	 *
+	 * @param yellowFrom
+	 */
 	public void setYellowFrom(final Integer yellowFrom)
 	{
 		this.yellowFrom = yellowFrom;
@@ -109,6 +144,11 @@ public class XdevGaugeChartConfig
 		return this.yellowTo;
 	}
 	
+	/**
+	 * The highest value for a range marked by a yellow color.
+	 *
+	 * @param yellowTo
+	 */
 	public void setYellowTo(final Integer yellowTo)
 	{
 		this.yellowTo = yellowTo;
@@ -119,6 +159,11 @@ public class XdevGaugeChartConfig
 		return this.animation;
 	}
 	
+	/**
+	 * Animation options
+	 * 
+	 * @param animation
+	 */
 	public void setAnimation(final Animation animation)
 	{
 		this.animation = animation;
