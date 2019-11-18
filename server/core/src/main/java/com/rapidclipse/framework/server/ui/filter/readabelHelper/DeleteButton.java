@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.ui.filter.readabelHelper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 
@@ -22,6 +23,7 @@ public class DeleteButton extends Button
 	{
 		this.setClassName(StringResourceUtils.getResourceString("deleteButton", this));
 		this.setIcon(VaadinIcon.MINUS.create());
+		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
 	}
-	
+
 }

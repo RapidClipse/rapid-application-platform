@@ -63,10 +63,10 @@ public class FilterEntryEditor extends FormLayout
 	private List<Registration>                             valueEditorRegistrations;
 	private final int                                      rowIndex;
 	private final Runnable                                 filterChangeHandler;
-	
+
 	/**
 	 * The Main Constructor to create a new FilterEntryEditor object.
-	 * 
+	 *
 	 * @param filterComponent
 	 *            -> {@link FilterComponent}
 	 * @param context
@@ -125,12 +125,13 @@ public class FilterEntryEditor extends FormLayout
 		combo.setAllowCustomValue(false);
 		combo.setPlaceholder(getComboBoxPlaceholder());
 		combo.addClassName("propertyComboBox");
+
 		return combo;
 	}
 	
 	/**
 	 * Creates the ComboBox which will than hold all operators.
-	 * 
+	 *
 	 * @return The ComboBox -> {@link ComboBox} type {@link FilterOperator}
 	 */
 	protected ComboBox<FilterOperator> createOperatorComboBox()

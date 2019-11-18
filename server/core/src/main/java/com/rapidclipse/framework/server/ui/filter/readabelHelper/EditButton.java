@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.ui.filter.readabelHelper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
 
@@ -22,5 +23,6 @@ public class EditButton extends Button
 	{
 		this.setClassName(StringResourceUtils.getResourceString("editButton", this));
 		this.setIcon(VaadinIcon.EDIT.create());
+		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
 	}
 }

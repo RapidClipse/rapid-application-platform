@@ -1,24 +1,23 @@
 .checkBox {
-	font-size: 30px;
-	height: 2.8rem !important;
+/* 	font-size: 30px;
+ */	/* height: 2.8rem !important; */
 	margin-right: -10px;
 }
-.cancelButton {
 
+.editButton{
+	margin-right: -10px;
 }
-
-.labelDiv{
-	--lumo-size: small;
-}
-
 .entryRowLabel{
 	width:100%;
+	font-size: var(--lumo-font-size-s);
+	margin-left: 5px;
 }
 
 .finalLayout {
 	align-items: center;
 	width: 100%;
 	margin-left: 10px;
+	margin-top: -5px;
 }
 
 .entryRowComboBox {
@@ -60,9 +59,6 @@
 .checkButton:hover {
 	color: green;
 }
-/* label{
-	min-width:max-content;
-} */
 
 
  @media only screen and (min-width: 0px) {
