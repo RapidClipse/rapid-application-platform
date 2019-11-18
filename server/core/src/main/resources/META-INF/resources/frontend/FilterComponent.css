@@ -3,7 +3,9 @@
  */	/* height: 2.8rem !important; */
 	margin-right: -10px;
 }
-
+vaadin-combo-box::part(text-field), vaadin-text-field{
+	--lumo-text-field-size: 25px !important;
+}
 .editButton{
 	margin-right: -10px;
 }
@@ -44,22 +46,18 @@
 	width: 500px !important;
 }
 
-.confirmButton:hover {
-	color: green;
-
-}
 
 .cancelButton:hover {
 	color: red;
 }
 
-.addButton:hover{
-	color: green;
-}
-.checkButton:hover {
+.addButton:hover, checkButton:hover, confirmButton:hover{
 	color: green;
 }
 
+.vaadin-text-field-container{
+	--lumo-text-field-size: 25px !important;
+}
 
  @media only screen and (min-width: 0px) {
 
@@ -88,7 +86,6 @@
 @media only screen and (min-width: 800px) {
 	.entryRowComboBox {
 		width: 100%;
-		/* margin-right: 0px; */
 	}
 
 	.operatorComboBox {

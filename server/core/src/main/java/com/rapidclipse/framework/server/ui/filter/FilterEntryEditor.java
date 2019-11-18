@@ -125,7 +125,6 @@ public class FilterEntryEditor extends FormLayout
 		combo.setAllowCustomValue(false);
 		combo.setPlaceholder(getComboBoxPlaceholder());
 		combo.addClassName("propertyComboBox");
-
 		return combo;
 	}
 	
