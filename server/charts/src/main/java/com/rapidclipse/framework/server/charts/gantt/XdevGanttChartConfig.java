@@ -23,32 +23,29 @@ package com.rapidclipse.framework.server.charts.gantt;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.AbstractXdevChartConfig;
-
 
 /**
  *
  * @author XDEV Software (SS)
  * @since 4.0
  */
-public class XdevGanttChartConfig extends AbstractXdevChartConfig implements Serializable
+public class XdevGanttChartConfig implements Serializable
 {
-
+	
 	private Gantt gantt = new Gantt();
-
-	@Override
+	
 	public HashMap<String, Object> getOptions()
 	{
-		final HashMap<String, Object> options = super.getOptions();
+		final HashMap<String, Object> options = new HashMap<>();
 		options.put("gantt", this.gantt);
 		return options;
 	}
-
+	
 	public Gantt getGantt()
 	{
 		return this.gantt;
 	}
-
+	
 	public void setGantt(final Gantt gantt)
 	{
 		this.gantt = gantt;

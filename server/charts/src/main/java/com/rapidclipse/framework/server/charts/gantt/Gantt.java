@@ -20,6 +20,9 @@
 
 package com.rapidclipse.framework.server.charts.gantt;
 
+import com.rapidclipse.framework.server.charts.config.TextStyle;
+
+
 /**
  *
  * @author XDEV Software (SS)
@@ -27,26 +30,28 @@ package com.rapidclipse.framework.server.charts.gantt;
  */
 public class Gantt
 {
-	private Integer barCornerRadius     = 2;
-	private Integer barHeight;
-	private boolean percentEnabled      = true;
-	private boolean shadowEnabled       = true;
-	private String  shadowColor         = "#000";
-	private Integer shadowOffset        = 1;
-	private Integer trackHeight;
-	private boolean criticalPathEnabled = true;
-	
+	private Integer   barCornerRadius     = 2;
+	private Integer   barHeight;
+	private boolean   percentEnabled      = true;
+	private boolean   shadowEnabled       = true;
+	private String    shadowColor         = "#000";
+	private Integer   shadowOffset        = 1;
+	private Integer   trackHeight;
+	private boolean   criticalPathEnabled = true;
+	private TextStyle labelStyle;
+	private Integer   labelMaxWidth       = 300;
+
 	private String innerGridTrack;
 	private String innerGridDarkTrack;
-	
+
 	private Arrow    arrow              = new Arrow();
 	private GridLine innerGridHorizLine = new GridLine();
-	
+
 	public Integer getBarCornerRadius()
 	{
 		return this.barCornerRadius;
 	}
-	
+
 	/**
 	 * The radius for defining the curve of a bar's corners. <br>
 	 *
@@ -56,12 +61,12 @@ public class Gantt
 	{
 		this.barCornerRadius = barCornerRadius;
 	}
-	
+
 	public Integer getBarHeight()
 	{
 		return this.barHeight;
 	}
-	
+
 	/**
 	 * The height of the bars for tasks. <br>
 	 *
@@ -71,12 +76,12 @@ public class Gantt
 	{
 		this.barHeight = barHeight;
 	}
-	
+
 	public boolean isPercentEnabled()
 	{
 		return this.percentEnabled;
 	}
-	
+
 	/**
 	 * Fills the task bar based on the percentage completed for the task. <br>
 	 *
@@ -86,12 +91,12 @@ public class Gantt
 	{
 		this.percentEnabled = percentEnabled;
 	}
-	
+
 	public boolean isShadowEnabled()
 	{
 		return this.shadowEnabled;
 	}
-	
+
 	/**
 	 * If set to true, draws a shadow under each task bar which has dependencies.
 	 * <br>
@@ -102,12 +107,12 @@ public class Gantt
 	{
 		this.shadowEnabled = shadowEnabled;
 	}
-	
+
 	public String getShadowColor()
 	{
 		return this.shadowColor;
 	}
-	
+
 	/**
 	 * Defines the color of the shadows under any task bar which has dependencies.
 	 * <br>
@@ -118,12 +123,12 @@ public class Gantt
 	{
 		this.shadowColor = shadowColor;
 	}
-	
+
 	public Integer getShadowOffset()
 	{
 		return this.shadowOffset;
 	}
-	
+
 	/**
 	 * Defines the offset, in pixels, of the shadows under any task bar which has
 	 * dependencies. <br>
@@ -134,12 +139,12 @@ public class Gantt
 	{
 		this.shadowOffset = shadowOffset;
 	}
-	
+
 	public Integer getTrackHeight()
 	{
 		return this.trackHeight;
 	}
-	
+
 	/**
 	 * The height of the tracks. <br>
 	 *
@@ -149,12 +154,12 @@ public class Gantt
 	{
 		this.trackHeight = trackHeight;
 	}
-	
+
 	public boolean isCriticalPathEnabled()
 	{
 		return this.criticalPathEnabled;
 	}
-	
+
 	/**
 	 * If true any arrows on the critical path will be styled differently. <br>
 	 *
@@ -164,12 +169,12 @@ public class Gantt
 	{
 		this.criticalPathEnabled = criticalPathEnabled;
 	}
-	
+
 	public Arrow getArrow()
 	{
 		return this.arrow;
 	}
-	
+
 	/**
 	 * For Gantt Chart, Arrow controls the various properties of the arrows
 	 * connecting tasks. <br>
@@ -180,12 +185,12 @@ public class Gantt
 	{
 		this.arrow = arrow;
 	}
-	
+
 	public GridLine getInnerGridHorizLine()
 	{
 		return this.innerGridHorizLine;
 	}
-	
+
 	/**
 	 * Defines the style of the inner horizontal grid lines. <br>
 	 *
@@ -195,12 +200,12 @@ public class Gantt
 	{
 		this.innerGridHorizLine = innerGridHorizLine;
 	}
-
+	
 	public String getInnerGridTrack()
 	{
 		return this.innerGridTrack;
 	}
-
+	
 	/**
 	 * Sets a Color for uneven lines
 	 *
@@ -211,12 +216,12 @@ public class Gantt
 	{
 		this.innerGridTrack = color;
 	}
-
+	
 	public String getInnerGridDarkTrack()
 	{
 		return this.innerGridDarkTrack;
 	}
-
+	
 	/**
 	 * Sets a Color for even lines
 	 *
@@ -226,6 +231,32 @@ public class Gantt
 	public void setInnerGridDarkTrack(final String color)
 	{
 		this.innerGridDarkTrack = color;
+	}
+	
+	public TextStyle getLabelStyle()
+	{
+		return this.labelStyle;
+	}
+	
+	/**
+	 * Sets the Font Style for the label.
+	 * Some Fonts will not fit in the label space
+	 * 
+	 * @param labelStyle
+	 */
+	public void setLabelStyle(final TextStyle labelStyle)
+	{
+		this.labelStyle = labelStyle;
+	}
+
+	public Integer getLabelMaxWidth()
+	{
+		return this.labelMaxWidth;
+	}
+
+	public void setLabelMaxWidth(final Integer labelMaxWidth)
+	{
+		this.labelMaxWidth = labelMaxWidth;
 	}
 
 	@Override
@@ -240,15 +271,19 @@ public class Gantt
 		str.append("shadowColor: '" + this.shadowColor + "',");
 		str.append("shadowOffset: " + this.shadowOffset + ",");
 		str.append("trackHeight: " + this.trackHeight + ",");
-		
+		if(this.labelStyle != null)
+		{
+			str.append("labelStyle: " + this.labelStyle + ",");
+		}
+		str.append("labelMaxWidth: " + this.labelMaxWidth + ",");
 		str.append("innerGridTrack: {fill: '" + this.innerGridTrack + "'},");
 		str.append("innerGridDarkTrack: {fill: '" + this.innerGridDarkTrack + "'},");
-		
+
 		str.append("criticalPathEnabled: " + this.criticalPathEnabled + ",");
 		str.append("arrow: " + this.arrow + ",");
 		str.append("innerGridHorizLine: " + this.innerGridHorizLine);
 		str.append("}");
-		
+
 		return str.toString();
 	}
 }
