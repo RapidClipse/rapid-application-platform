@@ -13,7 +13,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class UpdateButton extends Button
 {
-	
+
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -25,5 +25,6 @@ public class UpdateButton extends Button
 		this.setIcon(VaadinIcon.CHECK.create());
 		this.setClassName(StringResourceUtils.getResourceString("addButton", this));
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("updateHover", this));
 	}
 }

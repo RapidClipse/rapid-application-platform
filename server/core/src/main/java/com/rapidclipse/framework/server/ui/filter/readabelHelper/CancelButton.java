@@ -13,7 +13,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class CancelButton extends Button
 {
-
+	
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -25,6 +25,7 @@ public class CancelButton extends Button
 		this.setClassName(StringResourceUtils.getResourceString("cancelButton", this));
 		this.setIcon(VaadinIcon.BAN.create());
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("cancelHover", this));
 	}
-	
+
 }

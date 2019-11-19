@@ -24,5 +24,6 @@ public class EditButton extends Button
 		this.setClassName(StringResourceUtils.getResourceString("editButton", this));
 		this.setIcon(VaadinIcon.EDIT.create());
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("editHover", this));
 	}
 }

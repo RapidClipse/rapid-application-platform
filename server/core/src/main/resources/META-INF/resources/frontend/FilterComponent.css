@@ -1,6 +1,4 @@
 .checkBox {
-/* 	font-size: 30px;
- */	/* height: 2.8rem !important; */
 	margin-right: -10px;
 }
 vaadin-combo-box::part(text-field), vaadin-text-field{
@@ -12,7 +10,7 @@ vaadin-combo-box::part(text-field), vaadin-text-field{
 .entryRowLabel{
 	width:100%;
 	font-size: var(--lumo-font-size-s);
-	margin-left: 5px;
+	margin-left: 10px;
 }
 
 .finalLayout {

@@ -20,6 +20,17 @@ public class FilterCheckBox extends Checkbox
 	public void defineCheckBox()
 	{
 		this.setClassName(StringResourceUtils.getResourceString("checkBox", this));
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("checkboxTrueHover", this));
 		this.setValue(true);
+	}
+	
+	public void setActive()
+	{
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("checkboxTrueHover", this));
+	}
+	
+	public void setNonActive()
+	{
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("checkboxFalseHover", this));
 	}
 }

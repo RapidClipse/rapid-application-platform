@@ -24,6 +24,7 @@ public class DeleteButton extends Button
 		this.setClassName(StringResourceUtils.getResourceString("deleteButton", this));
 		this.setIcon(VaadinIcon.MINUS.create());
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
+		this.getElement().setProperty("title", StringResourceUtils.getResourceString("deleteHover", this));
 	}
-
+	
 }
