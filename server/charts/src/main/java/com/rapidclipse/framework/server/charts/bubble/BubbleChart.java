@@ -41,14 +41,14 @@ import com.vaadin.flow.component.page.Page;
 @Tag("bubble-chart")
 public class BubbleChart extends Chart
 {
-	private BubbleChartConfig config;
+	private BubbleChartConfiguration config;
 	private DataTable         dataTable;
 
 	public BubbleChart()
 	{
-		super();
+		super("BubbleChart", "corechart");
 		
-		this.config = new BubbleChartConfig();
+		this.config = new BubbleChartConfiguration();
 	}
 	
 	/**
@@ -56,7 +56,7 @@ public class BubbleChart extends Chart
 	 *
 	 * @param config
 	 */
-	public void setConfig(final BubbleChartConfig config)
+	public void setConfig(final BubbleChartConfiguration config)
 	{
 		this.config = config;
 	}

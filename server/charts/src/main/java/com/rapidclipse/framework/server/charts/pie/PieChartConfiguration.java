@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.pie;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.config.TextStyle;
 
@@ -36,7 +36,7 @@ import com.rapidclipse.framework.server.charts.config.TextStyle;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class PieChartConfig extends ChartConfig implements Serializable
+public class PieChartConfiguration extends ChartConfiguration implements Serializable
 {
 	
 	public static final String PIESLICETEXT_PERCENTAGE = "percentage";
@@ -46,7 +46,7 @@ public class PieChartConfig extends ChartConfig implements Serializable
 	
 	private Boolean is3D                 = false;
 	private Double  pieHole              = 0.0;
-	private String  pieSliceText         = PieChartConfig.PIESLICETEXT_PERCENTAGE;
+	private String  pieSliceText         = PieChartConfiguration.PIESLICETEXT_PERCENTAGE;
 	private String  pieSliceBorderColor  = "white";
 	private Double  sliceVisibilityThreshold;
 	private String  pieResidueSliceColor = "#ccc";

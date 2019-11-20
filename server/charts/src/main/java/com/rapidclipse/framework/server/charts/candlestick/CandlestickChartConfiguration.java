@@ -21,15 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
-package com.rapidclipse.framework.server.charts.scatter;
+package com.rapidclipse.framework.server.charts.candlestick;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
+import com.rapidclipse.framework.server.charts.config.Bar;
 import com.rapidclipse.framework.server.charts.config.HAxis;
-import com.rapidclipse.framework.server.charts.config.Series;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
 
@@ -38,13 +37,13 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class ScatterChartConfig extends ChartConfig implements Serializable
+public class CandlestickChartConfiguration extends ChartConfiguration implements Serializable
 {
-
-	private HAxis          hAxis;
-	private VAxis          vAxis;
-	private Series         series;
-	private Trendlines trendlines;
+	private HAxis       hAxis;
+	private VAxis       vAxis;
+	private String      orientation = "horizontal";
+	private Candlestick candlestick;
+	private Bar         barGroupWidth;
 
 	@Override
 	public HashMap<String, Object> getOptions()
@@ -52,55 +51,80 @@ public class ScatterChartConfig extends ChartConfig implements Serializable
 		final HashMap<String, Object> options = super.getOptions();
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
-		options.put("series", this.series);
-		options.put("trendlines", this.trendlines);
-		
+		options.put("orientation", this.orientation);
+		options.put("candlestick", this.candlestick);
+		options.put("bar", this.barGroupWidth);
 		return options;
 	}
-	
-	public Trendlines getTrendline()
-	{
-		return this.trendlines;
-	}
-	
-	/**
-	 * A trendline is a line superimposed on a chart revealing the overall direction of the data.
-	 *
-	 * @param trendline
-	 */
-	public void setTrendline(final Trendlines trendline)
-	{
-		this.trendlines = trendline;
-	}
-	
+
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-	
+
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-	
+
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
 
-	public Series getSeries()
+	public String getOrientation()
 	{
-		return this.series;
+		return this.orientation;
+	}
+	
+	public Candlestick getCandlestick()
+	{
+		return this.candlestick;
+	}
+	
+	/**
+	 * for RisingColor or fallingColor
+	 *
+	 * @param candlestick
+	 */
+	public void setCandlestick(final Candlestick candlestick)
+	{
+		this.candlestick = candlestick;
+	}
+	
+	/**
+	 * The orientation of the chart.
+	 *
+	 * @param orientation
+	 *            'horizontal' or 'vertical'
+	 */
+	public void setOrientation(final String orientation)
+	{
+		this.orientation = orientation;
 	}
 
-	public void setSeries(final Series series)
+	public Bar getBarGroupWidth()
 	{
-		this.series = series;
+		return this.barGroupWidth;
+	}
+	
+	/**
+	 * The width of a group of bars , specified in either of these formats:
+	 * <li>Pixels (e.g. 50)</li>
+	 * <li>Percentage of the available width for each group (e.g. '20%'), where '100%' means that groups have no space
+	 * between them.</li>
+	 *
+	 * @param barGroupWidth
+	 *            String
+	 */
+	public void setBarGroupWidth(final String barGroupWidth)
+	{
+		this.barGroupWidth = new Bar(barGroupWidth);
 	}
 
 }

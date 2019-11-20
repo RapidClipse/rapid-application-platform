@@ -42,17 +42,17 @@ import com.vaadin.flow.component.page.Page;
 @Tag("line-chart")
 public class LineChart extends Chart
 {
-	private LineChartConfig config;
+	private LineChartConfiguration config;
 	private DataTable       dataTable;
 	
 	public LineChart()
 	{
-		super();
-
-		this.config = new LineChartConfig();
+		super("LineChart", "corechart");
+		
+		this.config = new LineChartConfiguration();
 	}
 
-	public void setConfig(final LineChartConfig config)
+	public void setConfig(final LineChartConfiguration config)
 	{
 		this.config = config;
 	}

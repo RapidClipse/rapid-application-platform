@@ -20,9 +20,15 @@ import com.vaadin.flow.component.html.Div;
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public abstract class Chart extends Composite<Div> implements HasSize
 {
-	protected Chart()
+	private final String   type;
+	private final String[] packages;
+	
+	protected Chart(final String type, final String... packages)
 	{
 		super();
+		
+		this.type     = type;
+		this.packages = packages;
 	}
 	
 	protected String id()

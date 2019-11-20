@@ -44,25 +44,25 @@ public class OrgChart extends Chart
 {
 	private OrgChartConfig config;
 	private DataTable      dataTable;
-
+	
 	public OrgChart()
 	{
-		super();
-		
+		super("OrgChart", "orgchart");
+
 		this.config = new OrgChartConfig();
 	}
-	
+
 	public void setConfig(final OrgChartConfig config)
 	{
 		this.config = config;
 	}
-	
+
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -74,5 +74,5 @@ public class OrgChart extends Chart
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

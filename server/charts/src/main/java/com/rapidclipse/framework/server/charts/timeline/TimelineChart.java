@@ -43,25 +43,25 @@ public class TimelineChart extends Chart
 {
 	private TimelineChartConfig config;
 	private DataTable           dataTable;
-	
+
 	public TimelineChart()
 	{
-		super();
-
+		super("Timeline", "timeline");
+		
 		this.config = new TimelineChartConfig();
 	}
-
+	
 	public void setConfig(final TimelineChartConfig config)
 	{
 		this.config = config;
 	}
-
+	
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -73,5 +73,5 @@ public class TimelineChart extends Chart
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-
+	
 }

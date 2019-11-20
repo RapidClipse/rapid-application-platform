@@ -21,7 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.map;
+package com.rapidclipse.framework.server.charts.timeline;
 
 import java.util.LinkedHashMap;
 
@@ -37,19 +37,20 @@ import com.rapidclipse.framework.server.charts.data.Row;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class MapModel implements ChartModel
+public class TimelineChartModel implements ChartModel
 {
+
 	private DataTable                                                  dataTable = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data      = new LinkedHashMap<>();
 	
-	public MapModel()
+	public TimelineChartModel()
 	{
 		this.getDataTable().getColumns()
-			.add(Column.create("Lat", "Lat", ColumnType.NUMBER));
-		this.getDataTable().getColumns()
-			.add(Column.create("Long", "Long", ColumnType.NUMBER));
-		this.getDataTable().getColumns()
-			.add(Column.create("Name", "Name", ColumnType.STRING));
+			.add(Column.create("category", "category", ColumnType.STRING));
+		this.getDataTable().getColumns().add(Column.create("caption", "caption", ColumnType.STRING));
+		this.getDataTable().getColumns().add(Column.create("start", "start", ColumnType.DATE));
+		this.getDataTable().getColumns().add(Column.create("end", "end", ColumnType.DATE));
+
 	}
 	
 	@Override
@@ -68,9 +69,22 @@ public class MapModel implements ChartModel
 		return this.data;
 	}
 	
-	public void addItem(final double lat, final double lon, final String name)
+	/**
+	 *
+	 * @param category
+	 * @param caption
+	 * @param start
+	 *            LocalDate or LocalTime
+	 * @param end
+	 *            LocalDate or LocalTime
+	 */
+	public void addItem(
+		final String category,
+		final String caption,
+		final Object start,
+		final Object end)
 	{
-		this.getDataTable().getRows().add(Row.create(lat, lon, name));
+		this.getDataTable().getRows().add(Row.create(category, caption, start, end));
 	}
 	
 }

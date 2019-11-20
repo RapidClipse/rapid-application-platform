@@ -27,7 +27,7 @@ package com.rapidclipse.framework.server.charts.diff;
 import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.column.ColumnChartConfig;
+import com.rapidclipse.framework.server.charts.column.ColumnChartConfiguration;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Tag;
@@ -45,13 +45,13 @@ public class DiffColumnChart extends Chart
 {
 	private DataTable         oldData;
 	private DataTable         newData;
-	private ColumnChartConfig config;
+	private ColumnChartConfiguration config;
 
 	public DiffColumnChart()
 	{
-		super();
+		super("ColumnChart", "corechart");
 
-		this.config = new ColumnChartConfig();
+		this.config = new ColumnChartConfiguration();
 	}
 	
 	private DataTable setDataTable(final ChartModel model)
@@ -69,7 +69,7 @@ public class DiffColumnChart extends Chart
 		this.buildChart();
 	}
 	
-	public void setConfig(final ColumnChartConfig config)
+	public void setConfig(final ColumnChartConfiguration config)
 	{
 		this.config = config;
 		

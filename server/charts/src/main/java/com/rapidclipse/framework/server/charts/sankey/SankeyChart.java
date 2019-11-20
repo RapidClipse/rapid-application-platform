@@ -43,14 +43,14 @@ public class SankeyChart extends Chart
 {
 	private SankeyChartConfig config;
 	private DataTable         dataTable;
-	
+
 	public SankeyChart()
 	{
-		super();
-
+		super("Sankey", "sankey");
+		
 		this.config = new SankeyChartConfig();
 	}
-
+	
 	/**
 	 * Override the default options
 	 *
@@ -60,7 +60,7 @@ public class SankeyChart extends Chart
 	{
 		this.config = config;
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -71,7 +71,7 @@ public class SankeyChart extends Chart
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

@@ -44,23 +44,23 @@ import com.vaadin.flow.component.page.Page;
 @Tag("pie-chart")
 public class PieChart extends Chart
 {
-	private PieChartConfig config;
+	private PieChartConfiguration config;
 	private DataTable      dataTable;
 	private List<PieSlice> slices;
-
+	
 	public PieChart()
 	{
-		super();
-
-		this.config = new PieChartConfig();
+		super("PieChart", "corechart");
+		
+		this.config = new PieChartConfiguration();
 	}
-	
+
 	/**
 	 * Setting options for the chart.
 	 *
 	 * @param config
 	 */
-	public void setConfig(final PieChartConfig config)
+	public void setConfig(final PieChartConfiguration config)
 	{
 		this.config = config;
 		if(this.slices != null)
@@ -68,7 +68,7 @@ public class PieChart extends Chart
 			this.config.setSlices(new Slices(this.slices));
 		}
 	}
-	
+
 	/**
 	 * Setting a model for the chart and will draw it new.
 	 *
@@ -77,18 +77,18 @@ public class PieChart extends Chart
 	public void setModel(final ChartModel model)
 	{
 		final PieChartModel pieModel = (PieChartModel)model;
-
+		
 		final DataTable table = new DataTable();
 		table.setColumns(pieModel.getDataTable().getColumns());
 		table.setRows(pieModel.getDataTable().getRows());
-		
+
 		this.dataTable = table;
 		this.slices    = pieModel.getSlices();
 		this.config.setSlices(new Slices(this.slices));
 		this.buildChart();
-		
-	}
 
+	}
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

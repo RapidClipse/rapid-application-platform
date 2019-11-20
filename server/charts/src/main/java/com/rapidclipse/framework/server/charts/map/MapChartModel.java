@@ -21,7 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.candlestick;
+package com.rapidclipse.framework.server.charts.map;
 
 import java.util.LinkedHashMap;
 
@@ -37,19 +37,19 @@ import com.rapidclipse.framework.server.charts.data.Row;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class CandleStickModel implements ChartModel
+public class MapChartModel implements ChartModel
 {
-	
 	private DataTable                                                  dataTable = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data      = new LinkedHashMap<>();
 	
-	public CandleStickModel()
+	public MapChartModel()
 	{
-		this.getDataTable().getColumns().add(Column.create("caption", "", ColumnType.STRING));
-		this.getDataTable().getColumns().add(Column.create("minimum", "", ColumnType.NUMBER));
-		this.getDataTable().getColumns().add(Column.create("opening", "", ColumnType.NUMBER));
-		this.getDataTable().getColumns().add(Column.create("closing", "", ColumnType.NUMBER));
-		this.getDataTable().getColumns().add(Column.create("maximum", "", ColumnType.NUMBER));
+		this.getDataTable().getColumns()
+			.add(Column.create("Lat", "Lat", ColumnType.NUMBER));
+		this.getDataTable().getColumns()
+			.add(Column.create("Long", "Long", ColumnType.NUMBER));
+		this.getDataTable().getColumns()
+			.add(Column.create("Name", "Name", ColumnType.STRING));
 	}
 	
 	@Override
@@ -68,13 +68,9 @@ public class CandleStickModel implements ChartModel
 		return this.data;
 	}
 	
-	public void addItem(
-		final String caption,
-		final Integer minimum,
-		final Integer maximum,
-		final Integer opening,
-		final Integer closing)
+	public void addItem(final double lat, final double lon, final String name)
 	{
-		this.getDataTable().getRows().add(Row.create(caption, minimum, opening, closing, maximum));
+		this.getDataTable().getRows().add(Row.create(lat, lon, name));
 	}
+	
 }

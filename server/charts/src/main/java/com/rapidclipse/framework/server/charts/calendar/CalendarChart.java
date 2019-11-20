@@ -46,7 +46,7 @@ public class CalendarChart extends Chart
 	
 	public CalendarChart()
 	{
-		super();
+		super("Calendar", "calendar");
 		
 		this.config = new CalendarChartConfig();
 	}

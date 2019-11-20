@@ -27,7 +27,7 @@ package com.rapidclipse.framework.server.charts.diff;
 import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.bar.BarChartConfig;
+import com.rapidclipse.framework.server.charts.bar.BarChartConfiguration;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
 import com.vaadin.flow.component.Tag;
@@ -46,13 +46,13 @@ public class DiffBarChart extends Chart
 	private DataTable oldData;
 	private DataTable newData;
 	
-	private BarChartConfig config;
+	private BarChartConfiguration config;
 	
 	public DiffBarChart()
 	{
-		super();
+		super("BarChart", "corechart");
 		
-		this.config = new BarChartConfig();
+		this.config = new BarChartConfiguration();
 	}
 
 	private DataTable setDataTable(final ChartModel model)
@@ -71,7 +71,7 @@ public class DiffBarChart extends Chart
 		this.buildChart();
 	}
 
-	public void setConfig(final BarChartConfig config)
+	public void setConfig(final BarChartConfiguration config)
 	{
 		this.config = config;
 

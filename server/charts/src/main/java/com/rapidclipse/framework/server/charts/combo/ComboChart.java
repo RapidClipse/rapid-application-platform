@@ -44,14 +44,14 @@ import com.vaadin.flow.component.page.Page;
 public class ComboChart extends Chart
 {
 	private Series           series;
-	private ComboChartConfig config;
+	private ComboChartConfiguration config;
 	private DataTable        dataTable;
 
 	public ComboChart()
 	{
-		super();
+		super("ComboChart", "corechart");
 
-		this.config = new ComboChartConfig();
+		this.config = new ComboChartConfiguration();
 	}
 	
 	/**
@@ -59,7 +59,7 @@ public class ComboChart extends Chart
 	 *
 	 * @param config
 	 */
-	public void setConfig(final ComboChartConfig config)
+	public void setConfig(final ComboChartConfiguration config)
 	{
 		if(config != null)
 		{

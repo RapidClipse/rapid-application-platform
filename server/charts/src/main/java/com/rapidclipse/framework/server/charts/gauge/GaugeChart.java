@@ -44,14 +44,14 @@ public class GaugeChart extends Chart
 {
 	private GaugeChartConfig config;
 	private DataTable        dataTable;
-
+	
 	public GaugeChart()
 	{
-		super();
-
+		super("Gauge", "gauge");
+		
 		this.config = new GaugeChartConfig();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -61,7 +61,7 @@ public class GaugeChart extends Chart
 	{
 		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -72,7 +72,7 @@ public class GaugeChart extends Chart
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-
+	
 	/**
 	 *
 	 * @param gauge
@@ -85,17 +85,17 @@ public class GaugeChart extends Chart
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
 			this.config.getOptions(), this.id(), "Gauge");
 		final Page           page = UI.getCurrent().getPage();
-
+		
 		String gaugeJs = js.constructChart();
 		gaugeJs  = (String)gaugeJs.subSequence(0, gaugeJs.length() - 1);
 		gaugeJs += "data.setValue(" + gauge + ", 1, " + value
 			+ "); var view = new google.visualization.DataView(data); chart.draw(view, options); }";
-		
-		page.executeJs(gaugeJs);
 
+		page.executeJs(gaugeJs);
+		
 		this.dataTable.getRows().get(gauge).getC().set(1, new Value(value));
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

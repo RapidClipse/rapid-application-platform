@@ -41,26 +41,26 @@ import com.vaadin.flow.component.page.Page;
 @Tag("histogram-chart")
 public class HistogramChart extends Chart
 {
-	private HistogramChartConfig config;
+	private HistogramChartConfiguration config;
 	private DataTable            dataTable;
-
+	
 	public HistogramChart()
 	{
-		super();
-		
-		this.config = new HistogramChartConfig();
+		super("Histogram", "corechart");
+
+		this.config = new HistogramChartConfiguration();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
 	 * @param config
 	 */
-	public void setConfig(final HistogramChartConfig config)
+	public void setConfig(final HistogramChartConfiguration config)
 	{
 		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -71,7 +71,7 @@ public class HistogramChart extends Chart
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

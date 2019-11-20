@@ -21,13 +21,13 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.line;
+package com.rapidclipse.framework.server.charts.area;
 
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.Options;
 import com.rapidclipse.framework.server.charts.config.VAxis;
@@ -38,18 +38,16 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class LineChartConfig extends ChartConfig implements Serializable
+public class AreaChartConfiguration extends ChartConfiguration implements Serializable
 {
-
-	private Integer        pointSize   = 0;
-	private Integer        lineWidth   = 2;
-	private List<Integer>  lineDashStyle;
-	private HAxis          hAxis;
-	private VAxis          vAxis;
-	private String         curveType;
-	private String         orientation = Options.ORIENTATION_HORIZONTAL;
-	private String         pointShape  = Options.POINTSHAPE_CIRCLE;
-	private Intervals intervals;
+	
+	private Integer       pointSize  = 0;
+	private Integer       lineWidth  = 2;
+	private List<Integer> lineDashStyle;
+	private HAxis         hAxis;
+	private VAxis         vAxis;
+	private String        pointShape = Options.POINTSHAPE_CIRCLE;
+	private boolean       isStacked  = false;
 
 	@Override
 	public HashMap<String, Object> getOptions()
@@ -61,23 +59,35 @@ public class LineChartConfig extends ChartConfig implements Serializable
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
 		options.put("pointShape", this.pointShape);
-		if(this.curveType != null)
-		{
-			options.put("curveType", this.curveType);
-		}
-		options.put("orientation", this.orientation);
-		if(this.intervals != null)
-		{
-			options.put("intervals", this.intervals);
-		}
+		options.put("isStacked", this.isStacked);
 		return options;
 	}
 	
+	public HAxis gethAxis()
+	{
+		return this.hAxis;
+	}
+
+	public void sethAxis(final HAxis hAxis)
+	{
+		this.hAxis = hAxis;
+	}
+
+	public VAxis getvAxis()
+	{
+		return this.vAxis;
+	}
+
+	public void setvAxis(final VAxis vAxis)
+	{
+		this.vAxis = vAxis;
+	}
+
 	public Integer getPointSize()
 	{
 		return this.pointSize;
 	}
-	
+
 	/**
 	 * Diameter of displayed points in pixels. Use zero to hide all points. <br>
 	 *
@@ -87,87 +97,12 @@ public class LineChartConfig extends ChartConfig implements Serializable
 	{
 		this.pointSize = pointSize;
 	}
-	
-	public HAxis gethAxis()
-	{
-		return this.hAxis;
-	}
-	
-	public Intervals getIntervals()
-	{
-		return this.intervals;
-	}
-	
-	/**
-	 * Sets a list of Intervals
-	 * Intervals might be used to portray confidence intervals, minimum and maximum values around a value, percentile
-	 * sampling, or anything else that requires a varying margin around a series<br>
-	 * The first series of a line chart is the primary series, and the other will be compared to it via intervals
-	 *
-	 * @param intervals
-	 */
-	public void setIntervals(final Intervals intervals)
-	{
-		this.intervals = intervals;
-	}
-	
-	public void sethAxis(final HAxis hAxis)
-	{
-		this.hAxis = hAxis;
-	}
-	
-	public VAxis getvAxis()
-	{
-		return this.vAxis;
-	}
-	
-	public void setvAxis(final VAxis vAxis)
-	{
-		this.vAxis = vAxis;
-	}
-	
-	public String getCurveType()
-	{
-		return this.curveType;
-	}
-	
-	/**
-	 * Controls the curve of the lines when the line width is not zero. Can be one
-	 * of the following: <br>
-	 * <ul>
-	 * <li>'none' - Straight lines without curve.</li>
-	 * <li>'function' - The angles of the line will be smoothed.</li>
-	 * </ul>
-	 * <br>
-	 *
-	 * @param curveType
-	 */
-	public void setCurveType(final String curveType)
-	{
-		this.curveType = curveType;
-	}
-	
-	public String getOrientation()
-	{
-		return this.orientation;
-	}
-	
-	/**
-	 * The orientation of the chart. When set to 'vertical', rotates the axes of the
-	 * chart <br>
-	 *
-	 * @param orientation
-	 */
-	public void setOrientation(final String orientation)
-	{
-		this.orientation = orientation;
-	}
-	
+
 	public String getPointShape()
 	{
 		return this.pointShape;
 	}
-	
+
 	/**
 	 * The shape of individual data elements: 'circle', 'triangle', 'square',
 	 * 'diamond', 'star', or 'polygon'. <br>
@@ -178,12 +113,12 @@ public class LineChartConfig extends ChartConfig implements Serializable
 	{
 		this.pointShape = pointShape;
 	}
-	
+
 	public Integer getLineWidth()
 	{
 		return this.lineWidth;
 	}
-	
+
 	/**
 	 * Data line width in pixels. Use zero to hide all lines and show only the
 	 * points. You can override values for individual series using the series
@@ -195,12 +130,12 @@ public class LineChartConfig extends ChartConfig implements Serializable
 	{
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public List<Integer> getLineDashStyle()
 	{
 		return this.lineDashStyle;
 	}
-	
+
 	/**
 	 * The on-and-off pattern for dashed lines. For instance, [4, 4] will repeat
 	 * 4-length dashes followed by 4-length gaps, and [5, 1, 3] will repeat a
@@ -214,4 +149,23 @@ public class LineChartConfig extends ChartConfig implements Serializable
 		this.lineDashStyle = lineDashStyle;
 	}
 
+	/**
+	 * @return the isStacked
+	 */
+	public boolean isStacked()
+	{
+		return this.isStacked;
+	}
+
+	/**
+	 * If set to true, stacks the elements for all series at each domain value. <br>
+	 *
+	 * @param isStacked
+	 *            the isStacked to set
+	 */
+	public void setStacked(final boolean isStacked)
+	{
+		this.isStacked = isStacked;
+	}
+	
 }

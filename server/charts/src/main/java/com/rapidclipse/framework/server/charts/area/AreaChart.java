@@ -42,26 +42,26 @@ import com.vaadin.flow.component.page.Page;
 @Tag("area-chart")
 public class AreaChart extends Chart
 {
-	private AreaChartConfig config;
+	private AreaChartConfiguration config;
 	private DataTable       dataTable;
-
+	
 	public AreaChart()
 	{
-		super();
-
-		this.config = new AreaChartConfig();
+		super("AreaChart", "corechart");
+		
+		this.config = new AreaChartConfiguration();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
 	 * @param config
 	 */
-	public void setConfig(final AreaChartConfig config)
+	public void setConfig(final AreaChartConfiguration config)
 	{
 		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -70,11 +70,11 @@ public class AreaChart extends Chart
 	public void setModel(final ChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-
+		
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -86,5 +86,5 @@ public class AreaChart extends Chart
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }

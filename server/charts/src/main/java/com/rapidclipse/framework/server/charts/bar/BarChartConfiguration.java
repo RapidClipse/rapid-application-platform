@@ -21,13 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.candlestick;
+package com.rapidclipse.framework.server.charts.bar;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
 import com.rapidclipse.framework.server.charts.config.Bar;
+import com.rapidclipse.framework.server.charts.config.BarColumnDiff;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -37,24 +38,61 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class CandleStickChartConfig extends ChartConfig implements Serializable
+public class BarChartConfiguration extends ChartConfiguration implements Serializable
 {
-	private HAxis       hAxis;
-	private VAxis       vAxis;
-	private String      orientation = "horizontal";
-	private Candlestick candlestick;
-	private Bar         barGroupWidth;
+	private String        subtitle;
+	private HAxis         hAxis;
+	private VAxis         vAxis;
+	private boolean       isStacked   = false;
+	private String        orientation = "vertical";
+	private Bar           barGroupWidth;
+	private BarColumnDiff diff;
 
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
 		final HashMap<String, Object> options = super.getOptions();
+		options.put("subtitle", this.subtitle);
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
+		options.put("isStacked", this.isStacked);
 		options.put("orientation", this.orientation);
-		options.put("candlestick", this.candlestick);
 		options.put("bar", this.barGroupWidth);
+		if(this.diff != null)
+		{
+			options.put("diff", this.diff);
+		}
 		return options;
+	}
+	
+	public BarColumnDiff getDiff()
+	{
+		return this.diff;
+	}
+	
+	public void setDiff(final BarColumnDiff diff)
+	{
+		this.diff = diff;
+	}
+	
+	public void setBarGroupWidth(final Bar barGroupWidth)
+	{
+		this.barGroupWidth = barGroupWidth;
+	}
+	
+	public BarChartConfiguration()
+	{
+		this.subtitle = "";
+	}
+
+	public String getSubtitle()
+	{
+		return this.subtitle;
+	}
+
+	public void setSubtitle(final String subtitle)
+	{
+		this.subtitle = subtitle;
 	}
 
 	public HAxis gethAxis()
@@ -77,24 +115,28 @@ public class CandleStickChartConfig extends ChartConfig implements Serializable
 		this.vAxis = vAxis;
 	}
 
+	/**
+	 * @return the isStacked
+	 */
+	public boolean isStacked()
+	{
+		return this.isStacked;
+	}
+
+	/**
+	 * If set to true, stacks the elements for all series at each domain value. <br>
+	 *
+	 * @param isStacked
+	 *            the isStacked to set
+	 */
+	public void setStacked(final boolean isStacked)
+	{
+		this.isStacked = isStacked;
+	}
+	
 	public String getOrientation()
 	{
 		return this.orientation;
-	}
-	
-	public Candlestick getCandlestick()
-	{
-		return this.candlestick;
-	}
-	
-	/**
-	 * for RisingColor or fallingColor
-	 *
-	 * @param candlestick
-	 */
-	public void setCandlestick(final Candlestick candlestick)
-	{
-		this.candlestick = candlestick;
 	}
 	
 	/**
@@ -126,5 +168,5 @@ public class CandleStickChartConfig extends ChartConfig implements Serializable
 	{
 		this.barGroupWidth = new Bar(barGroupWidth);
 	}
-
+	
 }

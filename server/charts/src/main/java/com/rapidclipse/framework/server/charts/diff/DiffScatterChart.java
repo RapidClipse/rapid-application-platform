@@ -31,7 +31,7 @@ import com.rapidclipse.framework.server.charts.config.Line;
 import com.rapidclipse.framework.server.charts.config.Series;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
-import com.rapidclipse.framework.server.charts.scatter.ScatterChartConfig;
+import com.rapidclipse.framework.server.charts.scatter.ScatterChartConfiguration;
 import com.rapidclipse.framework.server.charts.scatter.ScatterChartModel;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -49,13 +49,13 @@ public class DiffScatterChart extends Chart
 	private DataTable          oldData;
 	private DataTable          newData;
 	private Series             series;
-	private ScatterChartConfig config;
+	private ScatterChartConfiguration config;
 
 	public DiffScatterChart()
 	{
-		super();
+		super("ScatterChart", "corechart");
 
-		this.config = new ScatterChartConfig();
+		this.config = new ScatterChartConfiguration();
 	}
 	
 	private DataTable setDataTable(final ChartModel model)
@@ -91,7 +91,7 @@ public class DiffScatterChart extends Chart
 		this.buildChart();
 	}
 	
-	public void setConfig(final ScatterChartConfig config)
+	public void setConfig(final ScatterChartConfiguration config)
 	{
 		this.config = config;
 		this.config.setSeries(this.series);

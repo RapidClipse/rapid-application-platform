@@ -42,14 +42,14 @@ import com.vaadin.flow.component.page.Page;
 @Tag("bar-chart")
 public class BarChart extends Chart
 {
-	private BarChartConfig config;
+	private BarChartConfiguration config;
 	private DataTable      dataTable;
 	
 	public BarChart()
 	{
-		super();
+		super("BarChart", "corechart");
 		
-		this.config = new BarChartConfig();
+		this.config = new BarChartConfiguration();
 	}
 	
 	/**
@@ -57,7 +57,7 @@ public class BarChart extends Chart
 	 *
 	 * @param config
 	 */
-	public void setConfig(final BarChartConfig config)
+	public void setConfig(final BarChartConfiguration config)
 	{
 		this.config = config;
 	}

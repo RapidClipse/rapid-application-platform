@@ -43,14 +43,14 @@ public class GanttChart extends Chart
 {
 	private GanttChartConfig config;
 	private DataTable        dataTable;
-	
+
 	public GanttChart()
 	{
-		super();
-
+		super("Gantt", "gantt");
+		
 		this.config = new GanttChartConfig();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
@@ -60,7 +60,7 @@ public class GanttChart extends Chart
 	{
 		this.config = config;
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -71,7 +71,7 @@ public class GanttChart extends Chart
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

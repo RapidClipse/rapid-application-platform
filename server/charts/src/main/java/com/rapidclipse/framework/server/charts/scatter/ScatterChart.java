@@ -44,22 +44,22 @@ import com.vaadin.flow.component.page.Page;
 public class ScatterChart extends Chart
 {
 	private Series             series;
-	private ScatterChartConfig config;
+	private ScatterChartConfiguration config;
 	private DataTable          dataTable;
-	
+
 	public ScatterChart()
 	{
-		super();
-		
-		this.config = new ScatterChartConfig();
+		super("ScatterChart", "corechart");
+
+		this.config = new ScatterChartConfiguration();
 	}
-	
+
 	/**
 	 * Override the default options
 	 *
 	 * @param config
 	 */
-	public void setConfig(final ScatterChartConfig config)
+	public void setConfig(final ScatterChartConfiguration config)
 	{
 		if(config != null)
 		{
@@ -70,7 +70,7 @@ public class ScatterChart extends Chart
 			}
 		}
 	}
-	
+
 	/**
 	 * Set a model for the chart
 	 *
@@ -82,11 +82,11 @@ public class ScatterChart extends Chart
 		this.series = new Series(scaModel.getSeries());
 		Row.createFromHashmap(scaModel.getData()).forEach(row -> scaModel.getDataTable().getRows().add(row));
 		this.dataTable = scaModel.getDataTable();
-
+		
 		this.config.setSeries(this.series);
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -98,5 +98,5 @@ public class ScatterChart extends Chart
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }

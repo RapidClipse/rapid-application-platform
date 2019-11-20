@@ -31,7 +31,7 @@ import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.rapidclipse.framework.server.charts.pie.PieChartConfig;
+import com.rapidclipse.framework.server.charts.pie.PieChartConfiguration;
 import com.rapidclipse.framework.server.charts.pie.PieChartModel;
 import com.rapidclipse.framework.server.charts.pie.PieSlice;
 import com.vaadin.flow.component.Tag;
@@ -50,13 +50,13 @@ public class DiffPieChart extends Chart
 	private DataTable      oldData;
 	private DataTable      newData;
 	private List<PieSlice> slices;
-	private PieChartConfig config;
+	private PieChartConfiguration config;
 	
 	public DiffPieChart()
 	{
-		super();
+		super("PieChart", "corechart");
 		
-		this.config = new PieChartConfig();
+		this.config = new PieChartConfiguration();
 
 	}
 
@@ -83,7 +83,7 @@ public class DiffPieChart extends Chart
 		this.buildChart();
 	}
 
-	public void setConfig(final PieChartConfig config)
+	public void setConfig(final PieChartConfiguration config)
 	{
 		this.config = config;
 		if(this.slices != null)

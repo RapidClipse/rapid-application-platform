@@ -42,17 +42,17 @@ import com.vaadin.flow.component.page.Page;
 @Tag("column-chart")
 public class ColumnChart extends Chart
 {
-	private ColumnChartConfig config;
+	private ColumnChartConfiguration config;
 	private DataTable         dataTable;
 	
 	public ColumnChart()
 	{
-		super();
+		super("ColumnChart", "corechart");
 		
-		this.config = new ColumnChartConfig();
+		this.config = new ColumnChartConfiguration();
 	}
 
-	public void setConfig(final ColumnChartConfig config)
+	public void setConfig(final ColumnChartConfiguration config)
 	{
 		this.config = config;
 	}

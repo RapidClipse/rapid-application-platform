@@ -24,9 +24,9 @@
 
 package com.rapidclipse.framework.server.charts.map;
 
-import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
+import com.rapidclipse.framework.server.charts.MapsApiChart;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -39,44 +39,29 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("map-chart")
-public class MapChart extends Chart
+public class MapChart extends MapsApiChart
 {
-	private MapConfig config;
+	private MapChartConfig config;
 	private DataTable dataTable;
-	private String    mapsApiKey;
-	
+
 	public MapChart()
 	{
-		super();
-		
-		this.config     = new MapConfig();
-		this.mapsApiKey = "";
+		super("Map", "map");
+
+		this.config = new MapChartConfig();
 	}
-
-	public MapChart(final String apiKey)
-	{
-		super();
-
-		this.config     = new MapConfig();
-		this.mapsApiKey = apiKey;
-	}
-
-	public void setConfig(final MapConfig config)
+	
+	public void setConfig(final MapChartConfig config)
 	{
 		this.config = config;
 	}
 
-	public void setApiKey(final String apiKey)
-	{
-		this.mapsApiKey = apiKey;
-	}
-	
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -84,7 +69,7 @@ public class MapChart extends Chart
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id(), "Map", this.mapsApiKey);
+			this.config.getOptions(), this.id(), "Map", this.getApiKey());
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

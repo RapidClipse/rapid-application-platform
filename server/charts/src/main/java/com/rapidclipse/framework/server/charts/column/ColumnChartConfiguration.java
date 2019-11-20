@@ -21,12 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.stepped;
+package com.rapidclipse.framework.server.charts.column;
 
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
+import com.rapidclipse.framework.server.charts.config.Bar;
+import com.rapidclipse.framework.server.charts.config.BarColumnDiff;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -36,14 +38,14 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class SteppedAreaChartConfig extends ChartConfig implements Serializable
+public class ColumnChartConfiguration extends ChartConfiguration implements Serializable
 {
+	private HAxis         hAxis;
+	private VAxis         vAxis;
+	private boolean       isStacked = false;
+	private Bar           barGroupWidth;
+	private BarColumnDiff diff;
 
-	private VAxis   vAxis;
-	private HAxis   hAxis;
-	private boolean isStacked     = true;
-	private String  titlePosition = "out";
-	
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -51,19 +53,12 @@ public class SteppedAreaChartConfig extends ChartConfig implements Serializable
 		options.put("hAxis", this.hAxis);
 		options.put("vAxis", this.vAxis);
 		options.put("isStacked", this.isStacked);
-		options.put("titlePosition", this.titlePosition);
-		
+		options.put("bar", this.barGroupWidth);
+		if(this.diff != null)
+		{
+			options.put("diff", this.diff);
+		}
 		return options;
-	}
-	
-	public VAxis getvAxis()
-	{
-		return this.vAxis;
-	}
-
-	public void setvAxis(final VAxis vAxis)
-	{
-		this.vAxis = vAxis;
 	}
 
 	public HAxis gethAxis()
@@ -76,6 +71,16 @@ public class SteppedAreaChartConfig extends ChartConfig implements Serializable
 		this.hAxis = hAxis;
 	}
 
+	public VAxis getvAxis()
+	{
+		return this.vAxis;
+	}
+
+	public void setvAxis(final VAxis vAxis)
+	{
+		this.vAxis = vAxis;
+	}
+	
 	public boolean isStacked()
 	{
 		return this.isStacked;
@@ -86,14 +91,42 @@ public class SteppedAreaChartConfig extends ChartConfig implements Serializable
 		this.isStacked = isStacked;
 	}
 
-	public String getTitlePosition()
+	public Bar getBarGroupWidth()
 	{
-		return this.titlePosition;
+		return this.barGroupWidth;
 	}
-
-	public void setTitlePosition(final String titlePosition)
+	
+	public BarColumnDiff getDiff()
 	{
-		this.titlePosition = titlePosition;
+		return this.diff;
 	}
-
+	
+	/**
+	 * For DiffCharts
+	 *
+	 * @param diff
+	 */
+	public void setDiff(final BarColumnDiff diff)
+	{
+		this.diff = diff;
+	}
+	
+	public void setBarGroupWidth(final Bar barGroupWidth)
+	{
+		this.barGroupWidth = barGroupWidth;
+	}
+	
+	/**
+	 * The width of a group of bars , specified in either of these formats:
+	 * <li>Pixels (e.g. 50)</li>
+	 * <li>Percentage of the available width for each group (e.g. '20%'), where '100%' means that groups have no space
+	 * between them.</li>
+	 *
+	 * @param barGroupWidth
+	 *            String
+	 */
+	public void setBarGroupWidth(final String barGroupWidth)
+	{
+		this.barGroupWidth = new Bar(barGroupWidth);
+	}
 }

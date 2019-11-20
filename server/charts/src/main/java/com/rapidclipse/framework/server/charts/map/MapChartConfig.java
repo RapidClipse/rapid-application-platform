@@ -21,29 +21,48 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.data;
+package com.rapidclipse.framework.server.charts.map;
+
+import java.io.Serializable;
+import java.util.HashMap;
+
 
 /**
  *
  * @author XDEV Software
  * @since 10.02.00
  */
-public enum ColumnType
+public class MapChartConfig implements Serializable
 {
-	STRING("string"),
-	NUMBER("number"),
-	DATE("date"),
-	DATETIME("datetime");
+	private boolean showTooltip    = true;
+	private boolean showInfoWindow = true;
 
-	private final String text;
-
-	private ColumnType(final String text)
+	public HashMap<String, Object> getOptions()
 	{
-		this.text = text;
+		final HashMap<String, Object> options = new HashMap<>();
+		options.put("showTooltip", this.showTooltip);
+		options.put("showInfoWindow", this.showInfoWindow);
+		return options;
 	}
 
-	public String text()
+	public boolean isShowTooltip()
 	{
-		return this.text;
+		return this.showTooltip;
 	}
+
+	public void setShowTooltip(final boolean showTooltip)
+	{
+		this.showTooltip = showTooltip;
+	}
+
+	public boolean isShowInfoWindow()
+	{
+		return this.showInfoWindow;
+	}
+
+	public void setShowInfoWindow(final boolean showInfoWindow)
+	{
+		this.showInfoWindow = showInfoWindow;
+	}
+
 }

@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.bubble;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
 import com.rapidclipse.framework.server.charts.config.ColorAxis;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.Options;
@@ -38,7 +38,7 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class BubbleChartConfig extends ChartConfig implements Serializable
+public class BubbleChartConfiguration extends ChartConfiguration implements Serializable
 {
 	private HAxis     hAxis;
 	private VAxis     vAxis;

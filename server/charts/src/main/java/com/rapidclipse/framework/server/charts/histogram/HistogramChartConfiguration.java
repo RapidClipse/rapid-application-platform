@@ -21,39 +21,41 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.data;
+
+package com.rapidclipse.framework.server.charts.histogram;
+
+import java.io.Serializable;
+import java.util.HashMap;
+
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
+
 
 /**
  *
  * @author XDEV Software
  * @since 10.02.00
  */
-public enum DataRoleType
+public class HistogramChartConfiguration extends ChartConfiguration implements Serializable
 {
-	ANNOTATION("annotation"),
-	ANNOTATION_TEXT("annotationText"),
-	CERTAINTY("certainty"),
-	EMPHASIS("emphasis"),
-	INTERVAL("interval"),
-	SCOPE("scope"),
-	STYLE("style"),
-	TOOLTIP("tooltip");
+	private Histogram histogram;
 	
-	private final String text;
-
-	private DataRoleType(final String text)
-	{
-		this.text = text;
-	}
-
-	public String text()
-	{
-		return this.text;
-	}
-
 	@Override
-	public String toString()
+	public HashMap<String, Object> getOptions()
 	{
-		return this.text;
+		final HashMap<String, Object> options = super.getOptions();
+		options.put("histogram", this.histogram);
+
+		return options;
 	}
+
+	public Histogram getHistogram()
+	{
+		return this.histogram;
+	}
+
+	public void setHistogram(final Histogram histogram)
+	{
+		this.histogram = histogram;
+	}
+
 }

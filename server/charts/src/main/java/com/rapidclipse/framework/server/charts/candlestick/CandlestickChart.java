@@ -39,16 +39,16 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("candlestick-chart")
-public class CandleStickChart extends Chart
+public class CandlestickChart extends Chart
 {
-	private CandleStickChartConfig config;
+	private CandlestickChartConfiguration config;
 	private DataTable              dataTable;
 
-	public CandleStickChart()
+	public CandlestickChart()
 	{
-		super();
+		super("CandlestickChart", "corechart");
 		
-		this.config = new CandleStickChartConfig();
+		this.config = new CandlestickChartConfiguration();
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class CandleStickChart extends Chart
 	 *
 	 * @param config
 	 */
-	public void setConfig(final CandleStickChartConfig config)
+	public void setConfig(final CandlestickChartConfiguration config)
 	{
 		this.config = config;
 	}

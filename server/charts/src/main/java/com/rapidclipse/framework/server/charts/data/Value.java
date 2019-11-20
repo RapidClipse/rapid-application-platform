@@ -37,22 +37,22 @@ import java.time.LocalTime;
 public class Value implements Serializable
 {
 	private Object valueObject; // string, number, date, datetime
-
+	
 	public Value(final Object v)
 	{
 		this.valueObject = v;
 	}
-
+	
 	public Object getValueObject()
 	{
 		return this.valueObject;
 	}
-
+	
 	public void setVAlueObject(final Object v)
 	{
 		this.valueObject = v;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -66,7 +66,7 @@ public class Value implements Serializable
 			final int       year  = date.getYear();
 			final int       month = date.getMonthValue() - 1;
 			final int       day   = date.getDayOfMonth();
-			
+
 			return "new Date(" + year + "," + month + "," + day + ")";
 		}
 		else if(this.valueObject instanceof LocalTime)
@@ -78,6 +78,6 @@ public class Value implements Serializable
 		{
 			return "'" + this.valueObject + "'";
 		}
-		
+
 	}
 }

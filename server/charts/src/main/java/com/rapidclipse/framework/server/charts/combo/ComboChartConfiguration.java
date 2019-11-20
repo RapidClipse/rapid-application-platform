@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.combo;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.ChartConfiguration;
 import com.rapidclipse.framework.server.charts.config.Bar;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.Series;
@@ -38,7 +38,7 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class ComboChartConfig extends ChartConfig implements Serializable
+public class ComboChartConfiguration extends ChartConfiguration implements Serializable
 {
 	private String  seriesType = "bars";
 	private HAxis   hAxis;

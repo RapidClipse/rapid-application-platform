@@ -21,7 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.timeline;
+package com.rapidclipse.framework.server.charts.candlestick;
 
 import java.util.LinkedHashMap;
 
@@ -37,20 +37,19 @@ import com.rapidclipse.framework.server.charts.data.Row;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class TimeLineChartModel implements ChartModel
+public class CandlestickChartModel implements ChartModel
 {
-
+	
 	private DataTable                                                  dataTable = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data      = new LinkedHashMap<>();
 	
-	public TimeLineChartModel()
+	public CandlestickChartModel()
 	{
-		this.getDataTable().getColumns()
-			.add(Column.create("category", "category", ColumnType.STRING));
-		this.getDataTable().getColumns().add(Column.create("caption", "caption", ColumnType.STRING));
-		this.getDataTable().getColumns().add(Column.create("start", "start", ColumnType.DATE));
-		this.getDataTable().getColumns().add(Column.create("end", "end", ColumnType.DATE));
-
+		this.getDataTable().getColumns().add(Column.create("caption", "", ColumnType.STRING));
+		this.getDataTable().getColumns().add(Column.create("minimum", "", ColumnType.NUMBER));
+		this.getDataTable().getColumns().add(Column.create("opening", "", ColumnType.NUMBER));
+		this.getDataTable().getColumns().add(Column.create("closing", "", ColumnType.NUMBER));
+		this.getDataTable().getColumns().add(Column.create("maximum", "", ColumnType.NUMBER));
 	}
 	
 	@Override
@@ -69,22 +68,13 @@ public class TimeLineChartModel implements ChartModel
 		return this.data;
 	}
 	
-	/**
-	 *
-	 * @param category
-	 * @param caption
-	 * @param start
-	 *            LocalDate or LocalTime
-	 * @param end
-	 *            LocalDate or LocalTime
-	 */
 	public void addItem(
-		final String category,
 		final String caption,
-		final Object start,
-		final Object end)
+		final Integer minimum,
+		final Integer maximum,
+		final Integer opening,
+		final Integer closing)
 	{
-		this.getDataTable().getRows().add(Row.create(category, caption, start, end));
+		this.getDataTable().getRows().add(Row.create(caption, minimum, opening, closing, maximum));
 	}
-	
 }

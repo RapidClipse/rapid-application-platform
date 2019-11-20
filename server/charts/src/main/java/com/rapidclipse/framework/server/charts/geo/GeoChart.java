@@ -24,9 +24,9 @@
 
 package com.rapidclipse.framework.server.charts.geo;
 
-import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
+import com.rapidclipse.framework.server.charts.MapsApiChart;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
@@ -39,44 +39,29 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("geo-chart")
-public class GeoChart extends Chart
+public class GeoChart extends MapsApiChart
 {
 	private GeoChartConfig config;
 	private DataTable      dataTable;
-	private String         mapsApiKey;
-
+	
 	public GeoChart()
 	{
-		super();
-
-		this.config     = new GeoChartConfig();
-		this.mapsApiKey = " ";
-	}
-	
-	public GeoChart(final String apiKey)
-	{
-		super();
+		super("GeoChart", "geochart");
 		
-		this.config     = new GeoChartConfig();
-		this.mapsApiKey = apiKey;
+		this.config = new GeoChartConfig();
 	}
-	
+
 	public void setConfig(final GeoChartConfig config)
 	{
 		this.config = config;
 	}
 	
-	public void setApiKey(final String apiKey)
-	{
-		this.mapsApiKey = apiKey;
-	}
-
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-
+	
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -84,7 +69,7 @@ public class GeoChart extends Chart
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id(), "GeoChart", this.mapsApiKey);
+			this.config.getOptions(), this.id(), "GeoChart", this.getApiKey());
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

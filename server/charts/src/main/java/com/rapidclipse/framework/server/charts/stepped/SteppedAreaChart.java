@@ -42,29 +42,29 @@ import com.vaadin.flow.component.page.Page;
 @Tag("stepped-area-chart")
 public class SteppedAreaChart extends Chart
 {
-	private SteppedAreaChartConfig config;
+	private SteppedAreaChartConfiguration config;
 	private DataTable              dataTable;
-	
+
 	public SteppedAreaChart()
 	{
-		super();
-
-		this.config = new SteppedAreaChartConfig();
+		super("SteppedAreaChart", "corechart");
+		
+		this.config = new SteppedAreaChartConfiguration();
 	}
-
-	public void setConfig(final SteppedAreaChartConfig config)
+	
+	public void setConfig(final SteppedAreaChartConfiguration config)
 	{
 		this.config = config;
 	}
-
+	
 	public void setModel(final ChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-
+		
 		this.dataTable = model.getDataTable();
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -76,5 +76,5 @@ public class SteppedAreaChart extends Chart
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
-	
+
 }
