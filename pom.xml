@@ -282,6 +282,22 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<doclint>none</doclint>
+							<archive>
+								<manifestEntries>
+									<built-by>${project.organization.name}</built-by>
+								</manifestEntries>
+							</archive>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -339,35 +355,6 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-javadoc-plugin</artifactId>
 					<version>3.1.1</version>
-					<configuration>
-						<doclint>none</doclint>
-						<failOnError>false</failOnError>
-						<notree>true</notree>
-						<additionalOptions>-html5</additionalOptions>
-						<javadocExecutable>${javadoc.executable}</javadocExecutable>
-						<source>8</source>
-						<doctitle>${project.name} API</doctitle>
-						<windowtitle>${project.name} API</windowtitle>
-						<stylesheetfile>${maven.multiModuleProjectDirectory}/../rap-dev/javadoc-stylesheet.css</stylesheetfile>
-						<archive>
-							<manifestEntries>
-								<built-by>${project.organization.name}</built-by>
-							</manifestEntries>
-						</archive>
-						<detectLinks>true</detectLinks>
-						<links>
-							<link>https://vaadin.com/api/platform/${vaadin.version}/</link>
-						</links>
-					</configuration>
-					<executions>
-						<execution>
-							<id>aggregate</id>
-							<goals>
-								<goal>aggregate</goal>
-							</goals>
-							<phase>site</phase>
-						</execution>
-					</executions>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -548,6 +535,46 @@
 								<goals>
 									<goal>format</goal>
 								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>javadoc-aggregate</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<configuration>
+							<doclint>none</doclint>
+							<failOnError>false</failOnError>
+							<notree>true</notree>
+							<additionalOptions>-html5</additionalOptions>
+							<javadocExecutable>${javadoc.executable}</javadocExecutable>
+							<source>8</source>
+							<doctitle>${project.name} API</doctitle>
+							<windowtitle>${project.name} API</windowtitle>
+							<stylesheetfile>${maven.multiModuleProjectDirectory}/../rap-dev/javadoc-stylesheet.css</stylesheetfile>
+							<archive>
+								<manifestEntries>
+									<built-by>${project.organization.name}</built-by>
+								</manifestEntries>
+							</archive>
+							<detectLinks>true</detectLinks>
+							<links>
+								<link>https://vaadin.com/api/platform/${vaadin.version}/</link>
+							</links>
+						</configuration>
+						<executions>
+							<execution>
+								<id>aggregate</id>
+								<goals>
+									<goal>aggregate</goal>
+								</goals>
+								<phase>site</phase>
 							</execution>
 						</executions>
 					</plugin>
