@@ -1,44 +1,47 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class LegendOptions
 {
-
+	
 	private String    alignment;
 	private String    position = "right";
 	private Integer   maxLines = 1;
 	private TextStyle textStyle;
 	private boolean   noLegend;
-
+	
 	public String getAlignment()
 	{
 		return this.alignment;
 	}
-
+	
 	/**
 	 * Alignment of the legend. Can be one of the following: <br>
 	 * <ul>
@@ -61,12 +64,12 @@ public class LegendOptions
 	{
 		this.alignment = alignment;
 	}
-
+	
 	public String getPosition()
 	{
 		return this.position;
 	}
-
+	
 	/**
 	 * Position of the legend. Can be one of the following: <br>
 	 * <ul>
@@ -84,12 +87,12 @@ public class LegendOptions
 	{
 		this.position = position;
 	}
-
+	
 	public Integer getMaxLines()
 	{
 		return this.maxLines;
 	}
-
+	
 	/**
 	 * Maximum number of lines in the legend. Set this to a number greater than one
 	 * to add lines to your legend. Note: The exact logic used to determine the
@@ -103,12 +106,12 @@ public class LegendOptions
 	{
 		this.maxLines = maxLines;
 	}
-
+	
 	public TextStyle getTextStyle()
 	{
 		return this.textStyle;
 	}
-
+	
 	/**
 	 * An object that specifies the legend text style.
 	 *
@@ -118,7 +121,7 @@ public class LegendOptions
 	{
 		this.textStyle = textStyle;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -142,15 +145,15 @@ public class LegendOptions
 		{
 			str.append("'none'");
 		}
-
+		
 		return str.toString();
 	}
-
+	
 	public boolean isNoLegend()
 	{
 		return this.noLegend;
 	}
-
+	
 	/**
 	 * Disables the Legend of a chart with 'none'
 	 *

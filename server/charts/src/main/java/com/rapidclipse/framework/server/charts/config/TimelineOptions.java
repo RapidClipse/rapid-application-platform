@@ -1,29 +1,32 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class TimelineOptions
 {
@@ -34,12 +37,12 @@ public class TimelineOptions
 	private boolean   showRowLabels   = true;
 	private String    singleColor;
 	private TextStyle barLabelStyle;
-
+	
 	public TextStyle getBarLabelStyle()
 	{
 		return this.barLabelStyle;
 	}
-
+	
 	/**
 	 * An 'TextStyle' object that specifies the bar label text style. <br>
 	 *
@@ -49,12 +52,12 @@ public class TimelineOptions
 	{
 		this.barLabelStyle = barLabelStyle;
 	}
-
+	
 	public boolean isColorByRowLabel()
 	{
 		return this.colorByRowLabel;
 	}
-
+	
 	/**
 	 * If set to true, colors every bar on the row the same. The default is to use
 	 * one color per bar label. <br>
@@ -65,12 +68,12 @@ public class TimelineOptions
 	{
 		this.colorByRowLabel = colorByRowLabel;
 	}
-
+	
 	public boolean isGroupByRowLabel()
 	{
 		return this.groupByRowLabel;
 	}
-
+	
 	/**
 	 * If set to false, creates one row for every entry. The default is to collect
 	 * bars with the same row label into one row. <br>
@@ -81,12 +84,12 @@ public class TimelineOptions
 	{
 		this.groupByRowLabel = groupByRowLabel;
 	}
-
+	
 	public TextStyle getRowLabelStyle()
 	{
 		return this.rowLabelStyle;
 	}
-
+	
 	/**
 	 * An 'TextStyle' object that specifies the bar label text style. <br>
 	 *
@@ -96,12 +99,12 @@ public class TimelineOptions
 	{
 		this.rowLabelStyle = rowLabelStyle;
 	}
-
+	
 	public boolean isShowBarLabels()
 	{
 		return this.showBarLabels;
 	}
-
+	
 	/**
 	 * If set to false, omits bar labels. The default is to show them. <br>
 	 *
@@ -111,12 +114,12 @@ public class TimelineOptions
 	{
 		this.showBarLabels = showBarLabels;
 	}
-
+	
 	public boolean isShowRowLabels()
 	{
 		return this.showRowLabels;
 	}
-
+	
 	/**
 	 * If set to false, omits row labels. The default is to show them. <br>
 	 *
@@ -126,12 +129,12 @@ public class TimelineOptions
 	{
 		this.showRowLabels = showRowLabels;
 	}
-
+	
 	public String getSingleColor()
 	{
 		return this.singleColor;
 	}
-
+	
 	/**
 	 * Colors all bars the same. Specified as a hex value (e.g., '#8d8'). <br>
 	 *
@@ -141,7 +144,7 @@ public class TimelineOptions
 	{
 		this.singleColor = singleColor;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -158,7 +161,7 @@ public class TimelineOptions
 		}
 		str.append("barLabelStyle: " + this.barLabelStyle);
 		str.append("}");
-		
+
 		return str.toString();
 	}
 }

@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.geo;
 
 import java.io.Serializable;
@@ -29,8 +32,8 @@ import com.rapidclipse.framework.server.charts.config.ColorAxis;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevGeoChartConfig implements Serializable
 {
@@ -40,10 +43,10 @@ public class XdevGeoChartConfig implements Serializable
 	private String datalessRegionColor = "#F5F5F5";
 	private String domain;
 	private String resolution;
-	
+
 	private BackgroundStyle backgroundColor = new BackgroundStyle();
 	private ColorAxis       colorAxis;
-
+	
 	public HashMap<String, Object> getOptions()
 	{
 		final HashMap<String, Object> options = new HashMap<>();
@@ -57,12 +60,12 @@ public class XdevGeoChartConfig implements Serializable
 		options.put("resolution", this.resolution);
 		return options;
 	}
-	
+
 	public String getRegion()
 	{
 		return this.region;
 	}
-	
+
 	/**
 	 * The area to display on the geochart. (Surrounding areas will be displayed as
 	 * well.) Can be one of the following: <br>
@@ -80,12 +83,12 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.region = region;
 	}
-	
+
 	public String getDisplayMode()
 	{
 		return this.displayMode;
 	}
-	
+
 	/**
 	 * Which type of geochart this is. The DataTable format must match the value
 	 * specified. The following values are supported: <br>
@@ -104,17 +107,17 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.displayMode = displayMode;
 	}
-	
+
 	public BackgroundStyle getBackgroundColor()
 	{
 		return this.backgroundColor;
 	}
-	
+
 	public void setBackgroundColor(final BackgroundStyle backgroundColor)
 	{
 		this.backgroundColor = backgroundColor;
 	}
-	
+
 	/**
 	 * @return the defaultColor
 	 */
@@ -122,7 +125,7 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		return this.defaultColor;
 	}
-	
+
 	/**
 	 * The color to use for data points in a geochart when the location (e.g., 'US'
 	 * ) is present but the value is either null or unspecified. This is distinct
@@ -135,7 +138,7 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.defaultColor = defaultColor;
 	}
-	
+
 	/**
 	 * @return the datalessRegionColor
 	 */
@@ -143,7 +146,7 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		return this.datalessRegionColor;
 	}
-	
+
 	/**
 	 * Color to assign to regions with no associated data. <br>
 	 * Default: '#F5F5F5' <br>
@@ -155,7 +158,7 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.datalessRegionColor = datalessRegionColor;
 	}
-	
+
 	/**
 	 * @return the colorAxis
 	 */
@@ -163,7 +166,7 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		return this.colorAxis;
 	}
-	
+
 	/**
 	 * An object that specifies a mapping between color column values and colors or
 	 * a gradient scale. <br>
@@ -175,12 +178,12 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.colorAxis = colorAxis;
 	}
-
+	
 	public String getDomain()
 	{
 		return this.domain;
 	}
-
+	
 	/**
 	 * Show the geochart as though it were being served from this region.
 	 * For instance, setting domain to 'IN' will display Kashmir as belonging to India rather than as a disputed
@@ -193,12 +196,12 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.domain = domain;
 	}
-
+	
 	public String getResolution()
 	{
 		return this.resolution;
 	}
-
+	
 	/**
 	 * The resolution of the geochart borders. Choose one of the following values:
 	 *
@@ -214,5 +217,5 @@ public class XdevGeoChartConfig implements Serializable
 	{
 		this.resolution = resolution;
 	}
-
+	
 }

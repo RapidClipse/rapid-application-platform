@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.timeline;
 
 import java.io.Serializable;
@@ -28,14 +31,14 @@ import com.rapidclipse.framework.server.charts.config.TimelineOptions;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevTimelineChartConfig implements Serializable
 {
 	private TimelineOptions timeline                  = new TimelineOptions();
 	private boolean         avoidOverlappingGridLines = true;
-	
+
 	public HashMap<String, Object> getOptions()
 	{
 		final HashMap<String, Object> options = new HashMap<>();
@@ -43,12 +46,12 @@ public class XdevTimelineChartConfig implements Serializable
 		options.put("avoidOverlappingGridLines", this.avoidOverlappingGridLines);
 		return options;
 	}
-
+	
 	public TimelineOptions getTimeline()
 	{
 		return this.timeline;
 	}
-
+	
 	/**
 	 * An 'TimelineOptions' object that specifies the default Timeline-Chart style.
 	 * <br>
@@ -59,7 +62,7 @@ public class XdevTimelineChartConfig implements Serializable
 	{
 		this.timeline = timeline;
 	}
-
+	
 	/**
 	 * @return the avoidOverlappingGridLines
 	 */
@@ -67,7 +70,7 @@ public class XdevTimelineChartConfig implements Serializable
 	{
 		return this.avoidOverlappingGridLines;
 	}
-
+	
 	/**
 	 * Whether display elements (e.g., the bars in a timeline) should obscure grid
 	 * lines. If false, grid lines may be covered completely by display elements. If
@@ -79,5 +82,5 @@ public class XdevTimelineChartConfig implements Serializable
 	{
 		this.avoidOverlappingGridLines = avoidOverlappingGridLines;
 	}
-	
+
 }

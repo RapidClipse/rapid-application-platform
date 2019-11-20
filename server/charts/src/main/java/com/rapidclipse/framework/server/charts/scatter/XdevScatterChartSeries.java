@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
 
 package com.rapidclipse.framework.server.charts.scatter;
 
@@ -5,21 +28,26 @@ import com.rapidclipse.framework.server.charts.config.Options;
 import com.rapidclipse.framework.server.charts.config.XdevSeries;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
 public class XdevScatterChartSeries extends XdevSeries
 {
-	
+
 	private String  color;
 	private String  labelInLegend;
 	private boolean visibleInLegend = true;
 	private Integer lineWidth       = 0;
 	private Integer pointSize       = 8;
 	private String  pointShape      = Options.POINTSHAPE_CIRCLE;
-	
+
 	public XdevScatterChartSeries(final int num)
 	{
 		super(num);
 	}
-	
+
 	/**
 	 * @return the color
 	 */
@@ -27,7 +55,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		return this.color;
 	}
-	
+
 	/**
 	 * The color to use for this series. Specify a valid HTML color string. <br>
 	 *
@@ -38,7 +66,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.color = color;
 	}
-	
+
 	/**
 	 * @return the labelInLegend
 	 */
@@ -46,7 +74,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		return this.labelInLegend;
 	}
-	
+
 	/**
 	 * The description of the series to appear in the chart legend. <br>
 	 *
@@ -57,7 +85,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.labelInLegend = labelInLegend;
 	}
-	
+
 	/**
 	 * @return the visibleInLegend
 	 */
@@ -65,7 +93,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		return this.visibleInLegend;
 	}
-	
+
 	/**
 	 * A boolean value, where true means that the series should have a legend entry,
 	 * and false means that it should not. Default is true. <br>
@@ -77,7 +105,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.visibleInLegend = visibleInLegend;
 	}
-	
+
 	/**
 	 * @return the lineWidth
 	 */
@@ -85,7 +113,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		return this.lineWidth;
 	}
-	
+
 	/**
 	 * Data line width in pixels. Use zero to hide all lines and show only the
 	 * points. <br>
@@ -97,7 +125,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.lineWidth = lineWidth;
 	}
-	
+
 	/**
 	 * @return the pointSize
 	 */
@@ -105,7 +133,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		return this.pointSize;
 	}
-	
+
 	/**
 	 * Diameter of displayed points in pixels. Use zero to hide all points. <br>
 	 *
@@ -116,12 +144,12 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.pointSize = pointSize;
 	}
-	
+
 	public String getPointShape()
 	{
 		return this.pointShape;
 	}
-	
+
 	/**
 	 * The shape of individual data elements: 'circle', 'triangle', 'square',
 	 * 'diamond', 'star', or 'polygon'. <br>
@@ -132,7 +160,7 @@ public class XdevScatterChartSeries extends XdevSeries
 	{
 		this.pointShape = pointShape;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -148,8 +176,8 @@ public class XdevScatterChartSeries extends XdevSeries
 		str.append("pointSize: " + this.pointSize + ", ");
 		str.append("pointShape: '" + this.pointShape + "' ");
 		str.append("}");
-		
+
 		return str.toString();
 	}
-
+	
 }

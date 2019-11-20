@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
 
 package com.rapidclipse.framework.server.charts.diff;
 
@@ -20,6 +43,11 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
 @Tag("diff-pie-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevDiffPieChart extends Composite<Div> implements HasSize
@@ -29,20 +57,20 @@ public class XdevDiffPieChart extends Composite<Div> implements HasSize
 	private final String       id;
 	private List<XdevPieSlice> slices;
 	private XdevPieChartConfig config;
-
+	
 	public XdevDiffPieChart()
 	{
 		super();
 		this.id     = IdGenerator.generateId();
 		this.config = new XdevPieChartConfig();
 		this.setId(this.id);
-		
+
 	}
-	
+
 	private DataTable setDataTable(final XdevChartModel model)
 	{
 		final XdevPieChartModel pieModel = (XdevPieChartModel)model;
-
+		
 		final DataTable table = new DataTable();
 		table.setColumns(pieModel.getDataTable().getColumns());
 		table.setRows(pieModel.getDataTable().getRows());
@@ -52,16 +80,16 @@ public class XdevDiffPieChart extends Composite<Div> implements HasSize
 			this.config.setSlices(new Slices(this.slices));
 		}
 		return table;
-		
-	}
 
+	}
+	
 	public void setModel(final XdevChartModel oldModel, final XdevChartModel newModel)
 	{
 		this.oldData = this.setDataTable(oldModel);
 		this.newData = this.setDataTable(newModel);
 		this.buildChart();
 	}
-	
+
 	public void setConfig(final XdevPieChartConfig config)
 	{
 		this.config = config;
@@ -70,7 +98,7 @@ public class XdevDiffPieChart extends Composite<Div> implements HasSize
 			this.config.setSlices(new Slices(this.slices));
 		}
 	}
-	
+
 	public void buildChart()
 	{
 		final ChartJsBuilder oldBuild = new ChartJsBuilder(this.oldData,

@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.geo;
 
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
@@ -35,53 +38,53 @@ import com.vaadin.flow.component.page.Page;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 @Tag("geo-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevGeoChart extends Composite<Div> implements HasSize
 {
-	
+
 	private XdevGeoChartConfig config;
 	private DataTable          dataTable;
 	private String             mapsApiKey;
 	private String             id;
-	
+
 	public XdevGeoChart()
 	{
 		super();
 		this.id = IdGenerator.generateId();
-		
+
 		this.config     = new XdevGeoChartConfig();
 		this.mapsApiKey = " ";
 	}
-
+	
 	public XdevGeoChart(final String apiKey)
 	{
 		super();
-
+		
 		this.config     = new XdevGeoChartConfig();
 		this.mapsApiKey = apiKey;
 	}
-
+	
 	public void setConfig(final XdevGeoChartConfig config)
 	{
 		this.config = config;
 	}
-
+	
 	public void setApiKey(final String apiKey)
 	{
 		this.mapsApiKey = apiKey;
 	}
-	
+
 	public void setModel(final XdevChartModel model)
 	{
 		this.dataTable = model.getDataTable();
 		this.setId(this.id);
 		this.buildChart();
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.

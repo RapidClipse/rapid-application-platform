@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.candlestick;
 
 import java.io.Serializable;
@@ -31,8 +34,8 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implements Serializable
 {
@@ -41,7 +44,7 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	private String      orientation = "horizontal";
 	private Candlestick candlestick;
 	private Bar         barGroupWidth;
-	
+
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -53,37 +56,37 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 		options.put("bar", this.barGroupWidth);
 		return options;
 	}
-	
+
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-	
+
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-	
+
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-	
+
 	public String getOrientation()
 	{
 		return this.orientation;
 	}
-
+	
 	public Candlestick getCandlestick()
 	{
 		return this.candlestick;
 	}
-
+	
 	/**
 	 * for RisingColor or fallingColor
 	 *
@@ -93,7 +96,7 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	{
 		this.candlestick = candlestick;
 	}
-
+	
 	/**
 	 * The orientation of the chart.
 	 *
@@ -104,12 +107,12 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	{
 		this.orientation = orientation;
 	}
-	
+
 	public Bar getBarGroupWidth()
 	{
 		return this.barGroupWidth;
 	}
-
+	
 	/**
 	 * The width of a group of bars , specified in either of these formats:
 	 * <li>Pixels (e.g. 50)</li>
@@ -123,5 +126,5 @@ public class XdevCandleStickChartConfig extends AbstractXdevChartConfig implemen
 	{
 		this.barGroupWidth = new Bar(barGroupWidth);
 	}
-	
+
 }

@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 import java.util.ArrayList;
@@ -25,8 +28,8 @@ import java.util.List;
 
 
 /**
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public class ColorAxis
@@ -34,7 +37,7 @@ public class ColorAxis
 	private Integer      minValue;
 	private Integer      maxValue;
 	private List<String> colors = new ArrayList<>();
-
+	
 	/**
 	 * @return the minValue
 	 */
@@ -42,7 +45,7 @@ public class ColorAxis
 	{
 		return this.minValue;
 	}
-
+	
 	/**
 	 * If present, specifies a minimum value for chart color data. Color data values
 	 * of this value and lower will be rendered as the first color in the
@@ -55,7 +58,7 @@ public class ColorAxis
 	{
 		this.minValue = minValue;
 	}
-
+	
 	/**
 	 * @return the maxValue
 	 */
@@ -63,7 +66,7 @@ public class ColorAxis
 	{
 		return this.maxValue;
 	}
-
+	
 	/**
 	 * If present, specifies a maximum value for chart color data. Color data values
 	 * of this value and higher will be rendered as the last color in the
@@ -76,7 +79,7 @@ public class ColorAxis
 	{
 		this.maxValue = maxValue;
 	}
-
+	
 	/**
 	 * @return the colors
 	 */
@@ -84,7 +87,7 @@ public class ColorAxis
 	{
 		return this.colors;
 	}
-
+	
 	/**
 	 * Colors to assign to values in the visualization. An array of strings, where
 	 * each element is an HTML color string, for example: 'red', #004411. You must
@@ -104,7 +107,7 @@ public class ColorAxis
 		}
 		this.colors = colorsString;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -116,5 +119,5 @@ public class ColorAxis
 		str.append("}");
 		return str.toString();
 	}
-	
+
 }

@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.pie;
 
 import java.io.Serializable;
@@ -31,17 +34,17 @@ import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevPieChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-
+	
 	public static final String PIESLICETEXT_PERCENTAGE = "percentage";
 	public static final String PIESLICETEXT_VALUE      = "value";
 	public static final String PIESLICETEXT_LABEL      = "label";
 	public static final String PIESLICETEXT_NONE       = "none";
-
+	
 	private Boolean is3D                 = false;
 	private Double  pieHole              = 0.0;
 	private String  pieSliceText         = XdevPieChartConfig.PIESLICETEXT_PERCENTAGE;
@@ -51,10 +54,10 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	private String  pieResidueSliceLabel = "Other";
 	private Integer pieStartAngle        = 0;
 	private Slices  slices;
-	private PieDiff    diff;
-
+	private PieDiff diff;
+	
 	private TextStyle pieSliceTextStyle = new TextStyle();
-
+	
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -75,32 +78,32 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 		}
 		return options;
 	}
-
+	
 	public Boolean getIs3D()
 	{
 		return this.is3D;
 	}
-
+	
 	public void setIs3D(final Boolean is3d)
 	{
 		this.is3D = is3d;
 	}
-
+	
 	public Double getPieHole()
 	{
 		return this.pieHole;
 	}
-	
+
 	public Slices getSlices()
 	{
 		return this.slices;
 	}
-	
+
 	public void setSlices(final Slices slices)
 	{
 		this.slices = slices;
 	}
-	
+
 	/**
 	 * If between 0 and 1, displays a donut chart. The hole with have a radius equal
 	 * to number times the radius of the chart. <br>
@@ -112,12 +115,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieHole = pieHole;
 	}
-
+	
 	public String getPieSliceText()
 	{
 		return this.pieSliceText;
 	}
-
+	
 	/**
 	 * The content of the text displayed on the slice. Can be one of the following:
 	 * <br>
@@ -134,12 +137,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceText = pieSliceText;
 	}
-
+	
 	public String getPieSliceBorderColor()
 	{
 		return this.pieSliceBorderColor;
 	}
-
+	
 	/**
 	 * The color of the slice borders. Only applicable when the chart is
 	 * two-dimensional. <br>
@@ -151,12 +154,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceBorderColor = pieSliceBorderColor;
 	}
-
+	
 	public Double getSliceVisibilityThreshold()
 	{
 		return this.sliceVisibilityThreshold;
 	}
-
+	
 	/**
 	 * The fractional value of the pie, below which a slice will not show
 	 * individually. All slices that have not passed this threshold will be combined
@@ -169,12 +172,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.sliceVisibilityThreshold = sliceVisibilityThreshold;
 	}
-
+	
 	public String getPieResidueSliceColor()
 	{
 		return this.pieResidueSliceColor;
 	}
-
+	
 	/**
 	 * Color for the combination slice that holds all slices below
 	 * sliceVisibilityThreshold.
@@ -185,12 +188,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieResidueSliceColor = pieResidueSliceColor;
 	}
-
+	
 	public String getPieResidueSliceLabel()
 	{
 		return this.pieResidueSliceLabel;
 	}
-
+	
 	/**
 	 * A label for the combination slice that holds all slices below
 	 * sliceVisibilityThreshold.
@@ -201,12 +204,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieResidueSliceLabel = pieResidueSliceLabel;
 	}
-
+	
 	public TextStyle getPieSliceTextStyle()
 	{
 		return this.pieSliceTextStyle;
 	}
-
+	
 	/**
 	 * An object that specifies the slice text style.
 	 *
@@ -216,7 +219,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieSliceTextStyle = pieSliceTextStyle;
 	}
-
+	
 	/**
 	 * @return the pieStartAngle
 	 */
@@ -224,7 +227,7 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		return this.pieStartAngle;
 	}
-
+	
 	/**
 	 * The angle, in degrees, to rotate the chart by. The default of 0 will orient
 	 * the leftmost edge of the first slice directly up. <br>
@@ -236,12 +239,12 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.pieStartAngle = pieStartAngle;
 	}
-
+	
 	public PieDiff getDiff()
 	{
 		return this.diff;
 	}
-
+	
 	/**
 	 * Only set this if you using the config for a <b>DIFF chart</b>
 	 *
@@ -251,5 +254,5 @@ public class XdevPieChartConfig extends AbstractXdevChartConfig implements Seria
 	{
 		this.diff = diff;
 	}
-
+	
 }

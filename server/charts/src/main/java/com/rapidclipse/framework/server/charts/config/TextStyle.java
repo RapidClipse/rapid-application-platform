@@ -1,44 +1,47 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class TextStyle
 {
-
+	
 	private String  color  = "black";
 	private String  fontName;
 	private Integer fontSize;
 	private Boolean bold   = false;
 	private Boolean italic = false;
-
+	
 	public String getColor()
 	{
 		return this.color;
 	}
-
+	
 	/**
 	 * The color can be any HTML color string, for example: 'red' or '#00cc00' <br>
 	 *
@@ -48,12 +51,12 @@ public class TextStyle
 	{
 		this.color = color;
 	}
-
+	
 	public String getFontName()
 	{
 		return this.fontName;
 	}
-
+	
 	/**
 	 * Sets the font name of the text style <br>
 	 *
@@ -63,12 +66,12 @@ public class TextStyle
 	{
 		this.fontName = fontName;
 	}
-
+	
 	public Integer getFontSize()
 	{
 		return this.fontSize;
 	}
-
+	
 	/**
 	 * The font size, in pixels <br>
 	 *
@@ -78,27 +81,27 @@ public class TextStyle
 	{
 		this.fontSize = fontSize;
 	}
-
+	
 	public Boolean getBold()
 	{
 		return this.bold;
 	}
-
+	
 	public void setBold(final Boolean bold)
 	{
 		this.bold = bold;
 	}
-
+	
 	public Boolean getItalic()
 	{
 		return this.italic;
 	}
-
+	
 	public void setItalic(final Boolean italic)
 	{
 		this.italic = italic;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -114,7 +117,7 @@ public class TextStyle
 		}
 		str.append("bold: " + this.bold + ", ");
 		str.append("italic: " + this.italic + " }");
-		
+
 		return str.toString();
 	}
 }

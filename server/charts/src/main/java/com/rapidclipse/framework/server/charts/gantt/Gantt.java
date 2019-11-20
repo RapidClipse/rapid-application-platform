@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.gantt;
 
 import com.rapidclipse.framework.server.charts.config.TextStyle;
@@ -25,8 +28,8 @@ import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class Gantt
 {
@@ -40,18 +43,18 @@ public class Gantt
 	private boolean   criticalPathEnabled = true;
 	private TextStyle labelStyle;
 	private Integer   labelMaxWidth       = 300;
-
+	
 	private String innerGridTrack;
 	private String innerGridDarkTrack;
-
+	
 	private Arrow    arrow              = new Arrow();
 	private GridLine innerGridHorizLine = new GridLine();
-
+	
 	public Integer getBarCornerRadius()
 	{
 		return this.barCornerRadius;
 	}
-
+	
 	/**
 	 * The radius for defining the curve of a bar's corners. <br>
 	 *
@@ -61,12 +64,12 @@ public class Gantt
 	{
 		this.barCornerRadius = barCornerRadius;
 	}
-
+	
 	public Integer getBarHeight()
 	{
 		return this.barHeight;
 	}
-
+	
 	/**
 	 * The height of the bars for tasks. <br>
 	 *
@@ -76,12 +79,12 @@ public class Gantt
 	{
 		this.barHeight = barHeight;
 	}
-
+	
 	public boolean isPercentEnabled()
 	{
 		return this.percentEnabled;
 	}
-
+	
 	/**
 	 * Fills the task bar based on the percentage completed for the task. <br>
 	 *
@@ -91,12 +94,12 @@ public class Gantt
 	{
 		this.percentEnabled = percentEnabled;
 	}
-
+	
 	public boolean isShadowEnabled()
 	{
 		return this.shadowEnabled;
 	}
-
+	
 	/**
 	 * If set to true, draws a shadow under each task bar which has dependencies.
 	 * <br>
@@ -107,12 +110,12 @@ public class Gantt
 	{
 		this.shadowEnabled = shadowEnabled;
 	}
-
+	
 	public String getShadowColor()
 	{
 		return this.shadowColor;
 	}
-
+	
 	/**
 	 * Defines the color of the shadows under any task bar which has dependencies.
 	 * <br>
@@ -123,12 +126,12 @@ public class Gantt
 	{
 		this.shadowColor = shadowColor;
 	}
-
+	
 	public Integer getShadowOffset()
 	{
 		return this.shadowOffset;
 	}
-
+	
 	/**
 	 * Defines the offset, in pixels, of the shadows under any task bar which has
 	 * dependencies. <br>
@@ -139,12 +142,12 @@ public class Gantt
 	{
 		this.shadowOffset = shadowOffset;
 	}
-
+	
 	public Integer getTrackHeight()
 	{
 		return this.trackHeight;
 	}
-
+	
 	/**
 	 * The height of the tracks. <br>
 	 *
@@ -154,12 +157,12 @@ public class Gantt
 	{
 		this.trackHeight = trackHeight;
 	}
-
+	
 	public boolean isCriticalPathEnabled()
 	{
 		return this.criticalPathEnabled;
 	}
-
+	
 	/**
 	 * If true any arrows on the critical path will be styled differently. <br>
 	 *
@@ -169,12 +172,12 @@ public class Gantt
 	{
 		this.criticalPathEnabled = criticalPathEnabled;
 	}
-
+	
 	public Arrow getArrow()
 	{
 		return this.arrow;
 	}
-
+	
 	/**
 	 * For Gantt Chart, Arrow controls the various properties of the arrows
 	 * connecting tasks. <br>
@@ -185,12 +188,12 @@ public class Gantt
 	{
 		this.arrow = arrow;
 	}
-
+	
 	public GridLine getInnerGridHorizLine()
 	{
 		return this.innerGridHorizLine;
 	}
-
+	
 	/**
 	 * Defines the style of the inner horizontal grid lines. <br>
 	 *
@@ -200,12 +203,12 @@ public class Gantt
 	{
 		this.innerGridHorizLine = innerGridHorizLine;
 	}
-	
+
 	public String getInnerGridTrack()
 	{
 		return this.innerGridTrack;
 	}
-	
+
 	/**
 	 * Sets a Color for uneven lines
 	 *
@@ -216,12 +219,12 @@ public class Gantt
 	{
 		this.innerGridTrack = color;
 	}
-	
+
 	public String getInnerGridDarkTrack()
 	{
 		return this.innerGridDarkTrack;
 	}
-	
+
 	/**
 	 * Sets a Color for even lines
 	 *
@@ -232,33 +235,33 @@ public class Gantt
 	{
 		this.innerGridDarkTrack = color;
 	}
-	
+
 	public TextStyle getLabelStyle()
 	{
 		return this.labelStyle;
 	}
-	
+
 	/**
 	 * Sets the Font Style for the label.
 	 * Some Fonts will not fit in the label space
-	 * 
+	 *
 	 * @param labelStyle
 	 */
 	public void setLabelStyle(final TextStyle labelStyle)
 	{
 		this.labelStyle = labelStyle;
 	}
-
+	
 	public Integer getLabelMaxWidth()
 	{
 		return this.labelMaxWidth;
 	}
-
+	
 	public void setLabelMaxWidth(final Integer labelMaxWidth)
 	{
 		this.labelMaxWidth = labelMaxWidth;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -278,12 +281,12 @@ public class Gantt
 		str.append("labelMaxWidth: " + this.labelMaxWidth + ",");
 		str.append("innerGridTrack: {fill: '" + this.innerGridTrack + "'},");
 		str.append("innerGridDarkTrack: {fill: '" + this.innerGridDarkTrack + "'},");
-
+		
 		str.append("criticalPathEnabled: " + this.criticalPathEnabled + ",");
 		str.append("arrow: " + this.arrow + ",");
 		str.append("innerGridHorizLine: " + this.innerGridHorizLine);
 		str.append("}");
-
+		
 		return str.toString();
 	}
 }

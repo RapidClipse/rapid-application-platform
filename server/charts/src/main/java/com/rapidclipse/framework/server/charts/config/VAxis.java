@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 import java.io.Serializable;
@@ -26,8 +29,8 @@ import java.util.List;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class VAxis implements Serializable
 {
@@ -40,17 +43,17 @@ public class VAxis implements Serializable
 	private String      textPosition     = "out";
 	private Integer     maxValue;
 	private Integer     minValue;
-	
+
 	public VAxis(final String title)
 	{
 		this.title = title;
 	}
-	
+
 	public String getTitle()
 	{
 		return this.title;
 	}
-	
+
 	/**
 	 * Title property that specifies a title for the vertical axis. <br>
 	 *
@@ -60,12 +63,12 @@ public class VAxis implements Serializable
 	{
 		this.title = title;
 	}
-	
+
 	public List<Ticks> getTicks()
 	{
 		return this.ticks;
 	}
-	
+
 	/**
 	 *
 	 * Replaces the automatically generated X-axis ticks with the specified array.
@@ -78,12 +81,12 @@ public class VAxis implements Serializable
 	{
 		this.ticks = ticks;
 	}
-	
+
 	public TextStyle getTextStyle()
 	{
 		return this.textStyle;
 	}
-	
+
 	/**
 	 * An object that specifies the vertical axis text style. <br>
 	 *
@@ -93,12 +96,12 @@ public class VAxis implements Serializable
 	{
 		this.textStyle = textStyle;
 	}
-	
+
 	public boolean isSlantedText()
 	{
 		return this.slantedText;
 	}
-	
+
 	/**
 	 * If true, draw the vertical axis text at an angle, to help fit more text along
 	 * the axis; if false, draw vertical axis text upright. <br>
@@ -109,12 +112,12 @@ public class VAxis implements Serializable
 	{
 		this.slantedText = slantedText;
 	}
-	
+
 	public Integer getSlantedTextAngle()
 	{
 		return this.slantedTextAngle;
 	}
-	
+
 	/**
 	 * The angle of the vertical axis text, if it's drawn slanted. Ignored if
 	 * vertical.slantedText is false, or is in auto mode, and the chart decided to
@@ -127,12 +130,12 @@ public class VAxis implements Serializable
 	{
 		this.slantedTextAngle = slantedTextAngle;
 	}
-	
+
 	public TextStyle getTitleTextStyle()
 	{
 		return this.titleTextStyle;
 	}
-	
+
 	/**
 	 * An object that specifies the vertical axis title text style. <br>
 	 *
@@ -142,12 +145,12 @@ public class VAxis implements Serializable
 	{
 		this.titleTextStyle = titleTextStyle;
 	}
-	
+
 	public String getTextPosition()
 	{
 		return this.textPosition;
 	}
-	
+
 	/**
 	 * Position of the vertical axis text, relative to the chart area. Supported
 	 * values: 'out', 'in', 'none'. <br>
@@ -158,12 +161,12 @@ public class VAxis implements Serializable
 	{
 		this.textPosition = textPosition;
 	}
-	
+
 	public int getMaxValue()
 	{
 		return this.maxValue;
 	}
-	
+
 	/**
 	 * Moves the max value of the vertical axis to the specified value; this will be upward in most charts.
 	 * Ignored if this is set to a value smaller than the maximum y-value of the data.
@@ -174,12 +177,12 @@ public class VAxis implements Serializable
 	{
 		this.maxValue = maxValue;
 	}
-	
+
 	public int getMinValue()
 	{
 		return this.minValue;
 	}
-	
+
 	/**
 	 * Moves the min value of the vertical axis to the specified value,
 	 * this will be downward in most charts.
@@ -191,7 +194,7 @@ public class VAxis implements Serializable
 	{
 		this.minValue = minValue;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -221,12 +224,12 @@ public class VAxis implements Serializable
 		{
 			str.append("slantedTextAngle: " + this.slantedTextAngle + ", ");
 		}
-
+		
 		str.append("maxValue: " + this.maxValue + ", ");
 		str.append("minValue: " + this.minValue + ", ");
-
+		
 		str.append("textPosition: '" + this.textPosition + "' }");
-
+		
 		return str.toString();
 	}
 }

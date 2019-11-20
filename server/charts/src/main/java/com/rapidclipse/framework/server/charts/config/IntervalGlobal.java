@@ -1,9 +1,37 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
 
 package com.rapidclipse.framework.server.charts.config;
 
 import java.util.List;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
 public class IntervalGlobal
 {
 	private String               style     = "line";
@@ -13,7 +41,7 @@ public class IntervalGlobal
 	private String               color;
 	private double               boxWidth  = 0.5;
 	private final List<Interval> inters;
-
+	
 	/**
 	 * Set a List of Intervals (or null) for global settings of intervals
 	 *
@@ -23,12 +51,12 @@ public class IntervalGlobal
 	{
 		this.inters = inters;
 	}
-	
+
 	public String getStyle()
 	{
 		return this.style;
 	}
-	
+
 	/**
 	 * 'line', 'bar', 'box', 'stick', 'point' and 'area'.
 	 *
@@ -38,57 +66,57 @@ public class IntervalGlobal
 	{
 		this.style = style;
 	}
-	
+
 	public Integer getPointSize()
 	{
 		return this.pointSize;
 	}
-	
+
 	public void setPointSize(final Integer pointSize)
 	{
 		this.pointSize = pointSize;
 	}
-	
+
 	public double getLineWidth()
 	{
 		return this.lineWidth;
 	}
-	
+
 	public void setLineWidth(final double lineWidth)
 	{
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public double getBarWidth()
 	{
 		return this.barWidth;
 	}
-	
+
 	public void setBarWidth(final double barWidth)
 	{
 		this.barWidth = barWidth;
 	}
-	
+
 	public String getColor()
 	{
 		return this.color;
 	}
-	
+
 	public void setColor(final String color)
 	{
 		this.color = color;
 	}
-	
+
 	public double getBoxWidth()
 	{
 		return this.boxWidth;
 	}
-	
+
 	public void setBoxWidth(final double boxWidth)
 	{
 		this.boxWidth = boxWidth;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -116,5 +144,5 @@ public class IntervalGlobal
 		}
 		return str.toString();
 	}
-	
+
 }

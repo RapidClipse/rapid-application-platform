@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.area;
 
 import java.io.Serializable;
@@ -32,12 +35,12 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-
+	
 	private Integer       pointSize  = 0;
 	private Integer       lineWidth  = 2;
 	private List<Integer> lineDashStyle;
@@ -45,7 +48,7 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	private VAxis         vAxis;
 	private String        pointShape = Options.POINTSHAPE_CIRCLE;
 	private boolean       isStacked  = false;
-	
+
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -59,32 +62,32 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 		options.put("isStacked", this.isStacked);
 		return options;
 	}
-
+	
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-	
+
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-	
+
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-	
+
 	public Integer getPointSize()
 	{
 		return this.pointSize;
 	}
-	
+
 	/**
 	 * Diameter of displayed points in pixels. Use zero to hide all points. <br>
 	 *
@@ -94,12 +97,12 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.pointSize = pointSize;
 	}
-	
+
 	public String getPointShape()
 	{
 		return this.pointShape;
 	}
-	
+
 	/**
 	 * The shape of individual data elements: 'circle', 'triangle', 'square',
 	 * 'diamond', 'star', or 'polygon'. <br>
@@ -110,12 +113,12 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.pointShape = pointShape;
 	}
-	
+
 	public Integer getLineWidth()
 	{
 		return this.lineWidth;
 	}
-	
+
 	/**
 	 * Data line width in pixels. Use zero to hide all lines and show only the
 	 * points. You can override values for individual series using the series
@@ -127,12 +130,12 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public List<Integer> getLineDashStyle()
 	{
 		return this.lineDashStyle;
 	}
-	
+
 	/**
 	 * The on-and-off pattern for dashed lines. For instance, [4, 4] will repeat
 	 * 4-length dashes followed by 4-length gaps, and [5, 1, 3] will repeat a
@@ -145,7 +148,7 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.lineDashStyle = lineDashStyle;
 	}
-	
+
 	/**
 	 * @return the isStacked
 	 */
@@ -153,7 +156,7 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		return this.isStacked;
 	}
-	
+
 	/**
 	 * If set to true, stacks the elements for all series at each domain value. <br>
 	 *
@@ -164,5 +167,5 @@ public class XdevAreaChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.isStacked = isStacked;
 	}
-
+	
 }

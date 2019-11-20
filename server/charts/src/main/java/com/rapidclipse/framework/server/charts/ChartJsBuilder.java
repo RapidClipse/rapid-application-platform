@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
 
 package com.rapidclipse.framework.server.charts;
 
@@ -13,6 +36,11 @@ import com.rapidclipse.framework.server.charts.data.Row;
 import com.rapidclipse.framework.server.charts.data.Value;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
 public class ChartJsBuilder
 {
 	private DataTable                     data  = new DataTable();
@@ -24,7 +52,7 @@ public class ChartJsBuilder
 		new ArrayList<>(Arrays.asList("gantt", "orgchart", "timeline", "calendar", "gauge", "sankey"));
 	private final List<String>            maps  =
 		new ArrayList<>(Arrays.asList("geochart", "map"));
-
+	
 	/**
 	 *
 	 * @param data
@@ -45,7 +73,7 @@ public class ChartJsBuilder
 		this.id      = id;
 		this.type    = type;
 	}
-
+	
 	public ChartJsBuilder(
 		final DataTable data,
 		final HashMap<String, Object> options,
@@ -60,7 +88,7 @@ public class ChartJsBuilder
 		this.type    = type;
 		this.apiKey  = apiKey;
 	}
-
+	
 	/**
 	 * Building a String for executeJs to make a JS page for the Chart
 	 *
@@ -69,16 +97,16 @@ public class ChartJsBuilder
 	public String constructChart()
 	{
 		final StringBuilder bld = new StringBuilder();
-
+		
 		bld.append(this.makeFunction());
 		bld.append(this.makeOptions());
 		bld.append(this.makeDataTable("data"));
 		bld.append("var view = new google.visualization.DataView(data); ");
 		bld.append("chart.draw(view, options); }");
-
+		
 		return bld.toString();
 	}
-	
+
 	/**
 	 * phase 1
 	 *
@@ -91,7 +119,7 @@ public class ChartJsBuilder
 		{
 			bld.append(
 				"google.charts.load('visualization', 'current', {'packages': ['" + this.type.toLowerCase() + "']}); ");
-			
+
 		}
 		else if(this.maps.contains(this.type.toLowerCase()))
 		{
@@ -107,10 +135,10 @@ public class ChartJsBuilder
 		bld.append("function drawChart(){ ");
 		bld.append(
 			"var chart = new google.visualization." + this.type + "(document.getElementById('" + this.id + "')); ");
-
+		
 		return bld.toString();
 	}
-	
+
 	/**
 	 * phase 2
 	 *
@@ -120,7 +148,7 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var options ={   ");
-		
+
 		for(final Map.Entry<String, Object> entry : this.options.entrySet())
 		{
 			bld.append(entry.getKey() + ": ");
@@ -137,7 +165,7 @@ public class ChartJsBuilder
 		bld.append("}; ");
 		return bld.toString();
 	}
-
+	
 	/**
 	 * phase 3
 	 *
@@ -147,12 +175,12 @@ public class ChartJsBuilder
 	{
 		final StringBuilder bld = new StringBuilder();
 		bld.append("var " + dataName + " = new google.visualization.DataTable(); ");
-
+		
 		for(final Column col : this.data.getColumns())
 		{
 			bld.append(dataName + ".addColumn(" + col.jsPrint() + "); ");
 		}
-
+		
 		bld.append(dataName + ".addRows([");
 		for(final Row row : this.data.getRows())
 		{
@@ -168,7 +196,7 @@ public class ChartJsBuilder
 		}
 		bld.delete(bld.length() - 2, bld.length());
 		bld.append(" ]); ");
-
+		
 		return bld.toString();
 	}
 }

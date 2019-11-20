@@ -1,23 +1,26 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.line;
 
 import java.io.Serializable;
@@ -33,12 +36,12 @@ import com.rapidclipse.framework.server.charts.config.VAxis;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class XdevLineChartConfig extends AbstractXdevChartConfig implements Serializable
 {
-	
+
 	private Integer        pointSize   = 0;
 	private Integer        lineWidth   = 2;
 	private List<Integer>  lineDashStyle;
@@ -48,7 +51,7 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	private String         orientation = Options.ORIENTATION_HORIZONTAL;
 	private String         pointShape  = Options.POINTSHAPE_CIRCLE;
 	private IntervalGlobal intervals;
-	
+
 	@Override
 	public HashMap<String, Object> getOptions()
 	{
@@ -70,12 +73,12 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 		}
 		return options;
 	}
-
+	
 	public Integer getPointSize()
 	{
 		return this.pointSize;
 	}
-
+	
 	/**
 	 * Diameter of displayed points in pixels. Use zero to hide all points. <br>
 	 *
@@ -85,17 +88,17 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.pointSize = pointSize;
 	}
-
+	
 	public HAxis gethAxis()
 	{
 		return this.hAxis;
 	}
-
+	
 	public IntervalGlobal getIntervals()
 	{
 		return this.intervals;
 	}
-
+	
 	/**
 	 * Sets a list of Intervals
 	 * Intervals might be used to portray confidence intervals, minimum and maximum values around a value, percentile
@@ -108,27 +111,27 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.intervals = intervals;
 	}
-
+	
 	public void sethAxis(final HAxis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-
+	
 	public VAxis getvAxis()
 	{
 		return this.vAxis;
 	}
-
+	
 	public void setvAxis(final VAxis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-
+	
 	public String getCurveType()
 	{
 		return this.curveType;
 	}
-
+	
 	/**
 	 * Controls the curve of the lines when the line width is not zero. Can be one
 	 * of the following: <br>
@@ -144,12 +147,12 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.curveType = curveType;
 	}
-
+	
 	public String getOrientation()
 	{
 		return this.orientation;
 	}
-
+	
 	/**
 	 * The orientation of the chart. When set to 'vertical', rotates the axes of the
 	 * chart <br>
@@ -160,12 +163,12 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.orientation = orientation;
 	}
-
+	
 	public String getPointShape()
 	{
 		return this.pointShape;
 	}
-
+	
 	/**
 	 * The shape of individual data elements: 'circle', 'triangle', 'square',
 	 * 'diamond', 'star', or 'polygon'. <br>
@@ -176,12 +179,12 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.pointShape = pointShape;
 	}
-
+	
 	public Integer getLineWidth()
 	{
 		return this.lineWidth;
 	}
-
+	
 	/**
 	 * Data line width in pixels. Use zero to hide all lines and show only the
 	 * points. You can override values for individual series using the series
@@ -193,12 +196,12 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.lineWidth = lineWidth;
 	}
-
+	
 	public List<Integer> getLineDashStyle()
 	{
 		return this.lineDashStyle;
 	}
-
+	
 	/**
 	 * The on-and-off pattern for dashed lines. For instance, [4, 4] will repeat
 	 * 4-length dashes followed by 4-length gaps, and [5, 1, 3] will repeat a
@@ -211,5 +214,5 @@ public class XdevLineChartConfig extends AbstractXdevChartConfig implements Seri
 	{
 		this.lineDashStyle = lineDashStyle;
 	}
-	
+
 }

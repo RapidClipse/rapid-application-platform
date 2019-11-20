@@ -1,3 +1,26 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
 
 package com.rapidclipse.framework.server.charts.diff;
 
@@ -19,6 +42,11 @@ import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
 @Tag("diff-Scatter-chart")
 @JavaScript("https://www.gstatic.com/charts/loader.js")
 public class XdevDiffScatterChart extends Composite<Div> implements HasSize
@@ -28,7 +56,7 @@ public class XdevDiffScatterChart extends Composite<Div> implements HasSize
 	private Series                 series;
 	private final String           id;
 	private XdevScatterChartConfig config;
-	
+
 	public XdevDiffScatterChart()
 	{
 		super();
@@ -36,11 +64,11 @@ public class XdevDiffScatterChart extends Composite<Div> implements HasSize
 		this.config = new XdevScatterChartConfig();
 		this.setId(this.id);
 	}
-
+	
 	private DataTable setDataTable(final XdevChartModel model)
 	{
 		final XdevScatterChartModel chartModel = (XdevScatterChartModel)model;
-		
+
 		if(this.series == null)
 		{
 			for(final XdevSeries ser : chartModel.getSeries())
@@ -57,26 +85,26 @@ public class XdevDiffScatterChart extends Composite<Div> implements HasSize
 			this.series = new Series(chartModel.getSeries());
 		}
 		Row.createFromHashmap(chartModel.getData()).forEach(row -> chartModel.getDataTable().getRows().add(row));
-		
+
 		this.config.setSeries(this.series);
 		return chartModel.getDataTable();
-
+		
 	}
-	
+
 	public void setModel(final XdevChartModel oldModel, final XdevChartModel newModel)
 	{
 		this.oldData = this.setDataTable(oldModel);
 		this.newData = this.setDataTable(newModel);
 		this.buildChart();
 	}
-
+	
 	public void setConfig(final XdevScatterChartConfig config)
 	{
 		this.config = config;
 		this.config.setSeries(this.series);
-
+		
 	}
-
+	
 	public void buildChart()
 	{
 		final ChartJsBuilder oldBuild = new ChartJsBuilder(this.oldData,
@@ -93,5 +121,5 @@ public class XdevDiffScatterChart extends Composite<Div> implements HasSize
 		final Page page = UI.getCurrent().getPage();
 		page.executeJs(bld.toString());
 	}
-
+	
 }

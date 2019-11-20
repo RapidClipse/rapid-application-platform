@@ -1,29 +1,32 @@
 /*
  * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
+ * This file is part of the RapidClipse Application Platform (RAP).
  *
- * This program is distributed in the hope that it will be useful,
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
+ * GNU General Public License for more details.
  *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
  *
- * For further information see
- * <http://www.rapidclipse.com/en/legal/license/license.html>.
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
 /**
  *
- * @author XDEV Software (SS)
- * @since 4.0
+ * @author XDEV Software
+ * @since 10.02.00
  */
 public class Tooltip
 {
@@ -33,12 +36,12 @@ public class Tooltip
 	private boolean   showColorCode = false;
 	private String    text          = "both";
 	private TextStyle textStyle;
-
+	
 	public boolean getisHtml()
 	{
 		return this.isHtml;
 	}
-
+	
 	/**
 	 * If set to true, use HTML-rendered (rather than SVG-rendered) tooltips
 	 *
@@ -48,12 +51,12 @@ public class Tooltip
 	{
 		this.isHtml = isHtml;
 	}
-	
+
 	public boolean isIgnoreBounds()
 	{
 		return this.ignoreBounds;
 	}
-
+	
 	/**
 	 * If set to true, allows the drawing of tooltips to flow outside of the bounds of the chart on all sides.
 	 *
@@ -63,12 +66,12 @@ public class Tooltip
 	{
 		this.ignoreBounds = ignoreBounds;
 	}
-
+	
 	public boolean isShowColorCode()
 	{
 		return this.showColorCode;
 	}
-
+	
 	/**
 	 * If true, show colored squares next to the slice information in the tooltip.
 	 *
@@ -78,12 +81,12 @@ public class Tooltip
 	{
 		this.showColorCode = showColorCode;
 	}
-
+	
 	public String getText()
 	{
 		return this.text;
 	}
-
+	
 	/**
 	 * What information to display when the user hovers over a pie slice. The following values are supported:
 	 * <ul>
@@ -99,12 +102,12 @@ public class Tooltip
 	{
 		this.text = text;
 	}
-
+	
 	public TextStyle getTextStyle()
 	{
 		return this.textStyle;
 	}
-
+	
 	/**
 	 * An object that specifies the tooltip text style.
 	 *
@@ -115,7 +118,7 @@ public class Tooltip
 	{
 		this.textStyle = textStyle;
 	}
-
+	
 	/**
 	 * @return the trigger
 	 */
@@ -123,7 +126,7 @@ public class Tooltip
 	{
 		return this.trigger;
 	}
-
+	
 	/**
 	 * The user interaction that causes the tooltip to be displayed: <br>
 	 * <ul>
@@ -142,7 +145,7 @@ public class Tooltip
 	{
 		this.trigger = trigger;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -156,5 +159,5 @@ public class Tooltip
 		str.append(" } ");
 		return str.toString();
 	}
-
+	
 }
