@@ -1,14 +1,17 @@
 .checkBox {
 	margin-right: -10px;
 }
-vaadin-combo-box::part(text-field), vaadin-text-field{
-	--lumo-text-field-size: 25px !important;
+
+vaadin-combo-box::part(text-field), vaadin-text-field { -
+	-lumo-text-field-size: 25px !important;
 }
-.editButton{
+
+.editButton {
 	margin-right: -10px;
 }
-.entryRowLabel{
-	width:100%;
+
+.entryRowLabel {
+	width: 100%;
 	font-size: var(--lumo-font-size-s);
 	margin-left: 10px;
 }
@@ -25,9 +28,8 @@ vaadin-combo-box::part(text-field), vaadin-text-field{
 	width: 100%;
 }
 
-
 .buttonLayout {
-	margin-right:10px;
+	margin-right: 10px;
 	align-items: center;
 }
 
@@ -44,64 +46,44 @@ vaadin-combo-box::part(text-field), vaadin-text-field{
 	width: 500px !important;
 }
 
-
 .cancelButton:hover {
 	color: red;
 }
 
-.addButton:hover, checkButton:hover, confirmButton:hover{
+.addButton:hover, checkButton:hover, confirmButton:hover {
 	color: green;
 }
 
-.vaadin-text-field-container{
-	--lumo-text-field-size: 25px !important;
-}
-
- @media only screen and (min-width: 0px) {
-
+@media only screen and (min-width: 0px) {
 	.operatorComboBox {
 		width: calc(99.99% - 1rem);
 	}
-
 	vaadin-combo-box {
 		width: calc(99.99% - 1rem) !important;
 		margin-right: 10px !important;
 	}
-
 	.TextFieldWithNull {
 		width: calc(99.99% - 1rem) !important;
 	}
-
 	vaadin-date-picker {
 		width: calc(99.99% - 1rem) !important;
 		margin-right: 10px !important;
-				margin-left: 0px;
+		margin-left: 0px;
 	}
-
-
 }
 
 @media only screen and (min-width: 800px) {
 	.entryRowComboBox {
 		width: 100%;
 	}
-
 	.operatorComboBox {
 		width: calc(33% - 1rem);
 	}
-
-	vaadin-combo-box {
+	vaadin-combo-box, vaadin-date-picker {
 		width: calc(33% - 1rem) !important;
 		margin-right: 10px !important;
 	}
-
 	.TextFieldWithNull {
 		width: calc(33% - 1rem) !important;
-	}
-
-	vaadin-date-picker {
-		width: calc(33% - 1rem) !important;
-		margin-right: 10px !important;
-
 	}
 }

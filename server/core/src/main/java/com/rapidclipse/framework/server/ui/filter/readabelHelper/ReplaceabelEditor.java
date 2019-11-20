@@ -14,7 +14,7 @@ public class ReplaceabelEditor
 	private FilterEntryEditor original;
 	private FilterEntryEditor copy;
 	HorizontalLayout          labelLayout = new HorizontalLayout();
-	
+
 	public ReplaceabelEditor(final FilterEntryEditor editor)
 	{
 		this.original = editor;
@@ -54,7 +54,7 @@ public class ReplaceabelEditor
 	{
 		this.original = FilterEntryEditor.copyEditor(editor);
 	}
-	
+
 	/**
 	 *
 	 * @param layout
@@ -64,7 +64,7 @@ public class ReplaceabelEditor
 	{
 		this.labelLayout = layout;
 	}
-	
+
 	/**
 	 *
 	 * @return The Label -> {@link HorizontalLayout}

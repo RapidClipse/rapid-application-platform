@@ -50,7 +50,7 @@ public class HideButton extends Button
 
 	}
 	
-	public void setOpen()
+	public void open()
 	{
 		this.setIcon(VaadinIcon.ANGLE_DOUBLE_DOWN.create());
 		this.setOpen(true);
@@ -58,7 +58,7 @@ public class HideButton extends Button
 			StringResourceUtils.getResourceString("showHover", this));
 	}
 
-	public void setClose()
+	public void close()
 	{
 		this.setIcon(VaadinIcon.ANGLE_DOUBLE_LEFT.create());
 		this.setOpen(false);
