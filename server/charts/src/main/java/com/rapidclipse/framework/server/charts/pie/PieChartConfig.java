@@ -1,0 +1,258 @@
+/*
+ * Copyright (C) 2013-2019 by XDEV Software, All Rights Reserved.
+ *
+ * This file is part of the RapidClipse Application Platform (RAP).
+ *
+ * RAP is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * RAP is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with RAP. If not, see <http://www.gnu.org/licenses/>.
+ *
+ * SPDX-License-Identifier: GPL-3.0-or-later
+ *
+ * Contributors:
+ *     XDEV Software Corp. - initial API and implementation
+ */
+package com.rapidclipse.framework.server.charts.pie;
+
+import java.io.Serializable;
+import java.util.HashMap;
+
+import com.rapidclipse.framework.server.charts.ChartConfig;
+import com.rapidclipse.framework.server.charts.config.PieDiff;
+import com.rapidclipse.framework.server.charts.config.Slices;
+import com.rapidclipse.framework.server.charts.config.TextStyle;
+
+
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.00
+ */
+public class PieChartConfig extends ChartConfig implements Serializable
+{
+	
+	public static final String PIESLICETEXT_PERCENTAGE = "percentage";
+	public static final String PIESLICETEXT_VALUE      = "value";
+	public static final String PIESLICETEXT_LABEL      = "label";
+	public static final String PIESLICETEXT_NONE       = "none";
+	
+	private Boolean is3D                 = false;
+	private Double  pieHole              = 0.0;
+	private String  pieSliceText         = PieChartConfig.PIESLICETEXT_PERCENTAGE;
+	private String  pieSliceBorderColor  = "white";
+	private Double  sliceVisibilityThreshold;
+	private String  pieResidueSliceColor = "#ccc";
+	private String  pieResidueSliceLabel = "Other";
+	private Integer pieStartAngle        = 0;
+	private Slices  slices;
+	private PieDiff diff;
+	
+	private TextStyle pieSliceTextStyle = new TextStyle();
+	
+	@Override
+	public HashMap<String, Object> getOptions()
+	{
+		final HashMap<String, Object> options = super.getOptions();
+		options.put("is3D", this.is3D);
+		options.put("pieHole", this.pieHole);
+		options.put("pieSliceText", this.pieSliceText);
+		options.put("pieSliceBorderColor", this.pieSliceBorderColor);
+		options.put("sliceVisibilityThreshold", this.sliceVisibilityThreshold);
+		options.put("pieResidueSliceColor", this.pieResidueSliceColor);
+		options.put("pieResidueSliceLabel", this.pieResidueSliceLabel);
+		options.put("pieStartAngle", this.pieStartAngle);
+		options.put("pieSliceTextStyle", this.pieSliceTextStyle);
+		options.put("slices", this.slices);
+		if(this.diff != null)
+		{
+			options.put("diff", this.diff);
+		}
+		return options;
+	}
+	
+	public Boolean getIs3D()
+	{
+		return this.is3D;
+	}
+	
+	public void setIs3D(final Boolean is3d)
+	{
+		this.is3D = is3d;
+	}
+	
+	public Double getPieHole()
+	{
+		return this.pieHole;
+	}
+
+	public Slices getSlices()
+	{
+		return this.slices;
+	}
+
+	public void setSlices(final Slices slices)
+	{
+		this.slices = slices;
+	}
+
+	/**
+	 * If between 0 and 1, displays a donut chart. The hole with have a radius equal
+	 * to number times the radius of the chart. <br>
+	 * Numbers between 0.4 and 0.6 will look best on most charts. <br>
+	 *
+	 * @param pieHole
+	 */
+	public void setPieHole(final Double pieHole)
+	{
+		this.pieHole = pieHole;
+	}
+	
+	public String getPieSliceText()
+	{
+		return this.pieSliceText;
+	}
+	
+	/**
+	 * The content of the text displayed on the slice. Can be one of the following:
+	 * <br>
+	 * <ul>
+	 * <li>'percentage' - The percentage of the slice size out of the total.</li>
+	 * <li>'value' - The quantitative value of the slice.</li>
+	 * <li>'label' - The name of the slice.</li>
+	 * <li>'none' - No text is displayed.</li>
+	 * </ul>
+	 *
+	 * @param pieSliceText
+	 */
+	public void setPieSliceText(final String pieSliceText)
+	{
+		this.pieSliceText = pieSliceText;
+	}
+	
+	public String getPieSliceBorderColor()
+	{
+		return this.pieSliceBorderColor;
+	}
+	
+	/**
+	 * The color of the slice borders. Only applicable when the chart is
+	 * two-dimensional. <br>
+	 * Can be a simple HTML color string, for example: 'red' or '#00cc00'.
+	 *
+	 * @param pieSliceBorderColor
+	 */
+	public void setPieSliceBorderColor(final String pieSliceBorderColor)
+	{
+		this.pieSliceBorderColor = pieSliceBorderColor;
+	}
+	
+	public Double getSliceVisibilityThreshold()
+	{
+		return this.sliceVisibilityThreshold;
+	}
+	
+	/**
+	 * The fractional value of the pie, below which a slice will not show
+	 * individually. All slices that have not passed this threshold will be combined
+	 * to a single "Other" slice, whose size is the sum of all their sizes. Default
+	 * is not to show individually any slice which is smaller than half a degree.
+	 *
+	 * @param sliceVisibilityThreshold
+	 */
+	public void setSliceVisibilityThreshold(final Double sliceVisibilityThreshold)
+	{
+		this.sliceVisibilityThreshold = sliceVisibilityThreshold;
+	}
+	
+	public String getPieResidueSliceColor()
+	{
+		return this.pieResidueSliceColor;
+	}
+	
+	/**
+	 * Color for the combination slice that holds all slices below
+	 * sliceVisibilityThreshold.
+	 *
+	 * @param pieResidueSliceColor
+	 */
+	public void setPieResidueSliceColor(final String pieResidueSliceColor)
+	{
+		this.pieResidueSliceColor = pieResidueSliceColor;
+	}
+	
+	public String getPieResidueSliceLabel()
+	{
+		return this.pieResidueSliceLabel;
+	}
+	
+	/**
+	 * A label for the combination slice that holds all slices below
+	 * sliceVisibilityThreshold.
+	 *
+	 * @param pieResidueSliceLabel
+	 */
+	public void setPieResidueSliceLabel(final String pieResidueSliceLabel)
+	{
+		this.pieResidueSliceLabel = pieResidueSliceLabel;
+	}
+	
+	public TextStyle getPieSliceTextStyle()
+	{
+		return this.pieSliceTextStyle;
+	}
+	
+	/**
+	 * An object that specifies the slice text style.
+	 *
+	 * @param pieSliceTextStyle
+	 */
+	public void setPieSliceTextStyle(final TextStyle pieSliceTextStyle)
+	{
+		this.pieSliceTextStyle = pieSliceTextStyle;
+	}
+	
+	/**
+	 * @return the pieStartAngle
+	 */
+	public Integer getPieStartAngle()
+	{
+		return this.pieStartAngle;
+	}
+	
+	/**
+	 * The angle, in degrees, to rotate the chart by. The default of 0 will orient
+	 * the leftmost edge of the first slice directly up. <br>
+	 *
+	 * @param pieStartAngle
+	 *            the pieStartAngle to set
+	 */
+	public void setPieStartAngle(final Integer pieStartAngle)
+	{
+		this.pieStartAngle = pieStartAngle;
+	}
+	
+	public PieDiff getDiff()
+	{
+		return this.diff;
+	}
+	
+	/**
+	 * Only set this if you using the config for a <b>DIFF chart</b>
+	 *
+	 * @param diff
+	 */
+	public void setDiff(final PieDiff diff)
+	{
+		this.diff = diff;
+	}
+	
+}

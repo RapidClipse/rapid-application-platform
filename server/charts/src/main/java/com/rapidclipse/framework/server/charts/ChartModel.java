@@ -21,51 +21,21 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+package com.rapidclipse.framework.server.charts;
 
-package com.rapidclipse.framework.server.charts.config;
+import java.util.LinkedHashMap;
 
-import java.util.List;
-
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
+import com.rapidclipse.framework.server.charts.data.DataTable;
 
 
 /**
+ *
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public interface ChartModel
 {
-	private final List<PieSlice> part;
-	
-	public Slices(final List<PieSlice> part)
-	{
-		super();
-		this.part = part;
-		
-	}
+	public DataTable getDataTable();
 
-	@Override
-	public String toString()
-	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
-		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
-		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
-
-		return str.toString();
-	}
-	
+	public LinkedHashMap<Object, LinkedHashMap<String, Object>> getData();
 }

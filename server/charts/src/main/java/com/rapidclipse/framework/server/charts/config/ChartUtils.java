@@ -21,51 +21,56 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.charts.config;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
 
 
 /**
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public class ChartUtils
 {
-	private final List<PieSlice> part;
-	
-	public Slices(final List<PieSlice> part)
+	private ChartUtils()
 	{
-		super();
-		this.part = part;
-		
+		// Private Constructor for Utility class
 	}
 
-	@Override
-	public String toString()
+	public static void setHAxisScaling(
+		final HAxis hAxis,
+		final Double range,
+		final Double min,
+		final Double max)
 	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
+		final List<Ticks> list = new ArrayList<>();
+
+		for(Double i = min; i <= max; i = i + range)
 		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
+			final Ticks ticks = new Ticks();
+			ticks.setV(i);
+			list.add(ticks);
 		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
-
-		return str.toString();
+		
+		hAxis.setTicks(list);
 	}
-	
+
+	public static void setVAxisScaling(
+		final VAxis vAxis,
+		final Integer range,
+		final Integer min,
+		final Integer max)
+	{
+		final List<Ticks> list = new ArrayList<>();
+		
+		for(Integer i = min; i <= max; i = i + range)
+		{
+			final Ticks ticks = new Ticks();
+			ticks.setV(i);
+			list.add(ticks);
+		}
+
+		vAxis.setTicks(list);
+	}
 }

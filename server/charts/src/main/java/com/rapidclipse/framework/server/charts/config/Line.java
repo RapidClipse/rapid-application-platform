@@ -24,48 +24,27 @@
 
 package com.rapidclipse.framework.server.charts.config;
 
-import java.util.List;
-
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
-
-
 /**
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public abstract class Line
 {
-	private final List<PieSlice> part;
+	private Integer num;
 	
-	public Slices(final List<PieSlice> part)
+	public Line(final int num)
 	{
-		super();
-		this.part = part;
-		
+		this.num = num;
 	}
 
-	@Override
-	public String toString()
+	public Integer getNum()
 	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
-		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
-		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
-
-		return str.toString();
+		return this.num;
+	}
+	
+	public void setNum(final Integer num)
+	{
+		this.num = num;
 	}
 	
 }

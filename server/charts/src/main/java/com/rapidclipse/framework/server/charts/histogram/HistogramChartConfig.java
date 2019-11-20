@@ -22,50 +22,40 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.histogram;
 
-import java.util.List;
+import java.io.Serializable;
+import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
+import com.rapidclipse.framework.server.charts.ChartConfig;
 
 
 /**
+ *
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public class HistogramChartConfig extends ChartConfig implements Serializable
 {
-	private final List<PieSlice> part;
+	private Histogram histogram;
 	
-	public Slices(final List<PieSlice> part)
-	{
-		super();
-		this.part = part;
-		
-	}
-
 	@Override
-	public String toString()
+	public HashMap<String, Object> getOptions()
 	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
-		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
-		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
+		final HashMap<String, Object> options = super.getOptions();
+		options.put("histogram", this.histogram);
 
-		return str.toString();
+		return options;
 	}
-	
+
+	public Histogram getHistogram()
+	{
+		return this.histogram;
+	}
+
+	public void setHistogram(final Histogram histogram)
+	{
+		this.histogram = histogram;
+	}
+
 }

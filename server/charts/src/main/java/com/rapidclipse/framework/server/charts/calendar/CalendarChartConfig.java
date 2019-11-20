@@ -22,50 +22,47 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.calendar;
 
-import java.util.List;
-
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
+import java.util.HashMap;
 
 
 /**
+ *
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public class CalendarChartConfig
 {
-	private final List<PieSlice> part;
+	private String   title;
+	private Calendar calendar;
 	
-	public Slices(final List<PieSlice> part)
+	public HashMap<String, Object> getOptions()
 	{
-		super();
-		this.part = part;
-		
+		final HashMap<String, Object> options = new HashMap<>();
+		options.put("calendar", this.calendar);
+		options.put("title", this.title);
+		return options;
 	}
 
-	@Override
-	public String toString()
+	public Calendar getCalendar()
 	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
-		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
-		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
-
-		return str.toString();
+		return this.calendar;
 	}
-	
+
+	public void setCalendar(final Calendar calendar)
+	{
+		this.calendar = calendar;
+	}
+
+	public String getTitle()
+	{
+		return this.title;
+	}
+
+	public void setTitle(final String title)
+	{
+		this.title = title;
+	}
+
 }

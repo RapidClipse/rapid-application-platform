@@ -21,51 +21,48 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+package com.rapidclipse.framework.server.charts.map;
 
-package com.rapidclipse.framework.server.charts.config;
-
-import java.util.List;
-
-import com.rapidclipse.framework.server.charts.pie.PieSlice;
+import java.io.Serializable;
+import java.util.HashMap;
 
 
 /**
+ *
  * @author XDEV Software
  * @since 10.02.00
  */
-public class Slices
+public class MapsConfig implements Serializable
 {
-	private final List<PieSlice> part;
-	
-	public Slices(final List<PieSlice> part)
+	private boolean showTooltip    = true;
+	private boolean showInfoWindow = true;
+
+	public HashMap<String, Object> getOptions()
 	{
-		super();
-		this.part = part;
-		
+		final HashMap<String, Object> options = new HashMap<>();
+		options.put("showTooltip", this.showTooltip);
+		options.put("showInfoWindow", this.showInfoWindow);
+		return options;
 	}
 
-	@Override
-	public String toString()
+	public boolean isShowTooltip()
 	{
-		final StringBuilder str = new StringBuilder();
-		str.append("{");
-		int i = 0;
-		for(final PieSlice s : this.part)
-		{
-			str.append(i + ": {");
-			
-			if(s.getColor() != null)
-			{
-				str.append("color: '" + s.getColor() + "', ");
-			}
-			str.append("offset: " + s.getOffset() + ", textStyle: "
-				+ s.getTextStyle() + "},");
-			i++;
-		}
-		str.delete(str.length() - 1, str.length());
-		str.append("}");
-
-		return str.toString();
+		return this.showTooltip;
 	}
-	
+
+	public void setShowTooltip(final boolean showTooltip)
+	{
+		this.showTooltip = showTooltip;
+	}
+
+	public boolean isShowInfoWindow()
+	{
+		return this.showInfoWindow;
+	}
+
+	public void setShowInfoWindow(final boolean showInfoWindow)
+	{
+		this.showInfoWindow = showInfoWindow;
+	}
+
 }
