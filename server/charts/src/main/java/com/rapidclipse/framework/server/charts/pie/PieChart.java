@@ -21,21 +21,18 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.pie;
 
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -45,18 +42,15 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("pie-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class PieChart extends Composite<Div> implements HasSize
+public class PieChart extends Chart
 {
 	private PieChartConfig config;
-	private DataTable          dataTable;
+	private DataTable      dataTable;
 	private List<PieSlice> slices;
-	private final String       id;
 
 	public PieChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
 
 		this.config = new PieChartConfig();
 	}
@@ -91,7 +85,6 @@ public class PieChart extends Composite<Div> implements HasSize
 		this.dataTable = table;
 		this.slices    = pieModel.getSlices();
 		this.config.setSlices(new Slices(this.slices));
-		this.setId(this.id);
 		this.buildChart();
 		
 	}
@@ -103,7 +96,7 @@ public class PieChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "PieChart");
+			this.config.getOptions(), this.id(), "PieChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

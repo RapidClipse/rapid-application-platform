@@ -37,12 +37,12 @@ import com.rapidclipse.framework.server.charts.data.Row;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class MapsModel implements ChartModel
+public class MapModel implements ChartModel
 {
 	private DataTable                                                  dataTable = null;
 	private final LinkedHashMap<Object, LinkedHashMap<String, Object>> data      = new LinkedHashMap<>();
 	
-	public MapsModel()
+	public MapModel()
 	{
 		this.getDataTable().getColumns()
 			.add(Column.create("Lat", "Lat", ColumnType.NUMBER));

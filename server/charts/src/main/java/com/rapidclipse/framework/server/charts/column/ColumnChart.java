@@ -21,19 +21,16 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.column;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -42,18 +39,16 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("Column-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class ColumnChart extends Composite<Div> implements HasSize
+@Tag("column-chart")
+public class ColumnChart extends Chart
 {
-	private final String          id;
 	private ColumnChartConfig config;
-	private DataTable             dataTable;
+	private DataTable         dataTable;
 	
 	public ColumnChart()
 	{
 		super();
-		this.id     = IdGenerator.generateId();
+		
 		this.config = new ColumnChartConfig();
 	}
 
@@ -66,7 +61,6 @@ public class ColumnChart extends Composite<Div> implements HasSize
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
 		this.dataTable = model.getDataTable();
-		this.setId(this.id);
 		this.buildChart();
 	}
 	
@@ -77,7 +71,7 @@ public class ColumnChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "ColumnChart");
+			this.config.getOptions(), this.id(), "ColumnChart");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

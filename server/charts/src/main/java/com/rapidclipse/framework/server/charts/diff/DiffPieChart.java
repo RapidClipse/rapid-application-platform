@@ -26,20 +26,16 @@ package com.rapidclipse.framework.server.charts.diff;
 
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.pie.PieChartConfig;
 import com.rapidclipse.framework.server.charts.pie.PieChartModel;
 import com.rapidclipse.framework.server.charts.pie.PieSlice;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -49,21 +45,18 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("diff-pie-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class DiffPieChart extends Composite<Div> implements HasSize
+public class DiffPieChart extends Chart
 {
-	private DataTable          oldData;
-	private DataTable          newData;
-	private final String       id;
+	private DataTable      oldData;
+	private DataTable      newData;
 	private List<PieSlice> slices;
 	private PieChartConfig config;
 	
 	public DiffPieChart()
 	{
 		super();
-		this.id     = IdGenerator.generateId();
+		
 		this.config = new PieChartConfig();
-		this.setId(this.id);
 
 	}
 
@@ -102,9 +95,9 @@ public class DiffPieChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder oldBuild = new ChartJsBuilder(this.oldData,
-			this.config.getOptions(), this.id, "PieChart");
+			this.config.getOptions(), this.id(), "PieChart");
 		final ChartJsBuilder newBuild = new ChartJsBuilder(this.newData,
-			this.config.getOptions(), this.id, "PieChart");
+			this.config.getOptions(), this.id(), "PieChart");
 		final StringBuilder  bld      = new StringBuilder();
 		bld.append(newBuild.makeFunction());
 		bld.append(newBuild.makeOptions());

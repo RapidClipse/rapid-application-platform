@@ -21,18 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.map;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -41,33 +38,30 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("maps")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class Maps extends Composite<Div> implements HasSize
+@Tag("map-chart")
+public class MapChart extends Chart
 {
-	private MapsConfig config;
-	private DataTable      dataTable;
-	private String         mapsApiKey;
-	private String         id;
+	private MapConfig config;
+	private DataTable dataTable;
+	private String    mapsApiKey;
 	
-	public Maps()
+	public MapChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
 		
-		this.config     = new MapsConfig();
+		this.config     = new MapConfig();
 		this.mapsApiKey = "";
 	}
 
-	public Maps(final String apiKey)
+	public MapChart(final String apiKey)
 	{
 		super();
 
-		this.config     = new MapsConfig();
+		this.config     = new MapConfig();
 		this.mapsApiKey = apiKey;
 	}
 
-	public void setConfig(final MapsConfig config)
+	public void setConfig(final MapConfig config)
 	{
 		this.config = config;
 	}
@@ -80,7 +74,6 @@ public class Maps extends Composite<Div> implements HasSize
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
-		this.setId(this.id);
 		this.buildChart();
 	}
 	
@@ -91,7 +84,7 @@ public class Maps extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "Map", this.mapsApiKey);
+			this.config.getOptions(), this.id(), "Map", this.mapsApiKey);
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

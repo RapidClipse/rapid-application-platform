@@ -21,18 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.calendar;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -41,18 +38,15 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("Calendar-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class CalendarChart extends Composite<Div> implements HasSize
+@Tag("calendar-chart")
+public class CalendarChart extends Chart
 {
-	private final String            id;
 	private CalendarChartConfig config;
-	private DataTable               dataTable;
+	private DataTable           dataTable;
 	
 	public CalendarChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
 		
 		this.config = new CalendarChartConfig();
 	}
@@ -75,7 +69,6 @@ public class CalendarChart extends Composite<Div> implements HasSize
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
-		this.setId(this.id);
 		this.buildChart();
 	}
 	
@@ -86,7 +79,7 @@ public class CalendarChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "Calendar");
+			this.config.getOptions(), this.id(), "Calendar");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

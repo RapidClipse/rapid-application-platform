@@ -24,18 +24,14 @@
 
 package com.rapidclipse.framework.server.charts.diff;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.bar.BarChartConfig;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -45,20 +41,18 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("diff-bar-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class DiffBarChart extends Composite<Div> implements HasSize
+public class DiffBarChart extends Chart
 {
-	private DataTable          oldData;
-	private DataTable          newData;
-	private final String       id;
+	private DataTable oldData;
+	private DataTable newData;
+	
 	private BarChartConfig config;
 	
 	public DiffBarChart()
 	{
 		super();
-		this.id     = IdGenerator.generateId();
+		
 		this.config = new BarChartConfig();
-		this.setId(this.id);
 	}
 
 	private DataTable setDataTable(final ChartModel model)
@@ -86,9 +80,9 @@ public class DiffBarChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder oldBuild = new ChartJsBuilder(this.oldData,
-			this.config.getOptions(), this.id, "BarChart");
+			this.config.getOptions(), this.id(), "BarChart");
 		final ChartJsBuilder newBuild = new ChartJsBuilder(this.newData,
-			this.config.getOptions(), this.id, "BarChart");
+			this.config.getOptions(), this.id(), "BarChart");
 		final StringBuilder  bld      = new StringBuilder();
 		bld.append(newBuild.makeFunction());
 		bld.append(newBuild.makeOptions());

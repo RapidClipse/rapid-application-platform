@@ -24,18 +24,14 @@
 
 package com.rapidclipse.framework.server.charts.diff;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.column.ColumnChartConfig;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Row;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -44,50 +40,47 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("diff-Column-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class DiffColumnChart extends Composite<Div> implements HasSize
+@Tag("diff-column-chart")
+public class DiffColumnChart extends Chart
 {
-	private DataTable             oldData;
-	private DataTable             newData;
-	private final String          id;
+	private DataTable         oldData;
+	private DataTable         newData;
 	private ColumnChartConfig config;
-	
+
 	public DiffColumnChart()
 	{
 		super();
-		this.id     = IdGenerator.generateId();
-		this.config = new ColumnChartConfig();
-		this.setId(this.id);
-	}
 
+		this.config = new ColumnChartConfig();
+	}
+	
 	private DataTable setDataTable(final ChartModel model)
 	{
 		Row.createFromHashmap(model.getData()).forEach(row -> model.getDataTable().getRows().add(row));
-		
-		return model.getDataTable();
 
+		return model.getDataTable();
+		
 	}
-	
+
 	public void setModel(final ChartModel oldModel, final ChartModel newModel)
 	{
 		this.oldData = this.setDataTable(oldModel);
 		this.newData = this.setDataTable(newModel);
 		this.buildChart();
 	}
-
+	
 	public void setConfig(final ColumnChartConfig config)
 	{
 		this.config = config;
-
+		
 	}
-
+	
 	public void buildChart()
 	{
 		final ChartJsBuilder oldBuild = new ChartJsBuilder(this.oldData,
-			this.config.getOptions(), this.id, "ColumnChart");
+			this.config.getOptions(), this.id(), "ColumnChart");
 		final ChartJsBuilder newBuild = new ChartJsBuilder(this.newData,
-			this.config.getOptions(), this.id, "ColumnChart");
+			this.config.getOptions(), this.id(), "ColumnChart");
 		final StringBuilder  bld      = new StringBuilder();
 		bld.append(newBuild.makeFunction());
 		bld.append(newBuild.makeOptions());
@@ -98,5 +91,5 @@ public class DiffColumnChart extends Composite<Div> implements HasSize
 		final Page page = UI.getCurrent().getPage();
 		page.executeJs(bld.toString());
 	}
-
+	
 }

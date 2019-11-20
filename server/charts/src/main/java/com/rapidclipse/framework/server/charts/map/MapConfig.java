@@ -32,7 +32,7 @@ import java.util.HashMap;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class MapsConfig implements Serializable
+public class MapConfig implements Serializable
 {
 	private boolean showTooltip    = true;
 	private boolean showInfoWindow = true;

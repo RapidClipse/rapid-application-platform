@@ -21,19 +21,16 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.gauge;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
 import com.rapidclipse.framework.server.charts.data.Value;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -42,22 +39,19 @@ import com.vaadin.flow.component.page.Page;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("Area-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class GaugeChart extends Composite<Div> implements HasSize
+@Tag("gauge-chart")
+public class GaugeChart extends Chart
 {
-	private final String         id;
 	private GaugeChartConfig config;
-	private DataTable            dataTable;
-	
+	private DataTable        dataTable;
+
 	public GaugeChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
-		
+
 		this.config = new GaugeChartConfig();
 	}
-
+	
 	/**
 	 * Override the default options
 	 *
@@ -67,7 +61,7 @@ public class GaugeChart extends Composite<Div> implements HasSize
 	{
 		this.config = config;
 	}
-
+	
 	/**
 	 * Set a model for the chart
 	 *
@@ -76,10 +70,9 @@ public class GaugeChart extends Composite<Div> implements HasSize
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
-		this.setId(this.id);
 		this.buildChart();
 	}
-	
+
 	/**
 	 *
 	 * @param gauge
@@ -90,19 +83,19 @@ public class GaugeChart extends Composite<Div> implements HasSize
 	public void changeValue(final int gauge, final int value)
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "Gauge");
+			this.config.getOptions(), this.id(), "Gauge");
 		final Page           page = UI.getCurrent().getPage();
-		
+
 		String gaugeJs = js.constructChart();
 		gaugeJs  = (String)gaugeJs.subSequence(0, gaugeJs.length() - 1);
 		gaugeJs += "data.setValue(" + gauge + ", 1, " + value
 			+ "); var view = new google.visualization.DataView(data); chart.draw(view, options); }";
-
-		page.executeJs(gaugeJs);
 		
+		page.executeJs(gaugeJs);
+
 		this.dataTable.getRows().get(gauge).getC().set(1, new Value(value));
 	}
-	
+
 	/**
 	 * Draws the chart.
 	 * setModel or buildChart should be the last methods to call.
@@ -110,7 +103,7 @@ public class GaugeChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "Gauge");
+			this.config.getOptions(), this.id(), "Gauge");
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}

@@ -21,18 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.geo;
 
+import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.IdGenerator;
 import com.rapidclipse.framework.server.charts.data.DataTable;
-import com.vaadin.flow.component.Composite;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.JavaScript;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.page.Page;
 
 
@@ -42,19 +39,15 @@ import com.vaadin.flow.component.page.Page;
  * @since 10.02.00
  */
 @Tag("geo-chart")
-@JavaScript("https://www.gstatic.com/charts/loader.js")
-public class GeoChart extends Composite<Div> implements HasSize
+public class GeoChart extends Chart
 {
-
 	private GeoChartConfig config;
-	private DataTable          dataTable;
-	private String             mapsApiKey;
-	private String             id;
+	private DataTable      dataTable;
+	private String         mapsApiKey;
 
 	public GeoChart()
 	{
 		super();
-		this.id = IdGenerator.generateId();
 
 		this.config     = new GeoChartConfig();
 		this.mapsApiKey = " ";
@@ -81,7 +74,6 @@ public class GeoChart extends Composite<Div> implements HasSize
 	public void setModel(final ChartModel model)
 	{
 		this.dataTable = model.getDataTable();
-		this.setId(this.id);
 		this.buildChart();
 	}
 
@@ -92,7 +84,7 @@ public class GeoChart extends Composite<Div> implements HasSize
 	public void buildChart()
 	{
 		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id, "GeoChart", this.mapsApiKey);
+			this.config.getOptions(), this.id(), "GeoChart", this.mapsApiKey);
 		final Page           page = UI.getCurrent().getPage();
 		page.executeJs(js.constructChart());
 	}
