@@ -33,11 +33,11 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap-server</artifactId>
-		<version>10.00.02-RAP-SNAPSHOT</version>
+		<version>10.02.00-RAP-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>rap-server-cahrts</artifactId>
+	<artifactId>rap-server-charts</artifactId>
 
 	<name>Rapid Application Platform / Server / Charts</name>
 	<description>Rapid Application Platform / Server / Charts</description>
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-core</artifactId>
-			<version>10.00.02-RAP-SNAPSHOT</version>
+			<version>10.02.00-RAP-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 
