@@ -2,6 +2,7 @@
 package com.rapidclipse.framework.server.ui.filter.readabelHelper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
+import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -13,7 +14,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class UpdateButton extends Button
 {
-
+	
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -26,5 +27,6 @@ public class UpdateButton extends Button
 		this.setClassName(StringResourceUtils.getResourceString("addButton", this));
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("updateHover", this));
+		this.addClickShortcut(Key.ENTER);
 	}
 }

@@ -53,9 +53,10 @@ import com.rapidclipse.framework.server.ui.filter.readabelHelper.UpdateButton;
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.component.AbstractCompositeField;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasOrderedComponents;
 import com.vaadin.flow.component.HasSize;
-import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.dependency.JavaScript;
@@ -85,8 +86,9 @@ public class FilterComponent
 	extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
 	implements FilterContext, HasSize
 {
-	private boolean caseSensitive = false;
-	private char    wildcard      = '*';
+	private static final int BREAKPOINT    = 800;
+	private boolean          caseSensitive = false;
+	private char             wildcard      = '*';
 
 	private Connector searchPropertiesConnector = Connector.OR;
 	private Connector searchMultiWordConnector  = Connector.OR;
@@ -116,6 +118,7 @@ public class FilterComponent
 	protected List<String>                filterOperator     = new ArrayList<>();
 	private final Searchbar               searchBar          = new Searchbar();
 	private Registration                  addButtonClick;
+	private int                           width              = 0;
 
 	public FilterComponent()
 	{
@@ -130,6 +133,16 @@ public class FilterComponent
 	@Override
 	protected VerticalLayout initContent()
 	{
+		UI.getCurrent().getPage()
+			.retrieveExtendedClientDetails(detail -> {
+				this.width = detail.getWindowInnerWidth();
+
+			});
+		UI.getCurrent().getPage().addBrowserWindowResizeListener(listener -> {
+			this.width = listener.getWidth();
+			resizeLabelRow();
+		});
+
 		this.searchTextField = createSearchTextField();
 		this.searchTextField.addValueChangeListener(event -> updateFilterData());
 		this.searchTextField.setEnabled(false);
@@ -141,7 +154,6 @@ public class FilterComponent
 		this.labelDiv.defineDiv();
 
 		this.addFilterButton.defineButton();
-		this.addFilterButton.addClickShortcut(Key.ENTER);
 		this.addButtonClick = this.addFilterButton.addClickListener(event -> {
 			this.searchBar.remove(this.addFilterButton);
 			addFilterEntryEditor(new FilterEntryEditor(this, this, this::updateFilterData),
@@ -187,15 +199,6 @@ public class FilterComponent
 
 		throw new IllegalArgumentException("Unsupported data provider: " + dataProvider.getClass().getName());
 	}
-
-	/**
-	 * TODO: Eine Möglichkeit die Label leicht zu switchen,
-	 * um in der großen View nicht die '...' angezeigt zu bekommen,
-	 * bestünde vielleicht darin, mit einer neuen Klasse zu arbeiten, welche 2 HorizontalLayouts trägt.
-	 * Eines davon ist das 'ShortLayout' das andere 'LongLayout'.
-	 * Wenn nun die View geändert wird. Könnte man dann durch eine Liste von Objekten iterieren, um die jeweilige View
-	 * neu anzupassen
-	 */
 	
 	/*****************************************************************************************************************************************
 	 */
@@ -312,40 +315,21 @@ public class FilterComponent
 	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
 	@SuppressWarnings("rawtypes")
-	private HorizontalLayout createEntryRowLabel(final FilterEntryEditor editor)
+	private HorizontalLayout createEntryRowLabel(final ReplaceabelEditor replace)
 	{
-		
-		final EntryRowLabel row = new EntryRowLabel(editor);
-		
-		final String width = getWidth();
-		
-		System.out.println(width);
-		// final int cutBy = 5;
-		// final HorizontalLayout row = new HorizontalLayout();
-		// row.addClassName(StringResourceUtils.getResourceString("entryRowLabel", this));
-		// row.setEnabled(true);
-		//
-		// final List<FilterValueEditorComposite> values = editor.getValueEditors();
-		//
-		// final String property = editor.getSelectedProperty().caption();
-		// row.add(new Label("" + shortenString(property, cutBy)));
-		// final String operator = editor.getSelectedOperator().name();
-		// row.add(new Label("\t-> " + shortenString(operator, cutBy)));
-		// final StringBuilder description = new StringBuilder();
-		// description.append(property + " -> " + operator);
-		// if(values != null)
-		// {
-		//
-		// for(final FilterValueEditorComposite<?, ?> value : values)
-		// {
-		// row.add(new Label("\t-> " + shortenString(value.getValue().toString(), cutBy)));
-		// description.append(" -> " + value.getValue().toString());
-		// }
-		// }
-		//
-		// row.getElement().setProperty("title", description.toString());
-		return row.getShortLayout();
 
+		final FilterEntryEditor editor = replace.getOriginal();
+		final EntryRowLabel     entry  = new EntryRowLabel(editor);
+		replace.setEntryRow(entry);
+
+		if(this.width <= BREAKPOINT)
+		{
+			return entry.getShortLayout();
+		}
+		else
+		{
+			return entry.getLongLayout();
+		}
 	}
 
 	/**
@@ -367,6 +351,21 @@ public class FilterComponent
 		final HorizontalLayout layout = new HorizontalLayout(editor);
 		layout.setEnabled(true);
 		layout.addClassName(StringResourceUtils.getResourceString("entryRowComboBox", this));
+		return layout;
+	}
+
+	/**
+	 * TODO: Methode verwenden, umm die anderen beiden zu löschen und somit den Code cleaner zu halten!
+	 */
+	
+	private HorizontalLayout createButtonLayout2(final Component... components)
+	{
+		final HorizontalLayout layout = new HorizontalLayout();
+		layout.addClassName(StringResourceUtils.getResourceString("buttonLayout", this));
+		for(final Component c : components)
+		{
+			layout.add(c);
+		}
 		return layout;
 	}
 
@@ -424,6 +423,20 @@ public class FilterComponent
 	 **************************************/
 
 	/**
+	 * TODO: AbstracteKlasse kreieren, welche die Methode defineButton() enthält
+	 * evtl noch eine clickListener() methode.
+	 * Dadurch könnte ich die beiden Methoden definingButtons und definingUpdate Buttons zusammenführen
+	 *
+	 * private void(AbstractButton... buttons){
+	 * for(Button b : buttons){
+	 * b.definceButton();
+	 * b.clickListener();
+	 * }}
+	 * Dadurch könnte ich eine variable Anzahl an Buttons übergeben und den Code cleaner halten!
+	 *
+	 */
+
+	/**
 	 * Defines the Buttons inside the Label div. Those are needed to check the Filter, Edit or remove it.
 	 * <br>
 	 * To defining the objects are using their own 'define'-Metod.
@@ -449,11 +462,9 @@ public class FilterComponent
 		checkboxValueChangeListener(checkbox, editor);
 
 		editButton.defineButton();
-
 		editButtonClickListener(editButton, editor);
 
 		deleteButton.defineButton();
-
 		deleteButtonClickListener(deleteButton, editor);
 	}
 
@@ -478,6 +489,7 @@ public class FilterComponent
 	{
 		updateButton.defineButton();
 		updateButtonClickListener(updateButton, editor);
+
 		cancelButton.defineButton();
 		cancelButtonUpdateClickListener(cancelButton, editor);
 	}
@@ -604,7 +616,7 @@ public class FilterComponent
 			}
 
 		});
-		
+
 	}
 
 	/**
@@ -820,10 +832,10 @@ public class FilterComponent
 	{
 		definingButtons(checkbox, editButton, deleteButton, editor);
 
-		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor.getOriginal()),
+		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor),
 			createButtonLayout(checkbox, editButton, deleteButton));
 
-		replaceLabelRow(editor.getLabelLayout(), finalLayout);
+		replaceLabelRow(editor.getLabelLayout(), finalLayout, this.labelDiv);
 
 		editor.setLabelLayout(finalLayout);
 
@@ -836,9 +848,14 @@ public class FilterComponent
 	 * Copied from {@link HasOrderedComponents #replace(Component, Component)}
 	 *
 	 * @param oldComponent
+	 *            -> {@link Component}
 	 * @param newComponent
+	 *            -> {@link Component}
+	 * @param wrapper
+	 *            -> {@link HasComponents}
 	 */
-	private void replaceLabelRow(final Component oldComponent, final Component newComponent)
+	private void
+		replaceLabelRow(final Component oldComponent, final Component newComponent, final HasComponents wrapper)
 	{
 		if(oldComponent == null && newComponent == null)
 		{
@@ -847,15 +864,15 @@ public class FilterComponent
 		}
 		if(oldComponent == null)
 		{
-			this.labelDiv.add(newComponent);
+			wrapper.add(newComponent);
 		}
 		else if(newComponent == null)
 		{
-			this.labelDiv.remove(oldComponent);
+			wrapper.remove(oldComponent);
 		}
 		else
 		{
-			final Element element  = this.labelDiv.getElement();
+			final Element element  = wrapper.getElement();
 			final int     oldIndex = element.indexOfChild(oldComponent.getElement());
 			final int     newIndex = element.indexOfChild(newComponent.getElement());
 			if(oldIndex >= 0 && newIndex >= 0)
@@ -869,26 +886,36 @@ public class FilterComponent
 			}
 			else
 			{
-				this.labelDiv.add(newComponent);
+				wrapper.add(newComponent);
 			}
 		}
 	}
 
-	private String shortenString(final String s, final int length)
+	private void resizeLabelRow()
 	{
-		String string = "";
-		if(s.length() >= length)
+		for(final ReplaceabelEditor editor : this.filterEntryEditors)
 		{
-			string = s.substring(0, length) + "...";
-		}
-		else
-		{
-			return s;
-		}
+			final HorizontalLayout finalLayout = editor.getLabelLayout();
+			final HorizontalLayout longLayout  = editor.getEntryRow().getLongLayout();
+			final HorizontalLayout shortLayout = editor.getEntryRow().getShortLayout();
 
-		return string;
+			if(this.width < BREAKPOINT)
+			{
+				if(finalLayout.getComponentAt(0) == longLayout)
+				{
+					finalLayout.replace(longLayout, shortLayout);
+				}
+			}
+			else
+			{
+				if(finalLayout.getComponentAt(0) == shortLayout)
+				{
+					finalLayout.replace(shortLayout, longLayout);
+				}
+			}
+		}
 	}
-
+	
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
@@ -975,11 +1002,14 @@ public class FilterComponent
 		addButtonClickListener(this.addFilterButton, replace, new FilterCheckBox(),
 			new EditButton(),
 			new DeleteButton());
+
 		cancelButtonClickListener(cancelButton, index);
+		
 		this.comboDiv.add(
 			createFinalLayout(
 				createEntryRowCombo(editor),
 				createButtonLayout(this.addFilterButton, cancelButton)));
+		
 		this.rowIndex++;
 
 		openDiv();
@@ -1107,7 +1137,7 @@ public class FilterComponent
 
 		this.filterEntryEditors.add(editor);
 
-		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor.getOriginal()),
+		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor),
 			createButtonLayout(checkbox, editButton, deleteButton));
 
 		editor.setLabelLayout(finalLayout);

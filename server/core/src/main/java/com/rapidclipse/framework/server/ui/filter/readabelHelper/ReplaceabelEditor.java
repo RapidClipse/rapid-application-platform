@@ -14,10 +14,12 @@ public class ReplaceabelEditor
 	private FilterEntryEditor original;
 	private FilterEntryEditor copy;
 	HorizontalLayout          labelLayout = new HorizontalLayout();
+	EntryRowLabel             entryRow    = new EntryRowLabel();
 
 	public ReplaceabelEditor(final FilterEntryEditor editor)
 	{
 		this.original = editor;
+
 	}
 
 	/**
@@ -72,6 +74,23 @@ public class ReplaceabelEditor
 	public HorizontalLayout getLabelLayout()
 	{
 		return this.labelLayout;
+	}
+
+	/**
+	 * @return the entryRow
+	 */
+	public EntryRowLabel getEntryRow()
+	{
+		return this.entryRow;
+	}
+
+	/**
+	 * @param entryRow
+	 *            -> {@link EntryRowLabel}
+	 */
+	public void setEntryRow(final EntryRowLabel entryRow)
+	{
+		this.entryRow = entryRow;
 	}
 
 }
