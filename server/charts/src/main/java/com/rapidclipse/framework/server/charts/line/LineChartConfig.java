@@ -29,7 +29,6 @@ import java.util.List;
 
 import com.rapidclipse.framework.server.charts.ChartConfig;
 import com.rapidclipse.framework.server.charts.config.HAxis;
-import com.rapidclipse.framework.server.charts.config.IntervalGlobal;
 import com.rapidclipse.framework.server.charts.config.Options;
 import com.rapidclipse.framework.server.charts.config.VAxis;
 
@@ -50,7 +49,7 @@ public class LineChartConfig extends ChartConfig implements Serializable
 	private String         curveType;
 	private String         orientation = Options.ORIENTATION_HORIZONTAL;
 	private String         pointShape  = Options.POINTSHAPE_CIRCLE;
-	private IntervalGlobal intervals;
+	private Intervals intervals;
 
 	@Override
 	public HashMap<String, Object> getOptions()
@@ -94,7 +93,7 @@ public class LineChartConfig extends ChartConfig implements Serializable
 		return this.hAxis;
 	}
 	
-	public IntervalGlobal getIntervals()
+	public Intervals getIntervals()
 	{
 		return this.intervals;
 	}
@@ -107,7 +106,7 @@ public class LineChartConfig extends ChartConfig implements Serializable
 	 *
 	 * @param intervals
 	 */
-	public void setIntervals(final IntervalGlobal intervals)
+	public void setIntervals(final Intervals intervals)
 	{
 		this.intervals = intervals;
 	}

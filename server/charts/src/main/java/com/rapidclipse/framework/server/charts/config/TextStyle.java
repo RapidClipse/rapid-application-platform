@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.config;
 
 /**
@@ -30,18 +31,17 @@ package com.rapidclipse.framework.server.charts.config;
  */
 public class TextStyle
 {
-	
 	private String  color  = "black";
 	private String  fontName;
 	private Integer fontSize;
 	private Boolean bold   = false;
 	private Boolean italic = false;
-	
+
 	public String getColor()
 	{
 		return this.color;
 	}
-	
+
 	/**
 	 * The color can be any HTML color string, for example: 'red' or '#00cc00' <br>
 	 *
@@ -51,12 +51,12 @@ public class TextStyle
 	{
 		this.color = color;
 	}
-	
+
 	public String getFontName()
 	{
 		return this.fontName;
 	}
-	
+
 	/**
 	 * Sets the font name of the text style <br>
 	 *
@@ -66,12 +66,12 @@ public class TextStyle
 	{
 		this.fontName = fontName;
 	}
-	
+
 	public Integer getFontSize()
 	{
 		return this.fontSize;
 	}
-	
+
 	/**
 	 * The font size, in pixels <br>
 	 *
@@ -81,27 +81,27 @@ public class TextStyle
 	{
 		this.fontSize = fontSize;
 	}
-	
+
 	public Boolean getBold()
 	{
 		return this.bold;
 	}
-	
+
 	public void setBold(final Boolean bold)
 	{
 		this.bold = bold;
 	}
-	
+
 	public Boolean getItalic()
 	{
 		return this.italic;
 	}
-	
+
 	public void setItalic(final Boolean italic)
 	{
 		this.italic = italic;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -117,7 +117,7 @@ public class TextStyle
 		}
 		str.append("bold: " + this.bold + ", ");
 		str.append("italic: " + this.italic + " }");
-
+		
 		return str.toString();
 	}
 }

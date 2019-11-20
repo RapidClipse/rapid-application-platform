@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.data;
 
 import java.io.Serializable;
@@ -29,6 +30,7 @@ import java.util.List;
 
 
 /**
+ * TODO naming?
  *
  * @author XDEV Software
  * @since 10.02.00
@@ -39,7 +41,7 @@ public class MultiValue implements Serializable
 	
 	public MultiValue()
 	{
-		
+		super();
 	}
 
 	public MultiValue(final Object... v)

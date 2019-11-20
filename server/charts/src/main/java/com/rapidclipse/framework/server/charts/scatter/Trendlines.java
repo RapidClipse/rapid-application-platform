@@ -22,7 +22,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.scatter;
 
 import java.util.List;
 
@@ -33,14 +33,13 @@ import java.util.List;
  */
 public class Trendlines
 {
-
 	private final List<Trendline> lines;
-
+	
 	public Trendlines(final List<Trendline> lines)
 	{
 		this.lines = lines;
 	}
-	
+
 	@Override
 	public String toString()
 	{
@@ -49,11 +48,11 @@ public class Trendlines
 		for(final Trendline s : this.lines)
 		{
 			str.append(s.getRowNumber() + ": " + s + ",");
-			
+
 		}
 		str.delete(str.length() - 1, str.length());
 		str.append("}");
-		
+
 		return str.toString();
 	}
 }

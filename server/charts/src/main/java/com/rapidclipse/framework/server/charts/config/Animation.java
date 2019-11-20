@@ -25,6 +25,7 @@
 package com.rapidclipse.framework.server.charts.config;
 
 /**
+ * TODO usage?
  *
  * @author XDEV Software
  * @since 10.02.00
@@ -34,7 +35,7 @@ public class Animation
 	private Integer duration = 200;
 	private boolean startup  = true;
 	private String  easing   = "linear";
-
+	
 	@Override
 	public String toString()
 	{
@@ -46,22 +47,22 @@ public class Animation
 		str.append("}");
 		return str.toString();
 	}
-
+	
 	public Integer getDuration()
 	{
 		return this.duration;
 	}
-
+	
 	public boolean isStartup()
 	{
 		return this.startup;
 	}
-
+	
 	public String getEasing()
 	{
 		return this.easing;
 	}
-	
+
 	/**
 	 * The duration of the animation, in milliseconds.
 	 *
@@ -71,7 +72,7 @@ public class Animation
 	{
 		this.duration = duration;
 	}
-	
+
 	/**
 	 * Determines if the chart will animate on the initial draw. If true, the chart will start at the baseline and
 	 * animate to its final state.
@@ -82,7 +83,7 @@ public class Animation
 	{
 		this.startup = startup;
 	}
-	
+
 	/**
 	 * *
 	 * <li>'linear' - Constant speed.</li>
@@ -96,5 +97,5 @@ public class Animation
 	{
 		this.easing = easing;
 	}
-	
+
 }

@@ -21,9 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.config;
 
 /**
+ * TODO naming?
  *
  * @author XDEV Software
  * @since 10.02.00
@@ -35,7 +37,7 @@ public class Ticks
 	
 	public Ticks()
 	{
-		
+		super();
 	}
 
 	public Ticks(final Object v, final String f)

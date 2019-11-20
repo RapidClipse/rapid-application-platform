@@ -22,7 +22,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.line;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ import java.util.List;
  * @author XDEV Software
  * @since 10.02.00
  */
-public class IntervalGlobal
+public class Intervals
 {
 	private String               style     = "line";
 	private Integer              pointSize = 2;
@@ -40,16 +40,16 @@ public class IntervalGlobal
 	private double               barWidth  = 0.5;
 	private String               color;
 	private double               boxWidth  = 0.5;
-	private final List<Interval> inters;
+	private final List<Interval> intervals;
 	
 	/**
 	 * Set a List of Intervals (or null) for global settings of intervals
 	 *
-	 * @param inters
+	 * @param intervals
 	 */
-	public IntervalGlobal(final List<Interval> inters)
+	public Intervals(final List<Interval> intervals)
 	{
-		this.inters = inters;
+		this.intervals = intervals;
 	}
 
 	public String getStyle()
@@ -132,10 +132,10 @@ public class IntervalGlobal
 		}
 		str.append("'style': '" + this.style + "' ");
 		str.append("}");
-		if(this.inters != null)
+		if(this.intervals != null)
 		{
 			str.append(", interval: { ");
-			for(final Interval i : this.inters)
+			for(final Interval i : this.intervals)
 			{
 				str.append("'" + i.getName() + "': " + i + ",");
 			}

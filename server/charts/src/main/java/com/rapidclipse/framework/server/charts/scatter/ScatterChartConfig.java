@@ -31,7 +31,6 @@ import com.rapidclipse.framework.server.charts.ChartConfig;
 import com.rapidclipse.framework.server.charts.config.HAxis;
 import com.rapidclipse.framework.server.charts.config.Series;
 import com.rapidclipse.framework.server.charts.config.VAxis;
-import com.rapidclipse.framework.server.charts.config.Trendlines;
 
 
 /**

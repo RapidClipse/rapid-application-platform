@@ -26,8 +26,6 @@ package com.rapidclipse.framework.server.charts.timeline;
 import java.io.Serializable;
 import java.util.HashMap;
 
-import com.rapidclipse.framework.server.charts.config.TimelineOptions;
-
 
 /**
  *

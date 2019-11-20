@@ -34,7 +34,7 @@ public enum DataRoleType
 	ANNOTATION_TEXT("annotationText"),
 	CERTAINTY("certainty"),
 	EMPHASIS("emphasis"),
-	INTERVALE("interval"),
+	INTERVAL("interval"),
 	SCOPE("scope"),
 	STYLE("style"),
 	TOOLTIP("tooltip");

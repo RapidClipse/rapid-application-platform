@@ -21,7 +21,9 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.timeline;
+
+import com.rapidclipse.framework.server.charts.config.TextStyle;
 
 /**
  *

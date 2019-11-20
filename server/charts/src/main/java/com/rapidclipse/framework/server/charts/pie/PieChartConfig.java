@@ -27,7 +27,6 @@ import java.io.Serializable;
 import java.util.HashMap;
 
 import com.rapidclipse.framework.server.charts.ChartConfig;
-import com.rapidclipse.framework.server.charts.config.PieDiff;
 import com.rapidclipse.framework.server.charts.config.Slices;
 import com.rapidclipse.framework.server.charts.config.TextStyle;
 

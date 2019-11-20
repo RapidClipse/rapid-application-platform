@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.config;
 
 /**
@@ -30,18 +31,17 @@ package com.rapidclipse.framework.server.charts.config;
  */
 public class LegendOptions
 {
-	
 	private String    alignment;
 	private String    position = "right";
 	private Integer   maxLines = 1;
 	private TextStyle textStyle;
 	private boolean   noLegend;
-	
+
 	public String getAlignment()
 	{
 		return this.alignment;
 	}
-	
+
 	/**
 	 * Alignment of the legend. Can be one of the following: <br>
 	 * <ul>
@@ -64,12 +64,12 @@ public class LegendOptions
 	{
 		this.alignment = alignment;
 	}
-	
+
 	public String getPosition()
 	{
 		return this.position;
 	}
-	
+
 	/**
 	 * Position of the legend. Can be one of the following: <br>
 	 * <ul>
@@ -87,12 +87,12 @@ public class LegendOptions
 	{
 		this.position = position;
 	}
-	
+
 	public Integer getMaxLines()
 	{
 		return this.maxLines;
 	}
-	
+
 	/**
 	 * Maximum number of lines in the legend. Set this to a number greater than one
 	 * to add lines to your legend. Note: The exact logic used to determine the
@@ -106,12 +106,12 @@ public class LegendOptions
 	{
 		this.maxLines = maxLines;
 	}
-	
+
 	public TextStyle getTextStyle()
 	{
 		return this.textStyle;
 	}
-	
+
 	/**
 	 * An object that specifies the legend text style.
 	 *
@@ -121,7 +121,7 @@ public class LegendOptions
 	{
 		this.textStyle = textStyle;
 	}
-
+	
 	@Override
 	public String toString()
 	{
@@ -145,15 +145,15 @@ public class LegendOptions
 		{
 			str.append("'none'");
 		}
-		
+
 		return str.toString();
 	}
-	
+
 	public boolean isNoLegend()
 	{
 		return this.noLegend;
 	}
-	
+
 	/**
 	 * Disables the Legend of a chart with 'none'
 	 *

@@ -82,7 +82,7 @@ public class LineChartModel implements ChartModel
 	{
 		this.categories.put(caption, null);
 		this.getDataTable().getColumns()
-			.add(Column.dataRoleColumn(caption.toLowerCase(), caption, ColumnType.NUMBER, DataRoleType.INTERVALE));
+			.add(Column.dataRoleColumn(caption.toLowerCase(), caption, ColumnType.NUMBER, DataRoleType.INTERVAL));
 	}
 	
 	@SuppressWarnings("unchecked")

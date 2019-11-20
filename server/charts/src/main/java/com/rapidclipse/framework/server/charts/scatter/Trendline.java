@@ -22,7 +22,7 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.config;
+package com.rapidclipse.framework.server.charts.scatter;
 
 /**
  * @author XDEV Software
