@@ -1,5 +1,5 @@
 
-package com.rapidclipse.framework.server.ui.filter.readabelHelper;
+package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.component.html.Div;

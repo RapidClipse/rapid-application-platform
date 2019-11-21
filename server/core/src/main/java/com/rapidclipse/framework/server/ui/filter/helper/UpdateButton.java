@@ -1,9 +1,9 @@
 
-package com.rapidclipse.framework.server.ui.filter.readabelHelper;
+package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
+import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.vaadin.flow.component.Key;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -12,15 +12,16 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  * @author XDEV Software
  *
  */
-public class UpdateButton extends Button
+public class UpdateButton extends Buttons
 {
-	
+
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
 	 * Classname = addButton -> getting through
 	 * {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
+	@Override
 	public void defineButton()
 	{
 		this.setIcon(VaadinIcon.CHECK.create());
@@ -29,4 +30,19 @@ public class UpdateButton extends Button
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("updateHover", this));
 		this.addClickShortcut(Key.ENTER);
 	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
+	{
+		this.addClickListener(listener -> {
+			component.updateLabelRow(editor, new FilterCheckBox(), new EditButton(), new DeleteButton());
+			component.newFilterEntry(component.rowIndex);
+			component.updateFilterData();
+		});
+
+	}
+	
 }

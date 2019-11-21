@@ -1,5 +1,5 @@
 
-package com.rapidclipse.framework.server.ui.filter.readabelHelper;
+package com.rapidclipse.framework.server.ui.filter.helper;
 
 import java.util.List;
 

@@ -1,5 +1,5 @@
 
-package com.rapidclipse.framework.server.ui.filter.readabelHelper;
+package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
