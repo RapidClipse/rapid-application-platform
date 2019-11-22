@@ -32,23 +32,19 @@ import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import javax.validation.constraints.Null;
-
 import com.rapidclipse.framework.server.data.filter.Composite;
 import com.rapidclipse.framework.server.data.filter.Composite.Connector;
 import com.rapidclipse.framework.server.data.filter.Filter;
 import com.rapidclipse.framework.server.data.provider.DataProviderFilterAdapter;
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.filter.helper.AddButton;
-import com.rapidclipse.framework.server.ui.filter.helper.Buttons;
 import com.rapidclipse.framework.server.ui.filter.helper.CancelButton;
+import com.rapidclipse.framework.server.ui.filter.helper.ComboBoxButtons;
 import com.rapidclipse.framework.server.ui.filter.helper.ComboDiv;
-import com.rapidclipse.framework.server.ui.filter.helper.DeleteButton;
-import com.rapidclipse.framework.server.ui.filter.helper.EditButton;
 import com.rapidclipse.framework.server.ui.filter.helper.EntryRowLabel;
-import com.rapidclipse.framework.server.ui.filter.helper.FilterCheckBox;
 import com.rapidclipse.framework.server.ui.filter.helper.FilterDiv;
 import com.rapidclipse.framework.server.ui.filter.helper.HideButton;
+import com.rapidclipse.framework.server.ui.filter.helper.LabelButtons;
 import com.rapidclipse.framework.server.ui.filter.helper.LabelDiv;
 import com.rapidclipse.framework.server.ui.filter.helper.ReplaceabelEditor;
 import com.rapidclipse.framework.server.ui.filter.helper.Searchbar;
@@ -156,7 +152,7 @@ public class FilterComponent
 
 		this.searchBar.defineSearchbar();
 		this.searchBar.createSearchBar(this.searchTextField, this.hideFilterButton);
-		
+
 		return createContent(this.searchBar);
 	}
 
@@ -311,7 +307,7 @@ public class FilterComponent
 		final FilterEntryEditor editor = replace.getOriginal();
 		final EntryRowLabel     entry  = new EntryRowLabel(editor);
 		replace.setEntryRow(entry);
-		
+
 		return entry.getLayout();
 	}
 
@@ -358,39 +354,6 @@ public class FilterComponent
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
-	 ************ Defining Stuff***********
-	 **************************************/
-
-	/**
-	 * Define all Buttons and (if given) the checkbox. Also add the right Listener to them, which can be seen in their
-	 * classes.
-	 *
-	 * @param editor
-	 *            -> {@link ReplaceabelEditor}
-	 * @param checkbox
-	 *            -> {@link FilterCheckBox} or {@link Null}
-	 * @param buttons
-	 *            -> {@link Buttons}
-	 */
-	private void
-		definingButtons(final ReplaceabelEditor editor, final FilterCheckBox checkbox, final Buttons... buttons)
-	{
-		if(checkbox != null)
-		{
-			checkbox.defineCheckBox();
-			checkbox.setValueChangeListener(this, editor);
-		}
-		for(final Buttons b : buttons)
-		{
-			b.defineButton();
-			b.setClickListener(this, editor);
-		}
-
-	}
-
-	/*****************************************************************************************************************************************
-	 */
-	/**************************************
 	 ************ Listener***********
 	 **************************************/
 
@@ -400,29 +363,18 @@ public class FilterComponent
 	 *
 	 * @param button
 	 *            -> {@link Button}
-	 * @param index
-	 *            -> {@link Integer} current row Index
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
-	 * @param checkbox
-	 *            -> {@link FilterCheckBox}
-	 * @param editButton
-	 *            -> {@link EditButton}
-	 * @param deleteButton
-	 *            -> {@link DeleteButton}
+	 * @param buttons
+	 *            -> {@link LabelButtons}
 	 */
-	private void addButtonClickListener(
-		final Button button,
-		final ReplaceabelEditor editor,
-		final FilterCheckBox checkbox,
-		final EditButton editButton,
-		final DeleteButton deleteButton)
+	private void addButtonClickListener(final Button button, final ReplaceabelEditor editor, final LabelButtons buttons)
 	{
 		removeListener(this.addButtonClick);
-		this.addButtonClick =
-			button.addClickListener(listener -> addingNewLabelRow(editor, checkbox, editButton, deleteButton));
+		this.addButtonClick = button.addClickListener(listener -> addingNewLabelRow(editor, buttons));
+
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
@@ -502,21 +454,19 @@ public class FilterComponent
 	 * @param cancelButton
 	 *            -> {@link CancelButton}
 	 */
-	public void updateComboBox(
-		final ReplaceabelEditor editor,
-		final UpdateButton updateButton,
-		final CancelButton cancelButton)
+	public void updateComboBox(final ReplaceabelEditor editor, final ComboBoxButtons buttons)
 	{
-		definingButtons(editor, null, updateButton, cancelButton);
+		buttons.definingButtons(editor);
 
 		editor.getOriginal().setVisible(true);
-		
-		final HorizontalLayout buttonLayout = createButtonLayout(updateButton, cancelButton);
+
+		final HorizontalLayout buttonLayout = createButtonLayout(buttons.getUpdateButton(), buttons.getCancelButton());
 		buttonLayout.setClassName("buttonLayoutCombo");
 		this.comboDiv.add(
 			createFinalLayout(
 				createEntryRowCombo(editor.getOriginal()),
 				buttonLayout));
+
 	}
 
 	/**
@@ -543,28 +493,20 @@ public class FilterComponent
 	 *
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
-	 * @param checkbox
-	 *            -> {@link FilterCheckBox}
-	 * @param editButton
-	 *            -> {@link EditButton}
-	 * @param deleteButton
-	 *            -> {@link DeleteButton}
+	 * @param buttons
+	 *            -> {@link LabelButtons}
 	 */
-	public void updateLabelRow(
-		final ReplaceabelEditor editor,
-		final FilterCheckBox checkbox,
-		final EditButton editButton,
-		final DeleteButton deleteButton)
+	public void updateLabelRow(final ReplaceabelEditor editor, final LabelButtons buttons)
 	{
-		definingButtons(editor, checkbox, editButton, deleteButton);
-		
+		buttons.definingButtons(editor);
+
 		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor),
-			createButtonLayout(checkbox, editButton, deleteButton));
-		
+			createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(), buttons.getDeleteButton()));
+
 		replaceLabelRow(editor.getLabelLayout(), finalLayout, this.labelDiv);
-		
+
 		editor.setLabelLayout(finalLayout);
-		
+
 		updateReplaceabelCopy(editor);
 		updateFilterData();
 		newFilterEntry(this.rowIndex);
@@ -663,7 +605,7 @@ public class FilterComponent
 		{
 			listener.remove();
 		}
-		
+
 	}
 
 	/*****************************************************************************************************************************************
@@ -671,7 +613,7 @@ public class FilterComponent
 	/**************************************
 	 ************ Swapping Stuff***********
 	 **************************************/
-	
+
 	/**
 	 * Opens the <b>filterDiv</b> by clicking on the {@link HideButton}
 	 * <br>
@@ -682,7 +624,7 @@ public class FilterComponent
 		this.hideFilterButton.open();
 		this.filterDiv.setVisible(true);
 	}
-	
+
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
@@ -704,27 +646,25 @@ public class FilterComponent
 		final ReplaceabelEditor replace      = new ReplaceabelEditor(editor);
 		final CancelButton      cancelButton = new CancelButton();
 		cancelButton.defineButton();
-		
-		addButtonClickListener(this.addFilterButton, replace, new FilterCheckBox(),
-			new EditButton(),
-			new DeleteButton());
-		
+
+		addButtonClickListener(this.addFilterButton, replace, new LabelButtons(this));
+
 		cancelButton.setClickListener(this, index);
-		
+
 		final HorizontalLayout buttonLayout = createButtonLayout(this.addFilterButton, cancelButton);
 		buttonLayout.setClassName("buttonLayoutCombo");
-		
+
 		this.comboDiv.add(
 			createFinalLayout(
 				createEntryRowCombo(editor),
 				buttonLayout));
-		
+
 		this.rowIndex++;
-		
+
 		openDiv();
-		
+
 		return editor;
-		
+
 	}
 
 	/**************************************
@@ -829,26 +769,19 @@ public class FilterComponent
 	 *
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
-	 * @param checkbox
-	 *            -> {@link FilterCheckBox}
-	 * @param editButton
-	 *            -> {@link EditButton}
-	 * @param deleteButton
-	 *            -> {@link DeleteButton}
+	 * @param buttons
+	 *            -> {@link LabelButtons}
 	 */
 	private void addingNewLabelRow(
 		final ReplaceabelEditor editor,
-		final FilterCheckBox checkbox,
-		final EditButton editButton,
-		final DeleteButton deleteButton)
+		final LabelButtons buttons)
 	{
-
-		definingButtons(editor, checkbox, editButton, deleteButton);
+		buttons.definingButtons(editor);
 
 		this.filterEntryEditors.add(editor);
 
 		final HorizontalLayout finalLayout = createFinalLayout(createEntryRowLabel(editor),
-			createButtonLayout(checkbox, editButton, deleteButton));
+			createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(), buttons.getDeleteButton()));
 
 		editor.setLabelLayout(finalLayout);
 
@@ -858,6 +791,7 @@ public class FilterComponent
 		updateReplaceabelCopy(editor);
 		updateFilterData();
 		newFilterEntry(this.rowIndex);
+
 	}
 
 	/*

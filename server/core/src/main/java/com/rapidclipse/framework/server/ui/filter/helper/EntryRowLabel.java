@@ -22,27 +22,27 @@ public class EntryRowLabel
 {
 	HorizontalLayout  layout = new HorizontalLayout();
 	FilterEntryEditor editor;
-
+	
 	@SuppressWarnings("rawtypes")
 	private List<FilterValueEditorComposite> values;
 	private String                           property;
 	private String                           operator;
 	private final StringBuilder              description = new StringBuilder();
 	private static final DateTimeFormatter   FORMATTER   = DateTimeFormatter.ofPattern("YYYY.MM.dd");
-
+	
 	public EntryRowLabel(final FilterEntryEditor editor)
 	{
 		this.editor = editor;
 		setVariables();
 		this.layout = createEntry();
-		
-	}
 
+	}
+	
 	public EntryRowLabel()
 	{
 		this.editor = null;
 	}
-
+	
 	/**
 	 * @param shortLayout
 	 * @param longLayout
@@ -56,9 +56,9 @@ public class EntryRowLabel
 		this.editor = editor;
 		setVariables();
 		this.layout = layout;
-		
+
 	}
-	
+
 	/**
 	 * @return the editor
 	 */
@@ -66,7 +66,7 @@ public class EntryRowLabel
 	{
 		return this.editor;
 	}
-
+	
 	/**
 	 * @param editor
 	 *            the editor to set
@@ -75,7 +75,7 @@ public class EntryRowLabel
 	{
 		this.editor = editor;
 	}
-
+	
 	/**
 	 * @return the layout
 	 */
@@ -83,7 +83,7 @@ public class EntryRowLabel
 	{
 		return this.layout;
 	}
-
+	
 	/**
 	 * @param layout
 	 *            the layout to set
@@ -92,14 +92,14 @@ public class EntryRowLabel
 	{
 		this.layout = layout;
 	}
-
+	
 	private void setVariables()
 	{
 		this.values   = this.editor.getValueEditors();
 		this.operator = this.editor.getSelectedOperator().name();
 		this.property = this.editor.getSelectedProperty().caption();
 	}
-
+	
 	/**
 	 * Creates the EntryRow which can be shown in a {@link Div} or somewhere else
 	 *
@@ -110,22 +110,21 @@ public class EntryRowLabel
 		final HorizontalLayout row = new HorizontalLayout();
 		row.addClassName(StringResourceUtils.getResourceString("entryRowLabel", this));
 		row.setEnabled(true);
-
+		
 		this.description.append(this.property + " -> " + this.operator);
 		buildRow(row);
-
+		
 		row.getElement().setProperty("title", this.description.toString());
 		return row;
 	}
-	
+
 	/**
 	 * Build the {@link Label} which is added to the <b>row</b>, to show the selected Filter
-	 * 
+	 *
 	 * @param row
 	 *            -> {@link HorizontalLayout}
 	 */
-	private void buildRow(
-		final HorizontalLayout row)
+	private void buildRow(final HorizontalLayout row)
 	{
 		final Label label = new Label();
 		label.addClassName("label");
@@ -137,9 +136,9 @@ public class EntryRowLabel
 				if(value.component() instanceof DatePicker)
 				{
 					final DatePicker datepicker = (DatePicker)value.component();
-					
+
 					final LocalDate date = datepicker.getValue();
-					
+
 					label.add(" " + FORMATTER.format(date));
 					this.description.append(" -> " + FORMATTER.format(date));
 				}
@@ -152,5 +151,5 @@ public class EntryRowLabel
 			row.add(label);
 		}
 	}
-	
+
 }

@@ -36,7 +36,7 @@ public class EditButton extends Buttons
 	{
 		this.addClickListener(listener -> {
 			component.comboDiv.removeAll();
-			component.updateComboBox(editor, new UpdateButton(), new CancelButton());
+			component.updateComboBox(editor, new ComboBoxButtons(component));
 		});
 		
 	}

@@ -14,7 +14,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class UpdateButton extends Buttons
 {
-
+	
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -30,7 +30,7 @@ public class UpdateButton extends Buttons
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("updateHover", this));
 		this.addClickShortcut(Key.ENTER);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -38,11 +38,11 @@ public class UpdateButton extends Buttons
 	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
 	{
 		this.addClickListener(listener -> {
-			component.updateLabelRow(editor, new FilterCheckBox(), new EditButton(), new DeleteButton());
+			component.updateLabelRow(editor, new LabelButtons(component));
 			component.newFilterEntry(component.rowIndex);
 			component.updateFilterData();
 		});
-
+		
 	}
-	
+
 }
