@@ -24,16 +24,18 @@
 
 package com.rapidclipse.framework.server.charts.pie;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
+import com.rapidclipse.framework.server.charts.Area;
+import com.rapidclipse.framework.server.charts.Background;
 import com.rapidclipse.framework.server.charts.Chart;
-import com.rapidclipse.framework.server.charts.ChartJsBuilder;
 import com.rapidclipse.framework.server.charts.ChartModel;
-import com.rapidclipse.framework.server.charts.config.Slices;
-import com.rapidclipse.framework.server.charts.data.DataTable;
+import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Legend;
+import com.rapidclipse.framework.server.charts.TextStyle;
+import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.page.Page;
 
 
 /**
@@ -44,60 +46,220 @@ import com.vaadin.flow.component.page.Page;
 @Tag("pie-chart")
 public class PieChart extends Chart
 {
-	private PieChartConfiguration config;
-	private DataTable      dataTable;
-	private List<PieSlice> slices;
-	
+	private Background                background;
+	private Area                      chartArea;
+	private Boolean                   enableInteractivity;
+	private Boolean                   forceIFrame;
+	private Boolean                   is3D;
+	private Legend                    legend;
+	private Double                    pieHole;
+	private String                    pieSliceBorderColor;
+	private String                    pieSliceText;
+	private TextStyle                 pieSliceTextStyle;
+	private Double                    pieStartAngle;
+	private Boolean                   reverseCategories;
+	private String                    pieResidueSliceColor;
+	private String                    pieResidueSliceLabel;
+	private Double                    sliceVisibilityThreshold;
+	private final Map<Integer, Slice> slices = new HashMap<>();
+
 	public PieChart()
 	{
-		super("PieChart", "corechart");
-		
-		this.config = new PieChartConfiguration();
+		super("PieChart");
+
+		final ChartModel model = getModel();
+		model.addColumn(Column.New(Column.Type.STRING, "category", "category"));
+		model.addColumn(Column.New(Column.Type.NUMBER, "value", "value"));
 	}
 
-	/**
-	 * Setting options for the chart.
-	 *
-	 * @param config
-	 */
-	public void setConfig(final PieChartConfiguration config)
+	public PieChart addSlice(final int rowIndex, final Slice slice)
 	{
-		this.config = config;
-		if(this.slices != null)
-		{
-			this.config.setSlices(new Slices(this.slices));
-		}
+		this.slices.put(rowIndex, slice);
+		return this;
 	}
 
-	/**
-	 * Setting a model for the chart and will draw it new.
-	 *
-	 * @param model
-	 */
-	public void setModel(final ChartModel model)
+	public Slice removeSlice(final int rowIndex)
 	{
-		final PieChartModel pieModel = (PieChartModel)model;
-		
-		final DataTable table = new DataTable();
-		table.setColumns(pieModel.getDataTable().getColumns());
-		table.setRows(pieModel.getDataTable().getRows());
-
-		this.dataTable = table;
-		this.slices    = pieModel.getSlices();
-		this.config.setSlices(new Slices(this.slices));
-		this.buildChart();
-
+		return this.slices.remove(rowIndex);
 	}
-	
-	/**
-	 * Draws the chart.
-	 * setModel or buildChart should be the last methods to call.
-	 */
-	public void buildChart()
+
+	public PieChart removeAllSlices()
 	{
-		final ChartJsBuilder js   = new ChartJsBuilder(this.dataTable,
-			this.config.getOptions(), this.id(), "PieChart");
-		final Page           page = UI.getCurrent().getPage();
-		page.executeJs(js.constructChart());
+		this.slices.clear();
+		return this;
+	}
+
+	public Background getBackground()
+	{
+		return this.background;
+	}
+
+	public void setBackground(final Background background)
+	{
+		this.background = background;
+	}
+
+	public Area getChartArea()
+	{
+		return this.chartArea;
+	}
+
+	public void setChartArea(final Area chartArea)
+	{
+		this.chartArea = chartArea;
+	}
+
+	public Boolean getEnableInteractivity()
+	{
+		return this.enableInteractivity;
+	}
+
+	public void setEnableInteractivity(final Boolean enableInteractivity)
+	{
+		this.enableInteractivity = enableInteractivity;
+	}
+
+	public Boolean getForceIFrame()
+	{
+		return this.forceIFrame;
+	}
+
+	public void setForceIFrame(final Boolean forceIFrame)
+	{
+		this.forceIFrame = forceIFrame;
+	}
+
+	public Boolean getIs3D()
+	{
+		return this.is3D;
+	}
+
+	public void setIs3D(final Boolean is3d)
+	{
+		this.is3D = is3d;
+	}
+
+	public Legend getLegend()
+	{
+		return this.legend;
+	}
+
+	public void setLegend(final Legend legend)
+	{
+		this.legend = legend;
+	}
+
+	public Double getPieHole()
+	{
+		return this.pieHole;
+	}
+
+	public void setPieHole(final Double pieHole)
+	{
+		this.pieHole = pieHole;
+	}
+
+	public String getPieSliceBorderColor()
+	{
+		return this.pieSliceBorderColor;
+	}
+
+	public void setPieSliceBorderColor(final String pieSliceBorderColor)
+	{
+		this.pieSliceBorderColor = pieSliceBorderColor;
+	}
+
+	public String getPieSliceText()
+	{
+		return this.pieSliceText;
+	}
+
+	public void setPieSliceText(final String pieSliceText)
+	{
+		this.pieSliceText = pieSliceText;
+	}
+
+	public TextStyle getPieSliceTextStyle()
+	{
+		return this.pieSliceTextStyle;
+	}
+
+	public void setPieSliceTextStyle(final TextStyle pieSliceTextStyle)
+	{
+		this.pieSliceTextStyle = pieSliceTextStyle;
+	}
+
+	public Double getPieStartAngle()
+	{
+		return this.pieStartAngle;
+	}
+
+	public void setPieStartAngle(final Double pieStartAngle)
+	{
+		this.pieStartAngle = pieStartAngle;
+	}
+
+	public Boolean getReverseCategories()
+	{
+		return this.reverseCategories;
+	}
+
+	public void setReverseCategories(final Boolean reverseCategories)
+	{
+		this.reverseCategories = reverseCategories;
+	}
+
+	public String getPieResidueSliceColor()
+	{
+		return this.pieResidueSliceColor;
+	}
+
+	public void setPieResidueSliceColor(final String pieResidueSliceColor)
+	{
+		this.pieResidueSliceColor = pieResidueSliceColor;
+	}
+
+	public String getPieResidueSliceLabel()
+	{
+		return this.pieResidueSliceLabel;
+	}
+
+	public void setPieResidueSliceLabel(final String pieResidueSliceLabel)
+	{
+		this.pieResidueSliceLabel = pieResidueSliceLabel;
+	}
+
+	public Double getSliceVisibilityThreshold()
+	{
+		return this.sliceVisibilityThreshold;
+	}
+
+	public void setSliceVisibilityThreshold(final Double sliceVisibilityThreshold)
+	{
+		this.sliceVisibilityThreshold = sliceVisibilityThreshold;
+	}
+
+	@Override
+	protected void createConfiguration(final ObjectHelper obj)
+	{
+		super.createConfiguration(obj);
+
+		obj.putIfNotNull("backgroundColor", this.background);
+		obj.putIfNotNull("chartArea", this.chartArea);
+		obj.putIfNotNull("enableInteractivity", this.enableInteractivity);
+		obj.putIfNotNull("forceIFrame", this.forceIFrame);
+		obj.putIfNotNull("is3D", this.is3D);
+		obj.putIfNotNull("legend", this.legend);
+		obj.putIfNotNull("pieHole", this.pieHole);
+		obj.putIfNotNull("pieSliceBorderColor", this.pieSliceBorderColor);
+		obj.putIfNotNull("pieSliceText", this.pieSliceText);
+		obj.putIfNotNull("pieSliceTextStyle", this.pieSliceTextStyle);
+		obj.putIfNotNull("pieStartAngle", this.pieStartAngle);
+		obj.putIfNotNull("reverseCategories", this.reverseCategories);
+		obj.putIfNotNull("pieResidueSliceColor", this.pieResidueSliceColor);
+		obj.putIfNotNull("pieResidueSliceLabel", this.pieResidueSliceLabel);
+		obj.putIfNotNull("sliceVisibilityThreshold", this.sliceVisibilityThreshold);
+
+		putIfNotNull(obj, "slices", this.slices);
 	}
 }
