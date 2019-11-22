@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.textfield.TextField;
 
 
 /**
@@ -33,10 +34,13 @@ public class Searchbar extends HorizontalLayout
 	 * @param addButton
 	 *            -> {@link Component}
 	 */
-	public void createSearchBar(final Component searchTextField, final Component hideButton, final Component addButton)
+	public void createSearchBar(final TextField searchTextField, final Component... components)
 	{
-		
-		this.add(searchTextField, hideButton, addButton);
+		this.add(searchTextField);
+		for(final Component c : components)
+		{
+			this.add(c);
+		}
 		this.expand(searchTextField);
 	}
 }

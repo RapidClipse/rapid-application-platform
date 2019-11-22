@@ -6,8 +6,12 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 
 /**
- * @author XDEV Software
- *
+ * @author XDEV Software<br>
+ *         <br>
+ *         Object which holds 2 instances of {@link FilterEntryEditor}.<br>
+ *         One is the original and one the copy.<br>
+ *         It also has the finalLayout and the Label EntryRow<br>
+ *         This class is needed to switch between Orignal and Copy and also update the needed Layout and/or EntryRow
  */
 public class ReplaceabelEditor
 {

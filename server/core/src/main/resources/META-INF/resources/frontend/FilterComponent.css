@@ -15,6 +15,13 @@ vaadin-combo-box::part(text-field), vaadin-text-field { -
 	font-size: var(--lumo-font-size-s);
 	margin-left: 10px;
 	white-space: nowrap;
+	min-width: 0px;
+}
+.label{
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 100%;
 }
 
 .finalLayout {
@@ -32,6 +39,11 @@ vaadin-combo-box::part(text-field), vaadin-text-field { -
 .buttonLayout {
 	margin-right: 10px;
 	align-items: center;
+}
+
+.buttonLayoutCombo{
+	height: 40px;
+	align-self: flex-end;
 }
 
 .editor {
@@ -53,6 +65,9 @@ vaadin-combo-box::part(text-field), vaadin-text-field { -
 
 .addButton:hover, checkButton:hover, confirmButton:hover {
 	color: green;
+}
+.labelDiv{
+	margin-bottom: 5px;
 }
 
 @media only screen and (min-width: 0px) {

@@ -1,6 +1,8 @@
 
 package com.rapidclipse.framework.server.ui.filter.helper;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
@@ -9,8 +11,6 @@ import com.rapidclipse.framework.server.ui.filter.FilterValueEditorComposite;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.icon.Icon;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 
 
@@ -20,15 +20,22 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
  */
 public class EntryRowLabel
 {
-	HorizontalLayout  shortLayout = new HorizontalLayout();
-	HorizontalLayout  longLayout  = new HorizontalLayout();
+	HorizontalLayout  layout = new HorizontalLayout();
 	FilterEntryEditor editor;
+
+	@SuppressWarnings("rawtypes")
+	private List<FilterValueEditorComposite> values;
+	private String                           property;
+	private String                           operator;
+	private final StringBuilder              description = new StringBuilder();
+	private static final DateTimeFormatter   FORMATTER   = DateTimeFormatter.ofPattern("YYYY.MM.dd");
 
 	public EntryRowLabel(final FilterEntryEditor editor)
 	{
-		this.editor      = editor;
-		this.longLayout  = createEntry(false);
-		this.shortLayout = createEntry(true);
+		this.editor = editor;
+		setVariables();
+		this.layout = createEntry();
+		
 	}
 
 	public EntryRowLabel()
@@ -42,82 +49,16 @@ public class EntryRowLabel
 	 * @param editor
 	 */
 	public EntryRowLabel(
-		final HorizontalLayout shortLayout,
-		final HorizontalLayout longLayout,
+		final HorizontalLayout layout,
 		final FilterEntryEditor editor)
 	{
 		super();
-		this.shortLayout = shortLayout;
-		this.longLayout  = longLayout;
-		this.editor      = editor;
+		this.editor = editor;
+		setVariables();
+		this.layout = layout;
+		
 	}
-
-	private String shortenString(final String s, final int length, final boolean dots)
-	{
-		String string = "";
-
-		if(s.length() >= length)
-		{
-			if(dots)
-			{
-				string = s.substring(0, length) + "...";
-			}
-			else
-			{
-				string = s.substring(0, length);
-			}
-		}
-		else
-		{
-			return s;
-		}
-
-		return string;
-	}
-
-	private Icon createArrow()
-	{
-		final Icon arrow = VaadinIcon.ARROW_RIGHT.create();
-		arrow.setSize("20px");
-		// The Vaadinblue if you .setIcon() to a Component
-		arrow.setColor("#1676F3");
-		return arrow;
-	}
-
-	/**
-	 * @return the shortLayout
-	 */
-	public HorizontalLayout getShortLayout()
-	{
-		return this.shortLayout;
-	}
-
-	/**
-	 * @param shortLayout
-	 *            the shortLayout to set
-	 */
-	public void setShortLayout(final HorizontalLayout shortLayout)
-	{
-		this.shortLayout = shortLayout;
-	}
-
-	/**
-	 * @return the longLayout
-	 */
-	public HorizontalLayout getLongLayout()
-	{
-		return this.longLayout;
-	}
-
-	/**
-	 * @param longLayout
-	 *            the longLayout to set
-	 */
-	public void setLongLayout(final HorizontalLayout longLayout)
-	{
-		this.longLayout = longLayout;
-	}
-
+	
 	/**
 	 * @return the editor
 	 */
@@ -136,135 +77,80 @@ public class EntryRowLabel
 	}
 
 	/**
+	 * @return the layout
+	 */
+	public HorizontalLayout getLayout()
+	{
+		return this.layout;
+	}
+
+	/**
+	 * @param layout
+	 *            the layout to set
+	 */
+	public void setLayout(final HorizontalLayout layout)
+	{
+		this.layout = layout;
+	}
+
+	private void setVariables()
+	{
+		this.values   = this.editor.getValueEditors();
+		this.operator = this.editor.getSelectedOperator().name();
+		this.property = this.editor.getSelectedProperty().caption();
+	}
+
+	/**
 	 * Creates the EntryRow which can be shown in a {@link Div} or somewhere else
-	 * 
-	 * @param small
-	 *            -> {@link Boolean} to set if the small or normal row should be created
+	 *
 	 * @return -> {@link HorizontalLayout}
 	 */
-	@SuppressWarnings("rawtypes")
-	private HorizontalLayout createEntry(final boolean small)
+	private HorizontalLayout createEntry()
 	{
 		final HorizontalLayout row = new HorizontalLayout();
 		row.addClassName(StringResourceUtils.getResourceString("entryRowLabel", this));
 		row.setEnabled(true);
 
-		final List<FilterValueEditorComposite> values      = this.editor.getValueEditors();
-		final String                           property    = this.editor.getSelectedProperty().caption();
-		final String                           operator    = this.editor.getSelectedOperator().name();
-		final StringBuilder                    description = new StringBuilder();
-		description.append(property + " -> " + operator);
-		if(small)
-		{
-			createShort(row, property, operator, values, description);
-		}
-		else
-		{
-			createLong(row, property, operator, values, description);
-		}
+		this.description.append(this.property + " -> " + this.operator);
+		buildRow(row);
 
-		row.getElement().setProperty("title", description.toString());
+		row.getElement().setProperty("title", this.description.toString());
 		return row;
 	}
-
+	
 	/**
-	 * Creates the long/normal row
+	 * Build the {@link Label} which is added to the <b>row</b>, to show the selected Filter
 	 * 
 	 * @param row
 	 *            -> {@link HorizontalLayout}
-	 * @param property
-	 *            -> {@link String}
-	 * @param operator
-	 *            -> {@link String}
-	 * @param values
-	 *            -> {@link List} of type {@link FilterValueEditorComposite}
-	 * @param description
-	 *            -> {@link StringBuilder}
 	 */
-	@SuppressWarnings("rawtypes")
-	private void createLong(
-		final HorizontalLayout row,
-		final String property,
-		final String operator,
-		final List<FilterValueEditorComposite> values,
-		final StringBuilder description)
+	private void buildRow(
+		final HorizontalLayout row)
 	{
-		final int cutBy = 10;
-		row.add(new Label(property));
-		row.add(createArrow());
-		row.add(new Label(operator));
-
-		if(values != null)
+		final Label label = new Label();
+		label.addClassName("label");
+		label.add(this.property + " " + this.operator);
+		if(this.values != null)
 		{
-			for(final FilterValueEditorComposite<?, ?> value : values)
+			for(final FilterValueEditorComposite<?, ?> value : this.values)
 			{
-				row.add(createArrow());
-
 				if(value.component() instanceof DatePicker)
 				{
-					row.add(new Label(" " + shortenString(value.getValue().toString(), cutBy, false)));
-					description.append(" -> " + shortenString(value.getValue().toString(), cutBy, false));
+					final DatePicker datepicker = (DatePicker)value.component();
+					
+					final LocalDate date = datepicker.getValue();
+					
+					label.add(" " + FORMATTER.format(date));
+					this.description.append(" -> " + FORMATTER.format(date));
 				}
 				else
 				{
-					row.add(new Label(" " + shortenString(value.getValue().toString(), cutBy, true)));
-					description.append(" -> " + value.getValue().toString());
+					label.add(" " + value.getValue().toString());
+					this.description.append(" -> " + value.getValue().toString());
 				}
 			}
-
-			row.getElement().setProperty("title", description.toString());
+			row.add(label);
 		}
 	}
-
-	/**
-	 * Creates the short row
-	 * 
-	 * @param row
-	 *            -> {@link HorizontalLayout}
-	 * @param property
-	 *            -> {@link String}
-	 * @param operator
-	 *            -> {@link String}
-	 * @param values
-	 *            -> {@link List} of type {@link FilterValueEditorComposite}
-	 * @param description
-	 *            -> {@link StringBuilder}
-	 */
-	@SuppressWarnings("rawtypes")
-	private void createShort(
-		final HorizontalLayout row,
-		final String property,
-		final String operator,
-		final List<FilterValueEditorComposite> values,
-		final StringBuilder description)
-	{
-		int cutBy = 5;
-		row.add(new Label(shortenString(property, cutBy, true)));
-		row.add(createArrow());
-		row.add(new Label(shortenString(operator, cutBy, true)));
-
-		if(values != null)
-		{
-			for(final FilterValueEditorComposite<?, ?> value : values)
-			{
-
-				row.add(createArrow());
-
-				if(values.size() > 1)
-				{
-					cutBy = 1;
-				}
-				row.add(new Label("" + shortenString(value.getValue().toString(), cutBy, true)));
-
-				if(value.component() instanceof DatePicker)
-				{
-					description.append(" -> " + shortenString(value.getValue().toString(), 10, false));
-				}
-				else
-				{
-					description.append(" -> " + value.getValue().toString());
-				}
-			}
-		}
-	}
+	
 }
