@@ -47,147 +47,147 @@ public interface PointShape extends Serializable, JavaScriptable
 		DIAMOND("diamond"),
 		STAR("star"),
 		POLYGON("polygon");
-
+		
 		private final String js;
-
+		
 		private Type(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-
+		
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-
+	
 	public Type type();
-
+	
 	public Integer sides();
-
+	
 	public Double dent();
-
-	public Integer rotation();
-
+	
+	public Number rotation();
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
 		public Builder type(Type type);
-
+		
 		public Builder sides(Integer sides);
-
+		
 		public Builder dent(Double dent);
-
-		public Builder rotation(Integer rotation);
-
+		
+		public Builder rotation(Number rotation);
+		
 		public PointShape build();
-
+		
 		public static class Default implements Builder
 		{
 			private Type    type;
 			private Integer sides;
 			private Double  dent;
-			private Integer rotation;
-
+			private Number  rotation;
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
 			public Builder type(final Type type)
 			{
 				this.type = type;
 				return this;
 			}
-
+			
 			@Override
 			public Builder sides(final Integer sides)
 			{
 				this.sides = sides;
 				return this;
 			}
-
+			
 			@Override
 			public Builder dent(final Double dent)
 			{
 				this.dent = dent;
 				return this;
 			}
-
+			
 			@Override
-			public Builder rotation(final Integer rotation)
+			public Builder rotation(final Number rotation)
 			{
 				this.rotation = rotation;
 				return this;
 			}
-
+			
 			@Override
 			public PointShape build()
 			{
 				return PointShape.New(this.type, this.sides, this.dent, this.rotation);
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	public static PointShape New(final Type type)
 	{
 		return new Default(type, null, null, null);
 	}
-	
-	public static PointShape New(final Type type, final Integer sides, final Double dent, final Integer rotation)
+
+	public static PointShape New(final Type type, final Integer sides, final Double dent, final Number rotation)
 	{
 		return new Default(type, sides, dent, rotation);
 	}
-
+	
 	public static class Default implements PointShape
 	{
 		private final Type    type;
 		private final Integer sides;
 		private final Double  dent;
-		private final Integer rotation;
-
-		Default(final Type type, final Integer sides, final Double dent, final Integer rotation)
+		private final Number  rotation;
+		
+		Default(final Type type, final Integer sides, final Double dent, final Number rotation)
 		{
 			super();
-
+			
 			this.type     = Objects.requireNonNull(type);
 			this.sides    = sides;
 			this.dent     = dent;
 			this.rotation = rotation;
 		}
-
+		
 		@Override
 		public Type type()
 		{
 			return this.type;
 		}
-
+		
 		@Override
 		public Integer sides()
 		{
 			return this.sides;
 		}
-
+		
 		@Override
 		public Double dent()
 		{
 			return this.dent;
 		}
-
+		
 		@Override
-		public Integer rotation()
+		public Number rotation()
 		{
 			return this.rotation;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -198,7 +198,7 @@ public interface PointShape extends Serializable, JavaScriptable
 			obj.putIfNotNull("rotation", this.rotation);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }

@@ -62,60 +62,60 @@ public class AreaChart extends Chart
 		SERIES("series"),
 		AUTO("auto"),
 		NONE("none");
-		
+
 		private final String js;
-		
+
 		private AggregationTarget(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public static enum AxisTitlesPosition implements JavaScriptable
 	{
 		IN("in"),
 		OUT("out"),
 		NONE("none");
-		
+
 		private final String js;
-		
+
 		private AxisTitlesPosition(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public static enum FocusTarget implements JavaScriptable
 	{
 		DATUM("datum"),
 		CATEGORY("category");
-		
+
 		private final String js;
-		
+
 		private FocusTarget(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public static enum StackMode implements JavaScriptable
 	{
 		FALSE("false"),
@@ -123,21 +123,21 @@ public class AreaChart extends Chart
 		PERCENT("'percent'"),
 		RELATIVE("'relative'"),
 		ABSOLUTE("'absolute'");
-		
+
 		private final String js;
-		
+
 		private StackMode(final String js)
 		{
 			this.js = js;
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	private AggregationTarget          aggregationTarget;
 	private Animation                  animation;
 	private Annotations                annotations;
@@ -166,311 +166,311 @@ public class AreaChart extends Chart
 	private TextPosition               titlePosition;
 	private Axis                       vAxis;
 	private final Map<Integer, Axis>   vAxes  = new LinkedHashMap<>();
-	
+
 	public AreaChart()
 	{
 		super("AreaChart");
 	}
-	
+
 	public AreaChart addSeries(final int rowIndex, final Series series)
 	{
 		this.series.put(rowIndex, series);
 		return this;
 	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
 		return this.series.remove(rowIndex);
 	}
-	
+
 	public AreaChart removeAllSeries()
 	{
 		this.series.clear();
 		return this;
 	}
-	
+
 	public AreaChart addVAxis(final int rowIndex, final Axis axis)
 	{
 		this.vAxes.put(rowIndex, axis);
 		return this;
 	}
-	
+
 	public Axis removeVAxis(final int rowIndex)
 	{
 		return this.vAxes.remove(rowIndex);
 	}
-	
+
 	public AreaChart removeAllVAxes()
 	{
 		this.vAxes.clear();
 		return this;
 	}
-	
+
 	public AggregationTarget getAggregationTarget()
 	{
 		return this.aggregationTarget;
 	}
-	
+
 	public void setAggregationTarget(final AggregationTarget aggregationTarget)
 	{
 		this.aggregationTarget = aggregationTarget;
 	}
-	
+
 	public Animation getAnimation()
 	{
 		return this.animation;
 	}
-	
+
 	public void setAnimation(final Animation animation)
 	{
 		this.animation = animation;
 	}
-	
+
 	public Annotations getAnnotations()
 	{
 		return this.annotations;
 	}
-	
+
 	public void setAnnotations(final Annotations annotations)
 	{
 		this.annotations = annotations;
 	}
-	
+
 	public Double getAreaOpacity()
 	{
 		return this.areaOpacity;
 	}
-	
+
 	public void setAreaOpacity(final Double areaOpacity)
 	{
 		this.areaOpacity = areaOpacity;
 	}
-	
+
 	public AxisTitlesPosition getAxisTitlesPosition()
 	{
 		return this.axisTitlesPosition;
 	}
-	
+
 	public void setAxisTitlesPosition(final AxisTitlesPosition axisTitlesPosition)
 	{
 		this.axisTitlesPosition = axisTitlesPosition;
 	}
-	
+
 	public Background getBackground()
 	{
 		return this.background;
 	}
-	
+
 	public void setBackground(final Background background)
 	{
 		this.background = background;
 	}
-	
+
 	public Area getChartArea()
 	{
 		return this.chartArea;
 	}
-	
+
 	public void setChartArea(final Area chartArea)
 	{
 		this.chartArea = chartArea;
 	}
-	
+
 	public Crosshair getCrosshair()
 	{
 		return this.crosshair;
 	}
-	
+
 	public void setCrosshair(final Crosshair crosshair)
 	{
 		this.crosshair = crosshair;
 	}
-	
+
 	public Double getDataOpacity()
 	{
 		return this.dataOpacity;
 	}
-	
+
 	public void setDataOpacity(final Double dataOpacity)
 	{
 		this.dataOpacity = dataOpacity;
 	}
-	
+
 	public Boolean getEnableInteractivity()
 	{
 		return this.enableInteractivity;
 	}
-	
+
 	public void setEnableInteractivity(final Boolean enableInteractivity)
 	{
 		this.enableInteractivity = enableInteractivity;
 	}
-	
+
 	public FocusTarget getFocusTarget()
 	{
 		return this.focusTarget;
 	}
-	
+
 	public void setFocusTarget(final FocusTarget focusTarget)
 	{
 		this.focusTarget = focusTarget;
 	}
-	
+
 	public Boolean getForceIFrame()
 	{
 		return this.forceIFrame;
 	}
-	
+
 	public void setForceIFrame(final Boolean forceIFrame)
 	{
 		this.forceIFrame = forceIFrame;
 	}
-	
-	public Axis gethAxis()
+
+	public Axis getHAxis()
 	{
 		return this.hAxis;
 	}
-	
-	public void sethAxis(final Axis hAxis)
+
+	public void setHAxis(final Axis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public Boolean getInterpolateNulls()
 	{
 		return this.interpolateNulls;
 	}
-	
+
 	public void setInterpolateNulls(final Boolean interpolateNulls)
 	{
 		this.interpolateNulls = interpolateNulls;
 	}
-	
+
 	public StackMode getStackMode()
 	{
 		return this.stackMode;
 	}
-	
+
 	public void setStackMode(final StackMode stackMode)
 	{
 		this.stackMode = stackMode;
 	}
-	
+
 	public Legend getLegend()
 	{
 		return this.legend;
 	}
-	
+
 	public void setLegend(final Legend legend)
 	{
 		this.legend = legend;
 	}
-	
+
 	public List<Double> getLineDashStyle()
 	{
 		return this.lineDashStyle;
 	}
-	
+
 	public void setLineDashStyle(final List<Double> lineDashStyle)
 	{
 		this.lineDashStyle = lineDashStyle;
 	}
-	
+
 	public Double getLineWidth()
 	{
 		return this.lineWidth;
 	}
-	
+
 	public void setLineWidth(final Double lineWidth)
 	{
 		this.lineWidth = lineWidth;
 	}
-	
+
 	public Orientation getOrientation()
 	{
 		return this.orientation;
 	}
-	
+
 	public void setOrientation(final Orientation orientation)
 	{
 		this.orientation = orientation;
 	}
-	
+
 	public PointShape.Type getPointShape()
 	{
 		return this.pointShape;
 	}
-	
+
 	public void setPointShape(final PointShape.Type pointShape)
 	{
 		this.pointShape = pointShape;
 	}
-	
+
 	public Double getPointSize()
 	{
 		return this.pointSize;
 	}
-	
+
 	public void setPointSize(final Double pointSize)
 	{
 		this.pointSize = pointSize;
 	}
-	
+
 	public Boolean getPointsVisible()
 	{
 		return this.pointsVisible;
 	}
-	
+
 	public void setPointsVisible(final Boolean pointsVisible)
 	{
 		this.pointsVisible = pointsVisible;
 	}
-	
+
 	public Boolean getReverseCategories()
 	{
 		return this.reverseCategories;
 	}
-	
+
 	public void setReverseCategories(final Boolean reverseCategories)
 	{
 		this.reverseCategories = reverseCategories;
 	}
-	
+
 	public SelectionMode getSelectionMode()
 	{
 		return this.selectionMode;
 	}
-	
+
 	public void setSelectionMode(final SelectionMode selectionMode)
 	{
 		this.selectionMode = selectionMode;
 	}
-	
+
 	public TextPosition getTitlePosition()
 	{
 		return this.titlePosition;
 	}
-	
+
 	public void setTitlePosition(final TextPosition titlePosition)
 	{
 		this.titlePosition = titlePosition;
 	}
-	
-	public Axis getvAxis()
+
+	public Axis getVAxis()
 	{
 		return this.vAxis;
 	}
-	
-	public void setvAxis(final Axis vAxis)
+
+	public void setVAxis(final Axis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-	
+
 	@Override
 	protected void createConfiguration(final ObjectHelper obj)
 	{
 		super.createConfiguration(obj);
-		
+
 		obj.putIfNotNull("aggregationTarget", this.aggregationTarget);
 		obj.putIfNotNull("animation", this.animation);
 		obj.putIfNotNull("annotations", this.annotations);
@@ -497,7 +497,7 @@ public class AreaChart extends Chart
 		obj.putIfNotNull("selectionMode", this.selectionMode);
 		obj.putIfNotNull("titlePosition", this.titlePosition);
 		obj.putIfNotNull("vAxis", this.vAxis);
-
+		
 		putIfNotNull(obj, "series", this.series);
 		putIfNotNull(obj, "vAxes", this.vAxes);
 	}

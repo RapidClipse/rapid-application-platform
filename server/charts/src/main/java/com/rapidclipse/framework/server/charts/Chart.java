@@ -29,110 +29,111 @@ public abstract class Chart extends Composite<Div> implements HasSize
 {
 	private final String   type;
 	private final String[] packages;
-
+	
 	private ChartModel model = ChartModel.New();
-
+	
 	private String       title;
 	private TextStyle    titleTextStyle;
 	private String       fontName;
 	private Integer      fontSize;
 	private List<String> colors;
 	private Tooltip      tooltip;
-
+	
 	protected Chart(final String type, final String... packages)
 	{
 		super();
-
+		
 		this.type     = type;
 		this.packages = packages != null && packages.length > 0
 			? packages
 			: new String[]{"corechart"};
 	}
-
+	
 	public void setModel(final ChartModel model)
 	{
 		this.model = model;
 	}
-
+	
 	public ChartModel getModel()
 	{
 		return this.model;
 	}
-
+	
 	public String getTitle()
 	{
 		return this.title;
 	}
-
+	
 	public void setTitle(final String title)
 	{
 		this.title = title;
 	}
-
+	
 	public TextStyle getTitleTextStyle()
 	{
 		return this.titleTextStyle;
 	}
-
+	
 	public void setTitleTextStyle(final TextStyle titleTextStyle)
 	{
 		this.titleTextStyle = titleTextStyle;
 	}
-
+	
 	public String getFontName()
 	{
 		return this.fontName;
 	}
-
+	
 	public void setFontName(final String fontName)
 	{
 		this.fontName = fontName;
 	}
-
+	
 	public Integer getFontSize()
 	{
 		return this.fontSize;
 	}
-
+	
 	public void setFontSize(final Integer fontSize)
 	{
 		this.fontSize = fontSize;
 	}
-
+	
 	public List<String> getColors()
 	{
 		return this.colors;
 	}
-
+	
 	public void setColors(final List<String> colors)
 	{
 		this.colors = colors;
 	}
-
+	
 	public Tooltip getTooltip()
 	{
 		return this.tooltip;
 	}
-
+	
 	public void setTooltip(final Tooltip tooltip)
 	{
 		this.tooltip = tooltip;
 	}
-
+	
 	public void refresh()
 	{
 		final String js = createChartJs();
+		System.out.println(js);
 		UI.getCurrent().getPage().executeJs(js);
 	}
-
+	
 	protected String createChartJs()
 	{
 		final ObjectHelper loadOptions = new ObjectHelper();
 		createLoadOptions(loadOptions);
-
+		
 		final ObjectHelper configuration = new ObjectHelper();
 		createConfiguration(configuration);
-
+		
 		final StringBuilder sb = new StringBuilder();
 		sb.append("google.charts.load('visualization', 'current', ").append(loadOptions.js()).append(");\n");
 		sb.append("google.charts.setOnLoadCallback(drawChart);\n");
@@ -144,15 +145,15 @@ public abstract class Chart extends Composite<Div> implements HasSize
 		sb.append("var view = new google.visualization.DataView(data);\n");
 		sb.append("chart.draw(view, configuration);\n");
 		sb.append("}");
-
+		
 		return sb.toString();
 	}
-
+	
 	protected void createLoadOptions(final ObjectHelper obj)
 	{
 		obj.put("packages", new ArrayHelper().addAllStrings(Arrays.asList(this.packages)));
 	}
-
+	
 	protected void createConfiguration(final ObjectHelper obj)
 	{
 		obj.putIfNotNull("title", this.title);
@@ -162,7 +163,7 @@ public abstract class Chart extends Composite<Div> implements HasSize
 		obj.putIfNotNull("colors", new ArrayHelper().addAllStrings(this.colors));
 		obj.putIfNotNull("tooltip", this.tooltip);
 	}
-
+	
 	protected <JS extends JavaScriptable> void
 		putIfNotNull(final ObjectHelper obj, final String key, final Map<Integer, JS> values)
 	{
@@ -173,7 +174,7 @@ public abstract class Chart extends Composite<Div> implements HasSize
 			obj.put(key, valuesObj);
 		}
 	}
-
+	
 	protected String id()
 	{
 		String id = getId().orElse(null);
