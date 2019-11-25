@@ -14,7 +14,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class UpdateButton extends Buttons
 {
-	
+
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -30,7 +30,7 @@ public class UpdateButton extends Buttons
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("updateHover", this));
 		this.addClickShortcut(Key.ENTER);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -39,10 +39,10 @@ public class UpdateButton extends Buttons
 	{
 		this.addClickListener(listener -> {
 			component.updateLabelRow(editor, new LabelButtons(component));
-			component.newFilterEntry(component.rowIndex);
+			component.newFilterEntry();
 			component.updateFilterData();
 		});
-		
-	}
 
+	}
+	
 }

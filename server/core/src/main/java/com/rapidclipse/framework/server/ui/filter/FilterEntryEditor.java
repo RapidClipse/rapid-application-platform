@@ -61,7 +61,6 @@ public class FilterEntryEditor extends FormLayout
 	private FilterOperator                                 selectedOperator;
 	private List<FilterValueEditorComposite>               valueEditors;
 	private List<Registration>                             valueEditorRegistrations;
-	private final int                                      rowIndex;
 	private final Runnable                                 filterChangeHandler;
 	private final FilterComponent                          component;
 
@@ -81,7 +80,6 @@ public class FilterEntryEditor extends FormLayout
 		final Runnable filterChangeHandler)
 	{
 		super();
-		this.rowIndex            = filterComponent.getIndex();
 		this.context             = context;
 		this.filterChangeHandler = filterChangeHandler;
 		this.setWidthFull();
@@ -105,7 +103,6 @@ public class FilterEntryEditor extends FormLayout
 		this.selectedOperator          = this.operatorComboBox.getValue();
 		this.selectedProperty          = this.propertyComboBox.getValue();
 
-		// add the ComboBoxes to the FormLayout
 		add(this.propertyComboBox, this.operatorComboBox);
 	}
 
@@ -147,33 +144,43 @@ public class FilterEntryEditor extends FormLayout
 	 * @param data
 	 *            -> {@link FilterEntry}
 	 */
-	@SuppressWarnings("unchecked")
+	
 	public void setFilterEntry(final FilterEntry data)
 	{
-		final FilterProperty<?> property = this.context.getFilterSubject()
-			.filterableProperty(data.getPropertyIdentifier());
+		final FilterProperty<?> property = getPropertyFromContext(data);
 		this.propertyComboBox.setValue(property);
 		propertySelectionChanged();
 
 		if(property != null)
 		{
-			final FilterOperator operator = this.context.getFilterOperatorRegistry()
-				.get(data.getOperatorKey());
-			this.operatorComboBox.setValue(operator);
-			operatorSelectionChanged();
+			declareOperator(data);
 
-			if(operator != null)
+		}
+	}
+
+	private void declareOperator(final FilterEntry data)
+	{
+		final FilterOperator operator = getOperatorFromContext(data);
+		this.operatorComboBox.setValue(operator);
+		operatorSelectionChanged();
+
+		if(operator != null)
+		{
+			declareValues(data);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private void declareValues(final FilterEntry data)
+	{
+		final Object[] values = data.getValues();
+		if(values != null && values.length == this.valueEditors.size())
+		{
+			int i = 0;
+			for(final Object value : values)
 			{
-				final Object[] values = data.getValues();
-				if(values != null && values.length == this.valueEditors.size())
-				{
-					int i = 0;
-					for(final Object value : values)
-					{
-						this.valueEditors.get(i++).setValue(value);
+				this.valueEditors.get(i++).setValue(value);
 
-					}
-				}
 			}
 		}
 	}
@@ -191,8 +198,7 @@ public class FilterEntryEditor extends FormLayout
 			return null;
 		}
 
-		final Object[] values = this.valueEditors.stream().map(FilterValueEditorComposite::getValue)
-			.filter(Objects::nonNull).toArray();
+		final Object[] values = getValuesFromComposite();
 		if(values.length != this.valueEditors.size())
 		{
 			return null;
@@ -200,6 +206,12 @@ public class FilterEntryEditor extends FormLayout
 
 		return new FilterEntry(this.selectedProperty.identifier(), this.selectedOperator.key(),
 			values);
+	}
+	
+	private Object[] getValuesFromComposite()
+	{
+		return this.valueEditors.stream().map(FilterValueEditorComposite::getValue)
+			.filter(Objects::nonNull).toArray();
 	}
 
 	/**
@@ -224,11 +236,8 @@ public class FilterEntryEditor extends FormLayout
 		this.selectedProperty = this.propertyComboBox.getValue();
 		if(this.selectedProperty != null)
 		{
-			this.operatorComboBox.setVisible(true);
-			final List<FilterOperator> operators = this.context.getFilterOperatorRegistry().getAll()
-				.stream().filter(op -> op.isSupported(this.selectedProperty)).collect(toList());
-			this.operatorComboBox.setItems(operators);
 
+			enableOperatorComboBox();
 		}
 		else
 		{
@@ -236,10 +245,17 @@ public class FilterEntryEditor extends FormLayout
 		}
 	}
 
+	private void enableOperatorComboBox()
+	{
+		this.operatorComboBox.setVisible(true);
+		final List<FilterOperator> operators = this.context.getFilterOperatorRegistry().getAll()
+			.stream().filter(op -> op.isSupported(this.selectedProperty)).collect(toList());
+		this.operatorComboBox.setItems(operators);
+	}
+
 	/**
 	 * 'Event' which will be executed if the {@link FilterOperator} inside the operatorComboBox is chanced
 	 */
-	@SuppressWarnings("unchecked")
 	protected void operatorSelectionChanged()
 	{
 		final List<Object> lastValues = removeValueEditors();
@@ -248,31 +264,61 @@ public class FilterEntryEditor extends FormLayout
 
 		if(this.selectedOperator != null)
 		{
-			this.valueEditors = this.selectedOperator.createComposites(this.context,
-				this.selectedProperty);
+			fillValueEditors(lastValues);
+			enableValues();
+		}
+	}
 
-			for(int i = 0, c = Math.min(lastValues.size(), this.valueEditors.size()); i < c; i++)
-			{
-				this.valueEditors.get(i).setValue(lastValues.get(i));
+	/**
+	 * Deklare <b> valueEditors </b> with the Composite of <b>selectedOperator</b>
+	 *
+	 * @param lastValues
+	 *            {@link List} of type {@link Object}
+	 */
+	@SuppressWarnings("unchecked")
+	private void fillValueEditors(final List<Object> lastValues)
+	{
+		this.valueEditors = this.selectedOperator.createComposites(this.context,
+			this.selectedProperty);
 
-			}
-			this.component.addFilterButton.setEnabled(true);
-			for(final FilterValueEditorComposite obj : this.valueEditors)
-			{
+		for(int i = 0, c = Math.min(lastValues.size(), this.valueEditors.size()); i < c; i++)
+		{
+			this.valueEditors.get(i).setValue(lastValues.get(i));
 
-				final HasValueAndElement<?, ?> component = obj.component();
-				try
-				{
-					final DatePicker date = (DatePicker)component;
-					date.setValue(LocalDate.now());
-					add(date);
-				}
-				catch(final ClassCastException e)
-				{
-					add((Component)component);
-				}
+		}
+	}
 
-			}
+	/**
+	 * enable the 'addFilterButton' of <b> this.component </b><br>
+	 * and iterate through <b>this.valueEditors</b> to add them to <b>this</b> layout
+	 */
+	private void enableValues()
+	{
+		this.component.addFilterButton.setEnabled(true);
+		for(final FilterValueEditorComposite obj : this.valueEditors)
+		{
+			final HasValueAndElement<?, ?> hasValueComponent = obj.component();
+			tryIfDatePicker(hasValueComponent);
+		}
+	}
+
+	/**
+	 * Checks if the given Component is a DatePicker than adding the Component to <b>this</b>
+	 *
+	 * @param hasValueComponent
+	 *            {@link HasValueAndElement}
+	 */
+	private void tryIfDatePicker(final HasValueAndElement<?, ?> hasValueComponent)
+	{
+		try
+		{
+			final DatePicker date = (DatePicker)hasValueComponent;
+			date.setValue(LocalDate.now());
+			add(date);
+		}
+		catch(final ClassCastException e)
+		{
+			add((Component)hasValueComponent);
 		}
 	}
 
@@ -297,6 +343,18 @@ public class FilterEntryEditor extends FormLayout
 		}
 
 		return lastValues;
+	}
+
+	private FilterProperty<?> getPropertyFromContext(final FilterEntry data)
+	{
+		return this.context.getFilterSubject()
+			.filterableProperty(data.getPropertyIdentifier());
+	}
+
+	private FilterOperator getOperatorFromContext(final FilterEntry data)
+	{
+		return this.context.getFilterOperatorRegistry()
+			.get(data.getOperatorKey());
 	}
 
 	/**
@@ -400,15 +458,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.filterValueChangeListener;
 	}
-
-	/**
-	 * @return The rowIndes -> {@link Integer}
-	 */
-	public int getRowIndex()
-	{
-		return this.rowIndex;
-	}
-
+	
 	/**
 	 * @return The filterChangeHandler -> {@link Runnable}
 	 */
@@ -434,7 +484,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		this.selectedOperator = selectedOperator;
 	}
-	
+
 	/**
 	 * @return the component
 	 */
@@ -442,7 +492,7 @@ public class FilterEntryEditor extends FormLayout
 	{
 		return this.component;
 	}
-	
+
 	/**
 	 * Method to Copy the given Object into a new {@link FilterEntryEditor} <br>
 	 * Calls the private Constructor
@@ -455,8 +505,8 @@ public class FilterEntryEditor extends FormLayout
 	public static FilterEntryEditor copyEditor(final FilterEntryEditor original)
 	{
 		return new FilterEntryEditor(original.getContext(), original.getPropertyComboBox(),
-			original.getOperatorComboBox(),
-			original.getRowIndex(), original.getFilterChangeHandler(), original.getComponent(), original);
+			original.getOperatorComboBox(), original.getFilterChangeHandler(),
+			original.getComponent(), original);
 
 	}
 
@@ -493,7 +543,6 @@ public class FilterEntryEditor extends FormLayout
 		final FilterContext context,
 		final ComboBox<FilterProperty<?>> propertyComboBox,
 		final ComboBox<FilterOperator> operatorComboBox,
-		final int rowIndex,
 		final Runnable filterChangeHandler,
 		final FilterComponent component,
 		final FilterEntryEditor original)
@@ -501,25 +550,19 @@ public class FilterEntryEditor extends FormLayout
 		this.setWidthFull();
 		this.context             = context;
 		this.filterChangeHandler = filterChangeHandler;
-		this.rowIndex            = rowIndex;
 		this.component           = component;
 		/*
 		 * Property Comob
 		 */
 
 		this.propertyComboBox = createPropertyComboBox();
-		this.propertyComboBox.setItems(this.context.getFilterSubject().filterableProperties());
-		this.propertyComboBox.setValue(propertyComboBox.getValue());
-		this.propertyComboBox.addValueChangeListener(event -> propertySelectionChanged());
+		defineCopyPropertyCombobox(propertyComboBox);
 
 		/*
 		 * OperatorCombo
 		 */
 		this.operatorComboBox = createOperatorComboBox();
-		this.operatorComboBox.setVisible(true);
-		this.operatorComboBox.setItems(Collections.emptyList());
-		this.operatorComboBox.setValue(operatorComboBox.getValue());
-		this.operatorComboBox.addValueChangeListener(event -> operatorSelectionChanged());
+		defineCopyOperatorCombobox(operatorComboBox);
 
 		this.filterValueChangeListener = event -> this.filterChangeHandler.run();
 		this.selectedProperty          = this.propertyComboBox.getValue();
@@ -528,6 +571,21 @@ public class FilterEntryEditor extends FormLayout
 		add(this.propertyComboBox, this.operatorComboBox);
 		this.setFilterEntry(original.getFilterEntry());
 
+	}
+
+	private void defineCopyPropertyCombobox(final ComboBox<FilterProperty<?>> comboOriginal)
+	{
+		this.propertyComboBox.setItems(this.context.getFilterSubject().filterableProperties());
+		this.propertyComboBox.setValue(comboOriginal.getValue());
+		this.propertyComboBox.addValueChangeListener(event -> propertySelectionChanged());
+	}
+
+	private void defineCopyOperatorCombobox(final ComboBox<FilterOperator> comboOriginal)
+	{
+		this.operatorComboBox.setVisible(true);
+		this.operatorComboBox.setItems(Collections.emptyList());
+		this.operatorComboBox.setValue(comboOriginal.getValue());
+		this.operatorComboBox.addValueChangeListener(event -> operatorSelectionChanged());
 	}
 
 }

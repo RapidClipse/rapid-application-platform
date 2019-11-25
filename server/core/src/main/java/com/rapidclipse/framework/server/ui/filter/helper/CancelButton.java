@@ -39,7 +39,7 @@ public class CancelButton extends Buttons
 	{
 		this.addClickListener(listener -> {
 			component.updateReplaceableOriginal(editor, editor.getCopy());
-			component.newFilterEntry(component.rowIndex);
+			component.newFilterEntry();
 			component.updateFilterData();
 		});
 
@@ -53,16 +53,12 @@ public class CancelButton extends Buttons
 	 *
 	 * @param component
 	 *            -> {@link FilterComponent}
-	 * @param index
-	 *            -> {@link Integer}
 	 */
-	public void setClickListener(final FilterComponent component, final int index)
+	public void setClickListener(final FilterComponent component)
 	{
 		this.addClickListener(listener -> {
 			component.comboDiv.removeAll();
-			component.addFilterEntryEditor(new FilterEntryEditor(component, component, component::updateFilterData),
-				index);
+			component.addFilterEntryEditor(new FilterEntryEditor(component, component, component::updateFilterData));
 		});
 	}
-	
 }
