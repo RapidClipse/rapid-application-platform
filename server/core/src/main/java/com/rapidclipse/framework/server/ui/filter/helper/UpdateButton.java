@@ -38,7 +38,7 @@ public class UpdateButton extends Buttons
 	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
 	{
 		this.addClickListener(listener -> {
-			component.updateLabelRow(editor, new LabelButtons(component));
+			component.getLabelDiv().updateRow(component, editor, new LabelButtons(component));
 			component.newFilterEntry();
 			component.updateFilterData();
 		});

@@ -27,7 +27,7 @@ public class EditButton extends Buttons
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("editHover", this));
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -36,9 +36,9 @@ public class EditButton extends Buttons
 	{
 		this.addClickListener(listener -> {
 			component.comboDiv.removeAll();
-			component.updateComboBox(editor, new ComboBoxButtons(component));
+			component.comboDiv.updateComboBox(component, editor, new ComboBoxButtons(component));
 		});
-		
-	}
 
+	}
+	
 }

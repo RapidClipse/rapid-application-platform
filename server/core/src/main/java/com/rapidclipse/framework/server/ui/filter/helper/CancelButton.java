@@ -38,7 +38,7 @@ public class CancelButton extends Buttons
 	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
 	{
 		this.addClickListener(listener -> {
-			component.updateReplaceableOriginal(editor, editor.getCopy());
+			editor.updateOriginalWithCopy();
 			component.newFilterEntry();
 			component.updateFilterData();
 		});

@@ -52,12 +52,12 @@ public class FilterCheckBox extends Checkbox
 			if(Boolean.TRUE.equals(check))
 			{
 				this.setActive();
-				component.activateFilterEntryEditor(editor);
+				component.activateFilter(editor);
 			}
 			else if(Boolean.FALSE.equals(check))
 			{
 				this.setNonActive();
-				component.deactivateFilterEntryEditor(editor);
+				component.deactivateFilter(editor);
 			}
 		});
 

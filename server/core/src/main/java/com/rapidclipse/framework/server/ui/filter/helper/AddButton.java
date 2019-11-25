@@ -1,13 +1,12 @@
 
 package com.rapidclipse.framework.server.ui.filter.helper;
 
-import java.util.logging.Logger;
-
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.shared.Registration;
 
 
 /**
@@ -16,7 +15,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  */
 public class AddButton extends Buttons
 {
-
+	private Registration addButtonClick;
+	
 	@Override
 	public void defineButton()
 	{
@@ -26,17 +26,31 @@ public class AddButton extends Buttons
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("addHover", this));
 		this.addClickShortcut(Key.ENTER);
 	}
-	
+
 	/**
-	 * This method is not coded!!!<br>
-	 * 'Cause the Method is <b> yet</b> not needed, their is <b> NO CODE </b>!
+	 * Add a clickListener to this Button. This will add a new {@link Label} to the <b>labelDiv</b> with the
+	 * selected data.
+	 *
+	 * @param component
+	 *            -> {@link FilterComponent}
+	 * @param editor
+	 *            -> {@link ReplaceabelEditor}
 	 */
 	@Override
 	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
 	{
-		final Logger logger = Logger.getLogger(Logger.GLOBAL_LOGGER_NAME);
-		logger.warning("Method not coded!");
+		removeListener();
+		this.addButtonClick =
+			this.addClickListener(
+				listener -> component.getLabelDiv().addingNewRow(component, editor, new LabelButtons(component)));
+	}
+
+	private void removeListener()
+	{
+		if(this.addButtonClick != null)
+		{
+			this.addButtonClick.remove();
+		}
 		
 	}
-	
 }

@@ -96,5 +96,15 @@ public class ReplaceabelEditor
 	{
 		this.entryRow = entryRow;
 	}
-
+	
+	/**
+	 * The Copy will now be the new Original.<br>
+	 * The Copy will also be updated with a new deep Copy of herself.
+	 */
+	public void updateOriginalWithCopy()
+	{
+		setOriginal(getCopy());
+		updateCopy();
+	}
+	
 }
