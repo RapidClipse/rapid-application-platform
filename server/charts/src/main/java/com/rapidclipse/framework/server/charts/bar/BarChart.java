@@ -41,7 +41,6 @@ import com.rapidclipse.framework.server.charts.Legend;
 import com.rapidclipse.framework.server.charts.Orientation;
 import com.rapidclipse.framework.server.charts.StackMode;
 import com.rapidclipse.framework.server.charts.TextPosition;
-import com.rapidclipse.framework.server.charts.area.Series;
 import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
 import com.vaadin.flow.component.Tag;
 

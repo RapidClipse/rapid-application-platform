@@ -95,6 +95,11 @@ public interface Trendline extends Serializable, JavaScriptable
 			private Boolean showR2;
 			private Type    type;
 			private Boolean visibleInLegend;
+			
+			Default()
+			{
+				super();
+			}
 
 			@Override
 			public Builder color(final String color)
@@ -173,7 +178,9 @@ public interface Trendline extends Serializable, JavaScriptable
 					this.pointSize, this.pointsVisible,
 					this.showR2, this.type, this.visibleInLegend);
 			}
+			
 		}
+		
 	}
 
 	public static class Default implements Trendline
@@ -291,5 +298,7 @@ public interface Trendline extends Serializable, JavaScriptable
 			obj.putIfNotNull("visibleInLegend", this.visibleInLegend);
 			return obj.js();
 		}
+		
 	}
+	
 }

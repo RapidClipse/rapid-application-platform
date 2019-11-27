@@ -188,8 +188,8 @@ public abstract class Chart extends Composite<Div> implements HasSize
 		obj.putIfNotNull("tooltip", this.tooltip);
 	}
 
-	protected <JS extends JavaScriptable> void
-		putIfNotNull(final ObjectHelper obj, final String key, final Map<Integer, JS> values)
+	protected <K, JS extends JavaScriptable> void
+		putIfNotNull(final ObjectHelper obj, final String key, final Map<K, JS> values)
 	{
 		if(values != null && values.size() > 0)
 		{
