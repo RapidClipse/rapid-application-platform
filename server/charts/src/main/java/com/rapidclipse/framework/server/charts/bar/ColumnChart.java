@@ -37,30 +37,30 @@ import com.vaadin.flow.component.Tag;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("bar-chart")
-public class BarChart extends AbstractBarChart<BarChart>
+@Tag("column-chart")
+public class ColumnChart extends AbstractBarChart<ColumnChart>
 {
-	private final Map<Integer, Axis> hAxes = new LinkedHashMap<>();
+	private final Map<Integer, Axis> vAxes = new LinkedHashMap<>();
 	
-	public BarChart()
+	public ColumnChart()
 	{
-		super("BarChart");
+		super("ColumnChart");
 	}
 	
-	public BarChart addHAxis(final int rowIndex, final Axis axis)
+	public ColumnChart addVAxis(final int rowIndex, final Axis axis)
 	{
-		this.hAxes.put(rowIndex, axis);
+		this.vAxes.put(rowIndex, axis);
 		return this;
 	}
 	
-	public Axis removeHAxis(final int rowIndex)
+	public Axis removeVAxis(final int rowIndex)
 	{
-		return this.hAxes.remove(rowIndex);
+		return this.vAxes.remove(rowIndex);
 	}
 	
-	public BarChart removeAllHAxes()
+	public ColumnChart removeAllVAxes()
 	{
-		this.hAxes.clear();
+		this.vAxes.clear();
 		return this;
 	}
 	
@@ -69,6 +69,6 @@ public class BarChart extends AbstractBarChart<BarChart>
 	{
 		super.createConfiguration(obj);
 		
-		putIfNotNull(obj, "hAxes", this.hAxes);
+		putIfNotNull(obj, "hAxes", this.vAxes);
 	}
 }
