@@ -16,60 +16,60 @@ public interface Annotations extends Serializable, JavaScriptable
 {
 	public static enum Style implements JavaScriptable
 	{
-		line("line"),
-		point("point");
-
+		LINE("line"),
+		POINT("point");
+		
 		private final String js;
-
+		
 		private Style(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-
+		
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-
+	
 	public BoxStyle boxStyle();
-
+	
 	public AnnotationStyle datum();
-
+	
 	public AnnotationStyle domain();
-
+	
 	public Boolean highContrast();
-
+	
 	public Stem stem();
-
+	
 	public Style style();
-
+	
 	public TextStyle textStyle();
-
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
 		public Builder boxStyle(BoxStyle boxStyle);
-
+		
 		public Builder datum(AnnotationStyle datum);
-
+		
 		public Builder domain(AnnotationStyle domain);
-
+		
 		public Builder highContrast(Boolean highContrast);
-
+		
 		public Builder stem(Stem stem);
-
+		
 		public Builder style(Style style);
-
+		
 		public Builder textStyle(TextStyle textStyle);
-
+		
 		public Annotations build();
-
+		
 		public static class Default implements Builder
 		{
 			private BoxStyle        boxStyle;
@@ -79,61 +79,61 @@ public interface Annotations extends Serializable, JavaScriptable
 			private Stem            stem;
 			private Style           style;
 			private TextStyle       textStyle;
-
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
 			public Builder boxStyle(final BoxStyle boxStyle)
 			{
 				this.boxStyle = boxStyle;
 				return this;
 			}
-
+			
 			@Override
 			public Builder datum(final AnnotationStyle datum)
 			{
 				this.datum = datum;
 				return this;
 			}
-
+			
 			@Override
 			public Builder domain(final AnnotationStyle domain)
 			{
 				this.domain = domain;
 				return this;
 			}
-
+			
 			@Override
 			public Builder highContrast(final Boolean highContrast)
 			{
 				this.highContrast = highContrast;
 				return this;
 			}
-
+			
 			@Override
 			public Builder stem(final Stem stem)
 			{
 				this.stem = stem;
 				return this;
 			}
-
+			
 			@Override
 			public Builder style(final Style style)
 			{
 				this.style = style;
 				return this;
 			}
-
+			
 			@Override
 			public Builder textStyle(final TextStyle textStyle)
 			{
 				this.textStyle = textStyle;
 				return this;
 			}
-
+			
 			@Override
 			public Annotations build()
 			{
@@ -142,7 +142,7 @@ public interface Annotations extends Serializable, JavaScriptable
 			}
 		}
 	}
-
+	
 	public static class Default implements Annotations
 	{
 		private final BoxStyle        boxStyle;
@@ -152,7 +152,7 @@ public interface Annotations extends Serializable, JavaScriptable
 		private final Stem            stem;
 		private final Style           style;
 		private final TextStyle       textStyle;
-
+		
 		Default(
 			final BoxStyle boxStyle,
 			final AnnotationStyle datum,
@@ -163,7 +163,7 @@ public interface Annotations extends Serializable, JavaScriptable
 			final TextStyle textStyle)
 		{
 			super();
-
+			
 			this.boxStyle     = boxStyle;
 			this.datum        = datum;
 			this.domain       = domain;
@@ -172,49 +172,49 @@ public interface Annotations extends Serializable, JavaScriptable
 			this.style        = style;
 			this.textStyle    = textStyle;
 		}
-
+		
 		@Override
 		public BoxStyle boxStyle()
 		{
 			return this.boxStyle;
 		}
-
+		
 		@Override
 		public AnnotationStyle datum()
 		{
 			return this.datum;
 		}
-
+		
 		@Override
 		public AnnotationStyle domain()
 		{
 			return this.domain;
 		}
-
+		
 		@Override
 		public Boolean highContrast()
 		{
 			return this.highContrast;
 		}
-
+		
 		@Override
 		public Stem stem()
 		{
 			return this.stem;
 		}
-
+		
 		@Override
 		public Style style()
 		{
 			return this.style;
 		}
-
+		
 		@Override
 		public TextStyle textStyle()
 		{
 			return this.textStyle;
 		}
-
+		
 		@Override
 		public String js()
 		{

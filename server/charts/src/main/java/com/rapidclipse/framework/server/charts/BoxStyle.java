@@ -13,82 +13,82 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 public interface BoxStyle extends Serializable, JavaScriptable
 {
 	public String stroke();
-	
-	public Number strokeWidth();
-	
-	public Number radiusX();
-	
-	public Number radiusY();
-	
+
+	public Double strokeWidth();
+
+	public Double radiusX();
+
+	public Double radiusY();
+
 	public Gradient gradient();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder stroke(String stroke);
-		
-		public Builder strokeWidth(Number strokeWidth);
-		
-		public Builder radiusX(Number radiusX);
-		
-		public Builder radiusY(Number radiusY);
-		
+
+		public Builder strokeWidth(Double strokeWidth);
+
+		public Builder radiusX(Double radiusX);
+
+		public Builder radiusY(Double radiusY);
+
 		public Builder gradient(Gradient gradient);
-		
+
 		public BoxStyle build();
-		
+
 		public static class Default implements Builder
 		{
 			private String   stroke;
-			private Number   strokeWidth;
-			private Number   radiusX;
-			private Number   radiusY;
+			private Double   strokeWidth;
+			private Double   radiusX;
+			private Double   radiusY;
 			private Gradient gradient;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder stroke(final String stroke)
 			{
 				this.stroke = stroke;
 				return this;
 			}
-			
+
 			@Override
-			public Builder strokeWidth(final Number strokeWidth)
+			public Builder strokeWidth(final Double strokeWidth)
 			{
 				this.strokeWidth = strokeWidth;
 				return this;
 			}
-			
+
 			@Override
-			public Builder radiusX(final Number radiusX)
+			public Builder radiusX(final Double radiusX)
 			{
 				this.radiusX = radiusX;
 				return this;
 			}
-			
+
 			@Override
-			public Builder radiusY(final Number radiusY)
+			public Builder radiusY(final Double radiusY)
 			{
 				this.radiusY = radiusY;
 				return this;
 			}
-			
+
 			@Override
 			public Builder gradient(final Gradient gradient)
 			{
 				this.gradient = gradient;
 				return this;
 			}
-			
+
 			@Override
 			public BoxStyle build()
 			{
@@ -96,87 +96,87 @@ public interface BoxStyle extends Serializable, JavaScriptable
 			}
 		}
 	}
-	
+
 	public static BoxStyle New(
 		final String stroke,
-		final Number strokeWidth)
+		final Double strokeWidth)
 	{
 		return new Default(stroke, strokeWidth, null, null, null);
 	}
-	
+
 	public static BoxStyle New(
 		final String stroke,
-		final Number strokeWidth,
-		final Number radiusX,
-		final Number radiusY)
+		final Double strokeWidth,
+		final Double radiusX,
+		final Double radiusY)
 	{
 		return new Default(stroke, strokeWidth, radiusX, radiusY, null);
 	}
-	
+
 	public static BoxStyle New(
 		final String stroke,
-		final Number strokeWidth,
-		final Number radiusX,
-		final Number radiusY,
+		final Double strokeWidth,
+		final Double radiusX,
+		final Double radiusY,
 		final Gradient gradient)
 	{
 		return new Default(stroke, strokeWidth, radiusX, radiusY, gradient);
 	}
-	
+
 	public static class Default implements BoxStyle
 	{
 		private final String   stroke;
-		private final Number   strokeWidth;
-		private final Number   radiusX;
-		private final Number   radiusY;
+		private final Double   strokeWidth;
+		private final Double   radiusX;
+		private final Double   radiusY;
 		private final Gradient gradient;
-		
+
 		Default(
 			final String stroke,
-			final Number strokeWidth,
-			final Number radiusX,
-			final Number radiusY,
+			final Double strokeWidth,
+			final Double radiusX,
+			final Double radiusY,
 			final Gradient gradient)
 		{
 			super();
-			
+
 			this.stroke      = stroke;
 			this.strokeWidth = strokeWidth;
 			this.radiusX     = radiusX;
 			this.radiusY     = radiusY;
 			this.gradient    = gradient;
 		}
-		
+
 		@Override
 		public String stroke()
 		{
 			return this.stroke;
 		}
-		
+
 		@Override
-		public Number strokeWidth()
+		public Double strokeWidth()
 		{
 			return this.strokeWidth;
 		}
-		
+
 		@Override
-		public Number radiusX()
+		public Double radiusX()
 		{
 			return this.radiusX;
 		}
-		
+
 		@Override
-		public Number radiusY()
+		public Double radiusY()
 		{
 			return this.radiusY;
 		}
-		
+
 		@Override
 		public Gradient gradient()
 		{
 			return this.gradient;
 		}
-		
+
 		@Override
 		public String js()
 		{

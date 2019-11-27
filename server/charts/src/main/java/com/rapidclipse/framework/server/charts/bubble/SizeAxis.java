@@ -12,122 +12,122 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
  */
 public interface SizeAxis extends Serializable, JavaScriptable
 {
-	public Number minValue();
-
-	public Number maxValue();
-
-	public Number minSize();
-
-	public Number maxSize();
-
+	public Double minValue();
+	
+	public Double maxValue();
+	
+	public Double minSize();
+	
+	public Double maxSize();
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
-		public Builder minValue(Number minValue);
-
-		public Builder maxValue(Number maxValue);
-
-		public Builder minSize(Number minSize);
-
-		public Builder maxSize(Number maxSize);
-
+		public Builder minValue(Double minValue);
+		
+		public Builder maxValue(Double maxValue);
+		
+		public Builder minSize(Double minSize);
+		
+		public Builder maxSize(Double maxSize);
+		
 		public SizeAxis build();
-
+		
 		public static class Default implements Builder
 		{
-			private Number minValue;
-			private Number maxValue;
-			private Number minSize;
-			private Number maxSize;
-
+			private Double minValue;
+			private Double maxValue;
+			private Double minSize;
+			private Double maxSize;
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
-			public Builder minValue(final Number minValue)
+			public Builder minValue(final Double minValue)
 			{
 				this.minValue = minValue;
 				return this;
 			}
-
+			
 			@Override
-			public Builder maxValue(final Number maxValue)
+			public Builder maxValue(final Double maxValue)
 			{
 				this.maxValue = maxValue;
 				return this;
 			}
-
+			
 			@Override
-			public Builder minSize(final Number minSize)
+			public Builder minSize(final Double minSize)
 			{
 				this.minSize = minSize;
 				return this;
 			}
-
+			
 			@Override
-			public Builder maxSize(final Number maxSize)
+			public Builder maxSize(final Double maxSize)
 			{
 				this.maxSize = maxSize;
 				return this;
 			}
-
+			
 			@Override
 			public SizeAxis build()
 			{
 				return new SizeAxis.Default(this.minValue, this.maxValue, this.minSize, this.maxSize);
 			}
-
+			
 		}
-
+		
 	}
-
+	
 	public static class Default implements SizeAxis
 	{
-		private final Number minValue;
-		private final Number maxValue;
-		private final Number minSize;
-		private final Number maxSize;
-
-		Default(final Number minValue, final Number maxValue, final Number minSize, final Number maxSize)
+		private final Double minValue;
+		private final Double maxValue;
+		private final Double minSize;
+		private final Double maxSize;
+		
+		Default(final Double minValue, final Double maxValue, final Double minSize, final Double maxSize)
 		{
 			super();
-
+			
 			this.minValue = minValue;
 			this.maxValue = maxValue;
 			this.minSize  = minSize;
 			this.maxSize  = maxSize;
 		}
-
+		
 		@Override
-		public Number minValue()
+		public Double minValue()
 		{
 			return this.minValue;
 		}
-
+		
 		@Override
-		public Number maxValue()
+		public Double maxValue()
 		{
 			return this.maxValue;
 		}
-
+		
 		@Override
-		public Number minSize()
+		public Double minSize()
 		{
 			return this.minSize;
 		}
-
+		
 		@Override
-		public Number maxSize()
+		public Double maxSize()
 		{
 			return this.maxSize;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -138,7 +138,7 @@ public interface SizeAxis extends Serializable, JavaScriptable
 			obj.putIfNotNull("maxSize", this.maxSize);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }
