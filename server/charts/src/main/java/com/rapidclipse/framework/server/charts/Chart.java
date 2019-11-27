@@ -71,6 +71,15 @@ public abstract class Chart extends Composite<Div> implements HasSize
 		return this.model;
 	}
 
+	public void resetModel()
+	{
+		initModelDefaults(this.model.removeAll());
+	}
+	
+	protected void initModelDefaults(final ChartModel model)
+	{
+	}
+
 	public String getTitle()
 	{
 		return this.title;
