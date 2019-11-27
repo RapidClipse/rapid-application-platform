@@ -35,6 +35,8 @@ import com.rapidclipse.framework.server.charts.Axis;
 import com.rapidclipse.framework.server.charts.AxisTitlesPosition;
 import com.rapidclipse.framework.server.charts.Background;
 import com.rapidclipse.framework.server.charts.Chart;
+import com.rapidclipse.framework.server.charts.ChartModel;
+import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.Crosshair;
 import com.rapidclipse.framework.server.charts.FocusTarget;
 import com.rapidclipse.framework.server.charts.Legend;
@@ -112,6 +114,29 @@ public class AreaChart extends Chart
 	public AreaChart()
 	{
 		super("AreaChart");
+	}
+	
+	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
+	{
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, xColumn));
+		for(final String valueColumn : valueColumns)
+		{
+			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+		}
+		return model;
+	}
+	
+	public ChartModel
+		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
+	{
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(xColumnType, xColumn));
+		for(final String valueColumn : valueColumns)
+		{
+			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+		}
+		return model;
 	}
 
 	public AreaChart addSeries(final int rowIndex, final Series series)

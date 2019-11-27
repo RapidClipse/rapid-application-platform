@@ -35,6 +35,7 @@ import com.rapidclipse.framework.server.charts.Background;
 import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Column.Type;
 import com.rapidclipse.framework.server.charts.Legend;
 import com.rapidclipse.framework.server.charts.SelectionMode;
 import com.rapidclipse.framework.server.charts.TextPosition;
@@ -72,14 +73,35 @@ public class BubbleChart extends Chart
 		super("BubbleChart");
 	}
 
-	@Override
-	protected void initModelDefaults(final ChartModel model)
+	public ChartModel initDefaultColumns(final String idColumn, final String xColumn, final String yColumn)
 	{
-		model.addColumn(Column.New(Column.Type.STRING, "id", "id"));
-		model.addColumn(Column.New(Column.Type.NUMBER, "x", "x"));
-		model.addColumn(Column.New(Column.Type.NUMBER, "y", "y"));
-		model.addColumn(Column.New(Column.Type.STRING, "value", "value"));
-		model.addColumn(Column.New(Column.Type.NUMBER, "size", "size"));
+		return getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, idColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, xColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, yColumn));
+	}
+
+	public ChartModel initDefaultColumns(
+		final String idColumn,
+		final String xColumn,
+		final String yColumn,
+		final String valueColumn,
+		final Column.Type valueColumnType)
+	{
+		return initDefaultColumns(idColumn, xColumn, yColumn)
+			.addColumn(Column.New(valueColumnType, valueColumn));
+	}
+
+	public ChartModel initDefaultColumns(
+		final String idColumn,
+		final String xColumn,
+		final String yColumn,
+		final String valueColumn,
+		final Column.Type valueColumnType,
+		final String sizeColumn)
+	{
+		return initDefaultColumns(idColumn, xColumn, yColumn, valueColumn, valueColumnType)
+			.addColumn(Column.New(Type.NUMBER, sizeColumn));
 	}
 
 	public BubbleChart addSeries(final String name, final Series series)

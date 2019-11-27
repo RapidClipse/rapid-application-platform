@@ -73,244 +73,261 @@ public class BarChart extends Chart
 	private TextPosition                  titlePosition;
 	private final Map<Integer, Trendline> trendlines = new LinkedHashMap<>();
 	private Axis                          vAxis;
-	
+
 	public BarChart()
 	{
 		super("BarChart");
 	}
 	
-	@Override
-	protected void initModelDefaults(final ChartModel model)
+	public ChartModel initDefaultColumnsDiscrete(final String yColumn, final String... valueColumns)
 	{
-		model.addColumn(Column.New(Column.Type.STRING, "ycaption", "ycaption"));
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, yColumn));
+		for(final String valueColumn : valueColumns)
+		{
+			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+		}
+		return model;
 	}
 	
+	public ChartModel
+		initDefaultColumnsContinuous(final String yColumn, final Column.Type yColumnType, final String... valueColumns)
+	{
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(yColumnType, yColumn));
+		for(final String valueColumn : valueColumns)
+		{
+			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+		}
+		return model;
+	}
+
 	public BarChart addHAxis(final int rowIndex, final Axis axis)
 	{
 		this.hAxes.put(rowIndex, axis);
 		return this;
 	}
-	
+
 	public Axis removeHAxis(final int rowIndex)
 	{
 		return this.hAxes.remove(rowIndex);
 	}
-	
+
 	public BarChart removeAllHAxes()
 	{
 		this.hAxes.clear();
 		return this;
 	}
-	
+
 	public BarChart addSeries(final int rowIndex, final Series series)
 	{
 		this.series.put(rowIndex, series);
 		return this;
 	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
 		return this.series.remove(rowIndex);
 	}
-	
+
 	public BarChart removeAllSeries()
 	{
 		this.series.clear();
 		return this;
 	}
-	
+
 	public BarChart addTrendline(final int rowIndex, final Trendline trendline)
 	{
 		this.trendlines.put(rowIndex, trendline);
 		return this;
 	}
-	
+
 	public Trendline removeTrendline(final int rowIndex)
 	{
 		return this.trendlines.remove(rowIndex);
 	}
-	
+
 	public BarChart removeAllTrendlines()
 	{
 		this.trendlines.clear();
 		return this;
 	}
-	
+
 	public Animation getAnimation()
 	{
 		return this.animation;
 	}
-	
+
 	public void setAnimation(final Animation animation)
 	{
 		this.animation = animation;
 	}
-	
+
 	public Annotations getAnnotations()
 	{
 		return this.annotations;
 	}
-	
+
 	public void setAnnotations(final Annotations annotations)
 	{
 		this.annotations = annotations;
 	}
-	
+
 	public AxisTitlesPosition getAxisTitlesPosition()
 	{
 		return this.axisTitlesPosition;
 	}
-	
+
 	public void setAxisTitlesPosition(final AxisTitlesPosition axisTitlesPosition)
 	{
 		this.axisTitlesPosition = axisTitlesPosition;
 	}
-	
+
 	public Background getBackground()
 	{
 		return this.background;
 	}
-	
+
 	public void setBackground(final Background background)
 	{
 		this.background = background;
 	}
-	
+
 	public String getBarGroupWidth()
 	{
 		return this.barGroupWidth;
 	}
-	
+
 	public void setBarGroupWidth(final String barGroupWidth)
 	{
 		this.barGroupWidth = barGroupWidth;
 	}
-	
+
 	public Area getChartArea()
 	{
 		return this.chartArea;
 	}
-	
+
 	public void setChartArea(final Area chartArea)
 	{
 		this.chartArea = chartArea;
 	}
-	
+
 	public Double getDataOpacity()
 	{
 		return this.dataOpacity;
 	}
-	
+
 	public void setDataOpacity(final Double dataOpacity)
 	{
 		this.dataOpacity = dataOpacity;
 	}
-	
+
 	public Boolean getEnableInteractivity()
 	{
 		return this.enableInteractivity;
 	}
-	
+
 	public void setEnableInteractivity(final Boolean enableInteractivity)
 	{
 		this.enableInteractivity = enableInteractivity;
 	}
-	
+
 	public FocusTarget getFocusTarget()
 	{
 		return this.focusTarget;
 	}
-	
+
 	public void setFocusTarget(final FocusTarget focusTarget)
 	{
 		this.focusTarget = focusTarget;
 	}
-	
+
 	public Boolean getForceIFrame()
 	{
 		return this.forceIFrame;
 	}
-	
+
 	public void setForceIFrame(final Boolean forceIFrame)
 	{
 		this.forceIFrame = forceIFrame;
 	}
-	
+
 	public Axis getHAxis()
 	{
 		return this.hAxis;
 	}
-	
+
 	public void setHAxis(final Axis hAxis)
 	{
 		this.hAxis = hAxis;
 	}
-	
+
 	public StackMode getStackMode()
 	{
 		return this.stackMode;
 	}
-	
+
 	public void setStackMode(final StackMode stackMode)
 	{
 		this.stackMode = stackMode;
 	}
-	
+
 	public Legend getLegend()
 	{
 		return this.legend;
 	}
-	
+
 	public void setLegend(final Legend legend)
 	{
 		this.legend = legend;
 	}
-	
+
 	public Boolean getReverseCategories()
 	{
 		return this.reverseCategories;
 	}
-	
+
 	public void setReverseCategories(final Boolean reverseCategories)
 	{
 		this.reverseCategories = reverseCategories;
 	}
-	
+
 	public Orientation getOrientation()
 	{
 		return this.orientation;
 	}
-	
+
 	public void setOrientation(final Orientation orientation)
 	{
 		this.orientation = orientation;
 	}
-	
+
 	public TextPosition getTitlePosition()
 	{
 		return this.titlePosition;
 	}
-	
+
 	public void setTitlePosition(final TextPosition titlePosition)
 	{
 		this.titlePosition = titlePosition;
 	}
-	
+
 	public Axis getVAxis()
 	{
 		return this.vAxis;
 	}
-	
+
 	public void setVAxis(final Axis vAxis)
 	{
 		this.vAxis = vAxis;
 	}
-	
+
 	@Override
 	protected void createConfiguration(final ObjectHelper obj)
 	{
 		super.createConfiguration(obj);
-		
+
 		obj.putIfNotNull("animation", this.animation);
 		obj.putIfNotNull("annotations", this.annotations);
 		obj.putIfNotNull("axisTitlesPosition", this.axisTitlesPosition);
@@ -331,7 +348,7 @@ public class BarChart extends Chart
 		obj.putIfNotNull("orientation", this.orientation);
 		obj.putIfNotNull("titlePosition", this.titlePosition);
 		obj.putIfNotNull("vAxis", this.vAxis);
-		
+
 		putIfNotNull(obj, "hAxes", this.hAxes);
 		putIfNotNull(obj, "series", this.series);
 		putIfNotNull(obj, "trendlines", this.trendlines);
