@@ -30,25 +30,25 @@ public class LabelDiv extends Div
 		this.setWidthFull();
 		this.addClassName(StringResourceUtils.getResourceString("labelDiv", this));
 	}
-
+	
 	public void updateRow(final FilterComponent component, final ReplaceabelEditor editor, final LabelButtons buttons)
 	{
 		buttons.definingButtons(editor);
-
+		
 		final HorizontalLayout entryRow     = createEntryRow(editor);
 		final HorizontalLayout buttonLayout =
 			component.createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(),
 				buttons.getDeleteButton());
-
+		
 		final HorizontalLayout finalLayout = component.createFinalLayout(entryRow, buttonLayout);
-
+		
 		replaceLabelRow(editor.getLabelLayout(), finalLayout);
-
+		
 		editor.setLabelLayout(finalLayout);
-
+		
 		component.updateEverything(editor);
 	}
-
+	
 	/**
 	 * Copied from {@link HasOrderedComponents #replace(Component, Component)}
 	 *
@@ -95,12 +95,12 @@ public class LabelDiv extends Div
 			}
 		}
 	}
-
+	
 	public void removeData(final ReplaceabelEditor editor)
 	{
 		this.remove(editor.getLabelLayout());
 	}
-
+	
 	/**
 	 * Creates the Filter Entry Row for the <b> Label Div </b>
 	 * <br>
@@ -124,10 +124,10 @@ public class LabelDiv extends Div
 		final FilterEntryEditor editor = replace.getOriginal();
 		final EntryRowLabel     entry  = new EntryRowLabel(editor);
 		replace.setEntryRow(entry);
-
+		
 		return entry.getLayout();
 	}
-
+	
 	/**
 	 * Add a new Row to this Div.
 	 * Defines the given Components and create the the row with {@link #createFinalLayout(Component, Component)}.
@@ -143,17 +143,17 @@ public class LabelDiv extends Div
 		addingNewRow(final FilterComponent component, final ReplaceabelEditor editor, final LabelButtons buttons)
 	{
 		buttons.definingButtons(editor);
-
+		
 		component.getFilterEntryEditors().add(editor);
-
+		
 		final HorizontalLayout finalLayout = component.createFinalLayout(this.createEntryRow(editor),
 			component.createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(), buttons.getDeleteButton()));
-
+		
 		editor.setLabelLayout(finalLayout);
-
+		
 		this.add(finalLayout);
 		this.setVisible(true);
-
+		
 		component.updateEverything(editor);
 	}
 }

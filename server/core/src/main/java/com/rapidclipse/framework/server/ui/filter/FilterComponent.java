@@ -237,7 +237,7 @@ public class FilterComponent
 	
 	protected Filter createValueFilter()
 	{
-		if(this.filterEntryEditors == null || this.filterEntryEditors.isEmpty())
+		if(this.filterEntryEditors.isEmpty())
 		{
 			return null;
 		}
