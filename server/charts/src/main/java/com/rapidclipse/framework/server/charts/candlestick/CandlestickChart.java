@@ -22,15 +22,13 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts.area;
+package com.rapidclipse.framework.server.charts.candlestick;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.rapidclipse.framework.server.charts.AggregationTarget;
 import com.rapidclipse.framework.server.charts.Animation;
-import com.rapidclipse.framework.server.charts.Annotations;
 import com.rapidclipse.framework.server.charts.Area;
 import com.rapidclipse.framework.server.charts.Axis;
 import com.rapidclipse.framework.server.charts.AxisTitlesPosition;
@@ -38,15 +36,11 @@ import com.rapidclipse.framework.server.charts.Background;
 import com.rapidclipse.framework.server.charts.Chart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.charts.Crosshair;
 import com.rapidclipse.framework.server.charts.FocusTarget;
 import com.rapidclipse.framework.server.charts.Legend;
 import com.rapidclipse.framework.server.charts.Orientation;
-import com.rapidclipse.framework.server.charts.PointShape;
 import com.rapidclipse.framework.server.charts.SelectionMode;
-import com.rapidclipse.framework.server.charts.StackMode;
 import com.rapidclipse.framework.server.charts.TextPosition;
-import com.rapidclipse.framework.server.util.JavaScriptable.ArrayHelper;
 import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
 import com.vaadin.flow.component.Tag;
 
@@ -56,84 +50,56 @@ import com.vaadin.flow.component.Tag;
  * @author XDEV Software
  * @since 10.02.00
  */
-@Tag("area-chart")
-public class AreaChart extends Chart
+@Tag("candlestick-chart")
+public class CandlestickChart extends Chart
 {
 	private AggregationTarget          aggregationTarget;
 	private Animation                  animation;
-	private Annotations                annotations;
-	private Double                     areaOpacity;
 	private AxisTitlesPosition         axisTitlesPosition;
 	private Background                 background;
+	private String                     barGroupWidth;
+	private Candlestick                candlestick;
 	private Area                       chartArea;
-	private Crosshair                  crosshair;
-	private Double                     dataOpacity;
 	private Boolean                    enableInteractivity;
 	private FocusTarget                focusTarget;
 	private Boolean                    forceIFrame;
 	private Axis                       hAxis;
-	private Boolean                    interpolateNulls;
-	private StackMode                  stackMode;
 	private Legend                     legend;
-	private List<Double>               lineDashStyle;
-	private Double                     lineWidth;
-	private Orientation                orientation;
-	private PointShape.Type            pointShape;
-	private Double                     pointSize;
-	private Boolean                    pointsVisible;
 	private Boolean                    reverseCategories;
+	private Orientation                orientation;
 	private SelectionMode              selectionMode;
 	private final Map<Integer, Series> series = new LinkedHashMap<>();
 	private TextPosition               titlePosition;
 	private Axis                       vAxis;
 	private final Map<Integer, Axis>   vAxes  = new LinkedHashMap<>();
 
-	public AreaChart()
+	public CandlestickChart()
 	{
-		super("AreaChart");
-	}
-	
-	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
-	{
-		final ChartModel model = getModel().removeAll()
-			.addColumn(Column.New(Column.Type.STRING, xColumn));
-		for(final String valueColumn : valueColumns)
-		{
-			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
-		}
-		return model;
-	}
-	
-	public ChartModel
-		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
-	{
-		final ChartModel model = getModel().removeAll()
-			.addColumn(Column.New(xColumnType, xColumn));
-		for(final String valueColumn : valueColumns)
-		{
-			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
-		}
-		return model;
+		super("CandlestickChart");
 	}
 
-	public AreaChart addSeries(final int rowIndex, final Series series)
+	public ChartModel initDefaultColumns(final Column.Type xAxisType)
 	{
-		this.series.put(rowIndex, series);
-		return this;
+		return initDefaultColumns("x", xAxisType, "min", "initial", "final", "max");
 	}
 
-	public Series removeSeries(final int rowIndex)
+	public ChartModel initDefaultColumns(
+		final String xAxisColumn,
+		final Column.Type xAxisType,
+		final String minValueColumn,
+		final String initialValueColumn,
+		final String finalValueColumn,
+		final String maxValueColumn)
 	{
-		return this.series.remove(rowIndex);
+		return getModel().removeAll()
+			.addColumn(Column.New(xAxisType, xAxisColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, minValueColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, initialValueColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, finalValueColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, maxValueColumn));
 	}
 
-	public AreaChart removeAllSeries()
-	{
-		this.series.clear();
-		return this;
-	}
-
-	public AreaChart addVAxis(final int rowIndex, final Axis axis)
+	public CandlestickChart addVAxis(final int rowIndex, final Axis axis)
 	{
 		this.vAxes.put(rowIndex, axis);
 		return this;
@@ -144,9 +110,26 @@ public class AreaChart extends Chart
 		return this.vAxes.remove(rowIndex);
 	}
 
-	public AreaChart removeAllVAxes()
+	public CandlestickChart removeAllVAxes()
 	{
 		this.vAxes.clear();
+		return this;
+	}
+
+	public CandlestickChart addSeries(final int rowIndex, final Series series)
+	{
+		this.series.put(rowIndex, series);
+		return this;
+	}
+
+	public Series removeSeries(final int rowIndex)
+	{
+		return this.series.remove(rowIndex);
+	}
+
+	public CandlestickChart removeAllSeries()
+	{
+		this.series.clear();
 		return this;
 	}
 
@@ -170,26 +153,6 @@ public class AreaChart extends Chart
 		this.animation = animation;
 	}
 
-	public Annotations getAnnotations()
-	{
-		return this.annotations;
-	}
-
-	public void setAnnotations(final Annotations annotations)
-	{
-		this.annotations = annotations;
-	}
-
-	public Double getAreaOpacity()
-	{
-		return this.areaOpacity;
-	}
-
-	public void setAreaOpacity(final Double areaOpacity)
-	{
-		this.areaOpacity = areaOpacity;
-	}
-
 	public AxisTitlesPosition getAxisTitlesPosition()
 	{
 		return this.axisTitlesPosition;
@@ -210,6 +173,26 @@ public class AreaChart extends Chart
 		this.background = background;
 	}
 
+	public String getBarGroupWidth()
+	{
+		return this.barGroupWidth;
+	}
+
+	public void setBarGroupWidth(final String barGroupWidth)
+	{
+		this.barGroupWidth = barGroupWidth;
+	}
+
+	public Candlestick getCandlestick()
+	{
+		return this.candlestick;
+	}
+
+	public void setCandlestick(final Candlestick candlestick)
+	{
+		this.candlestick = candlestick;
+	}
+
 	public Area getChartArea()
 	{
 		return this.chartArea;
@@ -218,26 +201,6 @@ public class AreaChart extends Chart
 	public void setChartArea(final Area chartArea)
 	{
 		this.chartArea = chartArea;
-	}
-
-	public Crosshair getCrosshair()
-	{
-		return this.crosshair;
-	}
-
-	public void setCrosshair(final Crosshair crosshair)
-	{
-		this.crosshair = crosshair;
-	}
-
-	public Double getDataOpacity()
-	{
-		return this.dataOpacity;
-	}
-
-	public void setDataOpacity(final Double dataOpacity)
-	{
-		this.dataOpacity = dataOpacity;
 	}
 
 	public Boolean getEnableInteractivity()
@@ -280,26 +243,6 @@ public class AreaChart extends Chart
 		this.hAxis = hAxis;
 	}
 
-	public Boolean getInterpolateNulls()
-	{
-		return this.interpolateNulls;
-	}
-
-	public void setInterpolateNulls(final Boolean interpolateNulls)
-	{
-		this.interpolateNulls = interpolateNulls;
-	}
-
-	public StackMode getStackMode()
-	{
-		return this.stackMode;
-	}
-
-	public void setStackMode(final StackMode stackMode)
-	{
-		this.stackMode = stackMode;
-	}
-
 	public Legend getLegend()
 	{
 		return this.legend;
@@ -310,24 +253,14 @@ public class AreaChart extends Chart
 		this.legend = legend;
 	}
 
-	public List<Double> getLineDashStyle()
+	public Boolean getReverseCategories()
 	{
-		return this.lineDashStyle;
+		return this.reverseCategories;
 	}
 
-	public void setLineDashStyle(final List<Double> lineDashStyle)
+	public void setReverseCategories(final Boolean reverseCategories)
 	{
-		this.lineDashStyle = lineDashStyle;
-	}
-
-	public Double getLineWidth()
-	{
-		return this.lineWidth;
-	}
-
-	public void setLineWidth(final Double lineWidth)
-	{
-		this.lineWidth = lineWidth;
+		this.reverseCategories = reverseCategories;
 	}
 
 	public Orientation getOrientation()
@@ -338,46 +271,6 @@ public class AreaChart extends Chart
 	public void setOrientation(final Orientation orientation)
 	{
 		this.orientation = orientation;
-	}
-
-	public PointShape.Type getPointShape()
-	{
-		return this.pointShape;
-	}
-
-	public void setPointShape(final PointShape.Type pointShape)
-	{
-		this.pointShape = pointShape;
-	}
-
-	public Double getPointSize()
-	{
-		return this.pointSize;
-	}
-
-	public void setPointSize(final Double pointSize)
-	{
-		this.pointSize = pointSize;
-	}
-
-	public Boolean getPointsVisible()
-	{
-		return this.pointsVisible;
-	}
-
-	public void setPointsVisible(final Boolean pointsVisible)
-	{
-		this.pointsVisible = pointsVisible;
-	}
-
-	public Boolean getReverseCategories()
-	{
-		return this.reverseCategories;
-	}
-
-	public void setReverseCategories(final Boolean reverseCategories)
-	{
-		this.reverseCategories = reverseCategories;
 	}
 
 	public SelectionMode getSelectionMode()
@@ -417,31 +310,25 @@ public class AreaChart extends Chart
 
 		obj.putIfNotNull("aggregationTarget", this.aggregationTarget);
 		obj.putIfNotNull("animation", this.animation);
-		obj.putIfNotNull("annotations", this.annotations);
-		obj.putIfNotNull("areaOpacity", this.areaOpacity);
 		obj.putIfNotNull("axisTitlesPosition", this.axisTitlesPosition);
 		obj.putIfNotNull("backgroundColor", this.background);
+		if(this.barGroupWidth != null)
+		{
+			obj.putIfNotNull("bar", new ObjectHelper().put("groupWidth", this.barGroupWidth));
+		}
+		obj.putIfNotNull("candlestick", this.candlestick);
 		obj.putIfNotNull("chartArea", this.chartArea);
-		obj.putIfNotNull("crosshair", this.crosshair);
-		obj.putIfNotNull("dataOpacity", this.dataOpacity);
 		obj.putIfNotNull("enableInteractivity", this.enableInteractivity);
 		obj.putIfNotNull("focusTarget", this.focusTarget);
 		obj.putIfNotNull("forceIFrame", this.forceIFrame);
 		obj.putIfNotNull("hAxis", this.hAxis);
-		obj.putIfNotNull("interpolateNulls", this.interpolateNulls);
-		obj.putIfNotNull("isStacked", this.stackMode);
 		obj.putIfNotNull("legend", this.legend);
-		obj.putIfNotNull("lineDashStyle", new ArrayHelper().addAllNumbers(this.lineDashStyle));
-		obj.putIfNotNull("lineWidth", this.lineWidth);
-		obj.putIfNotNull("orientation", this.orientation);
-		obj.putIfNotNull("pointShape", this.pointShape);
-		obj.putIfNotNull("pointSize", this.pointSize);
-		obj.putIfNotNull("pointsVisible", this.pointsVisible);
 		obj.putIfNotNull("reverseCategories", this.reverseCategories);
+		obj.putIfNotNull("orientation", this.orientation);
 		obj.putIfNotNull("selectionMode", this.selectionMode);
 		obj.putIfNotNull("titlePosition", this.titlePosition);
 		obj.putIfNotNull("vAxis", this.vAxis);
-		
+
 		putIfNotNull(obj, "series", this.series);
 		putIfNotNull(obj, "vAxes", this.vAxes);
 	}
