@@ -24,17 +24,21 @@
 
 package com.rapidclipse.framework.server.charts.pie;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.rapidclipse.framework.server.charts.Area;
-import com.rapidclipse.framework.server.charts.Background;
-import com.rapidclipse.framework.server.charts.Chart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.charts.Legend;
+import com.rapidclipse.framework.server.charts.HasBackground;
+import com.rapidclipse.framework.server.charts.HasCategories;
+import com.rapidclipse.framework.server.charts.HasChartArea;
+import com.rapidclipse.framework.server.charts.HasChartSize;
+import com.rapidclipse.framework.server.charts.HasColors;
+import com.rapidclipse.framework.server.charts.HasFont;
+import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasLegend;
+import com.rapidclipse.framework.server.charts.HasTitle;
+import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.TextStyle;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
 import com.vaadin.flow.component.Tag;
 
 
@@ -44,24 +48,10 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("pie-chart")
-public class PieChart extends Chart
+public class PieChart extends ChartBase
+	implements HasBackground, HasChartArea, HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize,
+	HasLegend, HasCategories, HasTitle, HasTooltip
 {
-	private Background                background;
-	private Area                      chartArea;
-	private Boolean                   enableInteractivity;
-	private Boolean                   forceIFrame;
-	private Boolean                   is3D;
-	private Legend                    legend;
-	private Double                    pieHole;
-	private String                    pieSliceBorderColor;
-	private String                    pieSliceText;
-	private TextStyle                 pieSliceTextStyle;
-	private Double                    pieStartAngle;
-	private Boolean                   reverseCategories;
-	private String                    pieResidueSliceColor;
-	private String                    pieResidueSliceLabel;
-	private Double                    sliceVisibilityThreshold;
-	private final Map<Integer, Slice> slices = new HashMap<>();
 	
 	public PieChart()
 	{
@@ -75,194 +65,108 @@ public class PieChart extends Chart
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
 	
-	public PieChart addSlice(final int rowIndex, final Slice slice)
+	public void addSlice(final int rowIndex, final Slice slice)
 	{
-		this.slices.put(rowIndex, slice);
-		return this;
+		properties().putIndexed("slices", rowIndex, slice);
 	}
 	
 	public Slice removeSlice(final int rowIndex)
 	{
-		return this.slices.remove(rowIndex);
+		return properties().removeIndexed("slices", rowIndex);
 	}
 	
-	public PieChart removeAllSlices()
+	public void removeAllSlices()
 	{
-		this.slices.clear();
-		return this;
+		properties().removeAllIndexed("slices");
 	}
-	
-	public Background getBackground()
-	{
-		return this.background;
-	}
-	
-	public void setBackground(final Background background)
-	{
-		this.background = background;
-	}
-	
-	public Area getChartArea()
-	{
-		return this.chartArea;
-	}
-	
-	public void setChartArea(final Area chartArea)
-	{
-		this.chartArea = chartArea;
-	}
-	
-	public Boolean getEnableInteractivity()
-	{
-		return this.enableInteractivity;
-	}
-	
-	public void setEnableInteractivity(final Boolean enableInteractivity)
-	{
-		this.enableInteractivity = enableInteractivity;
-	}
-	
-	public Boolean getForceIFrame()
-	{
-		return this.forceIFrame;
-	}
-	
-	public void setForceIFrame(final Boolean forceIFrame)
-	{
-		this.forceIFrame = forceIFrame;
-	}
-	
+
 	public Boolean getIs3D()
 	{
-		return this.is3D;
+		return properties().get("is3D");
 	}
 	
-	public void setIs3D(final Boolean is3d)
+	public void setIs3D(final Boolean is3D)
 	{
-		this.is3D = is3d;
-	}
-	
-	public Legend getLegend()
-	{
-		return this.legend;
-	}
-	
-	public void setLegend(final Legend legend)
-	{
-		this.legend = legend;
+		properties().put("is3D", is3D);
 	}
 	
 	public Double getPieHole()
 	{
-		return this.pieHole;
+		return properties().get("pieHole");
 	}
 	
 	public void setPieHole(final Double pieHole)
 	{
-		this.pieHole = pieHole;
+		properties().put("pieHole", pieHole);
 	}
 	
 	public String getPieSliceBorderColor()
 	{
-		return this.pieSliceBorderColor;
+		return properties().get("pieSliceBorderColor");
 	}
 	
 	public void setPieSliceBorderColor(final String pieSliceBorderColor)
 	{
-		this.pieSliceBorderColor = pieSliceBorderColor;
+		properties().put("pieSliceBorderColor", pieSliceBorderColor);
 	}
 	
 	public String getPieSliceText()
 	{
-		return this.pieSliceText;
+		return properties().get("pieSliceText");
 	}
 	
 	public void setPieSliceText(final String pieSliceText)
 	{
-		this.pieSliceText = pieSliceText;
+		properties().put("pieSliceText", pieSliceText);
 	}
 	
 	public TextStyle getPieSliceTextStyle()
 	{
-		return this.pieSliceTextStyle;
+		return properties().get("pieSliceTextStyle");
 	}
 	
 	public void setPieSliceTextStyle(final TextStyle pieSliceTextStyle)
 	{
-		this.pieSliceTextStyle = pieSliceTextStyle;
+		properties().put("pieSliceTextStyle", pieSliceTextStyle);
 	}
 	
 	public Double getPieStartAngle()
 	{
-		return this.pieStartAngle;
+		return properties().get("pieStartAngle");
 	}
 	
 	public void setPieStartAngle(final Double pieStartAngle)
 	{
-		this.pieStartAngle = pieStartAngle;
-	}
-	
-	public Boolean getReverseCategories()
-	{
-		return this.reverseCategories;
-	}
-	
-	public void setReverseCategories(final Boolean reverseCategories)
-	{
-		this.reverseCategories = reverseCategories;
+		properties().put("pieStartAngle", pieStartAngle);
 	}
 	
 	public String getPieResidueSliceColor()
 	{
-		return this.pieResidueSliceColor;
+		return properties().get("pieResidueSliceColor");
 	}
 	
 	public void setPieResidueSliceColor(final String pieResidueSliceColor)
 	{
-		this.pieResidueSliceColor = pieResidueSliceColor;
+		properties().put("pieResidueSliceColor", pieResidueSliceColor);
 	}
 	
 	public String getPieResidueSliceLabel()
 	{
-		return this.pieResidueSliceLabel;
+		return properties().get("pieResidueSliceLabel");
 	}
 	
 	public void setPieResidueSliceLabel(final String pieResidueSliceLabel)
 	{
-		this.pieResidueSliceLabel = pieResidueSliceLabel;
+		properties().put("pieResidueSliceLabel", pieResidueSliceLabel);
 	}
 	
 	public Double getSliceVisibilityThreshold()
 	{
-		return this.sliceVisibilityThreshold;
+		return properties().get("sliceVisibilityThreshold");
 	}
 	
 	public void setSliceVisibilityThreshold(final Double sliceVisibilityThreshold)
 	{
-		this.sliceVisibilityThreshold = sliceVisibilityThreshold;
-	}
-	
-	@Override
-	protected void createConfiguration(final ObjectHelper obj)
-	{
-		super.createConfiguration(obj);
-		
-		obj.putIfNotNull("backgroundColor", this.background);
-		obj.putIfNotNull("chartArea", this.chartArea);
-		obj.putIfNotNull("enableInteractivity", this.enableInteractivity);
-		obj.putIfNotNull("forceIFrame", this.forceIFrame);
-		obj.putIfNotNull("is3D", this.is3D);
-		obj.putIfNotNull("legend", this.legend);
-		obj.putIfNotNull("pieHole", this.pieHole);
-		obj.putIfNotNull("pieSliceBorderColor", this.pieSliceBorderColor);
-		obj.putIfNotNull("pieSliceText", this.pieSliceText);
-		obj.putIfNotNull("pieSliceTextStyle", this.pieSliceTextStyle);
-		obj.putIfNotNull("pieStartAngle", this.pieStartAngle);
-		obj.putIfNotNull("reverseCategories", this.reverseCategories);
-		obj.putIfNotNull("pieResidueSliceColor", this.pieResidueSliceColor);
-		obj.putIfNotNull("pieResidueSliceLabel", this.pieResidueSliceLabel);
-		obj.putIfNotNull("sliceVisibilityThreshold", this.sliceVisibilityThreshold);
-		
-		putIfNotNull(obj, "slices", this.slices);
+		properties().put("sliceVisibilityThreshold", sliceVisibilityThreshold);
 	}
 }

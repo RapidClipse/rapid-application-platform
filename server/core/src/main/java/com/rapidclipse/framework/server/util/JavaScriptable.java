@@ -91,7 +91,7 @@ public interface JavaScriptable
 			
 			throw new IllegalArgumentException(String.valueOf(value));
 		}
-
+		
 		public static String js(final String value)
 		{
 			return value != null
@@ -193,6 +193,24 @@ public interface JavaScriptable
 			super();
 		}
 		
+		public ObjectHelper put(final String key, final Object value)
+		{
+			if(value instanceof JavaScriptable)
+			{
+				put(key, (JavaScriptable)value);
+			}
+			else if(value instanceof JsonValue)
+			{
+				put(key, (JsonValue)value);
+			}
+			else
+			{
+				this.values.put(key, Static.js(value));
+			}
+			
+			return this;
+		}
+		
 		public ObjectHelper put(final String key, final String value)
 		{
 			this.values.put(key, Static.js(value));
@@ -250,6 +268,16 @@ public interface JavaScriptable
 		public ObjectHelper putJson(final String key, final String value)
 		{
 			this.values.put(key, value);
+			return this;
+		}
+		
+		public ObjectHelper putIfNotNull(final String key, final Object value)
+		{
+			if(value != null)
+			{
+				this.values.put(key, Static.js(value));
+			}
+			
 			return this;
 		}
 		
@@ -360,6 +388,15 @@ public interface JavaScriptable
 		{
 			super();
 		}
+
+		public ArrayHelper addAll(final Iterable<?> list)
+		{
+			if(list != null)
+			{
+				list.forEach(this::add);
+			}
+			return this;
+		}
 		
 		public ArrayHelper addAllScriptables(final Iterable<? extends JavaScriptable> list)
 		{
@@ -385,6 +422,12 @@ public interface JavaScriptable
 			{
 				list.forEach(this::add);
 			}
+			return this;
+		}
+		
+		public ArrayHelper add(final Object value)
+		{
+			this.values.add(Static.js(value));
 			return this;
 		}
 		

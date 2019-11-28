@@ -24,11 +24,7 @@
 
 package com.rapidclipse.framework.server.charts.bar;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.rapidclipse.framework.server.charts.Axis;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.HasVAxes;
 import com.vaadin.flow.component.Tag;
 
 
@@ -38,37 +34,11 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("column-chart")
-public class ColumnChart extends AbstractBarChart<ColumnChart>
+public class ColumnChart extends AbstractBarChart
+	implements HasVAxes
 {
-	private final Map<Integer, Axis> vAxes = new LinkedHashMap<>();
-	
 	public ColumnChart()
 	{
 		super("ColumnChart");
-	}
-	
-	public ColumnChart addVAxis(final int rowIndex, final Axis axis)
-	{
-		this.vAxes.put(rowIndex, axis);
-		return this;
-	}
-	
-	public Axis removeVAxis(final int rowIndex)
-	{
-		return this.vAxes.remove(rowIndex);
-	}
-	
-	public ColumnChart removeAllVAxes()
-	{
-		this.vAxes.clear();
-		return this;
-	}
-	
-	@Override
-	protected void createConfiguration(final ObjectHelper obj)
-	{
-		super.createConfiguration(obj);
-		
-		putIfNotNull(obj, "hAxes", this.vAxes);
 	}
 }

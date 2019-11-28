@@ -24,22 +24,24 @@
 
 package com.rapidclipse.framework.server.charts.bubble;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.rapidclipse.framework.server.charts.Animation;
-import com.rapidclipse.framework.server.charts.Area;
-import com.rapidclipse.framework.server.charts.Axis;
-import com.rapidclipse.framework.server.charts.AxisTitlesPosition;
-import com.rapidclipse.framework.server.charts.Background;
-import com.rapidclipse.framework.server.charts.Chart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.Column.Type;
-import com.rapidclipse.framework.server.charts.Legend;
-import com.rapidclipse.framework.server.charts.SelectionMode;
-import com.rapidclipse.framework.server.charts.TextPosition;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.HasAnimation;
+import com.rapidclipse.framework.server.charts.HasAxisTitlesPosition;
+import com.rapidclipse.framework.server.charts.HasBackground;
+import com.rapidclipse.framework.server.charts.HasChartArea;
+import com.rapidclipse.framework.server.charts.HasChartSize;
+import com.rapidclipse.framework.server.charts.HasColorAxis;
+import com.rapidclipse.framework.server.charts.HasHAxis;
+import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasLegend;
+import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSizeAxis;
+import com.rapidclipse.framework.server.charts.HasTitlePosition;
+import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -49,25 +51,10 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("bubble-chart")
-public class BubbleChart extends Chart
+public class BubbleChart extends ChartBase
+	implements HasAnimation, HasAxisTitlesPosition, HasBackground, HasChartArea, HasColorAxis, HasInteractivity,
+	AllowsIFrame, HasHAxis, HasLegend, HasSelectionMode, HasSizeAxis, HasTitlePosition, HasVAxis, HasChartSize
 {
-	private Animation                 animation;
-	private AxisTitlesPosition        axisTitlesPosition;
-	private Background                background;
-	private Bubbles                   bubbles;
-	private Area                      chartArea;
-	private ColorAxis                 colorAxis;
-	private Boolean                   enableInteractivity;
-	private Boolean                   forceIFrame;
-	private Axis                      hAxis;
-	private Legend                    legend;
-	private SelectionMode             selectionMode;
-	private final Map<String, Series> series = new LinkedHashMap<>();
-	private SizeAxis                  sizeAxis;
-	private Boolean                   sortBubblesBySize;
-	private TextPosition              titlePosition;
-	private Axis                      vAxis;
-
 	public BubbleChart()
 	{
 		super("BubbleChart");
@@ -104,194 +91,38 @@ public class BubbleChart extends Chart
 			.addColumn(Column.New(Type.NUMBER, sizeColumn));
 	}
 
-	public BubbleChart addSeries(final String name, final Series series)
+	public void addSeries(final int rowIndex, final Series series)
 	{
-		this.series.put(name, series);
-		return this;
+		properties().putIndexed("series", rowIndex, series);
 	}
 
-	public Series removeSeries(final String name)
+	public Series removeSeries(final int rowIndex)
 	{
-		return this.series.remove(name);
+		return properties().removeIndexed("series", rowIndex);
 	}
 
-	public BubbleChart removeAllSeries()
+	public void removeAllSeries()
 	{
-		this.series.clear();
-		return this;
+		properties().removeAllIndexed("series");
 	}
 
-	public Animation getAnimation()
+	public Bubble getBubble()
 	{
-		return this.animation;
+		return properties().get("bubble");
 	}
 
-	public void setAnimation(final Animation animation)
+	public void setBubble(final Bubble bubble)
 	{
-		this.animation = animation;
-	}
-
-	public AxisTitlesPosition getAxisTitlesPosition()
-	{
-		return this.axisTitlesPosition;
-	}
-
-	public void setAxisTitlesPosition(final AxisTitlesPosition axisTitlesPosition)
-	{
-		this.axisTitlesPosition = axisTitlesPosition;
-	}
-
-	public Background getBackground()
-	{
-		return this.background;
-	}
-
-	public void setBackground(final Background background)
-	{
-		this.background = background;
-	}
-
-	public Bubbles getBubbles()
-	{
-		return this.bubbles;
-	}
-
-	public void setBubbles(final Bubbles bubbles)
-	{
-		this.bubbles = bubbles;
-	}
-
-	public Area getChartArea()
-	{
-		return this.chartArea;
-	}
-
-	public void setChartArea(final Area chartArea)
-	{
-		this.chartArea = chartArea;
-	}
-
-	public ColorAxis getColorAxis()
-	{
-		return this.colorAxis;
-	}
-
-	public void setColorAxis(final ColorAxis colorAxis)
-	{
-		this.colorAxis = colorAxis;
-	}
-
-	public Boolean getEnableInteractivity()
-	{
-		return this.enableInteractivity;
-	}
-
-	public void setEnableInteractivity(final Boolean enableInteractivity)
-	{
-		this.enableInteractivity = enableInteractivity;
-	}
-
-	public Boolean getForceIFrame()
-	{
-		return this.forceIFrame;
-	}
-
-	public void setForceIFrame(final Boolean forceIFrame)
-	{
-		this.forceIFrame = forceIFrame;
-	}
-
-	public Axis getHAxis()
-	{
-		return this.hAxis;
-	}
-
-	public void setHAxis(final Axis hAxis)
-	{
-		this.hAxis = hAxis;
-	}
-
-	public Legend getLegend()
-	{
-		return this.legend;
-	}
-
-	public void setLegend(final Legend legend)
-	{
-		this.legend = legend;
-	}
-
-	public SelectionMode getSelectionMode()
-	{
-		return this.selectionMode;
-	}
-
-	public void setSelectionMode(final SelectionMode selectionMode)
-	{
-		this.selectionMode = selectionMode;
-	}
-
-	public SizeAxis getSizeAxis()
-	{
-		return this.sizeAxis;
-	}
-
-	public void setSizeAxis(final SizeAxis sizeAxis)
-	{
-		this.sizeAxis = sizeAxis;
+		properties().put("bubble", bubble);
 	}
 
 	public Boolean getSortBubblesBySize()
 	{
-		return this.sortBubblesBySize;
+		return properties().get("sortBubblesBySize");
 	}
 
 	public void setSortBubblesBySize(final Boolean sortBubblesBySize)
 	{
-		this.sortBubblesBySize = sortBubblesBySize;
-	}
-
-	public TextPosition getTitlePosition()
-	{
-		return this.titlePosition;
-	}
-
-	public void setTitlePosition(final TextPosition titlePosition)
-	{
-		this.titlePosition = titlePosition;
-	}
-
-	public Axis getVAxis()
-	{
-		return this.vAxis;
-	}
-
-	public void setVAxis(final Axis vAxis)
-	{
-		this.vAxis = vAxis;
-	}
-
-	@Override
-	protected void createConfiguration(final ObjectHelper obj)
-	{
-		super.createConfiguration(obj);
-
-		obj.putIfNotNull("animation", this.animation);
-		obj.putIfNotNull("axisTitlesPosition", this.axisTitlesPosition);
-		obj.putIfNotNull("bubble", this.bubbles);
-		obj.putIfNotNull("backgroundColor", this.background);
-		obj.putIfNotNull("chartArea", this.chartArea);
-		obj.putIfNotNull("colorAxis", this.colorAxis);
-		obj.putIfNotNull("enableInteractivity", this.enableInteractivity);
-		obj.putIfNotNull("forceIFrame", this.forceIFrame);
-		obj.putIfNotNull("hAxis", this.hAxis);
-		obj.putIfNotNull("legend", this.legend);
-		obj.putIfNotNull("selectionMode", this.selectionMode);
-		obj.putIfNotNull("sizeAxis", this.sizeAxis);
-		obj.putIfNotNull("sortBubblesBySize", this.sortBubblesBySize);
-		obj.putIfNotNull("titlePosition", this.titlePosition);
-		obj.putIfNotNull("vAxis", this.vAxis);
-
-		putIfNotNull(obj, "series", this.series);
+		properties().put("sortBubblesBySize", sortBubblesBySize);
 	}
 }

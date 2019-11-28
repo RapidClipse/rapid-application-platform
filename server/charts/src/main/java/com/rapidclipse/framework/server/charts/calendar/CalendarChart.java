@@ -24,10 +24,12 @@
 
 package com.rapidclipse.framework.server.charts.calendar;
 
-import com.rapidclipse.framework.server.charts.Chart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.HasChartSize;
+import com.rapidclipse.framework.server.charts.HasColorAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -37,18 +39,14 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("calendar-chart")
-public class CalendarChart extends Chart
+public class CalendarChart extends ChartBase
+	implements AllowsIFrame, HasColorAxis, HasChartSize
 {
-	private Calendar      calendar;
-	private ColorAxis     colorAxis;
-	private Boolean       forceIFrame;
-	private NoDataPattern noDataPattern;
-
 	public CalendarChart()
 	{
 		super("Calendar", "calendar");
 	}
-
+	
 	public ChartModel
 		initDefaultColumns(final String dateColumn, final Column.Type dateColumnType, final String valueColumn)
 	{
@@ -56,55 +54,24 @@ public class CalendarChart extends Chart
 			.addColumn(Column.New(dateColumnType, dateColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-
+	
 	public Calendar getCalendar()
 	{
-		return this.calendar;
+		return properties().get("calendar");
 	}
-
+	
 	public void setCalendar(final Calendar calendar)
 	{
-		this.calendar = calendar;
+		properties().put("calendar", calendar);
 	}
-
-	public ColorAxis getColorAxis()
-	{
-		return this.colorAxis;
-	}
-
-	public void setColorAxis(final ColorAxis colorAxis)
-	{
-		this.colorAxis = colorAxis;
-	}
-
-	public Boolean getForceIFrame()
-	{
-		return this.forceIFrame;
-	}
-
-	public void setForceIFrame(final Boolean forceIFrame)
-	{
-		this.forceIFrame = forceIFrame;
-	}
-
+	
 	public NoDataPattern getNoDataPattern()
 	{
-		return this.noDataPattern;
+		return properties().get("noDataPattern");
 	}
-
+	
 	public void setNoDataPattern(final NoDataPattern noDataPattern)
 	{
-		this.noDataPattern = noDataPattern;
-	}
-
-	@Override
-	protected void createConfiguration(final ObjectHelper obj)
-	{
-		super.createConfiguration(obj);
-
-		obj.putIfNotNull("calendar", this.calendar);
-		obj.putIfNotNull("colorAxis", this.colorAxis);
-		obj.putIfNotNull("forceIFrame", this.forceIFrame);
-		obj.putIfNotNull("noDataPattern", this.noDataPattern);
+		properties().put("noDataPattern", noDataPattern);
 	}
 }

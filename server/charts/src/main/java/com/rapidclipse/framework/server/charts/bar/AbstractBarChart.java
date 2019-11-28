@@ -1,57 +1,44 @@
 
 package com.rapidclipse.framework.server.charts.bar;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import com.rapidclipse.framework.server.charts.Animation;
-import com.rapidclipse.framework.server.charts.Annotations;
-import com.rapidclipse.framework.server.charts.Area;
-import com.rapidclipse.framework.server.charts.Axis;
-import com.rapidclipse.framework.server.charts.AxisTitlesPosition;
-import com.rapidclipse.framework.server.charts.Background;
-import com.rapidclipse.framework.server.charts.Chart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
-import com.rapidclipse.framework.server.charts.FocusTarget;
-import com.rapidclipse.framework.server.charts.Legend;
-import com.rapidclipse.framework.server.charts.Orientation;
-import com.rapidclipse.framework.server.charts.StackMode;
-import com.rapidclipse.framework.server.charts.TextPosition;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.HasAnimation;
+import com.rapidclipse.framework.server.charts.HasAnnotations;
+import com.rapidclipse.framework.server.charts.HasAxisTitlesPosition;
+import com.rapidclipse.framework.server.charts.HasBackground;
+import com.rapidclipse.framework.server.charts.HasBar;
+import com.rapidclipse.framework.server.charts.HasCategories;
+import com.rapidclipse.framework.server.charts.HasChartArea;
+import com.rapidclipse.framework.server.charts.HasChartSize;
+import com.rapidclipse.framework.server.charts.HasDataOpacity;
+import com.rapidclipse.framework.server.charts.HasFocusTarget;
+import com.rapidclipse.framework.server.charts.HasHAxis;
+import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasLegend;
+import com.rapidclipse.framework.server.charts.HasOrientation;
+import com.rapidclipse.framework.server.charts.HasStackMode;
+import com.rapidclipse.framework.server.charts.HasTitlePosition;
+import com.rapidclipse.framework.server.charts.HasTrendlines;
+import com.rapidclipse.framework.server.charts.HasVAxis;
 
 
 /**
  * @author XDEV Software
  *
  */
-public abstract class AbstractBarChart<T extends AbstractBarChart<T>> extends Chart
+public abstract class AbstractBarChart extends ChartBase
+	implements HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasDataOpacity,
+	HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasStackMode, HasLegend, HasCategories, HasOrientation,
+	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize
 {
-	private Animation                     animation;
-	private Annotations                   annotations;
-	private AxisTitlesPosition            axisTitlesPosition;
-	private Background                    background;
-	private String                        barGroupWidth;
-	private Area                          chartArea;
-	private Double                        dataOpacity;
-	private Boolean                       enableInteractivity;
-	private FocusTarget                   focusTarget;
-	private Boolean                       forceIFrame;
-	private Axis                          hAxis;
-	private StackMode                     stackMode;
-	private Legend                        legend;
-	private Boolean                       reverseCategories;
-	private Orientation                   orientation;
-	private final Map<Integer, Series>    series     = new LinkedHashMap<>();
-	private TextPosition                  titlePosition;
-	private final Map<Integer, Trendline> trendlines = new LinkedHashMap<>();
-	private Axis                          vAxis;
-	
 	protected AbstractBarChart(final String type, final String... packages)
 	{
 		super(type, packages);
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -62,7 +49,7 @@ public abstract class AbstractBarChart<T extends AbstractBarChart<T>> extends Ch
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -77,244 +64,19 @@ public abstract class AbstractBarChart<T extends AbstractBarChart<T>> extends Ch
 		}
 		return model;
 	}
-	
-	@SuppressWarnings("unchecked")
-	private T $()
+
+	public void addSeries(final int rowIndex, final Series series)
 	{
-		return (T)this;
+		properties().putIndexed("series", rowIndex, series);
 	}
-	
-	public T addSeries(final int rowIndex, final Series series)
-	{
-		this.series.put(rowIndex, series);
-		return $();
-	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
-		return this.series.remove(rowIndex);
+		return properties().removeIndexed("series", rowIndex);
 	}
-	
-	public T removeAllSeries()
+
+	public void removeAllSeries()
 	{
-		this.series.clear();
-		return $();
-	}
-	
-	public T addTrendline(final int rowIndex, final Trendline trendline)
-	{
-		this.trendlines.put(rowIndex, trendline);
-		return $();
-	}
-	
-	public Trendline removeTrendline(final int rowIndex)
-	{
-		return this.trendlines.remove(rowIndex);
-	}
-	
-	public T removeAllTrendlines()
-	{
-		this.trendlines.clear();
-		return $();
-	}
-	
-	public Animation getAnimation()
-	{
-		return this.animation;
-	}
-	
-	public void setAnimation(final Animation animation)
-	{
-		this.animation = animation;
-	}
-	
-	public Annotations getAnnotations()
-	{
-		return this.annotations;
-	}
-	
-	public void setAnnotations(final Annotations annotations)
-	{
-		this.annotations = annotations;
-	}
-	
-	public AxisTitlesPosition getAxisTitlesPosition()
-	{
-		return this.axisTitlesPosition;
-	}
-	
-	public void setAxisTitlesPosition(final AxisTitlesPosition axisTitlesPosition)
-	{
-		this.axisTitlesPosition = axisTitlesPosition;
-	}
-	
-	public Background getBackground()
-	{
-		return this.background;
-	}
-	
-	public void setBackground(final Background background)
-	{
-		this.background = background;
-	}
-	
-	public String getBarGroupWidth()
-	{
-		return this.barGroupWidth;
-	}
-	
-	public void setBarGroupWidth(final String barGroupWidth)
-	{
-		this.barGroupWidth = barGroupWidth;
-	}
-	
-	public Area getChartArea()
-	{
-		return this.chartArea;
-	}
-	
-	public void setChartArea(final Area chartArea)
-	{
-		this.chartArea = chartArea;
-	}
-	
-	public Double getDataOpacity()
-	{
-		return this.dataOpacity;
-	}
-	
-	public void setDataOpacity(final Double dataOpacity)
-	{
-		this.dataOpacity = dataOpacity;
-	}
-	
-	public Boolean getEnableInteractivity()
-	{
-		return this.enableInteractivity;
-	}
-	
-	public void setEnableInteractivity(final Boolean enableInteractivity)
-	{
-		this.enableInteractivity = enableInteractivity;
-	}
-	
-	public FocusTarget getFocusTarget()
-	{
-		return this.focusTarget;
-	}
-	
-	public void setFocusTarget(final FocusTarget focusTarget)
-	{
-		this.focusTarget = focusTarget;
-	}
-	
-	public Boolean getForceIFrame()
-	{
-		return this.forceIFrame;
-	}
-	
-	public void setForceIFrame(final Boolean forceIFrame)
-	{
-		this.forceIFrame = forceIFrame;
-	}
-	
-	public Axis getHAxis()
-	{
-		return this.hAxis;
-	}
-	
-	public void setHAxis(final Axis hAxis)
-	{
-		this.hAxis = hAxis;
-	}
-	
-	public StackMode getStackMode()
-	{
-		return this.stackMode;
-	}
-	
-	public void setStackMode(final StackMode stackMode)
-	{
-		this.stackMode = stackMode;
-	}
-	
-	public Legend getLegend()
-	{
-		return this.legend;
-	}
-	
-	public void setLegend(final Legend legend)
-	{
-		this.legend = legend;
-	}
-	
-	public Boolean getReverseCategories()
-	{
-		return this.reverseCategories;
-	}
-	
-	public void setReverseCategories(final Boolean reverseCategories)
-	{
-		this.reverseCategories = reverseCategories;
-	}
-	
-	public Orientation getOrientation()
-	{
-		return this.orientation;
-	}
-	
-	public void setOrientation(final Orientation orientation)
-	{
-		this.orientation = orientation;
-	}
-	
-	public TextPosition getTitlePosition()
-	{
-		return this.titlePosition;
-	}
-	
-	public void setTitlePosition(final TextPosition titlePosition)
-	{
-		this.titlePosition = titlePosition;
-	}
-	
-	public Axis getVAxis()
-	{
-		return this.vAxis;
-	}
-	
-	public void setVAxis(final Axis vAxis)
-	{
-		this.vAxis = vAxis;
-	}
-	
-	@Override
-	protected void createConfiguration(final ObjectHelper obj)
-	{
-		super.createConfiguration(obj);
-		
-		obj.putIfNotNull("animation", this.animation);
-		obj.putIfNotNull("annotations", this.annotations);
-		obj.putIfNotNull("axisTitlesPosition", this.axisTitlesPosition);
-		obj.putIfNotNull("backgroundColor", this.background);
-		if(this.barGroupWidth != null)
-		{
-			obj.putIfNotNull("bar", new ObjectHelper().put("groupWidth", this.barGroupWidth));
-		}
-		obj.putIfNotNull("chartArea", this.chartArea);
-		obj.putIfNotNull("dataOpacity", this.dataOpacity);
-		obj.putIfNotNull("enableInteractivity", this.enableInteractivity);
-		obj.putIfNotNull("focusTarget", this.focusTarget);
-		obj.putIfNotNull("forceIFrame", this.forceIFrame);
-		obj.putIfNotNull("hAxis", this.hAxis);
-		obj.putIfNotNull("isStacked", this.stackMode);
-		obj.putIfNotNull("legend", this.legend);
-		obj.putIfNotNull("reverseCategories", this.reverseCategories);
-		obj.putIfNotNull("orientation", this.orientation);
-		obj.putIfNotNull("titlePosition", this.titlePosition);
-		obj.putIfNotNull("vAxis", this.vAxis);
-		
-		putIfNotNull(obj, "series", this.series);
-		putIfNotNull(obj, "trendlines", this.trendlines);
+		properties().removeAllIndexed("series");
 	}
 }
