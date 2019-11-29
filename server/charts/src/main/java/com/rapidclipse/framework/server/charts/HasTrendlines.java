@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.charts;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasTrendlines extends Chart
@@ -11,12 +12,12 @@ public interface HasTrendlines extends Chart
 	{
 		properties().putIndexed("trendlines", index, trendline);
 	}
-
+	
 	public default Trendline removeTrendline(final int index)
 	{
 		return properties().removeIndexed("trendlines", index);
 	}
-
+	
 	public default void removeAllTrendlines()
 	{
 		properties().removeAllIndexed("trendlines");

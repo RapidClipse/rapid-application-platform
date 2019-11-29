@@ -10,6 +10,7 @@ import elemental.json.Json;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface Crosshair extends Serializable, JavaScriptable
@@ -19,82 +20,82 @@ public interface Crosshair extends Serializable, JavaScriptable
 		BOTH("both"),
 		FOCUS("focus"),
 		SELECTION("selection");
-		
+
 		private final String js;
-		
+
 		private Trigger(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public static enum Orientation implements JavaScriptable
 	{
 		BOTH("both"),
 		HORIZONTAL("horizontal"),
 		VERTICAL("vertical");
-		
+
 		private final String js;
-		
+
 		private Orientation(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public Trigger trigger();
-	
+
 	public Orientation orientation();
-	
+
 	public String color();
-	
+
 	public Number opacity();
-	
+
 	public String focusedColor();
-	
+
 	public Number focusedOpacity();
-	
+
 	public String selectedColor();
-	
+
 	public Number selectedOpacity();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder trigger(Trigger trigger);
-		
+
 		public Builder orientation(Orientation orientation);
-		
+
 		public Builder color(String color);
-		
+
 		public Builder opacity(Number opacity);
-		
+
 		public Builder focusedColor(String focusedColor);
-		
+
 		public Builder focusedOpacity(Number focusedOpacity);
-		
+
 		public Builder selectedColor(String selectedColor);
-		
+
 		public Builder selectedOpacity(Number selectedOpacity);
-		
+
 		public Crosshair build();
-		
+
 		public static class Default implements Builder
 		{
 			private Trigger     trigger;
@@ -105,79 +106,79 @@ public interface Crosshair extends Serializable, JavaScriptable
 			private Number      focusedOpacity;
 			private String      selectedColor;
 			private Number      selectedOpacity;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder trigger(final Trigger trigger)
 			{
 				this.trigger = trigger;
 				return this;
 			}
-			
+
 			@Override
 			public Builder orientation(final Orientation orientation)
 			{
 				this.orientation = orientation;
 				return this;
 			}
-			
+
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-			
+
 			@Override
 			public Builder opacity(final Number opacity)
 			{
 				this.opacity = opacity;
 				return this;
 			}
-			
+
 			@Override
 			public Builder focusedColor(final String focusedColor)
 			{
 				this.focusedColor = focusedColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder focusedOpacity(final Number focusedOpacity)
 			{
 				this.focusedOpacity = focusedOpacity;
 				return this;
 			}
-			
+
 			@Override
 			public Builder selectedColor(final String selectedColor)
 			{
 				this.selectedColor = selectedColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder selectedOpacity(final Number selectedOpacity)
 			{
 				this.selectedOpacity = selectedOpacity;
 				return this;
 			}
-			
+
 			@Override
 			public Crosshair build()
 			{
 				return new Crosshair.Default(this.trigger, this.orientation, this.color, this.opacity,
 					this.focusedColor, this.focusedOpacity, this.selectedColor, this.selectedOpacity);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static class Default implements Crosshair
 	{
 		private final Trigger     trigger;
@@ -188,7 +189,7 @@ public interface Crosshair extends Serializable, JavaScriptable
 		private final Number      focusedOpacity;
 		private final String      selectedColor;
 		private final Number      selectedOpacity;
-		
+
 		Default(
 			final Trigger trigger,
 			final Orientation orientation,
@@ -200,7 +201,7 @@ public interface Crosshair extends Serializable, JavaScriptable
 			final Number selectedOpacity)
 		{
 			super();
-			
+
 			this.trigger         = trigger;
 			this.orientation     = orientation;
 			this.color           = color;
@@ -210,55 +211,55 @@ public interface Crosshair extends Serializable, JavaScriptable
 			this.selectedColor   = selectedColor;
 			this.selectedOpacity = selectedOpacity;
 		}
-		
+
 		@Override
 		public Trigger trigger()
 		{
 			return this.trigger;
 		}
-		
+
 		@Override
 		public Orientation orientation()
 		{
 			return this.orientation;
 		}
-		
+
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-		
+
 		@Override
 		public Number opacity()
 		{
 			return this.opacity;
 		}
-		
+
 		@Override
 		public String focusedColor()
 		{
 			return this.focusedColor;
 		}
-		
+
 		@Override
 		public Number focusedOpacity()
 		{
 			return this.focusedOpacity;
 		}
-		
+
 		@Override
 		public String selectedColor()
 		{
 			return this.selectedColor;
 		}
-		
+
 		@Override
 		public Number selectedOpacity()
 		{
 			return this.selectedOpacity;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -275,7 +276,7 @@ public interface Crosshair extends Serializable, JavaScriptable
 				.putIfNotNull("opacity", this.selectedOpacity));
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

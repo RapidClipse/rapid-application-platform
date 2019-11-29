@@ -14,79 +14,80 @@ import com.rapidclipse.framework.server.charts.Series;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface ComboSeries extends Series
 {
 	public Annotations annotations();
-	
+
 	public Number areaOpacity();
-	
+
 	public String color();
-	
+
 	public CurveType curveType();
-	
+
 	public CandlestickColor fallingColor();
-	
+
 	public Boolean labelInLegend();
-	
+
 	public List<Number> lineDashStyle();
-	
+
 	public Number lineWidth();
-	
+
 	public PointShape.Type pointShape();
-	
+
 	public Number pointSize();
-	
+
 	public Boolean pointsVisible();
-	
+
 	public CandlestickColor risingColor();
-	
+
 	public Integer targetAxisIndex();
-	
+
 	public SeriesType type();
-	
+
 	public Boolean visibleInLegend();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder annotations(Annotations annotations);
-		
+
 		public Builder areaOpacity(Number areaOpacity);
-		
+
 		public Builder curveType(CurveType curveType);
-		
+
 		public Builder fallingColor(CandlestickColor fallingColor);
-		
+
 		public Builder color(String color);
-		
+
 		public Builder labelInLegend(Boolean labelInLegend);
-		
+
 		public Builder lineDashStyle(List<Number> lineDashStyle);
-		
+
 		public Builder lineWidth(Number lineWidth);
-		
+
 		public Builder pointShape(PointShape.Type pointShape);
-		
+
 		public Builder pointSize(Number pointSize);
-		
+
 		public Builder pointsVisible(Boolean pointsVisible);
-		
+
 		public Builder risingColor(CandlestickColor risingColor);
-		
+
 		public Builder targetAxisIndex(Integer targetAxisIndex);
-		
+
 		public Builder type(SeriesType type);
-		
+
 		public Builder visibleInLegend(Boolean visibleInLegend);
-		
+
 		public ComboSeries build();
-		
+
 		public static class Default implements Builder
 		{
 			private Annotations      annotations;
@@ -104,117 +105,117 @@ public interface ComboSeries extends Series
 			private Integer          targetAxisIndex;
 			private SeriesType       type;
 			private Boolean          visibleInLegend;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder annotations(final Annotations annotations)
 			{
 				this.annotations = annotations;
 				return this;
 			}
-			
+
 			@Override
 			public Builder areaOpacity(final Number areaOpacity)
 			{
 				this.areaOpacity = areaOpacity;
 				return this;
 			}
-			
+
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-			
+
 			@Override
 			public Builder curveType(final CurveType curveType)
 			{
 				this.curveType = curveType;
 				return this;
 			}
-			
+
 			@Override
 			public Builder fallingColor(final CandlestickColor fallingColor)
 			{
 				this.fallingColor = fallingColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder labelInLegend(final Boolean labelInLegend)
 			{
 				this.labelInLegend = labelInLegend;
 				return this;
 			}
-			
+
 			@Override
 			public Builder lineDashStyle(final List<Number> lineDashStyle)
 			{
 				this.lineDashStyle = lineDashStyle;
 				return this;
 			}
-			
+
 			@Override
 			public Builder lineWidth(final Number lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointShape(final PointShape.Type pointShape)
 			{
 				this.pointShape = pointShape;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointSize(final Number pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointsVisible(final Boolean pointsVisible)
 			{
 				this.pointsVisible = pointsVisible;
 				return this;
 			}
-			
+
 			@Override
 			public Builder risingColor(final CandlestickColor risingColor)
 			{
 				this.risingColor = risingColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder targetAxisIndex(final Integer targetAxisIndex)
 			{
 				this.targetAxisIndex = targetAxisIndex;
 				return this;
 			}
-			
+
 			@Override
 			public Builder type(final SeriesType type)
 			{
 				this.type = type;
 				return this;
 			}
-			
+
 			@Override
 			public Builder visibleInLegend(final Boolean visibleInLegend)
 			{
 				this.visibleInLegend = visibleInLegend;
 				return this;
 			}
-			
+
 			@Override
 			public ComboSeries build()
 			{
@@ -223,11 +224,11 @@ public interface ComboSeries extends Series
 					this.pointSize, this.pointsVisible, this.risingColor, this.targetAxisIndex, this.type,
 					this.visibleInLegend);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static class Default implements ComboSeries
 	{
 		private final Annotations      annotations;
@@ -245,7 +246,7 @@ public interface ComboSeries extends Series
 		private final Integer          targetAxisIndex;
 		private final SeriesType       type;
 		private final Boolean          visibleInLegend;
-		
+
 		Default(
 			final Annotations annotations,
 			final Number areaOpacity,
@@ -264,7 +265,7 @@ public interface ComboSeries extends Series
 			final Boolean visibleInLegend)
 		{
 			super();
-			
+
 			this.annotations     = annotations;
 			this.areaOpacity     = areaOpacity;
 			this.color           = color;
@@ -281,97 +282,97 @@ public interface ComboSeries extends Series
 			this.type            = type;
 			this.visibleInLegend = visibleInLegend;
 		}
-		
+
 		@Override
 		public Annotations annotations()
 		{
 			return this.annotations;
 		}
-		
+
 		@Override
 		public Number areaOpacity()
 		{
 			return this.areaOpacity;
 		}
-		
+
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-		
+
 		@Override
 		public CurveType curveType()
 		{
 			return this.curveType;
 		}
-		
+
 		@Override
 		public CandlestickColor fallingColor()
 		{
 			return this.fallingColor;
 		}
-		
+
 		@Override
 		public Boolean labelInLegend()
 		{
 			return this.labelInLegend;
 		}
-		
+
 		@Override
 		public List<Number> lineDashStyle()
 		{
 			return this.lineDashStyle;
 		}
-		
+
 		@Override
 		public Number lineWidth()
 		{
 			return this.lineWidth;
 		}
-		
+
 		@Override
 		public PointShape.Type pointShape()
 		{
 			return this.pointShape;
 		}
-		
+
 		@Override
 		public Number pointSize()
 		{
 			return this.pointSize;
 		}
-		
+
 		@Override
 		public Boolean pointsVisible()
 		{
 			return this.pointsVisible;
 		}
-		
+
 		@Override
 		public CandlestickColor risingColor()
 		{
 			return this.risingColor;
 		}
-		
+
 		@Override
 		public Integer targetAxisIndex()
 		{
 			return this.targetAxisIndex;
 		}
-		
+
 		@Override
 		public SeriesType type()
 		{
 			return this.type;
 		}
-		
+
 		@Override
 		public Boolean visibleInLegend()
 		{
 			return this.visibleInLegend;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -393,7 +394,7 @@ public interface ComboSeries extends Series
 			obj.putIfNotNull("visibleInLegend", this.visibleInLegend);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

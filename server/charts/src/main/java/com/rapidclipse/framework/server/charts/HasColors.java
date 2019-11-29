@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasColors extends Chart
@@ -14,7 +15,7 @@ public interface HasColors extends Chart
 	{
 		return properties().get("colors");
 	}
-
+	
 	public default void setColors(final List<String> colors)
 	{
 		properties().put("colors", colors);

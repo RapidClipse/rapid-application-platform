@@ -6,20 +6,25 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 import elemental.json.Json;
 
 
+/**
+ * @author XDEV Software
+ * @since 10.02.00
+ *
+ */
 public enum ColorMode implements JavaScriptable
 {
 	SOURCE("source"),
 	TARGET("target"),
 	GRADIENT("gradient"),
 	NONE("none");
-	
+
 	private final String js;
-	
+
 	private ColorMode(final String js)
 	{
 		this.js = Json.create(js).toJson();
 	}
-	
+
 	@Override
 	public String js()
 	{

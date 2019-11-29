@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.charts;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasSeries<S extends Series> extends Chart
@@ -11,12 +12,12 @@ public interface HasSeries<S extends Series> extends Chart
 	{
 		properties().putIndexed("series", index, series);
 	}
-
+	
 	public default S removeSeries(final int index)
 	{
 		return properties().removeIndexed("series", index);
 	}
-
+	
 	public default void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

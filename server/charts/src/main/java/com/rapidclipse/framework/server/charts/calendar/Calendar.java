@@ -9,63 +9,64 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface Calendar extends Serializable, JavaScriptable
 {
 	public CellColor cellColor();
-	
+
 	public Integer cellSize();
-	
+
 	public TextStyle dayOfWeekLabel();
-	
+
 	public Integer dayOfWeekRightSpace();
-	
+
 	public String daysOfWeek();
-	
+
 	public CellColor focusedCellColor();
-	
+
 	public TextStyle monthLabel();
-	
+
 	public CellColor monthOutlineColor();
-	
+
 	public Integer underMonthSpace();
-	
+
 	public Integer underYearSpace();
-	
+
 	public CellColor unusedMonthOutlineColor();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder cellColor(CellColor cellColor);
-		
+
 		public Builder cellSize(Integer cellSize);
-		
+
 		public Builder dayOfWeekLabel(TextStyle dayOfWeekLabel);
-		
+
 		public Builder dayOfWeekRightSpace(Integer dayOfWeekRightSpace);
-		
+
 		public Builder daysOfWeek(String daysOfWeek);
-		
+
 		public Builder focusedCellColor(CellColor focusedCellColor);
-		
+
 		public Builder monthLabel(TextStyle monthLabel);
-		
+
 		public Builder monthOutlineColor(CellColor monthOutlineColor);
-		
+
 		public Builder underMonthSpace(Integer underMonthSpace);
-		
+
 		public Builder underYearSpace(Integer underYearSpace);
-		
+
 		public Builder unusedMonthOutlineColor(CellColor unusedMonthOutlineColor);
-		
+
 		public Calendar build();
-		
+
 		public static class Default implements Builder
 		{
 			private CellColor cellColor;
@@ -79,89 +80,89 @@ public interface Calendar extends Serializable, JavaScriptable
 			private Integer   underMonthSpace;
 			private Integer   underYearSpace;
 			private CellColor unusedMonthOutlineColor;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder cellColor(final CellColor cellColor)
 			{
 				this.cellColor = cellColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder cellSize(final Integer cellSize)
 			{
 				this.cellSize = cellSize;
 				return this;
 			}
-			
+
 			@Override
 			public Builder dayOfWeekLabel(final TextStyle dayOfWeekLabel)
 			{
 				this.dayOfWeekLabel = dayOfWeekLabel;
 				return this;
 			}
-			
+
 			@Override
 			public Builder dayOfWeekRightSpace(final Integer dayOfWeekRightSpace)
 			{
 				this.dayOfWeekRightSpace = dayOfWeekRightSpace;
 				return this;
 			}
-			
+
 			@Override
 			public Builder daysOfWeek(final String daysOfWeek)
 			{
 				this.daysOfWeek = daysOfWeek;
 				return this;
 			}
-			
+
 			@Override
 			public Builder focusedCellColor(final CellColor focusedCellColor)
 			{
 				this.focusedCellColor = focusedCellColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder monthLabel(final TextStyle monthLabel)
 			{
 				this.monthLabel = monthLabel;
 				return this;
 			}
-			
+
 			@Override
 			public Builder monthOutlineColor(final CellColor monthOutlineColor)
 			{
 				this.monthOutlineColor = monthOutlineColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder underMonthSpace(final Integer underMonthSpace)
 			{
 				this.underMonthSpace = underMonthSpace;
 				return this;
 			}
-			
+
 			@Override
 			public Builder underYearSpace(final Integer underYearSpace)
 			{
 				this.underYearSpace = underYearSpace;
 				return this;
 			}
-			
+
 			@Override
 			public Builder unusedMonthOutlineColor(final CellColor unusedMonthOutlineColor)
 			{
 				this.unusedMonthOutlineColor = unusedMonthOutlineColor;
 				return this;
 			}
-			
+
 			@Override
 			public Calendar build()
 			{
@@ -171,11 +172,11 @@ public interface Calendar extends Serializable, JavaScriptable
 					this.underYearSpace,
 					this.unusedMonthOutlineColor);
 			}
-
+			
 		}
-
+		
 	}
-	
+
 	public static class Default implements Calendar
 	{
 		private final CellColor cellColor;
@@ -189,7 +190,7 @@ public interface Calendar extends Serializable, JavaScriptable
 		private final Integer   underMonthSpace;
 		private final Integer   underYearSpace;
 		private final CellColor unusedMonthOutlineColor;
-		
+
 		Default(
 			final CellColor cellColor,
 			final Integer cellSize,
@@ -204,7 +205,7 @@ public interface Calendar extends Serializable, JavaScriptable
 			final CellColor unusedMonthOutlineColor)
 		{
 			super();
-			
+
 			this.cellColor               = cellColor;
 			this.cellSize                = cellSize;
 			this.dayOfWeekLabel          = dayOfWeekLabel;
@@ -217,73 +218,73 @@ public interface Calendar extends Serializable, JavaScriptable
 			this.underYearSpace          = underYearSpace;
 			this.unusedMonthOutlineColor = unusedMonthOutlineColor;
 		}
-		
+
 		@Override
 		public CellColor cellColor()
 		{
 			return this.cellColor;
 		}
-		
+
 		@Override
 		public Integer cellSize()
 		{
 			return this.cellSize;
 		}
-		
+
 		@Override
 		public TextStyle dayOfWeekLabel()
 		{
 			return this.dayOfWeekLabel;
 		}
-		
+
 		@Override
 		public Integer dayOfWeekRightSpace()
 		{
 			return this.dayOfWeekRightSpace;
 		}
-		
+
 		@Override
 		public String daysOfWeek()
 		{
 			return this.daysOfWeek;
 		}
-		
+
 		@Override
 		public CellColor focusedCellColor()
 		{
 			return this.focusedCellColor;
 		}
-		
+
 		@Override
 		public TextStyle monthLabel()
 		{
 			return this.monthLabel;
 		}
-		
+
 		@Override
 		public CellColor monthOutlineColor()
 		{
 			return this.monthOutlineColor;
 		}
-		
+
 		@Override
 		public Integer underMonthSpace()
 		{
 			return this.underMonthSpace;
 		}
-		
+
 		@Override
 		public Integer underYearSpace()
 		{
 			return this.underYearSpace;
 		}
-		
+
 		@Override
 		public CellColor unusedMonthOutlineColor()
 		{
 			return this.unusedMonthOutlineColor;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -301,7 +302,7 @@ public interface Calendar extends Serializable, JavaScriptable
 			obj.putIfNotNull("unusedMonthOutlineColor", this.unusedMonthOutlineColor);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

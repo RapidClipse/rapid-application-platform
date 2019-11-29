@@ -6,6 +6,7 @@ import java.util.List;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasLineDashStyle extends HasLineWidth
@@ -14,7 +15,7 @@ public interface HasLineDashStyle extends HasLineWidth
 	{
 		return properties().get("lineDashStyle");
 	}
-
+	
 	public default void setLineDashStyle(final List<Number> lineDashStyle)
 	{
 		properties().put("lineDashStyle", lineDashStyle);

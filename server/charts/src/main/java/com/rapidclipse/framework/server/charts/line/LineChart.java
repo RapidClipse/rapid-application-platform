@@ -40,6 +40,7 @@ import com.vaadin.flow.component.Tag;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 @Tag("line-chart")
@@ -54,7 +55,7 @@ public class LineChart extends ChartBase
 	{
 		super("LineChart");
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -65,7 +66,7 @@ public class LineChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -74,7 +75,7 @@ public class LineChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)

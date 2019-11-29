@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.charts;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasTitle extends Chart
@@ -11,17 +12,17 @@ public interface HasTitle extends Chart
 	{
 		return properties().get("title");
 	}
-
+	
 	public default void setTitle(final String title)
 	{
 		properties().put("title", title);
 	}
-	
+
 	public default TextStyle getTitleTextStyle()
 	{
 		return properties().get("titleTextStyle");
 	}
-	
+
 	public default void setTitleTextStyle(final TextStyle titleTextStyle)
 	{
 		properties().put("titleTextStyle", titleTextStyle);

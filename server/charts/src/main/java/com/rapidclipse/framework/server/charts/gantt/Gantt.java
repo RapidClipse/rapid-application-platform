@@ -10,87 +10,88 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface Gantt extends Serializable, JavaScriptable
 {
 	public Arrow arrow();
-	
+
 	public Number barCornerRadius();
-	
+
 	public Number barHeight();
-	
+
 	public Boolean criticalPathEnabled();
-	
+
 	public LineStyle criticalPathStyle();
-	
+
 	public DateValue defaultStartDate();
-	
+
 	public LineStyle innerGridHorizLine();
-	
+
 	public BarStyle innerGridTrack();
-	
+
 	public BarStyle innerGridDarkTrack();
-	
+
 	public Number labelMaxWidth();
-	
+
 	public TextStyle labelStyle();
-	
+
 	public Boolean percentEnabled();
-	
+
 	public BarStyle percentStyle();
-	
+
 	public Boolean shadowEnabled();
-	
+
 	public String shadowColor();
-	
+
 	public Number shadowOffset();
-	
+
 	public Number trackHeight();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder arrow(Arrow arrow);
-		
+
 		public Builder barCornerRadius(Number barCornerRadius);
-		
+
 		public Builder barHeight(Number barHeight);
-		
+
 		public Builder criticalPathEnabled(Boolean criticalPathEnabled);
-		
+
 		public Builder criticalPathStyle(LineStyle criticalPathStyle);
-		
+
 		public Builder defaultStartDate(DateValue defaultStartDate);
-		
+
 		public Builder innerGridHorizLine(LineStyle innerGridHorizLine);
-		
+
 		public Builder innerGridTrack(BarStyle innerGridTrack);
-		
+
 		public Builder innerGridDarkTrack(BarStyle innerGridDarkTrack);
-		
+
 		public Builder labelMaxWidth(Number labelMaxWidth);
-		
+
 		public Builder labelStyle(TextStyle labelStyle);
-		
+
 		public Builder percentEnabled(Boolean percentEnabled);
-		
+
 		public Builder percentStyle(BarStyle percentStyle);
-		
+
 		public Builder shadowEnabled(Boolean shadowEnabled);
-		
+
 		public Builder shadowColor(String shadowColor);
-		
+
 		public Builder shadowOffset(Number shadowOffset);
-		
+
 		public Builder trackHeight(Number trackHeight);
-		
+
 		public Gantt build();
-		
+
 		public static class Default implements Builder
 		{
 			private Arrow     arrow;
@@ -110,131 +111,131 @@ public interface Gantt extends Serializable, JavaScriptable
 			private String    shadowColor;
 			private Number    shadowOffset;
 			private Number    trackHeight;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder arrow(final Arrow arrow)
 			{
 				this.arrow = arrow;
 				return this;
 			}
-			
+
 			@Override
 			public Builder barCornerRadius(final Number barCornerRadius)
 			{
 				this.barCornerRadius = barCornerRadius;
 				return this;
 			}
-			
+
 			@Override
 			public Builder barHeight(final Number barHeight)
 			{
 				this.barHeight = barHeight;
 				return this;
 			}
-			
+
 			@Override
 			public Builder criticalPathEnabled(final Boolean criticalPathEnabled)
 			{
 				this.criticalPathEnabled = criticalPathEnabled;
 				return this;
 			}
-			
+
 			@Override
 			public Builder criticalPathStyle(final LineStyle criticalPathStyle)
 			{
 				this.criticalPathStyle = criticalPathStyle;
 				return this;
 			}
-			
+
 			@Override
 			public Builder defaultStartDate(final DateValue defaultStartDate)
 			{
 				this.defaultStartDate = defaultStartDate;
 				return this;
 			}
-			
+
 			@Override
 			public Builder innerGridHorizLine(final LineStyle innerGridHorizLine)
 			{
 				this.innerGridHorizLine = innerGridHorizLine;
 				return this;
 			}
-			
+
 			@Override
 			public Builder innerGridTrack(final BarStyle innerGridTrack)
 			{
 				this.innerGridTrack = innerGridTrack;
 				return this;
 			}
-			
+
 			@Override
 			public Builder innerGridDarkTrack(final BarStyle innerGridDarkTrack)
 			{
 				this.innerGridDarkTrack = innerGridDarkTrack;
 				return this;
 			}
-			
+
 			@Override
 			public Builder labelMaxWidth(final Number labelMaxWidth)
 			{
 				this.labelMaxWidth = labelMaxWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder labelStyle(final TextStyle labelStyle)
 			{
 				this.labelStyle = labelStyle;
 				return this;
 			}
-			
+
 			@Override
 			public Builder percentEnabled(final Boolean percentEnabled)
 			{
 				this.percentEnabled = percentEnabled;
 				return this;
 			}
-			
+
 			@Override
 			public Builder percentStyle(final BarStyle percentStyle)
 			{
 				this.percentStyle = percentStyle;
 				return this;
 			}
-			
+
 			@Override
 			public Builder shadowEnabled(final Boolean shadowEnabled)
 			{
 				this.shadowEnabled = shadowEnabled;
 				return this;
 			}
-			
+
 			@Override
 			public Builder shadowColor(final String shadowColor)
 			{
 				this.shadowColor = shadowColor;
 				return this;
 			}
-			
+
 			@Override
 			public Builder shadowOffset(final Number shadowOffset)
 			{
 				this.shadowOffset = shadowOffset;
 				return this;
 			}
-			
+
 			@Override
 			public Builder trackHeight(final Number trackHeight)
 			{
 				this.trackHeight = trackHeight;
 				return this;
 			}
-			
+
 			@Override
 			public Gantt build()
 			{
@@ -243,11 +244,11 @@ public interface Gantt extends Serializable, JavaScriptable
 					this.innerGridDarkTrack, this.labelMaxWidth, this.labelStyle, this.percentEnabled,
 					this.percentStyle, this.shadowEnabled, this.shadowColor, this.shadowOffset, this.trackHeight);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public final static class Default implements Gantt
 	{
 		private final Arrow     arrow;
@@ -267,7 +268,7 @@ public interface Gantt extends Serializable, JavaScriptable
 		private final String    shadowColor;
 		private final Number    shadowOffset;
 		private final Number    trackHeight;
-		
+
 		Default(
 			final Arrow arrow,
 			final Number barCornerRadius,
@@ -288,7 +289,7 @@ public interface Gantt extends Serializable, JavaScriptable
 			final Number trackHeight)
 		{
 			super();
-			
+
 			this.arrow               = arrow;
 			this.barCornerRadius     = barCornerRadius;
 			this.barHeight           = barHeight;
@@ -307,109 +308,109 @@ public interface Gantt extends Serializable, JavaScriptable
 			this.shadowOffset        = shadowOffset;
 			this.trackHeight         = trackHeight;
 		}
-		
+
 		@Override
 		public Arrow arrow()
 		{
 			return this.arrow;
 		}
-		
+
 		@Override
 		public Number barCornerRadius()
 		{
 			return this.barCornerRadius;
 		}
-		
+
 		@Override
 		public Number barHeight()
 		{
 			return this.barHeight;
 		}
-		
+
 		@Override
 		public Boolean criticalPathEnabled()
 		{
 			return this.criticalPathEnabled;
 		}
-		
+
 		@Override
 		public LineStyle criticalPathStyle()
 		{
 			return this.criticalPathStyle;
 		}
-		
+
 		@Override
 		public DateValue defaultStartDate()
 		{
 			return this.defaultStartDate;
 		}
-		
+
 		@Override
 		public LineStyle innerGridHorizLine()
 		{
 			return this.innerGridHorizLine;
 		}
-		
+
 		@Override
 		public BarStyle innerGridTrack()
 		{
 			return this.innerGridTrack;
 		}
-		
+
 		@Override
 		public BarStyle innerGridDarkTrack()
 		{
 			return this.innerGridDarkTrack;
 		}
-		
+
 		@Override
 		public Number labelMaxWidth()
 		{
 			return this.labelMaxWidth;
 		}
-		
+
 		@Override
 		public TextStyle labelStyle()
 		{
 			return this.labelStyle;
 		}
-		
+
 		@Override
 		public Boolean percentEnabled()
 		{
 			return this.percentEnabled;
 		}
-		
+
 		@Override
 		public BarStyle percentStyle()
 		{
 			return this.percentStyle;
 		}
-		
+
 		@Override
 		public Boolean shadowEnabled()
 		{
 			return this.shadowEnabled;
 		}
-		
+
 		@Override
 		public String shadowColor()
 		{
 			return this.shadowColor;
 		}
-		
+
 		@Override
 		public Number shadowOffset()
 		{
 			return this.shadowOffset;
 		}
-		
+
 		@Override
 		public Number trackHeight()
 		{
 			return this.trackHeight;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -433,7 +434,7 @@ public interface Gantt extends Serializable, JavaScriptable
 			obj.putIfNotNull("trackHeight", this.trackHeight);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

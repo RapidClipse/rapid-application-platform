@@ -10,6 +10,7 @@ import elemental.json.Json;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface Interval extends Serializable, JavaScriptable
@@ -22,67 +23,67 @@ public interface Interval extends Serializable, JavaScriptable
 		STICK("stick"),
 		POINT("point"),
 		AREA("area");
-		
+
 		private final String js;
-		
+
 		private Style(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-		
+
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-	
+
 	public Style style();
-	
+
 	public String color();
-	
+
 	public Number lineWidth();
-	
+
 	public Number barWidth();
-	
+
 	public Number boxWidth();
-	
+
 	public Number pointSize();
-	
+
 	public Number fillOpacity();
-	
+
 	public CurveType curveType();
-	
+
 	public static Interval New(final Style style)
 	{
 		return Builder().style(style).build();
 	}
-
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder style(Style style);
-		
-		public Builder color(String color);
-		
-		public Builder lineWidth(Number lineWidth);
-		
-		public Builder barWidth(Number barWidth);
-		
-		public Builder boxWidth(Number boxWidth);
-		
-		public Builder pointSize(Number pointSize);
-		
-		public Builder fillOpacity(Number fillOpacity);
-		
-		public Builder curveType(CurveType curveType);
-		
-		public Interval build();
 
+		public Builder color(String color);
+
+		public Builder lineWidth(Number lineWidth);
+
+		public Builder barWidth(Number barWidth);
+
+		public Builder boxWidth(Number boxWidth);
+
+		public Builder pointSize(Number pointSize);
+
+		public Builder fillOpacity(Number fillOpacity);
+
+		public Builder curveType(CurveType curveType);
+
+		public Interval build();
+		
 		public static class Default implements Builder
 		{
 			private Style     style;
@@ -93,79 +94,79 @@ public interface Interval extends Serializable, JavaScriptable
 			private Number    pointSize;
 			private Number    fillOpacity;
 			private CurveType curveType;
-
+			
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder style(final Style style)
 			{
 				this.style = style;
 				return this;
 			}
-			
+
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-			
+
 			@Override
 			public Builder lineWidth(final Number lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder barWidth(final Number barWidth)
 			{
 				this.barWidth = barWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder boxWidth(final Number boxWidth)
 			{
 				this.boxWidth = boxWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointSize(final Number pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
 			}
-			
+
 			@Override
 			public Builder fillOpacity(final Number fillOpacity)
 			{
 				this.fillOpacity = fillOpacity;
 				return this;
 			}
-			
+
 			@Override
 			public Builder curveType(final CurveType curveType)
 			{
 				this.curveType = curveType;
 				return this;
 			}
-			
+
 			@Override
 			public Interval build()
 			{
 				return new Interval.Default(this.style, this.color, this.lineWidth, this.barWidth, this.boxWidth,
 					this.pointSize, this.fillOpacity, this.curveType);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static class Default implements Interval
 	{
 		private final Style     style;
@@ -176,7 +177,7 @@ public interface Interval extends Serializable, JavaScriptable
 		private final Number    pointSize;
 		private final Number    fillOpacity;
 		private final CurveType curveType;
-		
+
 		Default(
 			final Style style,
 			final String color,
@@ -188,7 +189,7 @@ public interface Interval extends Serializable, JavaScriptable
 			final CurveType curveType)
 		{
 			super();
-			
+
 			this.style       = style;
 			this.color       = color;
 			this.lineWidth   = lineWidth;
@@ -198,55 +199,55 @@ public interface Interval extends Serializable, JavaScriptable
 			this.fillOpacity = fillOpacity;
 			this.curveType   = curveType;
 		}
-
+		
 		@Override
 		public Style style()
 		{
 			return this.style;
 		}
-		
+
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-		
+
 		@Override
 		public Number lineWidth()
 		{
 			return this.lineWidth;
 		}
-		
+
 		@Override
 		public Number barWidth()
 		{
 			return this.barWidth;
 		}
-		
+
 		@Override
 		public Number boxWidth()
 		{
 			return this.boxWidth;
 		}
-		
+
 		@Override
 		public Number pointSize()
 		{
 			return this.pointSize;
 		}
-		
+
 		@Override
 		public Number fillOpacity()
 		{
 			return this.fillOpacity;
 		}
-		
+
 		@Override
 		public CurveType curveType()
 		{
 			return this.curveType;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -261,7 +262,7 @@ public interface Interval extends Serializable, JavaScriptable
 			obj.putIfNotNull("curveType", this.curveType);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

@@ -8,65 +8,66 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface LinkColor extends Serializable, JavaScriptable
 {
 	public String stroke();
-
+	
 	public Number strokeWidth();
-
+	
 	public String fill();
-
+	
 	public Number fillOpacity();
-
+	
 	public static LinkColor
 		New(final String stroke, final Number strokeWidth, final String fill, final Number fillOpacity)
 	{
 		return new Default(stroke, strokeWidth, fill, fillOpacity);
 	}
-
+	
 	public static class Default implements LinkColor
 	{
 		private final String stroke;
 		private final Number strokeWidth;
 		private final String fill;
 		private final Number fillOpacity;
-
+		
 		Default(final String stroke, final Number strokeWidth, final String fill, final Number fillOpacity)
 		{
 			super();
-
+			
 			this.stroke      = stroke;
 			this.strokeWidth = strokeWidth;
 			this.fill        = fill;
 			this.fillOpacity = fillOpacity;
 		}
-
+		
 		@Override
 		public String stroke()
 		{
 			return this.stroke;
 		}
-
+		
 		@Override
 		public Number strokeWidth()
 		{
 			return this.strokeWidth;
 		}
-
+		
 		@Override
 		public String fill()
 		{
 			return this.fill;
 		}
-
+		
 		@Override
 		public Number fillOpacity()
 		{
 			return this.fillOpacity;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -77,7 +78,7 @@ public interface LinkColor extends Serializable, JavaScriptable
 			obj.putIfNotNull("fillOpacity", this.fillOpacity);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }

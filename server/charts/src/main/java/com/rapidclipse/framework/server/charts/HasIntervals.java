@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.charts;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasIntervals extends Chart
@@ -11,22 +12,22 @@ public interface HasIntervals extends Chart
 	{
 		properties().putIndexed("interval", column, interval);
 	}
-	
+
 	public default Interval removeInterval(final String column)
 	{
 		return properties().removeIndexed("interval", column);
 	}
-	
+
 	public default void removeAllIntervals()
 	{
 		properties().removeAllIndexed("interval");
 	}
-	
+
 	public default void setInterval(final Interval interval)
 	{
 		properties().put("intervals", interval);
 	}
-
+	
 	public default Interval getInterval()
 	{
 		return properties().get("intervals");

@@ -11,6 +11,7 @@ import elemental.json.Json;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface Background extends Serializable, JavaScriptable
@@ -19,66 +20,66 @@ public interface Background extends Serializable, JavaScriptable
 	{
 		return new Color(color);
 	}
-
+	
 	public static class Color implements Background
 	{
 		private final String color;
-
+		
 		Color(final String color)
 		{
 			super();
-
+			
 			this.color = Objects.requireNonNull(color);
 		}
-
+		
 		public String color()
 		{
 			return this.color;
 		}
-
+		
 		@Override
 		public String js()
 		{
 			return Json.create(this.color).toJson();
 		}
-		
-	}
 
+	}
+	
 	public static StrokeFill StrokeFill(final String stroke, final Number strokeWidth, final String fill)
 	{
 		return new StrokeFill(stroke, strokeWidth, fill);
 	}
-
+	
 	public static class StrokeFill implements Background
 	{
 		private final String stroke;
 		private final Number strokeWidth;
 		private final String fill;
-
+		
 		StrokeFill(final String stroke, final Number strokeWidth, final String fill)
 		{
 			super();
-
+			
 			this.stroke      = stroke;
 			this.strokeWidth = strokeWidth;
 			this.fill        = fill;
 		}
-
+		
 		public String stroke()
 		{
 			return this.stroke;
 		}
-
+		
 		public Number strokeWidth()
 		{
 			return this.strokeWidth;
 		}
-
+		
 		public String fill()
 		{
 			return this.fill;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -88,7 +89,7 @@ public interface Background extends Serializable, JavaScriptable
 			obj.putIfNotNull("fill", this.fill);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

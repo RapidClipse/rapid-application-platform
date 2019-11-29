@@ -42,6 +42,7 @@ import com.vaadin.flow.component.Tag;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 @Tag("combo-chart")
@@ -56,7 +57,7 @@ public class ComboChart extends ChartBase
 	{
 		super("ComboChart");
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String xAxisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -67,7 +68,7 @@ public class ComboChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String xAxisColumn,
@@ -76,7 +77,7 @@ public class ComboChart extends ChartBase
 	{
 		validateColumnType(xAxisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xAxisColumnType, xAxisColumn));
 		for(final String valueColumn : valueColumns)
@@ -85,12 +86,12 @@ public class ComboChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public SeriesType getSeriesType()
 	{
 		return properties().get("seriesType");
 	}
-	
+
 	public void setSeriesType(final SeriesType seriesType)
 	{
 		properties().put("seriesType", seriesType);

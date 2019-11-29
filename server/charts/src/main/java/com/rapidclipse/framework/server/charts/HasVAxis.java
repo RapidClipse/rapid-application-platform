@@ -3,6 +3,7 @@ package com.rapidclipse.framework.server.charts;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public interface HasVAxis extends Chart
@@ -11,7 +12,7 @@ public interface HasVAxis extends Chart
 	{
 		return properties().get("vAxis");
 	}
-
+	
 	public default void setVAxis(final Axis vAxis)
 	{
 		properties().put("vAxis", vAxis);

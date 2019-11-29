@@ -30,6 +30,7 @@ import com.rapidclipse.framework.server.charts.HasVAxis;
 
 /**
  * @author XDEV Software
+ * @since 10.02.00
  *
  */
 public abstract class AbstractBarChart extends ChartBase
@@ -41,13 +42,13 @@ public abstract class AbstractBarChart extends ChartBase
 	{
 		super(type, packages);
 	}
-
+	
 	@Override
 	public void setModel(final ChartModel before, final ChartModel after)
 	{
 		super.setModel(before, after);
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -58,7 +59,7 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -67,7 +68,7 @@ public abstract class AbstractBarChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
