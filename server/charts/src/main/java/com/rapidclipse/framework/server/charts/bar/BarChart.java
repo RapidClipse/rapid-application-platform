@@ -24,6 +24,7 @@
 
 package com.rapidclipse.framework.server.charts.bar;
 
+import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.HasHAxes;
 import com.vaadin.flow.component.Tag;
 
@@ -40,5 +41,12 @@ public class BarChart extends AbstractBarChart
 	public BarChart()
 	{
 		super("BarChart");
+	}
+
+	public BarChart(final ChartModel before, final ChartModel after)
+	{
+		this();
+
+		setModel(before, after);
 	}
 }

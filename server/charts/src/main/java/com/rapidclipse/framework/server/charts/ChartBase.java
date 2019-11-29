@@ -18,6 +18,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;
 import com.vaadin.flow.component.Composite;
 import com.vaadin.flow.component.UI;
+import com.vaadin.flow.component.dependency.JavaScript;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.shared.Registration;
 
@@ -31,51 +32,65 @@ import elemental.json.JsonValue;
  * @author XDEV Software
  *
  */
+@JavaScript("https://www.gstatic.com/charts/loader.js")
 public class ChartBase extends Composite<Div> implements Chart
 {
 	private final String     type;
 	private final String[]   packages;
 	private final Properties properties = new Properties();
 	private ChartModel       model      = ChartModel.New();
+	private ChartModel       modelBefore, modelAfter;
 	private Selection        selection  = Selection.Empty();
-	
+
 	protected ChartBase(final String type, final String... packages)
 	{
 		super();
-		
+
 		this.type     = type;
 		this.packages = packages != null && packages.length > 0
 			? packages
 			: new String[]{"corechart"};
+
+		addAttachListener(event -> refresh());
 	}
-	
+
 	@Override
 	public Properties properties()
 	{
 		return this.properties;
 	}
-	
+
 	public void setModel(final ChartModel model)
 	{
-		this.model = model;
+		this.model       = model;
+		this.modelBefore = null;
+		this.modelAfter  = null;
 	}
-	
+
+	protected void setModel(final ChartModel before, final ChartModel after)
+	{
+		this.model       = null;
+		this.modelBefore = before;
+		this.modelAfter  = after;
+	}
+
+	@Override
 	public ChartModel getModel()
 	{
 		return this.model;
 	}
-	
+
 	public void refresh()
 	{
 		final String js = createChartJs();
 		UI.getCurrent().getPage().executeJs(js);
 	}
-	
+
 	private String createChartJs()
 	{
 		final ObjectHelper loadOptions = new ObjectHelper();
 		createLoadOptions(loadOptions);
-		
+
 		final StringBuilder sb = new StringBuilder();
 		sb.append("google.charts.load('visualization', 'current', ").append(loadOptions.js()).append(");\n");
 		sb.append("google.charts.setOnLoadCallback(drawChart);\n");
@@ -84,17 +99,26 @@ public class ChartBase extends Composite<Div> implements Chart
 		sb.append("var chart = new google.visualization.").append(this.type).append("(elem);\n");
 		sb.append("elem.chart = chart;\n");
 		sb.append("var configuration = ").append(this.properties.js()).append(";\n");
-		sb.append(this.model.js("data"));
-		sb.append("var view = new google.visualization.DataView(data);\n");
+		if(this.modelBefore != null && this.modelAfter != null)
+		{
+			sb.append(this.modelBefore.js("before"));
+			sb.append(this.modelAfter.js("after"));
+			sb.append("var view = chart.computeDiff(before, after);\n");
+		}
+		else
+		{
+			sb.append(this.model.js("data"));
+			sb.append("var view = new google.visualization.DataView(data);\n");
+		}
 		sb.append("chart.draw(view, configuration);\n");
 		sb.append("google.visualization.events.addListener(chart, 'select', function() {\n");
 		sb.append(" elem.$server.selectionChanged(chart.getSelection());");
 		sb.append("});\n");
 		sb.append("}");
-		
+
 		return sb.toString();
 	}
-	
+
 	private String id()
 	{
 		String id = getId().orElse(null);
@@ -104,48 +128,48 @@ public class ChartBase extends Composite<Div> implements Chart
 		}
 		return id;
 	}
-	
+
 	protected void createLoadOptions(final ObjectHelper obj)
 	{
 		obj.put("packages", new ArrayHelper().addAllStrings(Arrays.asList(this.packages)));
 	}
-	
+
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public <T extends ChartBase> Registration
 		addSelectionListener(final ComponentEventListener<SelectionEvent<T>> listener)
 	{
 		return ComponentUtil.addListener(this, SelectionEvent.class, (ComponentEventListener)listener);
 	}
-	
+
 	private void fireSelectionChanged(final boolean fromClient)
 	{
 		ComponentUtil.fireEvent(this, new SelectionEvent<>(this, fromClient, this.selection));
 	}
-	
+
 	public Selection getSelection()
 	{
 		return this.selection;
 	}
-	
+
 	public void setSelection(final Selection selection)
 	{
 		if(!this.selection.equals(requireNonNull(selection)))
 		{
 			this.selection = selection;
-			
+
 			final String js = new StringBuilder()
 				.append("this.chart.setSelection(").append(selection.js()).append(");").toString();
 			getElement().executeJs(js);
-			
+
 			fireSelectionChanged(false);
 		}
 	}
-	
+
 	public void clearSelection()
 	{
 		setSelection(Selection.Empty());
 	}
-	
+
 	@ClientCallable
 	void selectionChanged(final JsonArray selectionArray)
 	{
@@ -166,7 +190,7 @@ public class ChartBase extends Composite<Div> implements Chart
 			fireSelectionChanged(true);
 		}
 	}
-	
+
 	protected void
 		validateColumnType(final Column.Type type, final String columnName, final Column.Type... allowedTypes)
 	{

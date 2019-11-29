@@ -28,6 +28,7 @@ import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.DiffChart;
 import com.rapidclipse.framework.server.charts.HasBackground;
 import com.rapidclipse.framework.server.charts.HasCategories;
 import com.rapidclipse.framework.server.charts.HasChartArea;
@@ -50,12 +51,25 @@ import com.vaadin.flow.component.Tag;
 @Tag("pie-chart")
 public class PieChart extends ChartBase
 	implements HasBackground, HasChartArea, HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize,
-	HasLegend, HasCategories, HasTitle, HasTooltip
+	HasLegend, HasCategories, HasTitle, HasTooltip, DiffChart
 {
 
 	public PieChart()
 	{
 		super("PieChart");
+	}
+	
+	public PieChart(final ChartModel before, final ChartModel after)
+	{
+		this();
+		
+		setModel(before, after);
+	}
+	
+	@Override
+	public void setModel(final ChartModel before, final ChartModel after)
+	{
+		super.setModel(before, after);
 	}
 
 	public ChartModel initDefaultColumns()

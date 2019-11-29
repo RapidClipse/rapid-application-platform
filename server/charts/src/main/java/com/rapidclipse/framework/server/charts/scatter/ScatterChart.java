@@ -28,6 +28,7 @@ import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.DiffChart;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAnnotations;
@@ -66,11 +67,24 @@ public class ScatterChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFont, AllowsIFrame, HasHAxis, HasChartSize, HasLegend, HasLineWidth, HasOrientation, HasPoints,
-	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxis
+	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxis, DiffChart
 {
 	public ScatterChart()
 	{
 		super("ScatterChart");
+	}
+
+	public ScatterChart(final ChartModel before, final ChartModel after)
+	{
+		this();
+
+		setModel(before, after);
+	}
+	
+	@Override
+	public void setModel(final ChartModel before, final ChartModel after)
+	{
+		super.setModel(before, after);
 	}
 
 	public ChartModel

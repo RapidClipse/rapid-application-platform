@@ -5,6 +5,7 @@ import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartBase;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.DiffChart;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAnnotations;
 import com.rapidclipse.framework.server.charts.HasAxisTitlesPosition;
@@ -32,13 +33,19 @@ import com.rapidclipse.framework.server.charts.HasVAxis;
 public abstract class AbstractBarChart extends ChartBase
 	implements HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasDataOpacity,
 	HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasStackMode, HasLegend, HasCategories, HasOrientation,
-	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize
+	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize, DiffChart
 {
 	protected AbstractBarChart(final String type, final String... packages)
 	{
 		super(type, packages);
 	}
 
+	@Override
+	public void setModel(final ChartModel before, final ChartModel after)
+	{
+		super.setModel(before, after);
+	}
+	
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -49,7 +56,7 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -58,7 +65,7 @@ public abstract class AbstractBarChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
@@ -67,17 +74,17 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-	
+
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

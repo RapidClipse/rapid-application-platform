@@ -24,6 +24,7 @@
 
 package com.rapidclipse.framework.server.charts.bar;
 
+import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.HasVAxes;
 import com.vaadin.flow.component.Tag;
 
@@ -40,5 +41,12 @@ public class ColumnChart extends AbstractBarChart
 	public ColumnChart()
 	{
 		super("ColumnChart");
+	}
+
+	public ColumnChart(final ChartModel before, final ChartModel after)
+	{
+		this();
+
+		setModel(before, after);
 	}
 }
