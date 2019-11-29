@@ -45,6 +45,7 @@ import com.rapidclipse.framework.server.charts.HasFocusTarget;
 import com.rapidclipse.framework.server.charts.HasFont;
 import com.rapidclipse.framework.server.charts.HasHAxis;
 import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasIntervals;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasLineDashStyle;
 import com.rapidclipse.framework.server.charts.HasOrientation;
@@ -70,13 +71,13 @@ public class AreaChart extends ChartBase
 	HasBackground, HasChartArea, HasColors, HasCrosshair, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFocusTarget, HasFont, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode, HasLegend, HasLineDashStyle,
 	HasOrientation, HasPoints, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasVAxes,
-	HasVAxis
+	HasVAxis, HasIntervals
 {
 	public AreaChart()
 	{
 		super("AreaChart");
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -87,13 +88,13 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
 	{
 		validateColumnType(xColumnType, "x column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xColumnType, xColumn));
 		for(final String valueColumn : valueColumns)
@@ -102,17 +103,17 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-
+	
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-
+	
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

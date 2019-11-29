@@ -45,13 +45,19 @@ public class GanttChart extends ChartBase
 	{
 		super("Gantt", "gantt");
 	}
-	
+
 	public ChartModel initDefaultColumns()
+	{
+		return initDefaultColumns("task ID", "task name", null, "start date", "end date", "duration",
+			"percent complete", "dependencies");
+	}
+
+	public ChartModel initDefaultColumnsWithResourceId()
 	{
 		return initDefaultColumns("task ID", "task name", "resource ID", "start date", "end date", "duration",
 			"percent complete", "dependencies");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(
 			final String taskIdColumn,
@@ -76,12 +82,12 @@ public class GanttChart extends ChartBase
 			.addColumn(Column.New(Column.Type.NUMBER, percentCompleteColumn))
 			.addColumn(Column.New(Column.Type.STRING, dependenciesColumn));
 	}
-
+	
 	public Gantt getGantt()
 	{
 		return properties().get("gantt");
 	}
-	
+
 	public void setGantt(final Gantt gantt)
 	{
 		properties().put("gantt", gantt);

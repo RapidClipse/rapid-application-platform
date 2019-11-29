@@ -18,6 +18,7 @@ import com.rapidclipse.framework.server.charts.HasDataOpacity;
 import com.rapidclipse.framework.server.charts.HasFocusTarget;
 import com.rapidclipse.framework.server.charts.HasHAxis;
 import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasIntervals;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasOrientation;
 import com.rapidclipse.framework.server.charts.HasStackMode;
@@ -33,19 +34,19 @@ import com.rapidclipse.framework.server.charts.HasVAxis;
 public abstract class AbstractBarChart extends ChartBase
 	implements HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasDataOpacity,
 	HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasStackMode, HasLegend, HasCategories, HasOrientation,
-	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize, DiffChart
+	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize, DiffChart, HasIntervals
 {
 	protected AbstractBarChart(final String type, final String... packages)
 	{
 		super(type, packages);
 	}
-
+	
 	@Override
 	public void setModel(final ChartModel before, final ChartModel after)
 	{
 		super.setModel(before, after);
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -56,7 +57,7 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -65,7 +66,7 @@ public abstract class AbstractBarChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
@@ -74,17 +75,17 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-
+	
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-
+	
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

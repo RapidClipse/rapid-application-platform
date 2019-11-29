@@ -66,6 +66,12 @@ public interface ChartModel extends Serializable, JavaScriptable
 
 	public ChartModel removeAll();
 
+	public Cell getValue(int row, int column);
+
+	public ChartModel setValue(int row, int column, Object value);
+
+	public ChartModel setValue(int row, int column, Cell value);
+
 	public String js(final String varName);
 
 	public static ChartModel New()
@@ -138,11 +144,10 @@ public interface ChartModel extends Serializable, JavaScriptable
 		@Override
 		public ChartModel addRow(final Iterable<? extends Object> row)
 		{
-			this.rows.add(
-				Collections.unmodifiableList(
-					StreamSupport.stream(row.spliterator(), false)
-						.map(this::cell)
-						.collect(Collectors.toList())));
+			this.rows.add(new ArrayList<>(
+				StreamSupport.stream(row.spliterator(), false)
+					.map(this::cell)
+					.collect(Collectors.toList())));
 
 			return this;
 		}
@@ -166,6 +171,25 @@ public interface ChartModel extends Serializable, JavaScriptable
 		{
 			this.columns.clear();
 			this.rows.clear();
+			return this;
+		}
+
+		@Override
+		public Cell getValue(final int row, final int column)
+		{
+			return this.rows.get(row).get(column);
+		}
+
+		@Override
+		public ChartModel setValue(final int row, final int column, final Object value)
+		{
+			return setValue(row, column, cell(value));
+		}
+		
+		@Override
+		public ChartModel setValue(final int row, final int column, final Cell value)
+		{
+			this.rows.get(row).set(column, value);
 			return this;
 		}
 

@@ -23,6 +23,7 @@ import com.rapidclipse.framework.server.charts.HasFocusTarget;
 import com.rapidclipse.framework.server.charts.HasFont;
 import com.rapidclipse.framework.server.charts.HasHAxis;
 import com.rapidclipse.framework.server.charts.HasInteractivity;
+import com.rapidclipse.framework.server.charts.HasIntervals;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasLineDashStyle;
 import com.rapidclipse.framework.server.charts.HasOrientation;
@@ -46,13 +47,14 @@ public class LineChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasChartArea,
 	HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer, HasFocusTarget, HasFont,
 	AllowsIFrame, HasHAxis, CanInterpolateNulls, HasLegend, HasLineDashStyle, HasOrientation, HasPoints, HasCategories,
-	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxes, HasVAxis, HasChartSize
+	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxes, HasVAxis, HasChartSize,
+	HasIntervals
 {
 	public LineChart()
 	{
 		super("LineChart");
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -63,7 +65,7 @@ public class LineChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -72,7 +74,7 @@ public class LineChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
@@ -81,17 +83,17 @@ public class LineChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-
+	
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-
+	
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");
