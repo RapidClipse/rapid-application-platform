@@ -37,7 +37,6 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
-import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -51,13 +50,13 @@ public class ComboChart extends ChartBase
 	HasBar, HasCandlestick, HasChartArea, HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity,
 	HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode, HasLegend,
 	HasLineDashStyle, HasOrientation, HasPoints, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition,
-	HasTooltip, HasVAxes, HasVAxis, HasIntervals, HasSeries<ComboSeries>
+	HasTooltip, HasVAxes, HasIntervals, HasSeries<ComboSeries>
 {
 	public ComboChart()
 	{
 		super("ComboChart");
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String xAxisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -68,7 +67,7 @@ public class ComboChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String xAxisColumn,
@@ -77,7 +76,7 @@ public class ComboChart extends ChartBase
 	{
 		validateColumnType(xAxisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xAxisColumnType, xAxisColumn));
 		for(final String valueColumn : valueColumns)
@@ -86,12 +85,12 @@ public class ComboChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public SeriesType getSeriesType()
 	{
 		return properties().get("seriesType");
 	}
-
+	
 	public void setSeriesType(final SeriesType seriesType)
 	{
 		properties().put("seriesType", seriesType);

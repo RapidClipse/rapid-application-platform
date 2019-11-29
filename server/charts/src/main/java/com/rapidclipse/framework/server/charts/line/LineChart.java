@@ -35,7 +35,6 @@ import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasTrendlines;
 import com.rapidclipse.framework.server.charts.HasVAxes;
-import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -48,14 +47,14 @@ public class LineChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasChartArea,
 	HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer, HasFocusTarget, HasFont,
 	AllowsIFrame, HasHAxis, CanInterpolateNulls, HasLegend, HasLineDashStyle, HasOrientation, HasPoints, HasCategories,
-	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxes, HasVAxis, HasChartSize,
+	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxes, HasChartSize,
 	HasIntervals, HasSeries<LineSeries>
 {
 	public LineChart()
 	{
 		super("LineChart");
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -66,7 +65,7 @@ public class LineChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -75,7 +74,7 @@ public class LineChart extends ChartBase
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)

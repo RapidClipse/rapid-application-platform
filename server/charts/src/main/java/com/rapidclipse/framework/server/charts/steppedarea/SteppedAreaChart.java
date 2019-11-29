@@ -51,7 +51,6 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
-import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -65,13 +64,13 @@ public class SteppedAreaChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAreaOpacity, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasInteractivity, HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize,
 	HasStackMode, HasLegend, HasLineDashStyle, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition,
-	HasTooltip, HasVAxes, HasVAxis, HasIntervals, HasSeries<SteppedAreaSeries>
+	HasTooltip, HasVAxes, HasIntervals, HasSeries<SteppedAreaSeries>
 {
 	public SteppedAreaChart()
 	{
 		super("SteppedAreaChart");
 	}
-
+	
 	public ChartModel initDefaultColumns(final String groupColumn, final String... dataColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -82,12 +81,12 @@ public class SteppedAreaChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public Boolean getConnectSteps()
 	{
 		return properties().get("connectSteps");
 	}
-
+	
 	public void setConnectSteps(final Boolean connectSteps)
 	{
 		properties().put("connectSteps", connectSteps);

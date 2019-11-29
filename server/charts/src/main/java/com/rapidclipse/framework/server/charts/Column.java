@@ -105,6 +105,8 @@ public interface Column extends Serializable, JavaScriptable
 
 	public String pattern();
 
+	public Format format();
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
@@ -122,6 +124,8 @@ public interface Column extends Serializable, JavaScriptable
 
 		public Builder pattern(String pattern);
 
+		public Builder format(Format format);
+
 		public Column build();
 
 		public static class Default implements Builder
@@ -131,6 +135,7 @@ public interface Column extends Serializable, JavaScriptable
 			private String id;
 			private Role   role;
 			private String pattern;
+			private Format format;
 
 			Default()
 			{
@@ -173,9 +178,16 @@ public interface Column extends Serializable, JavaScriptable
 			}
 
 			@Override
+			public Builder format(final Format format)
+			{
+				this.format = format;
+				return this;
+			}
+
+			@Override
 			public Column build()
 			{
-				return Column.New(this.type, this.label, this.id, this.role, this.pattern);
+				return new Column.Default(this.type, this.label, this.id, this.role, this.pattern, this.format);
 			}
 
 		}
@@ -184,33 +196,55 @@ public interface Column extends Serializable, JavaScriptable
 
 	public static Column New(final Type type)
 	{
-		return new Default(type, null, null, null, null);
+		return new Default(type, null, null, null, null, null);
 	}
 
 	public static Column New(final Type type, final String id)
 	{
-		return new Default(type, id, null, null, null);
+		return new Default(type, id, null, null, null, null);
+	}
+
+	public static Column New(final Type type, final String id, final Format format)
+	{
+		return new Default(type, id, null, null, null, format);
 	}
 
 	public static Column New(final Type type, final String id, final String label)
 	{
-		return new Default(type, id, label, null, null);
+		return new Default(type, id, label, null, null, null);
+	}
+
+	public static Column New(final Type type, final String id, final String label, final Format format)
+	{
+		return new Default(type, id, label, null, null, format);
 	}
 
 	public static Column New(final Type type, final String id, final Role role)
 	{
-		return new Default(type, id, null, role, null);
+		return new Default(type, id, null, role, null, null);
 	}
 
 	public static Column New(final Type type, final String id, final String label, final Role role)
 	{
-		return new Default(type, id, label, role, null);
+		return new Default(type, id, label, role, null, null);
 	}
 
 	public static Column
 		New(final Type type, final String id, final String label, final Role role, final String pattern)
 	{
-		return new Default(type, id, label, role, pattern);
+		return new Default(type, id, label, role, pattern, null);
+	}
+
+	public static Column
+		New(
+			final Type type,
+			final String id,
+			final String label,
+			final Role role,
+			final String pattern,
+			final Format format)
+	{
+		return new Default(type, id, label, role, pattern, format);
 	}
 
 	public static class Default implements Column
@@ -220,8 +254,15 @@ public interface Column extends Serializable, JavaScriptable
 		private final String label;
 		private final Role   role;
 		private final String pattern;
+		private final Format format;
 
-		Default(final Type type, final String id, final String label, final Role role, final String pattern)
+		Default(
+			final Type type,
+			final String id,
+			final String label,
+			final Role role,
+			final String pattern,
+			final Format format)
 		{
 			super();
 
@@ -230,6 +271,7 @@ public interface Column extends Serializable, JavaScriptable
 			this.label   = label;
 			this.role    = role;
 			this.pattern = pattern;
+			this.format  = format;
 		}
 
 		@Override
@@ -260,6 +302,12 @@ public interface Column extends Serializable, JavaScriptable
 		public String pattern()
 		{
 			return this.pattern;
+		}
+
+		@Override
+		public Format format()
+		{
+			return this.format;
 		}
 
 		@Override

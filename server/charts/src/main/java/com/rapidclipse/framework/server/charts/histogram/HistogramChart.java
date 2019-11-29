@@ -50,7 +50,6 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
-import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -63,21 +62,21 @@ import com.vaadin.flow.component.Tag;
 public class HistogramChart extends ChartBase
 	implements HasAnimation, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasColors, HasDataOpacity,
 	HasInteractivity, HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode,
-	HasLegend, HasOrientation, HasCategories, HasTheme, HasTitlePosition, HasTooltip, HasVAxes, HasVAxis,
+	HasLegend, HasOrientation, HasCategories, HasTheme, HasTitlePosition, HasTooltip, HasVAxes,
 	HasSeries<HistogramSeries>
 {
 	public HistogramChart()
 	{
 		super("Histogram");
 	}
-
+	
 	public ChartModel initDefaultColumnsSingleSeries(final String labelColumn, final String valueColumn)
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, labelColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-
+	
 	public ChartModel initDefaultColumnsMultipleSeries(final String... seriesColumns)
 	{
 		final ChartModel model = getModel().removeAll();
@@ -87,12 +86,12 @@ public class HistogramChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public Histogram getHistogram()
 	{
 		return properties().get("histogram");
 	}
-
+	
 	public void setHistogram(final Histogram histogram)
 	{
 		properties().put("histogram", histogram);

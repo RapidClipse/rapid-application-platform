@@ -28,7 +28,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -185,7 +187,7 @@ public interface ChartModel extends Serializable, JavaScriptable
 		{
 			return setValue(row, column, cell(value));
 		}
-		
+
 		@Override
 		public ChartModel setValue(final int row, final int column, final Cell value)
 		{
@@ -227,6 +229,23 @@ public interface ChartModel extends Serializable, JavaScriptable
 						.map(row -> row.stream().map(Cell::js).collect(Collectors.joining(",", "[", "]")))
 						.collect(Collectors.joining(",\n", "[\n", "\n]")))
 					.append(");\n");
+			}
+
+			final Map<Format, String> formats = new HashMap<>();
+			for(int ci = 0; ci < this.columns.size(); ci++)
+			{
+				final Format format = this.columns.get(ci).format();
+				if(format != null)
+				{
+					String formatVar = formats.get(format);
+					if(formatVar == null)
+					{
+						formatVar = "format" + formats.size();
+						formats.put(format, formatVar);
+						sb.append(format.js(formatVar) + "\n");
+					}
+					sb.append(formatVar).append(".format(data,").append(ci).append(");\n");
+				}
 			}
 
 			return sb.toString();

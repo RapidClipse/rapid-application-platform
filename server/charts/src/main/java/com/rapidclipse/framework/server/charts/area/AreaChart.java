@@ -57,7 +57,6 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
-import com.rapidclipse.framework.server.charts.HasVAxis;
 import com.vaadin.flow.component.Tag;
 
 
@@ -72,13 +71,13 @@ public class AreaChart extends ChartBase
 	HasBackground, HasChartArea, HasColors, HasCrosshair, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFocusTarget, HasFont, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode, HasLegend, HasLineDashStyle,
 	HasOrientation, HasPoints, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasVAxes,
-	HasVAxis, HasIntervals, HasSeries<AreaSeries>
+	HasIntervals, HasSeries<AreaSeries>
 {
 	public AreaChart()
 	{
 		super("AreaChart");
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -89,13 +88,13 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
 	{
 		validateColumnType(xColumnType, "x column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xColumnType, xColumn));
 		for(final String valueColumn : valueColumns)
