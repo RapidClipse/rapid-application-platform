@@ -115,6 +115,11 @@ public class ChartBase extends Composite<Div> implements Chart
 		sb.append("google.visualization.events.addListener(chart, 'select', function() {\n");
 		sb.append(" elem.$server.selectionChanged(chart.getSelection());");
 		sb.append("});\n");
+		sb.append("var resizeHandler = function(){chart.draw(view, configuration);}\n");
+		sb.append("window.addEventListener('resize', function(){");
+		sb.append(" if(this.resizeTimeout) clearTimeout(this.resizeTimeout);\n");
+		sb.append(" this.resizeTimeout = setTimeout(resizeHandler,500);\n");
+		sb.append("});\n");
 		sb.append("}");
 		
 		return sb.toString();
