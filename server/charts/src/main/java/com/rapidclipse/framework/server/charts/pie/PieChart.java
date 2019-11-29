@@ -52,119 +52,124 @@ public class PieChart extends ChartBase
 	implements HasBackground, HasChartArea, HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize,
 	HasLegend, HasCategories, HasTitle, HasTooltip
 {
-	
+
 	public PieChart()
 	{
 		super("PieChart");
 	}
-	
+
+	public ChartModel initDefaultColumns()
+	{
+		return initDefaultColumns("label", "value");
+	}
+
 	public ChartModel initDefaultColumns(final String labelColumn, final String valueColumn)
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, labelColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public void addSlice(final int rowIndex, final Slice slice)
 	{
 		properties().putIndexed("slices", rowIndex, slice);
 	}
-	
+
 	public Slice removeSlice(final int rowIndex)
 	{
 		return properties().removeIndexed("slices", rowIndex);
 	}
-	
+
 	public void removeAllSlices()
 	{
 		properties().removeAllIndexed("slices");
 	}
-
+	
 	public Boolean getIs3D()
 	{
 		return properties().get("is3D");
 	}
-	
+
 	public void setIs3D(final Boolean is3D)
 	{
 		properties().put("is3D", is3D);
 	}
-	
+
 	public Double getPieHole()
 	{
 		return properties().get("pieHole");
 	}
-	
+
 	public void setPieHole(final Double pieHole)
 	{
 		properties().put("pieHole", pieHole);
 	}
-	
+
 	public String getPieSliceBorderColor()
 	{
 		return properties().get("pieSliceBorderColor");
 	}
-	
+
 	public void setPieSliceBorderColor(final String pieSliceBorderColor)
 	{
 		properties().put("pieSliceBorderColor", pieSliceBorderColor);
 	}
-	
+
 	public String getPieSliceText()
 	{
 		return properties().get("pieSliceText");
 	}
-	
+
 	public void setPieSliceText(final String pieSliceText)
 	{
 		properties().put("pieSliceText", pieSliceText);
 	}
-	
+
 	public TextStyle getPieSliceTextStyle()
 	{
 		return properties().get("pieSliceTextStyle");
 	}
-	
+
 	public void setPieSliceTextStyle(final TextStyle pieSliceTextStyle)
 	{
 		properties().put("pieSliceTextStyle", pieSliceTextStyle);
 	}
-	
+
 	public Double getPieStartAngle()
 	{
 		return properties().get("pieStartAngle");
 	}
-	
+
 	public void setPieStartAngle(final Double pieStartAngle)
 	{
 		properties().put("pieStartAngle", pieStartAngle);
 	}
-	
+
 	public String getPieResidueSliceColor()
 	{
 		return properties().get("pieResidueSliceColor");
 	}
-	
+
 	public void setPieResidueSliceColor(final String pieResidueSliceColor)
 	{
 		properties().put("pieResidueSliceColor", pieResidueSliceColor);
 	}
-	
+
 	public String getPieResidueSliceLabel()
 	{
 		return properties().get("pieResidueSliceLabel");
 	}
-	
+
 	public void setPieResidueSliceLabel(final String pieResidueSliceLabel)
 	{
 		properties().put("pieResidueSliceLabel", pieResidueSliceLabel);
 	}
-	
+
 	public Double getSliceVisibilityThreshold()
 	{
 		return properties().get("sliceVisibilityThreshold");
 	}
-	
+
 	public void setSliceVisibilityThreshold(final Double sliceVisibilityThreshold)
 	{
 		properties().put("sliceVisibilityThreshold", sliceVisibilityThreshold);

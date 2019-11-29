@@ -52,13 +52,22 @@ public class TreeMapChart extends ChartBase
 		initDefaultColumns(
 			final String idColumn,
 			final String parentIdColumn,
-			final String sizeColumn,
-			final String colorColumn)
+			final String sizeColumn)
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, idColumn))
 			.addColumn(Column.New(Column.Type.STRING, parentIdColumn))
-			.addColumn(Column.New(Column.Type.NUMBER, sizeColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, sizeColumn));
+	}
+
+	public ChartModel
+		initDefaultColumns(
+			final String idColumn,
+			final String parentIdColumn,
+			final String sizeColumn,
+			final String colorColumn)
+	{
+		return initDefaultColumns(idColumn, parentIdColumn, sizeColumn)
 			.addColumn(Column.New(Column.Type.NUMBER, colorColumn));
 	}
 

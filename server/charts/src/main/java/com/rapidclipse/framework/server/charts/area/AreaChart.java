@@ -76,7 +76,7 @@ public class AreaChart extends ChartBase
 	{
 		super("AreaChart");
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -87,10 +87,13 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
 	{
+		validateColumnType(xColumnType, "x column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
+			Column.Type.TIME_OF_DAY);
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xColumnType, xColumn));
 		for(final String valueColumn : valueColumns)
@@ -99,17 +102,17 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-	
+
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

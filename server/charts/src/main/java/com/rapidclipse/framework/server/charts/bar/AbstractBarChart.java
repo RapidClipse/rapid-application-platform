@@ -38,7 +38,7 @@ public abstract class AbstractBarChart extends ChartBase
 	{
 		super(type, packages);
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -49,13 +49,16 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
 			final Column.Type axisColumnType,
 			final String... valueColumns)
 	{
+		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
+			Column.Type.TIME_OF_DAY);
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
@@ -64,17 +67,17 @@ public abstract class AbstractBarChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-
+	
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-
+	
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

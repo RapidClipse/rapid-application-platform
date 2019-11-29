@@ -26,6 +26,8 @@ package com.rapidclipse.framework.server.charts.scatter;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.ChartModel;
+import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAnnotations;
@@ -70,17 +72,40 @@ public class ScatterChart extends ChartBase
 	{
 		super("ScatterChart");
 	}
-	
+
+	public ChartModel
+		initDefaultColumnsContinuous(
+			final String xValuesColumn,
+			final Column.Type xValuesColumnType,
+			final Column... valueColumns)
+	{
+		validateColumnType(xValuesColumnType, "x values column", Column.Type.STRING, Column.Type.NUMBER,
+			Column.Type.DATE,
+			Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
+
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(xValuesColumnType, xValuesColumn));
+		for(final Column valueColumn : valueColumns)
+		{
+			validateColumnType(valueColumn.type(), valueColumn.label(), Column.Type.STRING, Column.Type.NUMBER,
+				Column.Type.DATE,
+				Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
+
+			model.addColumn(valueColumn);
+		}
+		return model;
+	}
+
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-	
+
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-	
+
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");

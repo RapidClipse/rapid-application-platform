@@ -50,7 +50,7 @@ public class LineChart extends ChartBase
 {
 	public LineChart()
 	{
-		super("Line", "line");
+		super("LineChart");
 	}
 
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
@@ -70,6 +70,9 @@ public class LineChart extends ChartBase
 			final Column.Type axisColumnType,
 			final String... valueColumns)
 	{
+		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
+			Column.Type.TIME_OF_DAY);
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)

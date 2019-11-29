@@ -46,30 +46,33 @@ public class CalendarChart extends ChartBase
 	{
 		super("Calendar", "calendar");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(final String dateColumn, final Column.Type dateColumnType, final String valueColumn)
 	{
+		validateColumnType(dateColumnType, "date column", Column.Type.DATE, Column.Type.DATE_TIME,
+			Column.Type.TIME_OF_DAY);
+
 		return getModel().removeAll()
 			.addColumn(Column.New(dateColumnType, dateColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public Calendar getCalendar()
 	{
 		return properties().get("calendar");
 	}
-	
+
 	public void setCalendar(final Calendar calendar)
 	{
 		properties().put("calendar", calendar);
 	}
-	
+
 	public NoDataPattern getNoDataPattern()
 	{
 		return properties().get("noDataPattern");
 	}
-	
+
 	public void setNoDataPattern(final NoDataPattern noDataPattern)
 	{
 		properties().put("noDataPattern", noDataPattern);

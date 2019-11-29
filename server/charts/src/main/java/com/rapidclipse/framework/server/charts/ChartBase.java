@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -37,44 +38,44 @@ public class ChartBase extends Composite<Div> implements Chart
 	private final Properties properties = new Properties();
 	private ChartModel       model      = ChartModel.New();
 	private Selection        selection  = Selection.Empty();
-
+	
 	protected ChartBase(final String type, final String... packages)
 	{
 		super();
-
+		
 		this.type     = type;
 		this.packages = packages != null && packages.length > 0
 			? packages
 			: new String[]{"corechart"};
 	}
-
+	
 	@Override
 	public Properties properties()
 	{
 		return this.properties;
 	}
-
+	
 	public void setModel(final ChartModel model)
 	{
 		this.model = model;
 	}
-
+	
 	public ChartModel getModel()
 	{
 		return this.model;
 	}
-
+	
 	public void refresh()
 	{
 		final String js = createChartJs();
 		UI.getCurrent().getPage().executeJs(js);
 	}
-
+	
 	private String createChartJs()
 	{
 		final ObjectHelper loadOptions = new ObjectHelper();
 		createLoadOptions(loadOptions);
-
+		
 		final StringBuilder sb = new StringBuilder();
 		sb.append("google.charts.load('visualization', 'current', ").append(loadOptions.js()).append(");\n");
 		sb.append("google.charts.setOnLoadCallback(drawChart);\n");
@@ -90,10 +91,10 @@ public class ChartBase extends Composite<Div> implements Chart
 		sb.append(" elem.$server.selectionChanged(chart.getSelection());");
 		sb.append("});\n");
 		sb.append("}");
-
+		
 		return sb.toString();
 	}
-
+	
 	private String id()
 	{
 		String id = getId().orElse(null);
@@ -103,7 +104,7 @@ public class ChartBase extends Composite<Div> implements Chart
 		}
 		return id;
 	}
-
+	
 	protected void createLoadOptions(final ObjectHelper obj)
 	{
 		obj.put("packages", new ArrayHelper().addAllStrings(Arrays.asList(this.packages)));
@@ -163,6 +164,17 @@ public class ChartBase extends Composite<Div> implements Chart
 		{
 			this.selection = selection;
 			fireSelectionChanged(true);
+		}
+	}
+	
+	protected void
+		validateColumnType(final Column.Type type, final String columnName, final Column.Type... allowedTypes)
+	{
+		if(!Arrays.asList(allowedTypes).contains(type))
+		{
+			throw new IllegalArgumentException(
+				"Invalid column type for column '" + columnName + "': " + type.name() + ". Allowed types: " +
+					Arrays.stream(allowedTypes).map(Enum::name).collect(Collectors.joining(", ")));
 		}
 	}
 }

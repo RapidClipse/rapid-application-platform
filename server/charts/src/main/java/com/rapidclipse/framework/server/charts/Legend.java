@@ -33,12 +33,35 @@ public interface Legend extends Serializable, JavaScriptable
 			return this.js;
 		}
 	}
+	
+	public static enum Position implements JavaScriptable
+	{
+		BOTTOM("bottom"),
+		LEFT("left"),
+		IN("in"),
+		NONE("none"),
+		RIGHT("right"),
+		TOP("top");
+
+		private final String js;
+
+		private Position(final String js)
+		{
+			this.js = Json.create(js).toJson();
+		}
+
+		@Override
+		public String js()
+		{
+			return this.js;
+		}
+	}
 
 	public Alignment alignment();
 
 	public Integer maxLines();
 
-	public String position();
+	public Position position();
 
 	public TextStyle textStyle();
 
@@ -53,7 +76,7 @@ public interface Legend extends Serializable, JavaScriptable
 
 		public Builder maxLines(Integer maxLines);
 
-		public Builder position(String position);
+		public Builder position(Position position);
 
 		public Builder textStyle(TextStyle textStyle);
 
@@ -63,7 +86,7 @@ public interface Legend extends Serializable, JavaScriptable
 		{
 			private Alignment alignment;
 			private Integer   maxLines;
-			private String    position;
+			private Position  position;
 			private TextStyle textStyle;
 
 			Default()
@@ -86,7 +109,7 @@ public interface Legend extends Serializable, JavaScriptable
 			}
 
 			@Override
-			public Builder position(final String position)
+			public Builder position(final Position position)
 			{
 				this.position = position;
 				return this;
@@ -104,17 +127,19 @@ public interface Legend extends Serializable, JavaScriptable
 			{
 				return new Legend.Default(this.alignment, this.maxLines, this.position, this.textStyle);
 			}
+
 		}
+
 	}
 
 	public static class Default implements Legend
 	{
 		private final Alignment alignment;
 		private final Integer   maxLines;
-		private final String    position;
+		private final Position  position;
 		private final TextStyle textStyle;
 
-		Default(final Alignment alignment, final Integer maxLines, final String position, final TextStyle textStyle)
+		Default(final Alignment alignment, final Integer maxLines, final Position position, final TextStyle textStyle)
 		{
 			super();
 
@@ -137,7 +162,7 @@ public interface Legend extends Serializable, JavaScriptable
 		}
 
 		@Override
-		public String position()
+		public Position position()
 		{
 			return this.position;
 		}

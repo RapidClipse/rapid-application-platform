@@ -49,7 +49,7 @@ public class TimelineChart extends ChartBase
 	{
 		super("Timeline", "timeline");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(
 			final String rowLabelColumn,
@@ -60,11 +60,20 @@ public class TimelineChart extends ChartBase
 			final String endColumn,
 			final Column.Type endColumnType)
 	{
-		return getModel().removeAll()
-			.addColumn(Column.New(Column.Type.STRING, rowLabelColumn))
-			.addColumn(Column.New(Column.Type.STRING, barLabelColumn))
-			.addColumn(Column.New(Column.Type.STRING, toolTipColumn))
-			.addColumn(Column.New(startColumnType, startColumn))
+		validateColumnType(startColumnType, "start column", Column.Type.NUMBER, Column.Type.DATE);
+		validateColumnType(endColumnType, "end column", Column.Type.NUMBER, Column.Type.DATE);
+
+		final ChartModel model = getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, rowLabelColumn));
+		if(barLabelColumn != null)
+		{
+			model.addColumn(Column.New(Column.Type.STRING, barLabelColumn));
+		}
+		if(toolTipColumn != null)
+		{
+			model.addColumn(Column.New(Column.Type.STRING, toolTipColumn));
+		}
+		return model.addColumn(Column.New(startColumnType, startColumn))
 			.addColumn(Column.New(endColumnType, endColumn));
 	}
 

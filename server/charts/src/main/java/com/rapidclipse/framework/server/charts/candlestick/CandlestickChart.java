@@ -78,6 +78,9 @@ public class CandlestickChart extends ChartBase
 		final String finalValueColumn,
 		final String maxValueColumn)
 	{
+		validateColumnType(xAxisType, "x axis column", Column.Type.STRING, Column.Type.NUMBER, Column.Type.DATE,
+			Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
+
 		return getModel().removeAll()
 			.addColumn(Column.New(xAxisType, xAxisColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, minValueColumn))

@@ -59,7 +59,7 @@ public class BubbleChart extends ChartBase
 	{
 		super("BubbleChart");
 	}
-
+	
 	public ChartModel initDefaultColumns(final String idColumn, final String xColumn, final String yColumn)
 	{
 		return getModel().removeAll()
@@ -67,7 +67,7 @@ public class BubbleChart extends ChartBase
 			.addColumn(Column.New(Column.Type.NUMBER, xColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, yColumn));
 	}
-
+	
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -75,10 +75,12 @@ public class BubbleChart extends ChartBase
 		final String valueColumn,
 		final Column.Type valueColumnType)
 	{
+		validateColumnType(valueColumnType, "value column", Column.Type.STRING, Column.Type.NUMBER);
+
 		return initDefaultColumns(idColumn, xColumn, yColumn)
 			.addColumn(Column.New(valueColumnType, valueColumn));
 	}
-
+	
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -90,37 +92,37 @@ public class BubbleChart extends ChartBase
 		return initDefaultColumns(idColumn, xColumn, yColumn, valueColumn, valueColumnType)
 			.addColumn(Column.New(Type.NUMBER, sizeColumn));
 	}
-
+	
 	public void addSeries(final int rowIndex, final Series series)
 	{
 		properties().putIndexed("series", rowIndex, series);
 	}
-
+	
 	public Series removeSeries(final int rowIndex)
 	{
 		return properties().removeIndexed("series", rowIndex);
 	}
-
+	
 	public void removeAllSeries()
 	{
 		properties().removeAllIndexed("series");
 	}
-
+	
 	public Bubble getBubble()
 	{
 		return properties().get("bubble");
 	}
-
+	
 	public void setBubble(final Bubble bubble)
 	{
 		properties().put("bubble", bubble);
 	}
-
+	
 	public Boolean getSortBubblesBySize()
 	{
 		return properties().get("sortBubblesBySize");
 	}
-
+	
 	public void setSortBubblesBySize(final Boolean sortBubblesBySize)
 	{
 		properties().put("sortBubblesBySize", sortBubblesBySize);

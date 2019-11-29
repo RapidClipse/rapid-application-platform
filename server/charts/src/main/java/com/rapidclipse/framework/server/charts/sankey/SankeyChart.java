@@ -46,20 +46,26 @@ public class SankeyChart extends ChartBase
 	{
 		super("Sankey", "sankey");
 	}
-	
+
 	public ChartModel initDefaultColumns()
 	{
-		return getModel().removeAll()
-			.addColumn(Column.New(Column.Type.STRING, "source"))
-			.addColumn(Column.New(Column.Type.STRING, "destination"))
-			.addColumn(Column.New(Column.Type.NUMBER, "value"));
+		return initDefaultColumns("source", "destination", "value");
 	}
 
+	public ChartModel
+		initDefaultColumns(final String sourceColumn, final String destinationColumn, final String valueColumn)
+	{
+		return getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, sourceColumn))
+			.addColumn(Column.New(Column.Type.STRING, destinationColumn))
+			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+	}
+	
 	public Sankey getSankey()
 	{
 		return properties().get("sankey");
 	}
-
+	
 	public void setSankey(final Sankey sankey)
 	{
 		properties().put("sankey", sankey);

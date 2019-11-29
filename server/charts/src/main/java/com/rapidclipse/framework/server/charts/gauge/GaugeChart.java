@@ -47,14 +47,24 @@ public class GaugeChart extends ChartBase
 {
 	public GaugeChart()
 	{
-		super("GaugeChart", "gauge");
+		super("Gauge", "gauge");
 	}
 	
-	public ChartModel initDefaultColumns()
+	public ChartModel initDefaultColumnsSimpl()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "label"))
 			.addColumn(Column.New(Column.Type.NUMBER, "value"));
+	}
+
+	public ChartModel initDefaultColumnsMulti(final String... valueColumns)
+	{
+		final ChartModel model = getModel().removeAll();
+		for(final String valueColumn : valueColumns)
+		{
+			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
+		}
+		return model;
 	}
 
 	public String getGreenColor()

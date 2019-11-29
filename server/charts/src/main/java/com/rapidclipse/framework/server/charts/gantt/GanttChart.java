@@ -45,13 +45,13 @@ public class GanttChart extends ChartBase
 	{
 		super("Gantt", "gantt");
 	}
-
+	
 	public ChartModel initDefaultColumns()
 	{
 		return initDefaultColumns("task ID", "task name", "resource ID", "start date", "end date", "duration",
 			"percent complete", "dependencies");
 	}
-
+	
 	public ChartModel
 		initDefaultColumns(
 			final String taskIdColumn,
@@ -63,22 +63,25 @@ public class GanttChart extends ChartBase
 			final String percentCompleteColumn,
 			final String dependenciesColumn)
 	{
-		return getModel().removeAll()
+		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, taskIdColumn))
-			.addColumn(Column.New(Column.Type.STRING, taskNameColumn))
-			.addColumn(Column.New(Column.Type.STRING, resourceIdColumn))
-			.addColumn(Column.New(Column.Type.DATE, startDateColumn))
+			.addColumn(Column.New(Column.Type.STRING, taskNameColumn));
+		if(resourceIdColumn != null)
+		{
+			model.addColumn(Column.New(Column.Type.STRING, resourceIdColumn));
+		}
+		return model.addColumn(Column.New(Column.Type.DATE, startDateColumn))
 			.addColumn(Column.New(Column.Type.DATE, endDateColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, durationColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, percentCompleteColumn))
 			.addColumn(Column.New(Column.Type.STRING, dependenciesColumn));
 	}
-	
+
 	public Gantt getGantt()
 	{
 		return properties().get("gantt");
 	}
-
+	
 	public void setGantt(final Gantt gantt)
 	{
 		properties().put("gantt", gantt);
