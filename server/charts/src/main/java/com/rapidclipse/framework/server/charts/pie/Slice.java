@@ -36,122 +36,122 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
  */
 public interface Slice extends Serializable, JavaScriptable
 {
-	public Double offset();
-
+	public Number offset();
+	
 	public String color();
-
+	
 	public TextStyle textStyle();
-
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
-		public Builder offset(Double offset);
-
+		public Builder offset(Number offset);
+		
 		public Builder color(String color);
-
+		
 		public Builder textStyle(TextStyle textStyle);
-
+		
 		public Slice build();
-
+		
 		public static class Default implements Builder
 		{
-			private Double    offset;
+			private Number    offset;
 			private String    color;
 			private TextStyle textStyle;
-
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
-			public Builder offset(final Double offset)
+			public Builder offset(final Number offset)
 			{
 				this.offset = offset;
 				return this;
 			}
-
+			
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-
+			
 			@Override
 			public Builder textStyle(final TextStyle textStyle)
 			{
 				this.textStyle = textStyle;
 				return this;
 			}
-
+			
 			@Override
 			public Slice build()
 			{
 				return Slice.New(this.offset, this.color, this.textStyle);
 			}
-
+			
 		}
-
+		
 	}
-
-	public static Slice New(final Double offset)
+	
+	public static Slice New(final Number offset)
 	{
 		return new Default(offset, null, null);
 	}
-
+	
 	public static Slice New(final String color)
 	{
 		return new Default(null, color, null);
 	}
-
+	
 	public static Slice New(final TextStyle textStyle)
 	{
 		return new Default(null, null, textStyle);
 	}
-
-	public static Slice New(final Double offset, final String color, final TextStyle textStyle)
+	
+	public static Slice New(final Number offset, final String color, final TextStyle textStyle)
 	{
 		return new Default(offset, color, textStyle);
 	}
-
+	
 	public static class Default implements Slice
 	{
-		private final Double    offset;
+		private final Number    offset;
 		private final String    color;
 		private final TextStyle textStyle;
-
-		Default(final Double offset, final String color, final TextStyle textStyle)
+		
+		Default(final Number offset, final String color, final TextStyle textStyle)
 		{
 			super();
-
+			
 			this.offset    = offset;
 			this.color     = color;
 			this.textStyle = textStyle;
 		}
-
+		
 		@Override
-		public Double offset()
+		public Number offset()
 		{
 			return this.offset;
 		}
-
+		
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-
+		
 		@Override
 		public TextStyle textStyle()
 		{
 			return this.textStyle;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -161,7 +161,7 @@ public interface Slice extends Serializable, JavaScriptable
 			obj.putIfNotNull("textStyle", this.textStyle);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }

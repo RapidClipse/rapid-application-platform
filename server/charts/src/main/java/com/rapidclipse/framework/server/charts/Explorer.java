@@ -20,129 +20,129 @@ public interface Explorer extends Serializable, JavaScriptable
 		DRAG_TO_PAN("dragToPan"),
 		DRAG_TO_ZOOM("dragToZoom"),
 		RIGHT_CLICK_TO_RESET("rightClickToReset");
-
+		
 		private final String js;
-
+		
 		private Action(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-
+		
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-
+	
 	public static enum Axis implements JavaScriptable
 	{
 		HORIZONTAL("horizontal"),
 		VERTICAL("vertical");
-
+		
 		private final String js;
-
+		
 		private Axis(final String js)
 		{
 			this.js = Json.create(js).toJson();
 		}
-
+		
 		@Override
 		public String js()
 		{
 			return this.js;
 		}
 	}
-
+	
 	public EnumSet<Action> actions();
-
+	
 	public Axis axis();
-
+	
 	public Boolean keepInBounds();
-
-	public Double maxZoomIn();
-
-	public Double maxZoomOut();
-
-	public Double zoomDelta();
-
+	
+	public Number maxZoomIn();
+	
+	public Number maxZoomOut();
+	
+	public Number zoomDelta();
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
 		public Builder actions(EnumSet<Action> actions);
-
+		
 		public Builder axis(Axis axis);
-
+		
 		public Builder keepInBounds(Boolean keepInBounds);
-
-		public Builder maxZoomIn(Double maxZoomIn);
-
-		public Builder maxZoomOut(Double maxZoomOut);
-
-		public Builder zoomDelta(Double zoomDelta);
-
+		
+		public Builder maxZoomIn(Number maxZoomIn);
+		
+		public Builder maxZoomOut(Number maxZoomOut);
+		
+		public Builder zoomDelta(Number zoomDelta);
+		
 		public Explorer build();
-
+		
 		public static class Default implements Builder
 		{
 			private EnumSet<Action> actions;
 			private Axis            axis;
 			private Boolean         keepInBounds;
-			private Double          maxZoomIn;
-			private Double          maxZoomOut;
-			private Double          zoomDelta;
-
+			private Number          maxZoomIn;
+			private Number          maxZoomOut;
+			private Number          zoomDelta;
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
 			public Builder actions(final EnumSet<Action> actions)
 			{
 				this.actions = actions;
 				return this;
 			}
-
+			
 			@Override
 			public Builder axis(final Axis axis)
 			{
 				this.axis = axis;
 				return this;
 			}
-
+			
 			@Override
 			public Builder keepInBounds(final Boolean keepInBounds)
 			{
 				this.keepInBounds = keepInBounds;
 				return this;
 			}
-
+			
 			@Override
-			public Builder maxZoomIn(final Double maxZoomIn)
+			public Builder maxZoomIn(final Number maxZoomIn)
 			{
 				this.maxZoomIn = maxZoomIn;
 				return this;
 			}
-
+			
 			@Override
-			public Builder maxZoomOut(final Double maxZoomOut)
+			public Builder maxZoomOut(final Number maxZoomOut)
 			{
 				this.maxZoomOut = maxZoomOut;
 				return this;
 			}
-
+			
 			@Override
-			public Builder zoomDelta(final Double zoomDelta)
+			public Builder zoomDelta(final Number zoomDelta)
 			{
 				this.zoomDelta = zoomDelta;
 				return this;
 			}
-
+			
 			@Override
 			public Explorer build()
 			{
@@ -151,26 +151,26 @@ public interface Explorer extends Serializable, JavaScriptable
 			}
 		}
 	}
-
+	
 	public static class Default implements Explorer
 	{
 		private final EnumSet<Action> actions;
 		private final Axis            axis;
 		private final Boolean         keepInBounds;
-		private final Double          maxZoomIn;
-		private final Double          maxZoomOut;
-		private final Double          zoomDelta;
-
+		private final Number          maxZoomIn;
+		private final Number          maxZoomOut;
+		private final Number          zoomDelta;
+		
 		Default(
 			final EnumSet<Action> actions,
 			final Axis axis,
 			final Boolean keepInBounds,
-			final Double maxZoomIn,
-			final Double maxZoomOut,
-			final Double zoomDelta)
+			final Number maxZoomIn,
+			final Number maxZoomOut,
+			final Number zoomDelta)
 		{
 			super();
-
+			
 			this.actions      = actions;
 			this.axis         = axis;
 			this.keepInBounds = keepInBounds;
@@ -178,43 +178,43 @@ public interface Explorer extends Serializable, JavaScriptable
 			this.maxZoomOut   = maxZoomOut;
 			this.zoomDelta    = zoomDelta;
 		}
-
+		
 		@Override
 		public EnumSet<Action> actions()
 		{
 			return this.actions;
 		}
-
+		
 		@Override
 		public Axis axis()
 		{
 			return this.axis;
 		}
-
+		
 		@Override
 		public Boolean keepInBounds()
 		{
 			return this.keepInBounds;
 		}
-
+		
 		@Override
-		public Double maxZoomIn()
+		public Number maxZoomIn()
 		{
 			return this.maxZoomIn;
 		}
-
+		
 		@Override
-		public Double maxZoomOut()
+		public Number maxZoomOut()
 		{
 			return this.maxZoomOut;
 		}
-
+		
 		@Override
-		public Double zoomDelta()
+		public Number zoomDelta()
 		{
 			return this.zoomDelta;
 		}
-
+		
 		@Override
 		public String js()
 		{

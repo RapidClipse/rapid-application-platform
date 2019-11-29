@@ -7,12 +7,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasFont extends HasFontName
 {
-	public default Double getFontSize()
+	public default Number getFontSize()
 	{
 		return properties().get("fontSize");
 	}
-
-	public default void setFontSize(final Double fontSize)
+	
+	public default void setFontSize(final Number fontSize)
 	{
 		properties().put("fontSize", fontSize);
 	}

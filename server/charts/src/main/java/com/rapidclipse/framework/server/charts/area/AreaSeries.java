@@ -18,19 +18,19 @@ public interface AreaSeries extends Series
 {
 	public Annotations annotations();
 	
-	public Double areaOpacity();
+	public Number areaOpacity();
 	
 	public String color();
 	
 	public Boolean labelInLegend();
 	
-	public List<Double> lineDashStyle();
+	public List<Number> lineDashStyle();
 	
-	public Double lineWidth();
+	public Number lineWidth();
 	
 	public PointShape.Type pointShape();
 	
-	public Double pointSize();
+	public Number pointSize();
 	
 	public Boolean pointsVisible();
 	
@@ -47,19 +47,19 @@ public interface AreaSeries extends Series
 	{
 		public Builder annotations(Annotations annotations);
 		
-		public Builder areaOpacity(Double areaOpacity);
+		public Builder areaOpacity(Number areaOpacity);
 		
 		public Builder color(String color);
 		
 		public Builder labelInLegend(Boolean labelInLegend);
 		
-		public Builder lineDashStyle(List<Double> lineDashStyle);
+		public Builder lineDashStyle(List<Number> lineDashStyle);
 		
-		public Builder lineWidth(Double lineWidth);
+		public Builder lineWidth(Number lineWidth);
 		
 		public Builder pointShape(PointShape.Type pointShape);
 		
-		public Builder pointSize(Double pointSize);
+		public Builder pointSize(Number pointSize);
 		
 		public Builder pointsVisible(Boolean pointsVisible);
 		
@@ -72,13 +72,13 @@ public interface AreaSeries extends Series
 		public static class Default implements Builder
 		{
 			private Annotations     annotations;
-			private Double          areaOpacity;
+			private Number          areaOpacity;
 			private String          color;
 			private Boolean         labelInLegend;
-			private List<Double>    lineDashStyle;
-			private Double          lineWidth;
+			private List<Number>    lineDashStyle;
+			private Number          lineWidth;
 			private PointShape.Type pointShape;
-			private Double          pointSize;
+			private Number          pointSize;
 			private Boolean         pointsVisible;
 			private Integer         targetAxisIndex;
 			private Boolean         visibleInLegend;
@@ -96,7 +96,7 @@ public interface AreaSeries extends Series
 			}
 			
 			@Override
-			public Builder areaOpacity(final Double areaOpacity)
+			public Builder areaOpacity(final Number areaOpacity)
 			{
 				this.areaOpacity = areaOpacity;
 				return this;
@@ -117,14 +117,14 @@ public interface AreaSeries extends Series
 			}
 			
 			@Override
-			public Builder lineDashStyle(final List<Double> lineDashStyle)
+			public Builder lineDashStyle(final List<Number> lineDashStyle)
 			{
 				this.lineDashStyle = lineDashStyle;
 				return this;
 			}
 			
 			@Override
-			public Builder lineWidth(final Double lineWidth)
+			public Builder lineWidth(final Number lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
@@ -138,7 +138,7 @@ public interface AreaSeries extends Series
 			}
 			
 			@Override
-			public Builder pointSize(final Double pointSize)
+			public Builder pointSize(final Number pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
@@ -180,26 +180,26 @@ public interface AreaSeries extends Series
 	public static class Default implements AreaSeries
 	{
 		private final Annotations     annotations;
-		private final Double          areaOpacity;
+		private final Number          areaOpacity;
 		private final String          color;
 		private final Boolean         labelInLegend;
-		private final List<Double>    lineDashStyle;
-		private final Double          lineWidth;
+		private final List<Number>    lineDashStyle;
+		private final Number          lineWidth;
 		private final PointShape.Type pointShape;
-		private final Double          pointSize;
+		private final Number          pointSize;
 		private final Boolean         pointsVisible;
 		private final Integer         targetAxisIndex;
 		private final Boolean         visibleInLegend;
 
 		Default(
 			final Annotations annotations,
-			final Double areaOpacity,
+			final Number areaOpacity,
 			final String color,
 			final Boolean labelInLegend,
-			final List<Double> lineDashStyle,
-			final Double lineWidth,
+			final List<Number> lineDashStyle,
+			final Number lineWidth,
 			final Type pointShape,
-			final Double pointSize,
+			final Number pointSize,
 			final Boolean pointsVisible,
 			final Integer targetAxisIndex,
 			final Boolean visibleInLegend)
@@ -226,7 +226,7 @@ public interface AreaSeries extends Series
 		}
 		
 		@Override
-		public Double areaOpacity()
+		public Number areaOpacity()
 		{
 			return this.areaOpacity;
 		}
@@ -244,13 +244,13 @@ public interface AreaSeries extends Series
 		}
 		
 		@Override
-		public List<Double> lineDashStyle()
+		public List<Number> lineDashStyle()
 		{
 			return this.lineDashStyle;
 		}
 		
 		@Override
-		public Double lineWidth()
+		public Number lineWidth()
 		{
 			return this.lineWidth;
 		}
@@ -262,7 +262,7 @@ public interface AreaSeries extends Series
 		}
 		
 		@Override
-		public Double pointSize()
+		public Number pointSize()
 		{
 			return this.pointSize;
 		}

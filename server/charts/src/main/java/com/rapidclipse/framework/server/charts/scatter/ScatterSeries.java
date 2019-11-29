@@ -13,138 +13,138 @@ import com.rapidclipse.framework.server.charts.Series;
 public interface ScatterSeries extends Series
 {
 	public String color();
-	
+
 	public Boolean labelInLegend();
-	
-	public Double lineWidth();
-	
+
+	public Number lineWidth();
+
 	public PointShape.Type pointShape();
-	
-	public Double pointSize();
-	
+
+	public Number pointSize();
+
 	public Boolean pointsVisible();
-	
+
 	public Boolean visibleInLegend();
-	
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder color(String color);
-		
+
 		public Builder labelInLegend(Boolean labelInLegend);
-		
-		public Builder lineWidth(Double lineWidth);
-		
+
+		public Builder lineWidth(Number lineWidth);
+
 		public Builder pointShape(PointShape.Type pointShape);
-		
-		public Builder pointSize(Double pointSize);
-		
+
+		public Builder pointSize(Number pointSize);
+
 		public Builder pointsVisible(Boolean pointsVisible);
-		
+
 		public Builder visibleInLegend(Boolean visibleInLegend);
-		
+
 		public ScatterSeries build();
-		
+
 		public static class Default implements Builder
 		{
 			private String          color;
 			private Boolean         labelInLegend;
-			private Double          lineWidth;
+			private Number          lineWidth;
 			private PointShape.Type pointShape;
-			private Double          pointSize;
+			private Number          pointSize;
 			private Boolean         pointsVisible;
 			private Boolean         visibleInLegend;
-			
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-			
+
 			@Override
 			public Builder labelInLegend(final Boolean labelInLegend)
 			{
 				this.labelInLegend = labelInLegend;
 				return this;
 			}
-			
+
 			@Override
-			public Builder lineWidth(final Double lineWidth)
+			public Builder lineWidth(final Number lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointShape(final PointShape.Type pointShape)
 			{
 				this.pointShape = pointShape;
 				return this;
 			}
-			
+
 			@Override
-			public Builder pointSize(final Double pointSize)
+			public Builder pointSize(final Number pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
 			}
-			
+
 			@Override
 			public Builder pointsVisible(final Boolean pointsVisible)
 			{
 				this.pointsVisible = pointsVisible;
 				return this;
 			}
-			
+
 			@Override
 			public Builder visibleInLegend(final Boolean visibleInLegend)
 			{
 				this.visibleInLegend = visibleInLegend;
 				return this;
 			}
-			
+
 			@Override
 			public ScatterSeries build()
 			{
 				return new ScatterSeries.Default(this.color, this.labelInLegend, this.lineWidth, this.pointShape,
 					this.pointSize, this.pointsVisible, this.visibleInLegend);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static class Default implements ScatterSeries
 	{
 		private final String          color;
 		private final Boolean         labelInLegend;
-		private final Double          lineWidth;
+		private final Number          lineWidth;
 		private final PointShape.Type pointShape;
-		private final Double          pointSize;
+		private final Number          pointSize;
 		private final Boolean         pointsVisible;
 		private final Boolean         visibleInLegend;
-		
+
 		Default(
 			final String color,
 			final Boolean labelInLegend,
-			final Double lineWidth,
+			final Number lineWidth,
 			final Type pointShape,
-			final Double pointSize,
+			final Number pointSize,
 			final Boolean pointsVisible,
 			final Boolean visibleInLegend)
 		{
 			super();
-			
+
 			this.color           = color;
 			this.labelInLegend   = labelInLegend;
 			this.lineWidth       = lineWidth;
@@ -153,49 +153,49 @@ public interface ScatterSeries extends Series
 			this.pointsVisible   = pointsVisible;
 			this.visibleInLegend = visibleInLegend;
 		}
-		
+
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-		
+
 		@Override
 		public Boolean labelInLegend()
 		{
 			return this.labelInLegend;
 		}
-		
+
 		@Override
-		public Double lineWidth()
+		public Number lineWidth()
 		{
 			return this.lineWidth;
 		}
-		
+
 		@Override
 		public PointShape.Type pointShape()
 		{
 			return this.pointShape;
 		}
-		
+
 		@Override
-		public Double pointSize()
+		public Number pointSize()
 		{
 			return this.pointSize;
 		}
-		
+
 		@Override
 		public Boolean pointsVisible()
 		{
 			return this.pointsVisible;
 		}
-		
+
 		@Override
 		public Boolean visibleInLegend()
 		{
 			return this.visibleInLegend;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -209,7 +209,7 @@ public interface ScatterSeries extends Series
 			obj.putIfNotNull("visibleInLegend", this.visibleInLegend);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

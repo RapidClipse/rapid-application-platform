@@ -7,22 +7,22 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasValueRange extends Chart
 {
-	public default Double getMin()
+	public default Number getMin()
 	{
 		return properties().get("min");
 	}
-
-	public default void setMin(final Double min)
+	
+	public default void setMin(final Number min)
 	{
 		properties().put("min", min);
 	}
-
-	public default Double getMax()
+	
+	public default Number getMax()
 	{
 		return properties().get("max");
 	}
-
-	public default void setMax(final Double max)
+	
+	public default void setMax(final Number max)
 	{
 		properties().put("max", max);
 	}

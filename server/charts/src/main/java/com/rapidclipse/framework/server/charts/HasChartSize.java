@@ -7,22 +7,22 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasChartSize extends Chart
 {
-	public default Double getChartWidth()
+	public default Number getChartWidth()
 	{
 		return properties().get("width");
 	}
-
-	public default void setChartWidth(final Double width)
+	
+	public default void setChartWidth(final Number width)
 	{
 		properties().put("width", width);
 	}
-	
-	public default Double getChartHeight()
+
+	public default Number getChartHeight()
 	{
 		return properties().get("height");
 	}
-
-	public default void setChartHeight(final Double height)
+	
+	public default void setChartHeight(final Number height)
 	{
 		properties().put("height", height);
 	}

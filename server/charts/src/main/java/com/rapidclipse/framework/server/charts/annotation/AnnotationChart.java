@@ -70,12 +70,12 @@ public class AnnotationChart extends ChartBase
 		properties().put("allValuesSuffix", allValuesSuffix);
 	}
 	
-	public Double getAnnotationsWidth()
+	public Number getAnnotationsWidth()
 	{
 		return properties().get("annotationsWidth");
 	}
 	
-	public void setAnnotationsWidth(final Double annotationsWidth)
+	public void setAnnotationsWidth(final Number annotationsWidth)
 	{
 		properties().put("annotationsWidth", annotationsWidth);
 	}
@@ -170,12 +170,12 @@ public class AnnotationChart extends ChartBase
 		properties().put("displayZoomButtons", displayZoomButtons);
 	}
 	
-	public Double getFill()
+	public Number getFill()
 	{
 		return properties().get("fill");
 	}
 	
-	public void setFill(final Double fill)
+	public void setFill(final Number fill)
 	{
 		properties().put("fill", fill);
 	}
@@ -200,12 +200,12 @@ public class AnnotationChart extends ChartBase
 		properties().put("numberFormats", numberFormats);
 	}
 	
-	public List<Double> getScaleColumns()
+	public List<Number> getScaleColumns()
 	{
 		return properties().get("scaleColumns");
 	}
 	
-	public void setScaleColumns(final List<Double> scaleColumns)
+	public void setScaleColumns(final List<Number> scaleColumns)
 	{
 		properties().put("scaleColumns", scaleColumns);
 	}
@@ -240,12 +240,12 @@ public class AnnotationChart extends ChartBase
 		properties().put("table", tableOptions);
 	}
 	
-	public Double getThickness()
+	public Number getThickness()
 	{
 		return properties().get("thickness");
 	}
 	
-	public void setThickness(final Double thickness)
+	public void setThickness(final Number thickness)
 	{
 		properties().put("thickness", thickness);
 	}

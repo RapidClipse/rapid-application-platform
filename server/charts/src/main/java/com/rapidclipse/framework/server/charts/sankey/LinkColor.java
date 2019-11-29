@@ -13,60 +13,60 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 public interface LinkColor extends Serializable, JavaScriptable
 {
 	public String stroke();
-	
-	public Double strokeWidth();
-	
+
+	public Number strokeWidth();
+
 	public String fill();
-	
-	public Double fillOpacity();
-	
+
+	public Number fillOpacity();
+
 	public static LinkColor
-		New(final String stroke, final Double strokeWidth, final String fill, final Double fillOpacity)
+		New(final String stroke, final Number strokeWidth, final String fill, final Number fillOpacity)
 	{
 		return new Default(stroke, strokeWidth, fill, fillOpacity);
 	}
-	
+
 	public static class Default implements LinkColor
 	{
 		private final String stroke;
-		private final Double strokeWidth;
+		private final Number strokeWidth;
 		private final String fill;
-		private final Double fillOpacity;
-		
-		Default(final String stroke, final Double strokeWidth, final String fill, final Double fillOpacity)
+		private final Number fillOpacity;
+
+		Default(final String stroke, final Number strokeWidth, final String fill, final Number fillOpacity)
 		{
 			super();
-			
+
 			this.stroke      = stroke;
 			this.strokeWidth = strokeWidth;
 			this.fill        = fill;
 			this.fillOpacity = fillOpacity;
 		}
-		
+
 		@Override
 		public String stroke()
 		{
 			return this.stroke;
 		}
-		
+
 		@Override
-		public Double strokeWidth()
+		public Number strokeWidth()
 		{
 			return this.strokeWidth;
 		}
-		
+
 		@Override
 		public String fill()
 		{
 			return this.fill;
 		}
-		
+
 		@Override
-		public Double fillOpacity()
+		public Number fillOpacity()
 		{
 			return this.fillOpacity;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -77,7 +77,7 @@ public interface LinkColor extends Serializable, JavaScriptable
 			obj.putIfNotNull("fillOpacity", this.fillOpacity);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

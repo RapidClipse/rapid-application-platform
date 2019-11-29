@@ -49,14 +49,14 @@ public class GaugeChart extends ChartBase
 	{
 		super("Gauge", "gauge");
 	}
-	
+
 	public ChartModel initDefaultColumnsSimpl()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "label"))
 			.addColumn(Column.New(Column.Type.NUMBER, "value"));
 	}
-
+	
 	public ChartModel initDefaultColumnsMulti(final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll();
@@ -66,112 +66,112 @@ public class GaugeChart extends ChartBase
 		}
 		return model;
 	}
-
+	
 	public String getGreenColor()
 	{
 		return properties().get("greenColor");
 	}
-
+	
 	public void setGreenColor(final String greenColor)
 	{
 		properties().put("greenColor", greenColor);
 	}
-
-	public Double getGreenFrom()
+	
+	public Number getGreenFrom()
 	{
 		return properties().get("greenFrom");
 	}
-
-	public void setGreenFrom(final Double greenFrom)
+	
+	public void setGreenFrom(final Number greenFrom)
 	{
 		properties().put("greenFrom", greenFrom);
 	}
-
-	public Double getGreenTo()
+	
+	public Number getGreenTo()
 	{
 		return properties().get("greenTo");
 	}
-
-	public void setGreenTo(final Double greenTo)
+	
+	public void setGreenTo(final Number greenTo)
 	{
 		properties().put("greenTo", greenTo);
 	}
-
+	
 	public String getRedColor()
 	{
 		return properties().get("redColor");
 	}
-
+	
 	public void setRedColor(final String redColor)
 	{
 		properties().put("redColor", redColor);
 	}
-
-	public Double getRedFrom()
+	
+	public Number getRedFrom()
 	{
 		return properties().get("redFrom");
 	}
-
-	public void setRedFrom(final Double redFrom)
+	
+	public void setRedFrom(final Number redFrom)
 	{
 		properties().put("redFrom", redFrom);
 	}
-
-	public Double getRedTo()
+	
+	public Number getRedTo()
 	{
 		return properties().get("redTo");
 	}
-
-	public void setRedTo(final Double redTo)
+	
+	public void setRedTo(final Number redTo)
 	{
 		properties().put("redTo", redTo);
 	}
-
+	
 	public String getYellowColor()
 	{
 		return properties().get("yellowColor");
 	}
-
+	
 	public void setYellowColor(final String yellowColor)
 	{
 		properties().put("yellowColor", yellowColor);
 	}
-
-	public Double getYellowFrom()
+	
+	public Number getYellowFrom()
 	{
 		return properties().get("yellowFrom");
 	}
-
-	public void setYellowFrom(final Double yellowFrom)
+	
+	public void setYellowFrom(final Number yellowFrom)
 	{
 		properties().put("yellowFrom", yellowFrom);
 	}
-
-	public Double getYellowTo()
+	
+	public Number getYellowTo()
 	{
 		return properties().get("yellowTo");
 	}
-
-	public void setYellowTo(final Double yellowTo)
+	
+	public void setYellowTo(final Number yellowTo)
 	{
 		properties().put("yellowTo", yellowTo);
 	}
-
+	
 	public List<String> getMajorTicks()
 	{
 		return properties().get("majorTicks");
 	}
-
+	
 	public void setMajorTicks(final List<String> majorTicks)
 	{
 		properties().put("majorTicks", majorTicks);
 	}
-
+	
 	public List<String> getMinorTicks()
 	{
 		return properties().get("minorTicks");
 	}
-
+	
 	public void setMinorTicks(final List<String> minorTicks)
 	{
 		properties().put("minorTicks", minorTicks);

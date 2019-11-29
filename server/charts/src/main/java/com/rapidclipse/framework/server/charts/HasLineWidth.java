@@ -7,12 +7,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasLineWidth extends Chart
 {
-	public default Double getLineWidth()
+	public default Number getLineWidth()
 	{
 		return properties().get("lineWidth");
 	}
-
-	public default void setLineWidth(final Double lineWidth)
+	
+	public default void setLineWidth(final Number lineWidth)
 	{
 		properties().put("lineWidth", lineWidth);
 	}

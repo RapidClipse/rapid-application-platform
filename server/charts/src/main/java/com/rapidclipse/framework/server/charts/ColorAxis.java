@@ -36,11 +36,11 @@ public interface ColorAxis extends Serializable, JavaScriptable
 		}
 	}
 	
-	public Double minValue();
+	public Number minValue();
 	
-	public Double maxValue();
+	public Number maxValue();
 	
-	public List<Double> values();
+	public List<Number> values();
 	
 	public List<String> colors();
 	
@@ -57,11 +57,11 @@ public interface ColorAxis extends Serializable, JavaScriptable
 	
 	public static interface Builder
 	{
-		public Builder minValue(Double minValue);
+		public Builder minValue(Number minValue);
 		
-		public Builder maxValue(Double maxValue);
+		public Builder maxValue(Number maxValue);
 		
-		public Builder values(List<Double> values);
+		public Builder values(List<Number> values);
 		
 		public Builder colors(List<String> colors);
 		
@@ -75,9 +75,9 @@ public interface ColorAxis extends Serializable, JavaScriptable
 		
 		public static class Default implements Builder
 		{
-			private Double         minValue;
-			private Double         maxValue;
-			private List<Double>   values;
+			private Number         minValue;
+			private Number         maxValue;
+			private List<Number>   values;
 			private List<String>   colors;
 			private LegendPosition legendPosition;
 			private TextStyle      legendTextStyle;
@@ -89,21 +89,21 @@ public interface ColorAxis extends Serializable, JavaScriptable
 			}
 			
 			@Override
-			public Builder minValue(final Double minValue)
+			public Builder minValue(final Number minValue)
 			{
 				this.minValue = minValue;
 				return this;
 			}
 			
 			@Override
-			public Builder maxValue(final Double maxValue)
+			public Builder maxValue(final Number maxValue)
 			{
 				this.maxValue = maxValue;
 				return this;
 			}
 			
 			@Override
-			public Builder values(final List<Double> values)
+			public Builder values(final List<Number> values)
 			{
 				this.values = values;
 				return this;
@@ -150,18 +150,18 @@ public interface ColorAxis extends Serializable, JavaScriptable
 	
 	public static class Default implements ColorAxis
 	{
-		private final Double         minValue;
-		private final Double         maxValue;
-		private final List<Double>   values;
+		private final Number         minValue;
+		private final Number         maxValue;
+		private final List<Number>   values;
 		private final List<String>   colors;
 		private final LegendPosition legendPosition;
 		private final TextStyle      legendTextStyle;
 		private final String         legendNumberFormat;
 		
 		Default(
-			final Double minValue,
-			final Double maxValue,
-			final List<Double> values,
+			final Number minValue,
+			final Number maxValue,
+			final List<Number> values,
 			final List<String> colors,
 			final LegendPosition legendPosition,
 			final TextStyle legendTextStyle,
@@ -179,19 +179,19 @@ public interface ColorAxis extends Serializable, JavaScriptable
 		}
 		
 		@Override
-		public Double minValue()
+		public Number minValue()
 		{
 			return this.minValue;
 		}
 		
 		@Override
-		public Double maxValue()
+		public Number maxValue()
 		{
 			return this.maxValue;
 		}
 		
 		@Override
-		public List<Double> values()
+		public List<Number> values()
 		{
 			return this.values;
 		}

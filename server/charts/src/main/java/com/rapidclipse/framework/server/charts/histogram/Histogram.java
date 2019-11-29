@@ -12,148 +12,148 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
  */
 public interface Histogram extends Serializable, JavaScriptable
 {
-	public Double bucketSize();
-	
+	public Number bucketSize();
+
 	public Boolean hideBucketItems();
-	
-	public Double lastBucketPercentile();
-	
-	public Double minValue();
-	
-	public Double maxValue();
-	
+
+	public Number lastBucketPercentile();
+
+	public Number minValue();
+
+	public Number maxValue();
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
-		public Builder bucketSize(Double bucketSize);
-		
+		public Builder bucketSize(Number bucketSize);
+
 		public Builder hideBucketItems(Boolean hideBucketItems);
-		
-		public Builder lastBucketPercentile(Double lastBucketPercentile);
-		
-		public Builder minValue(Double minValue);
-		
-		public Builder maxValue(Double maxValue);
-		
+
+		public Builder lastBucketPercentile(Number lastBucketPercentile);
+
+		public Builder minValue(Number minValue);
+
+		public Builder maxValue(Number maxValue);
+
 		public Histogram build();
-		
+
 		public static class Default implements Builder
 		{
-			private Double  bucketSize;
+			private Number  bucketSize;
 			private Boolean hideBucketItems;
-			private Double  lastBucketPercentile;
-			private Double  minValue;
-			private Double  maxValue;
-			
+			private Number  lastBucketPercentile;
+			private Number  minValue;
+			private Number  maxValue;
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
-			public Builder bucketSize(final Double bucketSize)
+			public Builder bucketSize(final Number bucketSize)
 			{
 				this.bucketSize = bucketSize;
 				return this;
 			}
-			
+
 			@Override
 			public Builder hideBucketItems(final Boolean hideBucketItems)
 			{
 				this.hideBucketItems = hideBucketItems;
 				return this;
 			}
-			
+
 			@Override
-			public Builder lastBucketPercentile(final Double lastBucketPercentile)
+			public Builder lastBucketPercentile(final Number lastBucketPercentile)
 			{
 				this.lastBucketPercentile = lastBucketPercentile;
 				return this;
 			}
-			
+
 			@Override
-			public Builder minValue(final Double minValue)
+			public Builder minValue(final Number minValue)
 			{
 				this.minValue = minValue;
 				return this;
 			}
-			
+
 			@Override
-			public Builder maxValue(final Double maxValue)
+			public Builder maxValue(final Number maxValue)
 			{
 				this.maxValue = maxValue;
 				return this;
 			}
-			
+
 			@Override
 			public Histogram build()
 			{
 				return new Histogram.Default(this.bucketSize, this.hideBucketItems, this.lastBucketPercentile,
 					this.minValue, this.maxValue);
 			}
-			
+
 		}
-		
+
 	}
-	
+
 	public static class Default implements Histogram
 	{
-		private final Double  bucketSize;
+		private final Number  bucketSize;
 		private final Boolean hideBucketItems;
-		private final Double  lastBucketPercentile;
-		private final Double  minValue;
-		private final Double  maxValue;
-		
+		private final Number  lastBucketPercentile;
+		private final Number  minValue;
+		private final Number  maxValue;
+
 		Default(
-			final Double bucketSize,
+			final Number bucketSize,
 			final Boolean hideBucketItems,
-			final Double lastBucketPercentile,
-			final Double minValue,
-			final Double maxValue)
+			final Number lastBucketPercentile,
+			final Number minValue,
+			final Number maxValue)
 		{
 			super();
-			
+
 			this.bucketSize           = bucketSize;
 			this.hideBucketItems      = hideBucketItems;
 			this.lastBucketPercentile = lastBucketPercentile;
 			this.minValue             = minValue;
 			this.maxValue             = maxValue;
 		}
-		
+
 		@Override
-		public Double bucketSize()
+		public Number bucketSize()
 		{
 			return this.bucketSize;
 		}
-		
+
 		@Override
 		public Boolean hideBucketItems()
 		{
 			return this.hideBucketItems;
 		}
-		
+
 		@Override
-		public Double lastBucketPercentile()
+		public Number lastBucketPercentile()
 		{
 			return this.lastBucketPercentile;
 		}
-		
+
 		@Override
-		public Double minValue()
+		public Number minValue()
 		{
 			return this.minValue;
 		}
-		
+
 		@Override
-		public Double maxValue()
+		public Number maxValue()
 		{
 			return this.maxValue;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -165,7 +165,7 @@ public interface Histogram extends Serializable, JavaScriptable
 			obj.putIfNotNull("maxValue", this.maxValue);
 			return obj.js();
 		}
-		
+
 	}
-	
+
 }

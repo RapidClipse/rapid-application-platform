@@ -25,13 +25,13 @@ public interface LineSeries extends Series
 
 	public Boolean labelInLegend();
 
-	public List<Double> lineDashStyle();
+	public List<Number> lineDashStyle();
 
-	public Double lineWidth();
+	public Number lineWidth();
 
 	public PointShape.Type pointShape();
 
-	public Double pointSize();
+	public Number pointSize();
 
 	public Boolean pointsVisible();
 
@@ -54,13 +54,13 @@ public interface LineSeries extends Series
 
 		public Builder labelInLegend(Boolean labelInLegend);
 
-		public Builder lineDashStyle(List<Double> lineDashStyle);
+		public Builder lineDashStyle(List<Number> lineDashStyle);
 
-		public Builder lineWidth(Double lineWidth);
+		public Builder lineWidth(Number lineWidth);
 
 		public Builder pointShape(PointShape.Type pointShape);
 
-		public Builder pointSize(Double pointSize);
+		public Builder pointSize(Number pointSize);
 
 		public Builder pointsVisible(Boolean pointsVisible);
 
@@ -76,10 +76,10 @@ public interface LineSeries extends Series
 			private String          color;
 			private CurveType       curveType;
 			private Boolean         labelInLegend;
-			private List<Double>    lineDashStyle;
-			private Double          lineWidth;
+			private List<Number>    lineDashStyle;
+			private Number          lineWidth;
 			private PointShape.Type pointShape;
-			private Double          pointSize;
+			private Number          pointSize;
 			private Boolean         pointsVisible;
 			private Integer         targetAxisIndex;
 			private Boolean         visibleInLegend;
@@ -118,14 +118,14 @@ public interface LineSeries extends Series
 			}
 
 			@Override
-			public Builder lineDashStyle(final List<Double> lineDashStyle)
+			public Builder lineDashStyle(final List<Number> lineDashStyle)
 			{
 				this.lineDashStyle = lineDashStyle;
 				return this;
 			}
 
 			@Override
-			public Builder lineWidth(final Double lineWidth)
+			public Builder lineWidth(final Number lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
@@ -139,7 +139,7 @@ public interface LineSeries extends Series
 			}
 
 			@Override
-			public Builder pointSize(final Double pointSize)
+			public Builder pointSize(final Number pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
@@ -184,10 +184,10 @@ public interface LineSeries extends Series
 		private final String          color;
 		private final CurveType       curveType;
 		private final Boolean         labelInLegend;
-		private final List<Double>    lineDashStyle;
-		private final Double          lineWidth;
+		private final List<Number>    lineDashStyle;
+		private final Number          lineWidth;
 		private final PointShape.Type pointShape;
-		private final Double          pointSize;
+		private final Number          pointSize;
 		private final Boolean         pointsVisible;
 		private final Integer         targetAxisIndex;
 		private final Boolean         visibleInLegend;
@@ -197,10 +197,10 @@ public interface LineSeries extends Series
 			final String color,
 			final CurveType curveType,
 			final Boolean labelInLegend,
-			final List<Double> lineDashStyle,
-			final Double lineWidth,
+			final List<Number> lineDashStyle,
+			final Number lineWidth,
 			final Type pointShape,
-			final Double pointSize,
+			final Number pointSize,
 			final Boolean pointsVisible,
 			final Integer targetAxisIndex,
 			final Boolean visibleInLegend)
@@ -245,13 +245,13 @@ public interface LineSeries extends Series
 		}
 
 		@Override
-		public List<Double> lineDashStyle()
+		public List<Number> lineDashStyle()
 		{
 			return this.lineDashStyle;
 		}
 
 		@Override
-		public Double lineWidth()
+		public Number lineWidth()
 		{
 			return this.lineWidth;
 		}
@@ -263,7 +263,7 @@ public interface LineSeries extends Series
 		}
 
 		@Override
-		public Double pointSize()
+		public Number pointSize()
 		{
 			return this.pointSize;
 		}

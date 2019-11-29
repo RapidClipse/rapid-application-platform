@@ -13,59 +13,59 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
 public interface CellColor extends Serializable, JavaScriptable
 {
 	public String stroke();
-
-	public Double strokeWidth();
-
-	public Double strokeOpacity();
-
+	
+	public Number strokeWidth();
+	
+	public Number strokeOpacity();
+	
 	public static Default New(final String stroke)
 	{
 		return new Default(stroke, null, null);
 	}
-
-	public static Default New(final String stroke, final Double strokeWidth)
+	
+	public static Default New(final String stroke, final Number strokeWidth)
 	{
 		return new Default(stroke, strokeWidth, null);
 	}
-
-	public static Default New(final String stroke, final Double strokeWidth, final Double strokeOpacity)
+	
+	public static Default New(final String stroke, final Number strokeWidth, final Number strokeOpacity)
 	{
 		return new Default(stroke, strokeWidth, strokeOpacity);
 	}
-
+	
 	public static class Default implements CellColor
 	{
 		private final String stroke;
-		private final Double strokeWidth;
-		private final Double strokeOpacity;
-
-		Default(final String stroke, final Double strokeWidth, final Double strokeOpacity)
+		private final Number strokeWidth;
+		private final Number strokeOpacity;
+		
+		Default(final String stroke, final Number strokeWidth, final Number strokeOpacity)
 		{
 			super();
-
+			
 			this.stroke        = stroke;
 			this.strokeWidth   = strokeWidth;
 			this.strokeOpacity = strokeOpacity;
 		}
-
+		
 		@Override
 		public String stroke()
 		{
 			return this.stroke;
 		}
-
+		
 		@Override
-		public Double strokeWidth()
+		public Number strokeWidth()
 		{
 			return this.strokeWidth;
 		}
-
+		
 		@Override
-		public Double strokeOpacity()
+		public Number strokeOpacity()
 		{
 			return this.strokeOpacity;
 		}
-
+		
 		@Override
 		public String js()
 		{
@@ -75,7 +75,7 @@ public interface CellColor extends Serializable, JavaScriptable
 			obj.putIfNotNull("strokeOpacity", this.strokeOpacity);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }

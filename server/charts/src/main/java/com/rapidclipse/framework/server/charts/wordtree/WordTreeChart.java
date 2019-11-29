@@ -47,7 +47,7 @@ public class WordTreeChart extends ChartBase
 	{
 		super("WordTree", "wordtree");
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsImplicit(final String textColumn, final String sizeColumn, final String styleColumn)
 	{
@@ -63,7 +63,7 @@ public class WordTreeChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel initDefaultColumnsExplicit(
 		final String idColumn,
 		final String textColumn,
@@ -78,22 +78,22 @@ public class WordTreeChart extends ChartBase
 			.addColumn(Column.New(Column.Type.NUMBER, sizeColumn))
 			.addColumn(Column.New(Column.Type.STRING, styleColumn));
 	}
-
-	public Double getMaxFontSize()
+	
+	public Number getMaxFontSize()
 	{
 		return properties().get("maxFontSize");
 	}
-
-	public void setMaxFontSize(final Double maxFontSize)
+	
+	public void setMaxFontSize(final Number maxFontSize)
 	{
 		properties().put("maxFontSize", maxFontSize);
 	}
-
+	
 	public WordTree getWordTree()
 	{
 		return properties().get("wordTree");
 	}
-
+	
 	public void setWordTree(final WordTree wordTree)
 	{
 		properties().put("wordTree", wordTree);

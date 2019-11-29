@@ -7,12 +7,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasDataOpacity extends Chart
 {
-	public default Double getDataOpacity()
+	public default Number getDataOpacity()
 	{
 		return properties().get("dataOpacity");
 	}
-	
-	public default void setDataOpacity(final Double dataOpacity)
+
+	public default void setDataOpacity(final Number dataOpacity)
 	{
 		properties().put("dataOpacity", dataOpacity);
 	}

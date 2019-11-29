@@ -7,12 +7,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasAreaOpacity extends Chart
 {
-	public default Double getAreaOpacity()
+	public default Number getAreaOpacity()
 	{
 		return properties().get("areaOpacity");
 	}
-
-	public default void setAreaOpacity(final Double areaOpacity)
+	
+	public default void setAreaOpacity(final Number areaOpacity)
 	{
 		properties().put("areaOpacity", areaOpacity);
 	}

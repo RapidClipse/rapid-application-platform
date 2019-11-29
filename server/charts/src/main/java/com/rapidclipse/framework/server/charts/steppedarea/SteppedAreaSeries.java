@@ -13,13 +13,13 @@ import com.rapidclipse.framework.server.charts.Series;
  */
 public interface SteppedAreaSeries extends Series
 {
-	public Double areaOpacity();
+	public Number areaOpacity();
 
 	public String color();
 
 	public Boolean labelInLegend();
 
-	public List<Double> lineDashStyle();
+	public List<Number> lineDashStyle();
 	
 	public Integer targetAxisIndex();
 
@@ -32,13 +32,13 @@ public interface SteppedAreaSeries extends Series
 	
 	public static interface Builder
 	{
-		public Builder areaOpacity(Double areaOpacity);
+		public Builder areaOpacity(Number areaOpacity);
 
 		public Builder color(String color);
 
 		public Builder labelInLegend(Boolean labelInLegend);
 
-		public Builder lineDashStyle(List<Double> lineDashStyle);
+		public Builder lineDashStyle(List<Number> lineDashStyle);
 
 		public Builder targetAxisIndex(Integer targetAxisIndex);
 
@@ -48,10 +48,10 @@ public interface SteppedAreaSeries extends Series
 
 		public static class Default implements Builder
 		{
-			private Double       areaOpacity;
+			private Number       areaOpacity;
 			private String       color;
 			private Boolean      labelInLegend;
-			private List<Double> lineDashStyle;
+			private List<Number> lineDashStyle;
 			private Integer      targetAxisIndex;
 			private Boolean      visibleInLegend;
 
@@ -61,7 +61,7 @@ public interface SteppedAreaSeries extends Series
 			}
 
 			@Override
-			public Builder areaOpacity(final Double areaOpacity)
+			public Builder areaOpacity(final Number areaOpacity)
 			{
 				this.areaOpacity = areaOpacity;
 				return this;
@@ -82,7 +82,7 @@ public interface SteppedAreaSeries extends Series
 			}
 
 			@Override
-			public Builder lineDashStyle(final List<Double> lineDashStyle)
+			public Builder lineDashStyle(final List<Number> lineDashStyle)
 			{
 				this.lineDashStyle = lineDashStyle;
 				return this;
@@ -115,18 +115,18 @@ public interface SteppedAreaSeries extends Series
 
 	public static class Default implements SteppedAreaSeries
 	{
-		private final Double       areaOpacity;
+		private final Number       areaOpacity;
 		private final String       color;
 		private final Boolean      labelInLegend;
-		private final List<Double> lineDashStyle;
+		private final List<Number> lineDashStyle;
 		private final Integer      targetAxisIndex;
 		private final Boolean      visibleInLegend;
 		
 		Default(
-			final Double areaOpacity,
+			final Number areaOpacity,
 			final String color,
 			final Boolean labelInLegend,
-			final List<Double> lineDashStyle,
+			final List<Number> lineDashStyle,
 			final Integer targetAxisIndex,
 			final Boolean visibleInLegend)
 		{
@@ -141,7 +141,7 @@ public interface SteppedAreaSeries extends Series
 		}
 
 		@Override
-		public Double areaOpacity()
+		public Number areaOpacity()
 		{
 			return this.areaOpacity;
 		}
@@ -159,7 +159,7 @@ public interface SteppedAreaSeries extends Series
 		}
 
 		@Override
-		public List<Double> lineDashStyle()
+		public List<Number> lineDashStyle()
 		{
 			return this.lineDashStyle;
 		}

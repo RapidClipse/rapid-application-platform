@@ -12,95 +12,95 @@ import com.rapidclipse.framework.server.util.JavaScriptable;
  */
 public interface Arrow extends Serializable, JavaScriptable
 {
-	public Double angle();
-
+	public Number angle();
+	
 	public String color();
-
-	public Double length();
-
-	public Double radius();
-
-	public Double spaceAfter();
-
-	public Double width();
-
+	
+	public Number length();
+	
+	public Number radius();
+	
+	public Number spaceAfter();
+	
+	public Number width();
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
-		public Builder angle(Double angle);
-
-		public Builder color(String color);
-
-		public Builder length(Double length);
-
-		public Builder radius(Double radius);
-
-		public Builder spaceAfter(Double spaceAfter);
-
-		public Builder width(Double width);
-
-		public Arrow build();
+		public Builder angle(Number angle);
 		
+		public Builder color(String color);
+		
+		public Builder length(Number length);
+		
+		public Builder radius(Number radius);
+		
+		public Builder spaceAfter(Number spaceAfter);
+		
+		public Builder width(Number width);
+		
+		public Arrow build();
+
 		public static class Default implements Builder
 		{
-			private Double angle;
+			private Number angle;
 			private String color;
-			private Double length;
-			private Double radius;
-			private Double spaceAfter;
-			private Double width;
-			
+			private Number length;
+			private Number radius;
+			private Number spaceAfter;
+			private Number width;
+
 			Default()
 			{
 				super();
 			}
-			
+
 			@Override
-			public Builder angle(final Double angle)
+			public Builder angle(final Number angle)
 			{
 				this.angle = angle;
 				return this;
 			}
-
+			
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-
+			
 			@Override
-			public Builder length(final Double length)
+			public Builder length(final Number length)
 			{
 				this.length = length;
 				return this;
 			}
-
+			
 			@Override
-			public Builder radius(final Double radius)
+			public Builder radius(final Number radius)
 			{
 				this.radius = radius;
 				return this;
 			}
-
+			
 			@Override
-			public Builder spaceAfter(final Double spaceAfter)
+			public Builder spaceAfter(final Number spaceAfter)
 			{
 				this.spaceAfter = spaceAfter;
 				return this;
 			}
-
+			
 			@Override
-			public Builder width(final Double width)
+			public Builder width(final Number width)
 			{
 				this.width = width;
 				return this;
 			}
-
+			
 			@Override
 			public Arrow build()
 			{
@@ -108,26 +108,26 @@ public interface Arrow extends Serializable, JavaScriptable
 			}
 		}
 	}
-
+	
 	public static class Default implements Arrow
 	{
-		private final Double angle;
+		private final Number angle;
 		private final String color;
-		private final Double length;
-		private final Double radius;
-		private final Double spaceAfter;
-		private final Double width;
-
+		private final Number length;
+		private final Number radius;
+		private final Number spaceAfter;
+		private final Number width;
+		
 		Default(
-			final Double angle,
+			final Number angle,
 			final String color,
-			final Double length,
-			final Double radius,
-			final Double spaceAfter,
-			final Double width)
+			final Number length,
+			final Number radius,
+			final Number spaceAfter,
+			final Number width)
 		{
 			super();
-			
+
 			this.angle      = angle;
 			this.color      = color;
 			this.length     = length;
@@ -135,43 +135,43 @@ public interface Arrow extends Serializable, JavaScriptable
 			this.spaceAfter = spaceAfter;
 			this.width      = width;
 		}
-
+		
 		@Override
-		public Double angle()
+		public Number angle()
 		{
 			return this.angle;
 		}
-
+		
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-
+		
 		@Override
-		public Double length()
+		public Number length()
 		{
 			return this.length;
 		}
-
+		
 		@Override
-		public Double radius()
+		public Number radius()
 		{
 			return this.radius;
 		}
-
+		
 		@Override
-		public Double spaceAfter()
+		public Number spaceAfter()
 		{
 			return this.spaceAfter;
 		}
-
+		
 		@Override
-		public Double width()
+		public Number width()
 		{
 			return this.width;
 		}
-
+		
 		@Override
 		public String js()
 		{

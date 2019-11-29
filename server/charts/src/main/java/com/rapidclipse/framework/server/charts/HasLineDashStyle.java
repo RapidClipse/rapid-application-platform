@@ -10,12 +10,12 @@ import java.util.List;
  */
 public interface HasLineDashStyle extends HasLineWidth
 {
-	public default List<Double> getLineDashStyle()
+	public default List<Number> getLineDashStyle()
 	{
 		return properties().get("lineDashStyle");
 	}
-	
-	public default void setLineDashStyle(final List<Double> lineDashStyle)
+
+	public default void setLineDashStyle(final List<Number> lineDashStyle)
 	{
 		properties().put("lineDashStyle", lineDashStyle);
 	}

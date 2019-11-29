@@ -11,27 +11,27 @@ public interface HasPoints extends Chart
 	{
 		return properties().get("pointShape");
 	}
-
+	
 	public default void setPointShape(final PointShape pointShape)
 	{
 		properties().put("pointShape", pointShape);
 	}
-	
-	public default Double getPointSize()
+
+	public default Number getPointSize()
 	{
 		return properties().get("pointSize");
 	}
-	
-	public default void setPointSize(final Double pointSize)
+
+	public default void setPointSize(final Number pointSize)
 	{
 		properties().put("pointSize", pointSize);
 	}
-	
+
 	public default Boolean getPointsVisible()
 	{
 		return properties().get("pointsVisible");
 	}
-	
+
 	public default void setPointsVisible(final Boolean pointsVisible)
 	{
 		properties().put("pointsVisible", pointsVisible);
