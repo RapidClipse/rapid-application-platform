@@ -43,6 +43,7 @@ import com.rapidclipse.framework.server.charts.HasInteractivity;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasOrientation;
 import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasVAxes;
 import com.rapidclipse.framework.server.charts.HasVAxis;
@@ -58,18 +59,18 @@ import com.vaadin.flow.component.Tag;
 public class CandlestickChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAxisTitlesPosition, HasBackground, HasBar, HasCandlestick,
 	HasChartArea, HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasLegend, HasCategories, HasOrientation,
-	HasSelectionMode, HasTitlePosition, HasVAxis, HasVAxes, HasChartSize
+	HasSelectionMode, HasTitlePosition, HasVAxis, HasVAxes, HasChartSize, HasSeries<CandlestickSeries>
 {
 	public CandlestickChart()
 	{
 		super("CandlestickChart");
 	}
-
+	
 	public ChartModel initDefaultColumns(final Column.Type xAxisType)
 	{
 		return initDefaultColumns("x", xAxisType, "min", "initial", "final", "max");
 	}
-
+	
 	public ChartModel initDefaultColumns(
 		final String xAxisColumn,
 		final Column.Type xAxisType,
@@ -80,27 +81,12 @@ public class CandlestickChart extends ChartBase
 	{
 		validateColumnType(xAxisType, "x axis column", Column.Type.STRING, Column.Type.NUMBER, Column.Type.DATE,
 			Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
-
+		
 		return getModel().removeAll()
 			.addColumn(Column.New(xAxisType, xAxisColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, minValueColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, initialValueColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, finalValueColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, maxValueColumn));
-	}
-
-	public void addSeries(final int rowIndex, final Series series)
-	{
-		properties().putIndexed("series", rowIndex, series);
-	}
-
-	public Series removeSeries(final int rowIndex)
-	{
-		return properties().removeIndexed("series", rowIndex);
-	}
-
-	public void removeAllSeries()
-	{
-		properties().removeAllIndexed("series");
 	}
 }

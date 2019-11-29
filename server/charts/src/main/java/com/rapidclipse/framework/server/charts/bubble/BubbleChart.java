@@ -39,6 +39,7 @@ import com.rapidclipse.framework.server.charts.HasHAxis;
 import com.rapidclipse.framework.server.charts.HasInteractivity;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasSizeAxis;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasVAxis;
@@ -53,7 +54,8 @@ import com.vaadin.flow.component.Tag;
 @Tag("bubble-chart")
 public class BubbleChart extends ChartBase
 	implements HasAnimation, HasAxisTitlesPosition, HasBackground, HasChartArea, HasColorAxis, HasInteractivity,
-	AllowsIFrame, HasHAxis, HasLegend, HasSelectionMode, HasSizeAxis, HasTitlePosition, HasVAxis, HasChartSize
+	AllowsIFrame, HasHAxis, HasLegend, HasSelectionMode, HasSizeAxis, HasTitlePosition, HasVAxis, HasChartSize,
+	HasSeries<BubbleSeries>
 {
 	public BubbleChart()
 	{
@@ -91,21 +93,6 @@ public class BubbleChart extends ChartBase
 	{
 		return initDefaultColumns(idColumn, xColumn, yColumn, valueColumn, valueColumnType)
 			.addColumn(Column.New(Type.NUMBER, sizeColumn));
-	}
-	
-	public void addSeries(final int rowIndex, final Series series)
-	{
-		properties().putIndexed("series", rowIndex, series);
-	}
-	
-	public Series removeSeries(final int rowIndex)
-	{
-		return properties().removeIndexed("series", rowIndex);
-	}
-	
-	public void removeAllSeries()
-	{
-		properties().removeAllIndexed("series");
 	}
 	
 	public Bubble getBubble()

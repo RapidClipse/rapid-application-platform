@@ -1,75 +1,74 @@
 
 package com.rapidclipse.framework.server.charts.area;
 
-import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.Annotations;
 import com.rapidclipse.framework.server.charts.PointShape;
 import com.rapidclipse.framework.server.charts.PointShape.Type;
-import com.rapidclipse.framework.server.util.JavaScriptable;
+import com.rapidclipse.framework.server.charts.Series;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface Series extends Serializable, JavaScriptable
+public interface AreaSeries extends Series
 {
 	public Annotations annotations();
-
-	public Double areaOpacity();
-
-	public String color();
-
-	public Boolean labelInLegend();
-
-	public List<Double> lineDashStyle();
-
-	public Double lineWidth();
-
-	public PointShape.Type pointShape();
-
-	public Double pointSize();
-
-	public Boolean pointsVisible();
-
-	public Integer targetAxisIndex();
-
-	public Boolean visibleInLegend();
 	
+	public Double areaOpacity();
+	
+	public String color();
+	
+	public Boolean labelInLegend();
+	
+	public List<Double> lineDashStyle();
+	
+	public Double lineWidth();
+	
+	public PointShape.Type pointShape();
+	
+	public Double pointSize();
+	
+	public Boolean pointsVisible();
+	
+	public Integer targetAxisIndex();
+	
+	public Boolean visibleInLegend();
+
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-	
+
 	public static interface Builder
 	{
 		public Builder annotations(Annotations annotations);
-
+		
 		public Builder areaOpacity(Double areaOpacity);
-
+		
 		public Builder color(String color);
-
+		
 		public Builder labelInLegend(Boolean labelInLegend);
-
+		
 		public Builder lineDashStyle(List<Double> lineDashStyle);
-
+		
 		public Builder lineWidth(Double lineWidth);
-
+		
 		public Builder pointShape(PointShape.Type pointShape);
-
+		
 		public Builder pointSize(Double pointSize);
-
+		
 		public Builder pointsVisible(Boolean pointsVisible);
-
+		
 		public Builder targetAxisIndex(Integer targetAxisIndex);
-
+		
 		public Builder visibleInLegend(Boolean visibleInLegend);
-
-		public Series build();
-
+		
+		public AreaSeries build();
+		
 		public static class Default implements Builder
 		{
 			private Annotations     annotations;
@@ -83,102 +82,102 @@ public interface Series extends Serializable, JavaScriptable
 			private Boolean         pointsVisible;
 			private Integer         targetAxisIndex;
 			private Boolean         visibleInLegend;
-
+			
 			Default()
 			{
 				super();
 			}
-
+			
 			@Override
 			public Builder annotations(final Annotations annotations)
 			{
 				this.annotations = annotations;
 				return this;
 			}
-
+			
 			@Override
 			public Builder areaOpacity(final Double areaOpacity)
 			{
 				this.areaOpacity = areaOpacity;
 				return this;
 			}
-
+			
 			@Override
 			public Builder color(final String color)
 			{
 				this.color = color;
 				return this;
 			}
-
+			
 			@Override
 			public Builder labelInLegend(final Boolean labelInLegend)
 			{
 				this.labelInLegend = labelInLegend;
 				return this;
 			}
-
+			
 			@Override
 			public Builder lineDashStyle(final List<Double> lineDashStyle)
 			{
 				this.lineDashStyle = lineDashStyle;
 				return this;
 			}
-
+			
 			@Override
 			public Builder lineWidth(final Double lineWidth)
 			{
 				this.lineWidth = lineWidth;
 				return this;
 			}
-
+			
 			@Override
 			public Builder pointShape(final PointShape.Type pointShape)
 			{
 				this.pointShape = pointShape;
 				return this;
 			}
-
+			
 			@Override
 			public Builder pointSize(final Double pointSize)
 			{
 				this.pointSize = pointSize;
 				return this;
 			}
-
+			
 			@Override
 			public Builder pointsVisible(final Boolean pointsVisible)
 			{
 				this.pointsVisible = pointsVisible;
 				return this;
 			}
-
+			
 			@Override
 			public Builder targetAxisIndex(final Integer targetAxisIndex)
 			{
 				this.targetAxisIndex = targetAxisIndex;
 				return this;
 			}
-
+			
 			@Override
 			public Builder visibleInLegend(final Boolean visibleInLegend)
 			{
 				this.visibleInLegend = visibleInLegend;
 				return this;
 			}
-
+			
 			@Override
-			public Series build()
+			public AreaSeries build()
 			{
-				return new Series.Default(this.annotations, this.areaOpacity, this.color, this.labelInLegend,
+				return new AreaSeries.Default(this.annotations, this.areaOpacity, this.color, this.labelInLegend,
 					this.lineDashStyle, this.lineWidth, this.pointShape, this.pointSize, this.pointsVisible,
 					this.targetAxisIndex, this.visibleInLegend);
 			}
-			
-		}
-		
-	}
 
-	public static class Default implements Series
+		}
+
+	}
+	
+	public static class Default implements AreaSeries
 	{
 		private final Annotations     annotations;
 		private final Double          areaOpacity;
@@ -191,7 +190,7 @@ public interface Series extends Serializable, JavaScriptable
 		private final Boolean         pointsVisible;
 		private final Integer         targetAxisIndex;
 		private final Boolean         visibleInLegend;
-		
+
 		Default(
 			final Annotations annotations,
 			final Double areaOpacity,
@@ -206,7 +205,7 @@ public interface Series extends Serializable, JavaScriptable
 			final Boolean visibleInLegend)
 		{
 			super();
-
+			
 			this.annotations     = annotations;
 			this.areaOpacity     = areaOpacity;
 			this.color           = color;
@@ -219,73 +218,73 @@ public interface Series extends Serializable, JavaScriptable
 			this.targetAxisIndex = targetAxisIndex;
 			this.visibleInLegend = visibleInLegend;
 		}
-		
+
 		@Override
 		public Annotations annotations()
 		{
 			return this.annotations;
 		}
-
+		
 		@Override
 		public Double areaOpacity()
 		{
 			return this.areaOpacity;
 		}
-
+		
 		@Override
 		public String color()
 		{
 			return this.color;
 		}
-
+		
 		@Override
 		public Boolean labelInLegend()
 		{
 			return this.labelInLegend;
 		}
-
+		
 		@Override
 		public List<Double> lineDashStyle()
 		{
 			return this.lineDashStyle;
 		}
-
+		
 		@Override
 		public Double lineWidth()
 		{
 			return this.lineWidth;
 		}
-
+		
 		@Override
 		public PointShape.Type pointShape()
 		{
 			return this.pointShape;
 		}
-
+		
 		@Override
 		public Double pointSize()
 		{
 			return this.pointSize;
 		}
-
+		
 		@Override
 		public Boolean pointsVisible()
 		{
 			return this.pointsVisible;
 		}
-
+		
 		@Override
 		public Integer targetAxisIndex()
 		{
 			return this.targetAxisIndex;
 		}
-
+		
 		@Override
 		public Boolean visibleInLegend()
 		{
 			return this.visibleInLegend;
 		}
-		
+
 		@Override
 		public String js()
 		{
@@ -303,7 +302,7 @@ public interface Series extends Serializable, JavaScriptable
 			obj.putIfNotNull("visibleInLegend", this.visibleInLegend);
 			return obj.js();
 		}
-
+		
 	}
-
+	
 }

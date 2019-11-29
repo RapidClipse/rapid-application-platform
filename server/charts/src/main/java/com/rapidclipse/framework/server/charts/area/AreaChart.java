@@ -51,6 +51,7 @@ import com.rapidclipse.framework.server.charts.HasLineDashStyle;
 import com.rapidclipse.framework.server.charts.HasOrientation;
 import com.rapidclipse.framework.server.charts.HasPoints;
 import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasStackMode;
 import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
@@ -71,13 +72,13 @@ public class AreaChart extends ChartBase
 	HasBackground, HasChartArea, HasColors, HasCrosshair, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFocusTarget, HasFont, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode, HasLegend, HasLineDashStyle,
 	HasOrientation, HasPoints, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasVAxes,
-	HasVAxis, HasIntervals
+	HasVAxis, HasIntervals, HasSeries<AreaSeries>
 {
 	public AreaChart()
 	{
 		super("AreaChart");
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String xColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -88,13 +89,13 @@ public class AreaChart extends ChartBase
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(final String xColumn, final Column.Type xColumnType, final String... valueColumns)
 	{
 		validateColumnType(xColumnType, "x column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xColumnType, xColumn));
 		for(final String valueColumn : valueColumns)
@@ -102,20 +103,5 @@ public class AreaChart extends ChartBase
 			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 		}
 		return model;
-	}
-	
-	public void addSeries(final int rowIndex, final Series series)
-	{
-		properties().putIndexed("series", rowIndex, series);
-	}
-	
-	public Series removeSeries(final int rowIndex)
-	{
-		return properties().removeIndexed("series", rowIndex);
-	}
-	
-	public void removeAllSeries()
-	{
-		properties().removeAllIndexed("series");
 	}
 }

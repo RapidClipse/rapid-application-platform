@@ -1,20 +1,15 @@
 
-package com.rapidclipse.framework.server.charts.bar;
+package com.rapidclipse.framework.server.charts.histogram;
 
-import java.io.Serializable;
-
-import com.rapidclipse.framework.server.charts.Annotations;
-import com.rapidclipse.framework.server.util.JavaScriptable;
+import com.rapidclipse.framework.server.charts.Series;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface Series extends Serializable, JavaScriptable
+public interface HistogramSeries extends Series
 {
-	public Annotations annotations();
-	
 	public String color();
 	
 	public Boolean labelInLegend();
@@ -22,16 +17,14 @@ public interface Series extends Serializable, JavaScriptable
 	public Integer targetAxisIndex();
 	
 	public Boolean visibleInLegend();
-
+	
 	public static Builder Builder()
 	{
 		return new Builder.Default();
 	}
-
+	
 	public static interface Builder
 	{
-		public Builder annotations(Annotations annotations);
-		
 		public Builder color(String color);
 		
 		public Builder labelInLegend(Boolean labelInLegend);
@@ -40,26 +33,18 @@ public interface Series extends Serializable, JavaScriptable
 		
 		public Builder visibleInLegend(Boolean visibleInLegend);
 		
-		public Series build();
+		public HistogramSeries build();
 		
 		public static class Default implements Builder
 		{
-			private Annotations annotations;
-			private String      color;
-			private Boolean     labelInLegend;
-			private Integer     targetAxisIndex;
-			private Boolean     visibleInLegend;
+			private String  color;
+			private Boolean labelInLegend;
+			private Integer targetAxisIndex;
+			private Boolean visibleInLegend;
 			
 			Default()
 			{
 				super();
-			}
-			
-			@Override
-			public Builder annotations(final Annotations annotations)
-			{
-				this.annotations = annotations;
-				return this;
 			}
 			
 			@Override
@@ -91,26 +76,24 @@ public interface Series extends Serializable, JavaScriptable
 			}
 			
 			@Override
-			public Series build()
+			public HistogramSeries build()
 			{
-				return new Series.Default(this.annotations, this.color, this.labelInLegend,
-					this.targetAxisIndex, this.visibleInLegend);
+				return new HistogramSeries.Default(this.color, this.labelInLegend, this.targetAxisIndex,
+					this.visibleInLegend);
 			}
-
+			
 		}
-
+		
 	}
 	
-	public static class Default implements Series
+	public static class Default implements HistogramSeries
 	{
-		private final Annotations annotations;
-		private final String      color;
-		private final Boolean     labelInLegend;
-		private final Integer     targetAxisIndex;
-		private final Boolean     visibleInLegend;
-
+		private final String  color;
+		private final Boolean labelInLegend;
+		private final Integer targetAxisIndex;
+		private final Boolean visibleInLegend;
+		
 		Default(
-			final Annotations annotations,
 			final String color,
 			final Boolean labelInLegend,
 			final Integer targetAxisIndex,
@@ -118,19 +101,12 @@ public interface Series extends Serializable, JavaScriptable
 		{
 			super();
 			
-			this.annotations     = annotations;
 			this.color           = color;
 			this.labelInLegend   = labelInLegend;
 			this.targetAxisIndex = targetAxisIndex;
 			this.visibleInLegend = visibleInLegend;
 		}
-
-		@Override
-		public Annotations annotations()
-		{
-			return this.annotations;
-		}
-
+		
 		@Override
 		public String color()
 		{
@@ -154,12 +130,11 @@ public interface Series extends Serializable, JavaScriptable
 		{
 			return this.visibleInLegend;
 		}
-
+		
 		@Override
 		public String js()
 		{
 			final ObjectHelper obj = new ObjectHelper();
-			obj.putIfNotNull("annotations", this.annotations);
 			obj.putIfNotNull("color", this.color);
 			obj.putIfNotNull("labelInLegend", this.labelInLegend);
 			obj.putIfNotNull("targetAxisIndex", this.targetAxisIndex);

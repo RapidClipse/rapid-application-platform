@@ -49,6 +49,7 @@ import com.rapidclipse.framework.server.charts.HasLineWidth;
 import com.rapidclipse.framework.server.charts.HasOrientation;
 import com.rapidclipse.framework.server.charts.HasPoints;
 import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
@@ -67,26 +68,27 @@ public class ScatterChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFont, AllowsIFrame, HasHAxis, HasChartSize, HasLegend, HasLineWidth, HasOrientation, HasPoints,
-	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxis, DiffChart
+	HasSelectionMode, HasTheme, HasTitlePosition, HasTooltip, HasTrendlines, HasVAxis, DiffChart,
+	HasSeries<ScatterSeries>
 {
 	public ScatterChart()
 	{
 		super("ScatterChart");
 	}
-
+	
 	public ScatterChart(final ChartModel before, final ChartModel after)
 	{
 		this();
-
+		
 		setModel(before, after);
 	}
-	
+
 	@Override
 	public void setModel(final ChartModel before, final ChartModel after)
 	{
 		super.setModel(before, after);
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String xValuesColumn,
@@ -96,7 +98,7 @@ public class ScatterChart extends ChartBase
 		validateColumnType(xValuesColumnType, "x values column", Column.Type.STRING, Column.Type.NUMBER,
 			Column.Type.DATE,
 			Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xValuesColumnType, xValuesColumn));
 		for(final Column valueColumn : valueColumns)
@@ -104,24 +106,9 @@ public class ScatterChart extends ChartBase
 			validateColumnType(valueColumn.type(), valueColumn.label(), Column.Type.STRING, Column.Type.NUMBER,
 				Column.Type.DATE,
 				Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
-
+			
 			model.addColumn(valueColumn);
 		}
 		return model;
-	}
-
-	public void addSeries(final int rowIndex, final Series series)
-	{
-		properties().putIndexed("series", rowIndex, series);
-	}
-
-	public Series removeSeries(final int rowIndex)
-	{
-		return properties().removeIndexed("series", rowIndex);
-	}
-
-	public void removeAllSeries()
-	{
-		properties().removeAllIndexed("series");
 	}
 }

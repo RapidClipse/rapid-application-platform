@@ -45,6 +45,7 @@ import com.rapidclipse.framework.server.charts.HasIntervals;
 import com.rapidclipse.framework.server.charts.HasLegend;
 import com.rapidclipse.framework.server.charts.HasLineDashStyle;
 import com.rapidclipse.framework.server.charts.HasSelectionMode;
+import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasStackMode;
 import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
@@ -64,13 +65,13 @@ public class SteppedAreaChart extends ChartBase
 	implements HasAggregationTarget, HasAnimation, HasAreaOpacity, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasInteractivity, HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize,
 	HasStackMode, HasLegend, HasLineDashStyle, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition,
-	HasTooltip, HasVAxes, HasVAxis, HasIntervals
+	HasTooltip, HasVAxes, HasVAxis, HasIntervals, HasSeries<SteppedAreaSeries>
 {
 	public SteppedAreaChart()
 	{
 		super("SteppedAreaChart");
 	}
-	
+
 	public ChartModel initDefaultColumns(final String groupColumn, final String... dataColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -82,26 +83,11 @@ public class SteppedAreaChart extends ChartBase
 		return model;
 	}
 	
-	public void addSeries(final int rowIndex, final Series series)
-	{
-		properties().putIndexed("series", rowIndex, series);
-	}
-	
-	public Series removeSeries(final int rowIndex)
-	{
-		return properties().removeIndexed("series", rowIndex);
-	}
-	
-	public void removeAllSeries()
-	{
-		properties().removeAllIndexed("series");
-	}
-	
 	public Boolean getConnectSteps()
 	{
 		return properties().get("connectSteps");
 	}
-	
+
 	public void setConnectSteps(final Boolean connectSteps)
 	{
 		properties().put("connectSteps", connectSteps);

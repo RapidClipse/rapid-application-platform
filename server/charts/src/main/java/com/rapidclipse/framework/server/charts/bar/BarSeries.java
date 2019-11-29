@@ -1,25 +1,21 @@
 
-package com.rapidclipse.framework.server.charts.candlestick;
+package com.rapidclipse.framework.server.charts.bar;
 
-import java.io.Serializable;
-
-import com.rapidclipse.framework.server.charts.CandlestickColor;
-import com.rapidclipse.framework.server.util.JavaScriptable;
+import com.rapidclipse.framework.server.charts.Annotations;
+import com.rapidclipse.framework.server.charts.Series;
 
 
 /**
  * @author XDEV Software
  *
  */
-public interface Series extends Serializable, JavaScriptable
+public interface BarSeries extends Series
 {
+	public Annotations annotations();
+
 	public String color();
 
-	public CandlestickColor fallingColor();
-
 	public Boolean labelInLegend();
-
-	public CandlestickColor risingColor();
 
 	public Integer targetAxisIndex();
 
@@ -32,32 +28,36 @@ public interface Series extends Serializable, JavaScriptable
 	
 	public static interface Builder
 	{
+		public Builder annotations(Annotations annotations);
+
 		public Builder color(String color);
 
-		public Builder fallingColor(CandlestickColor fallingColor);
-
 		public Builder labelInLegend(Boolean labelInLegend);
-
-		public Builder risingColor(CandlestickColor risingColor);
 
 		public Builder targetAxisIndex(Integer targetAxisIndex);
 
 		public Builder visibleInLegend(Boolean visibleInLegend);
 
-		public Series build();
+		public BarSeries build();
 
 		public static class Default implements Builder
 		{
-			private String           color;
-			private CandlestickColor fallingColor;
-			private Boolean          labelInLegend;
-			private CandlestickColor risingColor;
-			private Integer          targetAxisIndex;
-			private Boolean          visibleInLegend;
+			private Annotations annotations;
+			private String      color;
+			private Boolean     labelInLegend;
+			private Integer     targetAxisIndex;
+			private Boolean     visibleInLegend;
 
 			Default()
 			{
 				super();
+			}
+
+			@Override
+			public Builder annotations(final Annotations annotations)
+			{
+				this.annotations = annotations;
+				return this;
 			}
 
 			@Override
@@ -68,23 +68,9 @@ public interface Series extends Serializable, JavaScriptable
 			}
 
 			@Override
-			public Builder fallingColor(final CandlestickColor fallingColor)
-			{
-				this.fallingColor = fallingColor;
-				return this;
-			}
-
-			@Override
 			public Builder labelInLegend(final Boolean labelInLegend)
 			{
 				this.labelInLegend = labelInLegend;
-				return this;
-			}
-
-			@Override
-			public Builder risingColor(final CandlestickColor risingColor)
-			{
-				this.risingColor = risingColor;
 				return this;
 			}
 
@@ -103,9 +89,9 @@ public interface Series extends Serializable, JavaScriptable
 			}
 
 			@Override
-			public Series build()
+			public BarSeries build()
 			{
-				return new Series.Default(this.color, this.fallingColor, this.labelInLegend, this.risingColor,
+				return new BarSeries.Default(this.annotations, this.color, this.labelInLegend,
 					this.targetAxisIndex, this.visibleInLegend);
 			}
 			
@@ -113,33 +99,36 @@ public interface Series extends Serializable, JavaScriptable
 		
 	}
 
-	public static class Default implements Series
+	public static class Default implements BarSeries
 	{
-		private final String           color;
-		private final CandlestickColor fallingColor;
-		private final Boolean          labelInLegend;
-		private final CandlestickColor risingColor;
-		private final Integer          targetAxisIndex;
-		private final Boolean          visibleInLegend;
-
+		private final Annotations annotations;
+		private final String      color;
+		private final Boolean     labelInLegend;
+		private final Integer     targetAxisIndex;
+		private final Boolean     visibleInLegend;
+		
 		Default(
+			final Annotations annotations,
 			final String color,
-			final CandlestickColor fallingColor,
 			final Boolean labelInLegend,
-			final CandlestickColor risingColor,
 			final Integer targetAxisIndex,
 			final Boolean visibleInLegend)
 		{
 			super();
 
+			this.annotations     = annotations;
 			this.color           = color;
-			this.fallingColor    = fallingColor;
 			this.labelInLegend   = labelInLegend;
-			this.risingColor     = risingColor;
 			this.targetAxisIndex = targetAxisIndex;
 			this.visibleInLegend = visibleInLegend;
 		}
-
+		
+		@Override
+		public Annotations annotations()
+		{
+			return this.annotations;
+		}
+		
 		@Override
 		public String color()
 		{
@@ -147,21 +136,9 @@ public interface Series extends Serializable, JavaScriptable
 		}
 
 		@Override
-		public CandlestickColor fallingColor()
-		{
-			return this.fallingColor;
-		}
-
-		@Override
 		public Boolean labelInLegend()
 		{
 			return this.labelInLegend;
-		}
-
-		@Override
-		public CandlestickColor risingColor()
-		{
-			return this.risingColor;
 		}
 
 		@Override
@@ -175,15 +152,14 @@ public interface Series extends Serializable, JavaScriptable
 		{
 			return this.visibleInLegend;
 		}
-
+		
 		@Override
 		public String js()
 		{
 			final ObjectHelper obj = new ObjectHelper();
+			obj.putIfNotNull("annotations", this.annotations);
 			obj.putIfNotNull("color", this.color);
-			obj.putIfNotNull("fallingColor", this.fallingColor);
 			obj.putIfNotNull("labelInLegend", this.labelInLegend);
-			obj.putIfNotNull("risingColor", this.risingColor);
 			obj.putIfNotNull("targetAxisIndex", this.targetAxisIndex);
 			obj.putIfNotNull("visibleInLegend", this.visibleInLegend);
 			return obj.js();
