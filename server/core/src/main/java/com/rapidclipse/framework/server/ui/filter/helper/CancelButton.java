@@ -4,7 +4,9 @@ package com.rapidclipse.framework.server.ui.filter.helper;
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.rapidclipse.framework.server.ui.filter.FilterEntryEditor;
-import com.vaadin.flow.component.button.Button;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.UpdateFilterData;
+import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -13,9 +15,9 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  * @author XDEV Software
  *
  */
-public class CancelButton extends Buttons
+public class CancelButton extends Buttons<UpdateFilterData>
 {
-	
+
 	/**
 	 * Defines the Button with Classname, etc.
 	 *
@@ -30,34 +32,24 @@ public class CancelButton extends Buttons
 		this.addThemeVariants(ButtonVariant.LUMO_SMALL, ButtonVariant.LUMO_TERTIARY_INLINE);
 		this.getElement().setProperty("title", StringResourceUtils.getResourceString("cancelHover", this));
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
+	public void setClickListener(final UpdateFilterData component, final Replaceabel editor)
 	{
 		this.addClickListener(listener -> {
 			editor.updateOriginalWithCopy();
 			component.newFilterEntry();
 			component.updateFilterData();
 		});
-
 	}
 
-	/**
-	 * Creates the ClickListener for this {@link Button}. This method just removes the current Filter inside the
-	 * <b>comboDiv</b> and add a new one. <br>
-	 * This method is only used if the current Filter is a <b>new</b> one and <b>not</b> added to the
-	 * <b>filterEntryEditors List</b> yet.
-	 *
-	 * @param component
-	 *            -> {@link FilterComponent}
-	 */
-	public void setClickListener(final FilterComponent component)
+	public void setClickListener(final HasComponents obj, final FilterComponent component)
 	{
 		this.addClickListener(listener -> {
-			component.comboDiv.removeAll();
+			obj.removeAll();
 			component.addFilterEntryEditor(new FilterEntryEditor(component, component, component::updateFilterData));
 		});
 	}

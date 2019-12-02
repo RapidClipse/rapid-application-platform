@@ -44,6 +44,10 @@ vaadin-combo-box::part(text-field), vaadin-text-field { -
 .buttonLayoutCombo{
 	height: 40px;
 	align-self: flex-end;
+	margin-right: 10px;
+}
+.addButton{
+	margin-right: -10px;
 }
 
 .editor {
@@ -53,6 +57,10 @@ vaadin-combo-box::part(text-field), vaadin-text-field { -
 .operatorComboBox {
 	width: 99.99%;
 	margin-left: 0px;
+}
+
+.comboBoxDiv{
+	margin-top: var(--lumo-space-m);
 }
 
 #overlay::part(overlay) {

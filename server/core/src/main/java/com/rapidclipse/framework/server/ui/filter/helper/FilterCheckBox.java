@@ -3,6 +3,8 @@ package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.filter.FilterComponent;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.ToggleFilter;
 import com.vaadin.flow.component.checkbox.Checkbox;
 
 
@@ -13,7 +15,7 @@ import com.vaadin.flow.component.checkbox.Checkbox;
 public class FilterCheckBox extends Checkbox
 {
 	private static final String TITLE = "title";
-
+	
 	/**
 	 * Defines the Checkbox with Classname, etc.
 	 *
@@ -26,17 +28,17 @@ public class FilterCheckBox extends Checkbox
 		this.getElement().setProperty(TITLE, StringResourceUtils.getResourceString("checkboxTrueHover", this));
 		this.setValue(true);
 	}
-
+	
 	public void setActive()
 	{
 		this.getElement().setProperty(TITLE, StringResourceUtils.getResourceString("checkboxTrueHover", this));
 	}
-
+	
 	public void setNonActive()
 	{
 		this.getElement().setProperty(TITLE, StringResourceUtils.getResourceString("checkboxFalseHover", this));
 	}
-
+	
 	/**
 	 * Set a ValueChangeListener to the Checkbox
 	 *
@@ -45,22 +47,22 @@ public class FilterCheckBox extends Checkbox
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
 	 */
-	public void setValueChangeListener(final FilterComponent component, final ReplaceabelEditor editor)
+	public void setValueChangeListener(final ToggleFilter filter, final Replaceabel editor)
 	{
 		this.addValueChangeListener(listener -> {
+			
 			final Boolean check = this.getValue();
 			if(Boolean.TRUE.equals(check))
 			{
 				this.setActive();
-				component.activateFilter(editor);
+				filter.activateFilter(editor);
 			}
 			else if(Boolean.FALSE.equals(check))
 			{
 				this.setNonActive();
-				component.deactivateFilter(editor);
+				filter.deactivateFilter(editor);
 			}
+			
 		});
-
 	}
-	
 }

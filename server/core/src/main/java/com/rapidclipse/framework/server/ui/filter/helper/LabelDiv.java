@@ -4,10 +4,12 @@ package com.rapidclipse.framework.server.ui.filter.helper;
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.rapidclipse.framework.server.ui.filter.FilterEntryEditor;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.FilterComponentInterface;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.UpdateFilterData;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasOrderedComponents;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.dom.Element;
 
@@ -16,7 +18,7 @@ import com.vaadin.flow.dom.Element;
  * @author XDEV Software
  *
  */
-public class LabelDiv extends Div
+public class LabelDiv extends DefinedDiv
 {
 	/**
 	 * Defining the Div which is used to hold the labels beyond the Comboboxes
@@ -31,16 +33,16 @@ public class LabelDiv extends Div
 		this.addClassName(StringResourceUtils.getResourceString("labelDiv", this));
 	}
 	
-	public void updateRow(final FilterComponent component, final ReplaceabelEditor editor, final LabelButtons buttons)
+	public void updateRow(final UpdateFilterData component, final Replaceabel editor, final LabelButtons buttons)
 	{
 		buttons.definingButtons(editor);
 		
 		final HorizontalLayout entryRow     = createEntryRow(editor);
 		final HorizontalLayout buttonLayout =
-			component.createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(),
+			createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(),
 				buttons.getDeleteButton());
 		
-		final HorizontalLayout finalLayout = component.createFinalLayout(entryRow, buttonLayout);
+		final HorizontalLayout finalLayout = createFinalLayout(entryRow, buttonLayout);
 		
 		replaceLabelRow(editor.getLabelLayout(), finalLayout);
 		
@@ -96,7 +98,7 @@ public class LabelDiv extends Div
 		}
 	}
 	
-	public void removeData(final ReplaceabelEditor editor)
+	public void removeData(final Replaceabel editor)
 	{
 		this.remove(editor.getLabelLayout());
 	}
@@ -119,7 +121,7 @@ public class LabelDiv extends Div
 	 *         Classname = entryRowLabel -> getting through
 	 *         {@link StringResourceUtils #getResourceString(String, java.util.Locale)}
 	 */
-	public HorizontalLayout createEntryRow(final ReplaceabelEditor replace)
+	public HorizontalLayout createEntryRow(final Replaceabel replace)
 	{
 		final FilterEntryEditor editor = replace.getOriginal();
 		final EntryRowLabel     entry  = new EntryRowLabel(editor);
@@ -140,14 +142,17 @@ public class LabelDiv extends Div
 	 *            -> {@link LabelButtons}
 	 */
 	public void
-		addingNewRow(final FilterComponent component, final ReplaceabelEditor editor, final LabelButtons buttons)
+		addingNewRow(
+			final FilterComponentInterface component,
+			final Replaceabel editor,
+			final LabelButtons buttons)
 	{
 		buttons.definingButtons(editor);
 		
 		component.getFilterEntryEditors().add(editor);
 		
-		final HorizontalLayout finalLayout = component.createFinalLayout(this.createEntryRow(editor),
-			component.createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(), buttons.getDeleteButton()));
+		final HorizontalLayout finalLayout = createFinalLayout(this.createEntryRow(editor),
+			createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(), buttons.getDeleteButton()));
 		
 		editor.setLabelLayout(finalLayout);
 		

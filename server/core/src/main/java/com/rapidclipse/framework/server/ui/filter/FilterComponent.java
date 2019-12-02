@@ -43,10 +43,10 @@ import com.rapidclipse.framework.server.ui.filter.helper.HideButton;
 import com.rapidclipse.framework.server.ui.filter.helper.LabelDiv;
 import com.rapidclipse.framework.server.ui.filter.helper.ReplaceabelEditor;
 import com.rapidclipse.framework.server.ui.filter.helper.Searchbar;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.FilterComponentInterface;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.component.AbstractCompositeField;
-import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.dependency.StyleSheet;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
@@ -66,7 +66,7 @@ import com.vaadin.flow.shared.Registration;
 @StyleSheet("FilterComponent.css")
 public class FilterComponent
 	extends AbstractCompositeField<VerticalLayout, FilterComponent, FilterData>
-	implements FilterContext, HasSize
+	implements FilterComponentInterface
 {
 	private final boolean caseSensitive = false;
 	private final char    wildcard      = '*';
@@ -87,15 +87,15 @@ public class FilterComponent
 	
 	private FilterSubject filterSubject;
 	
-	private TextField                     searchTextField;
-	public final AddButton                addFilterButton    = new AddButton();
-	private final HideButton              hideFilterButton   = new HideButton();
-	public final FilterDiv                filterDiv          = new FilterDiv();
-	public final ComboDiv                 comboDiv           = new ComboDiv();
-	private final LabelDiv                labelDiv           = new LabelDiv();
-	private final List<ReplaceabelEditor> filterEntryEditors = new ArrayList<>();
-	private final Searchbar               searchBar          = new Searchbar();
-	private Registration                  hideButtonClick;
+	private TextField               searchTextField;
+	final AddButton                 addFilterButton    = new AddButton();
+	private final HideButton        hideFilterButton   = new HideButton();
+	final FilterDiv                 filterDiv          = new FilterDiv();
+	final ComboDiv                  comboDiv           = new ComboDiv();
+	private final LabelDiv          labelDiv           = new LabelDiv();
+	private final List<Replaceabel> filterEntryEditors = new ArrayList<>();
+	private final Searchbar         searchBar          = new Searchbar();
+	private Registration            hideButtonClick;
 	
 	public FilterComponent()
 	{
@@ -115,7 +115,7 @@ public class FilterComponent
 		this.searchTextField.setEnabled(false);
 		
 		this.hideFilterButton.defineButton();
-		this.hideFilterButton.setClickListener(this, null);
+		this.hideFilterButton.setClickListener(this.filterDiv);
 		
 		this.hideButtonClick = this.hideFilterButton.addClickListener(
 			listener -> {
@@ -202,40 +202,14 @@ public class FilterComponent
 	 *
 	 * @return The TextField as {@link TextField}
 	 */
-	protected TextField createSearchTextField()
+	TextField createSearchTextField()
 	{
 		final TextField textField = new TextField();
 		textField.setValueChangeMode(ValueChangeMode.EAGER);
 		return textField;
 	}
 	
-	/**
-	 * Creates the Layout which is then seen from the User inside a Div
-	 *
-	 * @param filterEntryRow
-	 *            -> The left part of the Layout with the needed Editor as {@link Component}
-	 *            <br>
-	 *            {@link #createEntryRowCombo(FilterEntryEditor)}
-	 * @param finalButtonLayout
-	 *            -> The right part of the Layout with the needed Buttons as {@link Component}
-	 *            <br>
-	 *            Can be created with {@link #createButtonLayout(Component, Component, Component)} or
-	 *            {@link #createButtonLayout(Component, Component)}
-	 * @return The final Layout as {@link HorizontalLayout}
-	 *         <br>
-	 *         Classname = finalLayout
-	 */
-	public HorizontalLayout createFinalLayout(
-		final Component filterEntryRow,
-		final Component finalButtonLayout)
-	{
-		final HorizontalLayout layout = new HorizontalLayout();
-		layout.add(filterEntryRow, finalButtonLayout);
-		layout.addClassName(StringResourceUtils.getResourceString("finalLayout", this));
-		return layout;
-	}
-	
-	protected Filter createValueFilter()
+	Filter createValueFilter()
 	{
 		if(this.filterEntryEditors.isEmpty())
 		{
@@ -257,7 +231,7 @@ public class FilterComponent
 		return Composite.New(getFilterPropertiesConnector(), valueFilters);
 	}
 	
-	protected Filter createSearchFilter()
+	private Filter createSearchFilter()
 	{
 		if(this.searchFilterGenerator != null)
 		{
@@ -265,24 +239,6 @@ public class FilterComponent
 		}
 		
 		return null;
-	}
-	
-	/**
-	 * Creates the the Button layout for the given {@link Component}s
-	 *
-	 * @param components
-	 *            -> As many {@link Component} as necessary
-	 * @return -> {@link HorizontalLayout}
-	 */
-	public HorizontalLayout createButtonLayout(final Component... components)
-	{
-		final HorizontalLayout layout = new HorizontalLayout();
-		layout.addClassName(StringResourceUtils.getResourceString("buttonLayout", this));
-		for(final Component c : components)
-		{
-			layout.add(c);
-		}
-		return layout;
 	}
 	
 	/*****************************************************************************************************************************************
@@ -295,13 +251,14 @@ public class FilterComponent
 	 * Updates the Data inside the grid, by checking the Filter inside the <b>Searchbar</b> and the <b>filterEntryEditor
 	 * List</b>
 	 */
+	@Override
 	public void updateFilterData()
 	{
 		final String        searchTerm = this.searchTextField.getValue();
 		final FilterEntry[] entries    = getEntriesFromEditor();
 		setModelValue(new FilterData(searchTerm, entries), false);
 	}
-
+	
 	public void resetValue()
 	{
 		setValue(new FilterData());
@@ -315,7 +272,8 @@ public class FilterComponent
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
 	 */
-	public void activateFilter(final ReplaceabelEditor editor)
+	@Override
+	public void activateFilter(final Replaceabel editor)
 	{
 		this.filterEntryEditors.add(editor);
 		updateFilterData();
@@ -331,7 +289,8 @@ public class FilterComponent
 	 * @param editor
 	 *            -> {@link ReplaceabelEditor}
 	 */
-	public void deactivateFilter(final ReplaceabelEditor editor)
+	@Override
+	public void deactivateFilter(final Replaceabel editor)
 	{
 		this.filterEntryEditors.remove(editor);
 		updateFilterData();
@@ -341,13 +300,15 @@ public class FilterComponent
 	 * Removes the current {@link FilterEntryEditor} inside the ComboDiv and add a new one instead.
 	 * With this method a complete new Filter can be selected
 	 */
+	@Override
 	public void newFilterEntry()
 	{
 		this.comboDiv.removeAll();
 		addFilterEntryEditor(new FilterEntryEditor(this, this, this::updateFilterData));
 	}
-
-	public void updateEverything(final ReplaceabelEditor editor)
+	
+	@Override
+	public void updateEverything(final Replaceabel editor)
 	{
 		editor.updateCopy();
 		updateFilterData();
@@ -367,7 +328,8 @@ public class FilterComponent
 	 * @param editor
 	 *            -> {@link FilterEntryEditor}
 	 */
-	public void removeFilterEntryEditor(final ReplaceabelEditor editor)
+	@Override
+	public void removeFilterEntryEditor(final Replaceabel editor)
 	{
 		this.labelDiv.removeData(editor);
 		
@@ -375,7 +337,7 @@ public class FilterComponent
 		
 		updateFilterData();
 	}
-
+	
 	/*****************************************************************************************************************************************
 	 */
 	/**************************************
@@ -398,15 +360,16 @@ public class FilterComponent
 		
 		this.addFilterButton.setClickListener(this, replace);
 		
-		cancelButton.setClickListener(this);
+		cancelButton.setClickListener(this.comboDiv, this);
 		
-		final HorizontalLayout buttonLayout = createButtonLayout(this.addFilterButton, cancelButton);
+		final HorizontalLayout buttonLayout = this.comboDiv.createButtonLayout(this.addFilterButton, cancelButton);
 		buttonLayout.setClassName("buttonLayoutCombo");
 		
-		this.comboDiv.add(
-			createFinalLayout(
-				this.comboDiv.createEntryRow(editor),
-				buttonLayout));
+		final HorizontalLayout entryRow = this.comboDiv.createEntryRow(editor);
+		
+		final HorizontalLayout finalLayout = this.comboDiv.createFinalLayout(entryRow, buttonLayout);
+		
+		this.comboDiv.add(finalLayout);
 		
 		this.filterDiv.openDiv(this.hideFilterButton);
 		
@@ -494,11 +457,11 @@ public class FilterComponent
 		return filterSubject.searchableProperties().stream()
 			.map(p -> p.caption()).collect(Collectors.joining(", "));
 	}
-
+	
 	/*
 	 * Less Important***********
 	 **************************************/
-
+	
 	private FilterEntry[] getEntriesFromEditor()
 	{
 		return this.filterEntryEditors.stream()
@@ -512,7 +475,7 @@ public class FilterComponent
 			.map(editor -> editor.getOriginal().getFilter()).filter(Objects::nonNull)
 			.collect(Collectors.toList());
 	}
-
+	
 	@Override
 	public boolean isCaseSensitive()
 	{
@@ -576,7 +539,8 @@ public class FilterComponent
 	 *
 	 * @return the FilterEntryEditors -> {@link List} of {@link ReplaceabelEditor}
 	 */
-	public List<ReplaceabelEditor> getFilterEntryEditors()
+	@Override
+	public List<Replaceabel> getFilterEntryEditors()
 	{
 		return this.filterEntryEditors;
 	}
@@ -584,9 +548,16 @@ public class FilterComponent
 	/**
 	 * @return the labelDiv -> {@link LabelDiv}
 	 */
+	@Override
 	public LabelDiv getLabelDiv()
 	{
 		return this.labelDiv;
+	}
+	
+	@Override
+	public ComboDiv getComboDiv()
+	{
+		return this.comboDiv;
 	}
 	
 }

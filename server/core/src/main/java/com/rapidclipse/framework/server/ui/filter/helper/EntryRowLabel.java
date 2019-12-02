@@ -42,64 +42,7 @@ public class EntryRowLabel
 	{
 		this.editor = null;
 	}
-	
-	/**
-	 * @param shortLayout
-	 * @param longLayout
-	 * @param editor
-	 */
-	public EntryRowLabel(
-		final HorizontalLayout layout,
-		final FilterEntryEditor editor)
-	{
-		super();
-		this.editor = editor;
-		setVariables();
-		this.layout = layout;
 
-	}
-
-	/**
-	 * @return the editor
-	 */
-	public FilterEntryEditor getEditor()
-	{
-		return this.editor;
-	}
-	
-	/**
-	 * @param editor
-	 *            the editor to set
-	 */
-	public void setEditor(final FilterEntryEditor editor)
-	{
-		this.editor = editor;
-	}
-	
-	/**
-	 * @return the layout
-	 */
-	public HorizontalLayout getLayout()
-	{
-		return this.layout;
-	}
-	
-	/**
-	 * @param layout
-	 *            the layout to set
-	 */
-	public void setLayout(final HorizontalLayout layout)
-	{
-		this.layout = layout;
-	}
-	
-	private void setVariables()
-	{
-		this.values   = this.editor.getValueEditors();
-		this.operator = this.editor.getSelectedOperator().name();
-		this.property = this.editor.getSelectedProperty().caption();
-	}
-	
 	/**
 	 * Creates the EntryRow which can be shown in a {@link Div} or somewhere else
 	 *
@@ -151,5 +94,48 @@ public class EntryRowLabel
 			row.add(label);
 		}
 	}
+	
+	/********* Getter/ Setter *********/
 
+	/**
+	 * @return the editor
+	 */
+	public FilterEntryEditor getEditor()
+	{
+		return this.editor;
+	}
+	
+	/**
+	 * @param editor
+	 *            the editor to set
+	 */
+	public void setEditor(final FilterEntryEditor editor)
+	{
+		this.editor = editor;
+	}
+	
+	/**
+	 * @return the layout
+	 */
+	public HorizontalLayout getLayout()
+	{
+		return this.layout;
+	}
+	
+	/**
+	 * @param layout
+	 *            the layout to set
+	 */
+	public void setLayout(final HorizontalLayout layout)
+	{
+		this.layout = layout;
+	}
+	
+	private void setVariables()
+	{
+		this.values   = this.editor.getValueEditors();
+		this.operator = this.editor.getSelectedOperator().name();
+		this.property = this.editor.getSelectedProperty().caption();
+	}
+	
 }

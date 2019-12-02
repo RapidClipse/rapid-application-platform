@@ -1,7 +1,8 @@
 
 package com.rapidclipse.framework.server.ui.filter.helper;
 
-import com.rapidclipse.framework.server.ui.filter.FilterComponent;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.FilterComponentInterface;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
 
 
 /**
@@ -10,12 +11,12 @@ import com.rapidclipse.framework.server.ui.filter.FilterComponent;
  */
 public class LabelButtons
 {
-	private FilterCheckBox  checkbox;
-	private EditButton      editButton;
-	private DeleteButton    deleteButton;
-	private FilterComponent component;
+	private final FilterCheckBox           checkbox;
+	private final EditButton               editButton;
+	private final DeleteButton             deleteButton;
+	private final FilterComponentInterface component;
 
-	public LabelButtons(final FilterComponent component)
+	public LabelButtons(final FilterComponentInterface component)
 	{
 		this.checkbox     = new FilterCheckBox();
 		this.editButton   = new EditButton();
@@ -23,20 +24,7 @@ public class LabelButtons
 		this.component    = component;
 	}
 	
-	/**
-	 * @param checkbox
-	 * @param editButton
-	 * @param deleteButton
-	 */
-	public LabelButtons(final FilterCheckBox checkbox, final EditButton editButton, final DeleteButton deleteButton)
-	{
-		super();
-		this.checkbox     = checkbox;
-		this.editButton   = editButton;
-		this.deleteButton = deleteButton;
-	}
-	
-	public void definingButtons(final ReplaceabelEditor editor)
+	void definingButtons(final Replaceabel editor)
 	{
 		this.checkbox.defineCheckBox();
 		this.checkbox.setValueChangeListener(this.component, editor);
@@ -58,16 +46,7 @@ public class LabelButtons
 	{
 		return this.checkbox;
 	}
-	
-	/**
-	 * @param checkbox
-	 *            the checkbox to set
-	 */
-	public void setCheckbox(final FilterCheckBox checkbox)
-	{
-		this.checkbox = checkbox;
-	}
-	
+
 	/**
 	 * @return the editButton
 	 */
@@ -75,16 +54,7 @@ public class LabelButtons
 	{
 		return this.editButton;
 	}
-	
-	/**
-	 * @param editButton
-	 *            the editButton to set
-	 */
-	public void setEditButton(final EditButton editButton)
-	{
-		this.editButton = editButton;
-	}
-	
+
 	/**
 	 * @return the deleteButton
 	 */
@@ -92,14 +62,5 @@ public class LabelButtons
 	{
 		return this.deleteButton;
 	}
-	
-	/**
-	 * @param deleteButton
-	 *            the deleteButton to set
-	 */
-	public void setDeleteButton(final DeleteButton deleteButton)
-	{
-		this.deleteButton = deleteButton;
-	}
-	
+
 }

@@ -2,7 +2,8 @@
 package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
-import com.rapidclipse.framework.server.ui.filter.FilterComponent;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.RemoveFilterEditor;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
 
@@ -11,7 +12,7 @@ import com.vaadin.flow.component.icon.VaadinIcon;
  * @author XDEV Software
  *
  */
-public class DeleteButton extends Buttons
+public class DeleteButton extends Buttons<RemoveFilterEditor>
 {
 	/**
 	 * Defines the Button with Classname, etc.
@@ -32,7 +33,7 @@ public class DeleteButton extends Buttons
 	 * {@inheritDoc}
 	 */
 	@Override
-	public void setClickListener(final FilterComponent component, final ReplaceabelEditor editor)
+	public void setClickListener(final RemoveFilterEditor component, final Replaceabel editor)
 	{
 		this.addClickListener(listener -> component.removeFilterEntryEditor(editor));
 	}

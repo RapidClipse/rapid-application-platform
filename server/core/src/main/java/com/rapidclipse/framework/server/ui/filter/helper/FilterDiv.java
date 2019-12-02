@@ -27,9 +27,9 @@ public class FilterDiv extends Div
 		this.setEnabled(true);
 		this.setSizeFull();
 	}
-
+	
 	/**
-	 * Opens this {@link Div} by clicking on the {@link HideButton}
+	 * Opens this {@link Div} by clicking on the given {@link HideButton}
 	 * <br>
 	 * Also setting 'open' in the {@link HideButton} to true
 	 *
@@ -40,6 +40,7 @@ public class FilterDiv extends Div
 	{
 		button.open();
 		this.setVisible(true);
-
+		
 	}
+	
 }

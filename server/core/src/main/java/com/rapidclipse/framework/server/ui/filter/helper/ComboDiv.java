@@ -2,8 +2,8 @@
 package com.rapidclipse.framework.server.ui.filter.helper;
 
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
-import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.rapidclipse.framework.server.ui.filter.FilterEntryEditor;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -14,9 +14,9 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
  * @author XDEV Software
  *
  */
-public class ComboDiv extends Div
+public class ComboDiv extends DefinedDiv
 {
-	
+
 	/**
 	 * Defines the ComboDiv with ClassName, etc.
 	 * <br>
@@ -30,7 +30,7 @@ public class ComboDiv extends Div
 		this.setWidthFull();
 		this.addClassName(StringResourceUtils.getResourceString("comboBoxDiv", this));
 	}
-
+	
 	/**
 	 * Updates the {@link FilterEntryEditor} {@link Div} with the given Data of the Label.
 	 * This method is needed to edit an excisting {@link Label}.
@@ -41,23 +41,20 @@ public class ComboDiv extends Div
 	 *            -> {@link ComboBoxButtons}
 	 */
 	public void
-		updateComboBox(final FilterComponent component, final ReplaceabelEditor editor, final ComboBoxButtons buttons)
+		updateComboBox(final Replaceabel editor, final ComboBoxButtons buttons)
 	{
 		buttons.definingButtons(editor);
-		
-		editor.getOriginal().setVisible(true);
-		
-		final HorizontalLayout entryRow = createEntryRow(editor.getOriginal());
 
-		final HorizontalLayout buttonLayout =
-			component.createButtonLayout(buttons.getUpdateButton(), buttons.getCancelButton());
+		editor.getOriginal().setVisible(true); // Replaceabel
+
+		final HorizontalLayout entryRow = createEntryRow(editor.getOriginal());// Replaceabel
+		
+		final HorizontalLayout buttonLayout = createButtonLayout(buttons.getUpdateButton(), buttons.getCancelButton());
 		buttonLayout.setClassName("buttonLayoutCombo");
-		this.add(
-			component.createFinalLayout(
-				entryRow,
-				buttonLayout));
+		
+		this.add(createFinalLayout(entryRow, buttonLayout));
 	}
-	
+
 	/**
 	 * Creates the Filter Entry Row for the <b> Combo Div </b>
 	 * <br>

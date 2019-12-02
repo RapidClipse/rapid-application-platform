@@ -1,7 +1,8 @@
 
 package com.rapidclipse.framework.server.ui.filter.helper;
 
-import com.rapidclipse.framework.server.ui.filter.FilterComponent;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.FilterComponentInterface;
+import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
 
 
 /**
@@ -10,14 +11,14 @@ import com.rapidclipse.framework.server.ui.filter.FilterComponent;
  */
 public class ComboBoxButtons
 {
-	private UpdateButton    updateButton;
-	private CancelButton    cancelButton;
-	private FilterComponent component;
-
+	private final UpdateButton             updateButton;
+	private final CancelButton             cancelButton;
+	private final FilterComponentInterface component;
+	
 	/**
 	 *
 	 */
-	public ComboBoxButtons(final FilterComponent component)
+	public ComboBoxButtons(final FilterComponentInterface component)
 	{
 		super();
 		this.updateButton = new UpdateButton();
@@ -25,30 +26,16 @@ public class ComboBoxButtons
 		this.component    = component;
 	}
 
-	/**
-	 * @param updateButton
-	 * @param cancelButton
-	 * @param component
-	 */
-	public ComboBoxButtons(
-		final UpdateButton updateButton,
-		final CancelButton cancelButton,
-		final FilterComponent component)
-	{
-		super();
-		this.updateButton = updateButton;
-		this.cancelButton = cancelButton;
-		this.component    = component;
-	}
-	
-	public void definingButtons(final ReplaceabelEditor editor)
+	public void definingButtons(final Replaceabel editor)
 	{
 		this.cancelButton.defineButton();
 		this.cancelButton.setClickListener(this.component, editor);
-
+		
 		this.updateButton.defineButton();
 		this.updateButton.setClickListener(this.component, editor);
 	}
+	
+	/********* Getter/ Setter *********/
 	
 	/**
 	 * @return the updateButton
@@ -57,16 +44,7 @@ public class ComboBoxButtons
 	{
 		return this.updateButton;
 	}
-
-	/**
-	 * @param updateButton
-	 *            the updateButton to set
-	 */
-	public void setUpdateButton(final UpdateButton updateButton)
-	{
-		this.updateButton = updateButton;
-	}
-
+	
 	/**
 	 * @return the cancelButton
 	 */
@@ -74,31 +52,5 @@ public class ComboBoxButtons
 	{
 		return this.cancelButton;
 	}
-
-	/**
-	 * @param cancelButton
-	 *            the cancelButton to set
-	 */
-	public void setCancelButton(final CancelButton cancelButton)
-	{
-		this.cancelButton = cancelButton;
-	}
-
-	/**
-	 * @return the component
-	 */
-	public FilterComponent getComponent()
-	{
-		return this.component;
-	}
-
-	/**
-	 * @param component
-	 *            the component to set
-	 */
-	public void setComponent(final FilterComponent component)
-	{
-		this.component = component;
-	}
-
+	
 }
