@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.concurrent;
 
 import java.util.concurrent.Callable;
@@ -60,16 +61,18 @@ public interface ExecutionWrapper
 
 		return () -> {
 
-			final ServiceLoader<Participant> serviceLoader = ServiceLoader.forType(Participant.class);
-			serviceLoader.services().forEach(Participant::before);
+			final Iterable<Participant> participants = ServiceLoader.forType(Participant.class)
+				.servicesUncached();
 
 			try
 			{
+				participants.forEach(Participant::before);
+
 				runnable.run();
 			}
 			finally
 			{
-				serviceLoader.services().forEach(Participant::after);
+				participants.forEach(Participant::after);
 			}
 		};
 	}
@@ -83,16 +86,18 @@ public interface ExecutionWrapper
 		
 		return () -> {
 
-			final ServiceLoader<Participant> serviceLoader = ServiceLoader.forType(Participant.class);
-			serviceLoader.services().forEach(Participant::before);
+			final Iterable<Participant> participants = ServiceLoader.forType(Participant.class)
+				.servicesUncached();
 
 			try
 			{
+				participants.forEach(Participant::before);
+
 				return callable.call();
 			}
 			finally
 			{
-				serviceLoader.services().forEach(Participant::after);
+				participants.forEach(Participant::after);
 			}
 		};
 	}
