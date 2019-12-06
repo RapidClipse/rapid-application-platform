@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.line;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -67,7 +67,7 @@ import com.vaadin.flow.component.Tag;
  *
  */
 @Tag("line-chart")
-public class LineChart extends ChartBase
+public class LineChart extends AbstractChart
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasChartArea,
 	HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer, HasFocusTarget, HasFont,
 	AllowsIFrame, HasHAxis, CanInterpolateNulls, HasLegend, HasLineDashStyle, HasOrientation, HasPoints, HasCategories,

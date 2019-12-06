@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.scatter;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.DiffChart;
@@ -64,7 +64,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("scatter-chart")
-public class ScatterChart extends ChartBase
+public class ScatterChart extends AbstractChart
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity, HasExplorer,
 	HasFont, AllowsIFrame, HasHAxis, HasChartSize, HasLegend, HasLineWidth, HasOrientation, HasPoints,

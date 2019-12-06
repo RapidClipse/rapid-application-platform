@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.org;
 
 import com.rapidclipse.framework.server.charts.AllowsHtml;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.vaadin.flow.component.Tag;
@@ -37,7 +37,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("org-chart")
-public class OrgChart extends ChartBase
+public class OrgChart extends AbstractChart
 	implements AllowsHtml
 {
 	public OrgChart()

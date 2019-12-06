@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.pie;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.DiffChart;
@@ -49,7 +49,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("pie-chart")
-public class PieChart extends ChartBase
+public class PieChart extends AbstractChart
 	implements HasBackground, HasChartArea, HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize,
 	HasLegend, HasCategories, HasTitle, HasTooltip, DiffChart
 {

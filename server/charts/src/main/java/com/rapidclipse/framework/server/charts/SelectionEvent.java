@@ -32,7 +32,7 @@ import com.vaadin.flow.component.ComponentEvent;
  * @since 10.02.00
  *
  */
-public class SelectionEvent<T extends ChartBase> extends ComponentEvent<T>
+public class SelectionEvent<T extends AbstractChart> extends ComponentEvent<T>
 {
 	private final Selection selection;
 	

@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.combo;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -69,7 +69,7 @@ import com.vaadin.flow.component.Tag;
  *
  */
 @Tag("combo-chart")
-public class ComboChart extends ChartBase
+public class ComboChart extends AbstractChart
 	implements HasAggregationTarget, HasAnimation, HasAnnotations, HasAreaOpacity, HasAxisTitlesPosition, HasBackground,
 	HasBar, HasCandlestick, HasChartArea, HasColors, HasCrosshair, HasCurveType, HasDataOpacity, HasInteractivity,
 	HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode, HasLegend,

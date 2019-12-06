@@ -27,7 +27,7 @@ package com.rapidclipse.framework.server.charts.annotation;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.AllowsHtml;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.DateValue;
@@ -42,7 +42,7 @@ import com.vaadin.flow.component.Tag;
  *
  */
 @Tag("annotation-chart")
-public class AnnotationChart extends ChartBase
+public class AnnotationChart extends AbstractChart
 	implements AllowsHtml, HasColors, HasValueRange
 {
 	public AnnotationChart()

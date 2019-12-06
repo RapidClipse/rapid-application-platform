@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.table;
 
 import com.rapidclipse.framework.server.charts.AllowsHtml;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.HasChartSize;
 import com.vaadin.flow.component.Tag;
 
@@ -36,7 +36,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("table-chart")
-public class TableChart extends ChartBase
+public class TableChart extends AbstractChart
 	implements AllowsHtml, HasChartSize
 {
 	public TableChart()

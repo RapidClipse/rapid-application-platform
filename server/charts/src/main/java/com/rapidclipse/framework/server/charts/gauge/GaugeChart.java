@@ -27,7 +27,7 @@ package com.rapidclipse.framework.server.charts.gauge;
 import java.util.List;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAnimation;
@@ -42,7 +42,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("gauge-chart")
-public class GaugeChart extends ChartBase
+public class GaugeChart extends AbstractChart
 	implements HasAnimation, AllowsIFrame, HasChartSize, HasValueRange
 {
 	public GaugeChart()

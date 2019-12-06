@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.sankey;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasChartSize;
@@ -39,7 +39,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("sankey-chart")
-public class SankeyChart extends ChartBase
+public class SankeyChart extends AbstractChart
 	implements AllowsIFrame, HasChartSize, HasTooltip
 {
 	public SankeyChart()

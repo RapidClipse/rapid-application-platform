@@ -24,7 +24,7 @@
 
 package com.rapidclipse.framework.server.charts.maps;
 
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
 
 
@@ -33,7 +33,7 @@ import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
  * @since 10.02.00
  *
  */
-public abstract class AbstractMapsChart extends ChartBase
+public abstract class AbstractMapsChart extends AbstractChart
 {
 	private String mapsApiKey;
 	

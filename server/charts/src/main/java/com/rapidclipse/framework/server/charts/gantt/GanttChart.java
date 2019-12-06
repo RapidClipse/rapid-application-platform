@@ -24,7 +24,7 @@
 
 package com.rapidclipse.framework.server.charts.gantt;
 
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasBackground;
@@ -38,7 +38,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("gantt-chart")
-public class GanttChart extends ChartBase
+public class GanttChart extends AbstractChart
 	implements HasBackground, HasChartSize
 {
 	public GanttChart()

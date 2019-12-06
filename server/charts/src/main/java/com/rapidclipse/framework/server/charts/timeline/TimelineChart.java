@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.timeline;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasChartSize;
@@ -42,7 +42,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("timeline-chart")
-public class TimelineChart extends ChartBase
+public class TimelineChart extends AbstractChart
 	implements HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize, HasTooltip
 {
 	public TimelineChart()

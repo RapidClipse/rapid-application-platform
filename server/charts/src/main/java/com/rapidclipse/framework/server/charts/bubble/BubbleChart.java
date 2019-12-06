@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.bubble;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.Column.Type;
@@ -52,7 +52,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("bubble-chart")
-public class BubbleChart extends ChartBase
+public class BubbleChart extends AbstractChart
 	implements HasAnimation, HasAxisTitlesPosition, HasBackground, HasChartArea, HasColorAxis, HasInteractivity,
 	AllowsIFrame, HasHAxis, HasLegend, HasSelectionMode, HasSizeAxis, HasTitlePosition, HasVAxis, HasChartSize,
 	HasSeries<BubbleSeries>

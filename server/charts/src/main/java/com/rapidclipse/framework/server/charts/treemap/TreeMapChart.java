@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.treemap;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasFont;
@@ -40,7 +40,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("treemap-chart")
-public class TreeMapChart extends ChartBase
+public class TreeMapChart extends AbstractChart
 	implements HasFont, AllowsIFrame, HasTitle
 {
 	public TreeMapChart()

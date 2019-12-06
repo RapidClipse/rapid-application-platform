@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.calendar;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasChartSize;
@@ -39,7 +39,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("calendar-chart")
-public class CalendarChart extends ChartBase
+public class CalendarChart extends AbstractChart
 	implements AllowsIFrame, HasColorAxis, HasChartSize
 {
 	public CalendarChart()

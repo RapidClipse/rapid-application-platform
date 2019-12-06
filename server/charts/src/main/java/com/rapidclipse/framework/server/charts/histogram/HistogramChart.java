@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.charts.histogram;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAnimation;
@@ -59,7 +59,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("histogram-chart")
-public class HistogramChart extends ChartBase
+public class HistogramChart extends AbstractChart
 	implements HasAnimation, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasColors, HasDataOpacity,
 	HasInteractivity, HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize, CanInterpolateNulls, HasStackMode,
 	HasLegend, HasOrientation, HasCategories, HasTheme, HasTitlePosition, HasTooltip, HasVAxes,

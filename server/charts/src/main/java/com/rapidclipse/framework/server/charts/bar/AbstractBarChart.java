@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.bar;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.DiffChart;
@@ -56,7 +56,7 @@ import com.rapidclipse.framework.server.charts.HasVAxis;
  * @since 10.02.00
  *
  */
-public abstract class AbstractBarChart extends ChartBase
+public abstract class AbstractBarChart extends AbstractChart
 	implements HasAnimation, HasAnnotations, HasAxisTitlesPosition, HasBackground, HasBar, HasChartArea, HasDataOpacity,
 	HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasStackMode, HasLegend, HasCategories, HasOrientation,
 	HasTitlePosition, HasTrendlines, HasVAxis, HasChartSize, DiffChart, HasIntervals, HasSeries<BarSeries>

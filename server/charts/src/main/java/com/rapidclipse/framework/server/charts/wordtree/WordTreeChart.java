@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.wordtree;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasChartSize;
@@ -40,7 +40,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("wordtree-chart")
-public class WordTreeChart extends ChartBase
+public class WordTreeChart extends AbstractChart
 	implements HasColors, AllowsIFrame, HasFontName, HasChartSize
 {
 	public WordTreeChart()

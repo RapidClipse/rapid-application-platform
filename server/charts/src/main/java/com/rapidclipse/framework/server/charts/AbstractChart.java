@@ -57,7 +57,7 @@ import elemental.json.JsonValue;
  *
  */
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class ChartBase extends Composite<Div> implements Chart
+public class AbstractChart extends Composite<Div> implements Chart
 {
 	private final String     type;
 	private final String[]   packages;
@@ -66,7 +66,7 @@ public class ChartBase extends Composite<Div> implements Chart
 	private ChartModel       modelBefore, modelAfter;
 	private Selection        selection  = Selection.Empty();
 	
-	protected ChartBase(final String type, final String... packages)
+	protected AbstractChart(final String type, final String... packages)
 	{
 		super();
 		
@@ -164,7 +164,7 @@ public class ChartBase extends Composite<Div> implements Chart
 	}
 	
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	public <T extends ChartBase> Registration
+	public <T extends AbstractChart> Registration
 		addSelectionListener(final ComponentEventListener<SelectionEvent<T>> listener)
 	{
 		return ComponentUtil.addListener(this, SelectionEvent.class, (ComponentEventListener)listener);

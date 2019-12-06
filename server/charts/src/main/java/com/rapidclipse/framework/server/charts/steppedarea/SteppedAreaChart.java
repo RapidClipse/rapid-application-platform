@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.steppedarea;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -60,7 +60,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("steppedarea-chart")
-public class SteppedAreaChart extends ChartBase
+public class SteppedAreaChart extends AbstractChart
 	implements HasAggregationTarget, HasAnimation, HasAreaOpacity, HasAxisTitlesPosition, HasBackground,
 	HasChartArea, HasColors, HasInteractivity, HasFocusTarget, HasFont, AllowsIFrame, HasHAxis, HasChartSize,
 	HasStackMode, HasLegend, HasLineDashStyle, HasCategories, HasSelectionMode, HasTheme, HasTitlePosition,

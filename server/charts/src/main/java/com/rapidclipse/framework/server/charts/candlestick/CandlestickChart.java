@@ -25,7 +25,7 @@
 package com.rapidclipse.framework.server.charts.candlestick;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.ChartBase;
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -55,7 +55,7 @@ import com.vaadin.flow.component.Tag;
  * @since 10.02.00
  */
 @Tag("candlestick-chart")
-public class CandlestickChart extends ChartBase
+public class CandlestickChart extends AbstractChart
 	implements HasAggregationTarget, HasAnimation, HasAxisTitlesPosition, HasBackground, HasBar, HasCandlestick,
 	HasChartArea, HasInteractivity, HasFocusTarget, AllowsIFrame, HasHAxis, HasLegend, HasCategories, HasOrientation,
 	HasSelectionMode, HasTitlePosition, HasVAxes, HasChartSize, HasSeries<CandlestickSeries>
