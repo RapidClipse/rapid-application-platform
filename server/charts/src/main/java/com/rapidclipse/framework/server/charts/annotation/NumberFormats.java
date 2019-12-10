@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.Objects;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
+import com.rapidclipse.framework.server.charts.JavaScriptable;
 
 import elemental.json.Json;
 

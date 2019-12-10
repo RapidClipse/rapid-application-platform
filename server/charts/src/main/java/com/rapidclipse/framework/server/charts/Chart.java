@@ -28,7 +28,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.HasSize;
 

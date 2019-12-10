@@ -21,7 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.util;
+package com.rapidclipse.framework.server.charts;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -27,8 +27,6 @@ import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 
 /**
  * @author XDEV Software

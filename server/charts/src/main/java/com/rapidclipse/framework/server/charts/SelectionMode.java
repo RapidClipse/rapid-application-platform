@@ -23,8 +23,6 @@
  */
 package com.rapidclipse.framework.server.charts;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.Json;
 
 

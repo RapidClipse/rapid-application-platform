@@ -25,8 +25,6 @@ package com.rapidclipse.framework.server.charts;
 
 import java.io.Serializable;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.JsonObject;
 
 

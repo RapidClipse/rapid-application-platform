@@ -26,8 +26,6 @@ package com.rapidclipse.framework.server.charts;
 import java.io.Serializable;
 import java.util.EnumSet;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.Json;
 
 

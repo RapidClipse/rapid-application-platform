@@ -31,8 +31,6 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.Json;
 
 

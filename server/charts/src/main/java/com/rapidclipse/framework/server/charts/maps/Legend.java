@@ -25,8 +25,8 @@ package com.rapidclipse.framework.server.charts.maps;
 
 import java.io.Serializable;
 
+import com.rapidclipse.framework.server.charts.JavaScriptable;
 import com.rapidclipse.framework.server.charts.TextStyle;
-import com.rapidclipse.framework.server.util.JavaScriptable;
 
 
 /**

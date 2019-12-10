@@ -28,8 +28,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 
 /**
  * @author XDEV Software

@@ -25,7 +25,7 @@ package com.rapidclipse.framework.server.charts.wordtree;
 
 import java.io.Serializable;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
+import com.rapidclipse.framework.server.charts.JavaScriptable;
 
 
 /**

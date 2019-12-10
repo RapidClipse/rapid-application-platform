@@ -27,8 +27,6 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.Json;
 
 

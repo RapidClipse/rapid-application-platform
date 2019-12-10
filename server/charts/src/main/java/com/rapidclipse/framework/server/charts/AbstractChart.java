@@ -33,8 +33,8 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.rapidclipse.framework.server.util.JavaScriptable.ArrayHelper;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.JavaScriptable.ArrayHelper;
+import com.rapidclipse.framework.server.charts.JavaScriptable.ObjectHelper;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.ComponentUtil;

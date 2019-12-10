@@ -32,8 +32,6 @@ import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.rapidclipse.framework.server.util.JavaScriptable;
-
 import elemental.json.Json;
 
 

@@ -26,8 +26,8 @@ package com.rapidclipse.framework.server.charts.sankey;
 import java.io.Serializable;
 import java.util.List;
 
+import com.rapidclipse.framework.server.charts.JavaScriptable;
 import com.rapidclipse.framework.server.charts.TextStyle;
-import com.rapidclipse.framework.server.util.JavaScriptable;
 
 
 /**

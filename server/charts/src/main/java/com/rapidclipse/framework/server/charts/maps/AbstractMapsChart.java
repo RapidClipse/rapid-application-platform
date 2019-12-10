@@ -24,7 +24,7 @@
 package com.rapidclipse.framework.server.charts.maps;
 
 import com.rapidclipse.framework.server.charts.AbstractChart;
-import com.rapidclipse.framework.server.util.JavaScriptable.ObjectHelper;
+import com.rapidclipse.framework.server.charts.JavaScriptable.ObjectHelper;
 
 
 /**

@@ -26,8 +26,8 @@ package com.rapidclipse.framework.server.charts.gantt;
 import java.io.Serializable;
 
 import com.rapidclipse.framework.server.charts.DateValue;
+import com.rapidclipse.framework.server.charts.JavaScriptable;
 import com.rapidclipse.framework.server.charts.TextStyle;
-import com.rapidclipse.framework.server.util.JavaScriptable;
 
 
 /**
