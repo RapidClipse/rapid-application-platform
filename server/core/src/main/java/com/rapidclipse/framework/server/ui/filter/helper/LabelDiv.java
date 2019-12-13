@@ -6,7 +6,6 @@ import com.rapidclipse.framework.server.ui.filter.FilterComponent;
 import com.rapidclipse.framework.server.ui.filter.FilterEntryEditor;
 import com.rapidclipse.framework.server.ui.filter.helper.interfaces.FilterComponentInterface;
 import com.rapidclipse.framework.server.ui.filter.helper.interfaces.Replaceabel;
-import com.rapidclipse.framework.server.ui.filter.helper.interfaces.UpdateFilterData;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasComponents;
 import com.vaadin.flow.component.HasOrderedComponents;
@@ -33,22 +32,30 @@ public class LabelDiv extends DefinedDiv
 		this.addClassName(StringResourceUtils.getResourceString("labelDiv", this));
 	}
 	
-	public void updateRow(final UpdateFilterData component, final Replaceabel editor, final LabelButtons buttons)
+	public void
+		updateRow(final FilterComponentInterface component, final Replaceabel editor, final LabelButtons buttons)
 	{
 		buttons.definingButtons(editor);
-		
+
 		final HorizontalLayout entryRow     = createEntryRow(editor);
 		final HorizontalLayout buttonLayout =
 			createButtonLayout(buttons.getCheckbox(), buttons.getEditButton(),
 				buttons.getDeleteButton());
 		
 		final HorizontalLayout finalLayout = createFinalLayout(entryRow, buttonLayout);
+
+		// Remove the old Editor
+		component.getFilterEntryEditors().remove(editor);
 		
 		replaceLabelRow(editor.getLabelLayout(), finalLayout);
 		
+		// Change Editor
 		editor.setLabelLayout(finalLayout);
 		
 		component.updateEverything(editor);
+
+		// Add new Editor
+		component.getFilterEntryEditors().add(editor);
 	}
 	
 	/**
