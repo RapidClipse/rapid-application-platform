@@ -21,10 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.sankey;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import java.util.Arrays;
+import java.util.List;
+
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasChartSize;
@@ -45,12 +49,12 @@ public class SankeyChart extends AbstractChart
 	{
 		super("Sankey", "sankey");
 	}
-
+	
 	public ChartModel initDefaultColumns()
 	{
-		return initDefaultColumns("source", "destination", "value");
+		return initDefaultColumns("Source", "Destination", "Value");
 	}
-
+	
 	public ChartModel
 		initDefaultColumns(final String sourceColumn, final String destinationColumn, final String valueColumn)
 	{
@@ -68,5 +72,64 @@ public class SankeyChart extends AbstractChart
 	public void setSankey(final Sankey sankey)
 	{
 		properties().put("sankey", sankey);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns("From", "To", "Weight")
+			.addRow("Brazil", "Portugal", 5)
+			.addRow("Brazil", "France", 1)
+			.addRow("Brazil", "Spain", 1)
+			.addRow("Brazil", "England", 1)
+			.addRow("Canada", "Portugal", 1)
+			.addRow("Canada", "France", 5)
+			.addRow("Canada", "England", 1)
+			.addRow("Mexico", "Portugal", 1)
+			.addRow("Mexico", "France", 1)
+			.addRow("Mexico", "Spain", 5)
+			.addRow("Mexico", "England", 1)
+			.addRow("USA", "Portugal", 1)
+			.addRow("USA", "France", 1)
+			.addRow("USA", "Spain", 1)
+			.addRow("USA", "England", 5)
+			.addRow("Portugal", "Angola", 2)
+			.addRow("Portugal", "Senegal", 1)
+			.addRow("Portugal", "Morocco", 1)
+			.addRow("Portugal", "South Africa", 3)
+			.addRow("France", "Angola", 1)
+			.addRow("France", "Senegal", 3)
+			.addRow("France", "Mali", 3)
+			.addRow("France", "Morocco", 3)
+			.addRow("France", "South Africa", 1)
+			.addRow("Spain", "Senegal", 1)
+			.addRow("Spain", "Morocco", 3)
+			.addRow("Spain", "South Africa", 1)
+			.addRow("England", "Angola", 1)
+			.addRow("England", "Senegal", 1)
+			.addRow("England", "Morocco", 2)
+			.addRow("England", "South Africa", 7)
+			.addRow("South Africa", "China", 5)
+			.addRow("South Africa", "India", 1)
+			.addRow("South Africa", "Japan", 3)
+			.addRow("Angola", "China", 5)
+			.addRow("Angola", "India", 1)
+			.addRow("Angola", "Japan", 3)
+			.addRow("Senegal", "China", 5)
+			.addRow("Senegal", "India", 1)
+			.addRow("Senegal", "Japan", 3)
+			.addRow("Mali", "China", 5)
+			.addRow("Mali", "India", 1)
+			.addRow("Mali", "Japan", 3)
+			.addRow("Morocco", "China", 5)
+			.addRow("Morocco", "India", 1)
+			.addRow("Morocco", "Japan", 3);
+		
+		final List<String> colors =
+			Arrays.asList("#a6cee3", "#b2df8a", "#fb9a99", "#fdbf6f",
+				"#cab2d6", "#ffff99", "#1f78b4", "#33a02c");
+		setSankey(Sankey.New(
+			Link.New(null, colors, ColorMode.GRADIENT),
+			Node.Builder().colors(colors).build()));
 	}
 }

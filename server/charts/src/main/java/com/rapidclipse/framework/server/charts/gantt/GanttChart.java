@@ -21,7 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.gantt;
+
+import java.time.Duration;
+import java.time.LocalDate;
 
 import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
@@ -47,14 +51,14 @@ public class GanttChart extends AbstractChart
 
 	public ChartModel initDefaultColumns()
 	{
-		return initDefaultColumns("task ID", "task name", null, "start date", "end date", "duration",
-			"percent complete", "dependencies");
+		return initDefaultColumns("Task ID", "Task name", null, "Start Date", "End Date", "Duration",
+			"Percent Complete", "Dependencies");
 	}
 
 	public ChartModel initDefaultColumnsWithResourceId()
 	{
-		return initDefaultColumns("task ID", "task name", "resource ID", "start date", "end date", "duration",
-			"percent complete", "dependencies");
+		return initDefaultColumns("Task ID", "Task name", "Resource ID", "Start Date", "End Date", "Duration",
+			"Percent Complete", "Dependencies");
 	}
 
 	public ChartModel
@@ -81,7 +85,7 @@ public class GanttChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, percentCompleteColumn))
 			.addColumn(Column.New(Column.Type.STRING, dependenciesColumn));
 	}
-	
+
 	public Gantt getGantt()
 	{
 		return properties().get("gantt");
@@ -90,5 +94,21 @@ public class GanttChart extends AbstractChart
 	public void setGantt(final Gantt gantt)
 	{
 		properties().put("gantt", gantt);
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns()
+			.addRow("Research", "Find sources",
+				LocalDate.of(2015, 1, 1), LocalDate.of(2015, 1, 5), null, 100, null)
+			.addRow("Write", "Write paper",
+				null, LocalDate.of(2015, 1, 9), Duration.ofDays(3).toMillis(), 25, "Research,Outline")
+			.addRow("Cite", "Create bibliography",
+				null, LocalDate.of(2015, 1, 7), Duration.ofDays(1).toMillis(), 20, "Research")
+			.addRow("Complete", "Hand in paper",
+				null, LocalDate.of(2015, 1, 10), Duration.ofDays(1).toMillis(), 0, "Cite,Write")
+			.addRow("Outline", "Outline paper",
+				null, LocalDate.of(2015, 1, 6), Duration.ofDays(1).toMillis(), 100, "Research");
 	}
 }

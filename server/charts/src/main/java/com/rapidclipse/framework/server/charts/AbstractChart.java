@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 import static java.util.Objects.requireNonNull;
@@ -56,7 +57,7 @@ import elemental.json.JsonValue;
  *
  */
 @JavaScript("https://www.gstatic.com/charts/loader.js")
-public class AbstractChart extends Composite<Div> implements Chart
+public abstract class AbstractChart extends Composite<Div> implements Chart
 {
 	private final String     type;
 	private final String[]   packages;
@@ -64,32 +65,32 @@ public class AbstractChart extends Composite<Div> implements Chart
 	private ChartModel       model      = ChartModel.New();
 	private ChartModel       modelBefore, modelAfter;
 	private Selection        selection  = Selection.Empty();
-	
+
 	protected AbstractChart(final String type, final String... packages)
 	{
 		super();
-		
+
 		this.type     = type;
 		this.packages = packages != null && packages.length > 0
 			? packages
 			: new String[]{"corechart"};
-		
+
 		addAttachListener(event -> refresh());
 	}
-	
+
 	@Override
 	public Properties properties()
 	{
 		return this.properties;
 	}
-	
+
 	public void setModel(final ChartModel model)
 	{
 		this.model       = model;
 		this.modelBefore = null;
 		this.modelAfter  = null;
 	}
-	
+
 	protected void setModel(final ChartModel before, final ChartModel after)
 	{
 		this.model       = null;
@@ -97,23 +98,25 @@ public class AbstractChart extends Composite<Div> implements Chart
 		this.modelAfter  = after;
 	}
 	
+	public abstract void showSampleData();
+
 	@Override
 	public ChartModel getModel()
 	{
 		return this.model;
 	}
-	
+
 	public void refresh()
 	{
 		final String js = createChartJs();
 		UI.getCurrent().getPage().executeJs(js);
 	}
-	
+
 	private String createChartJs()
 	{
 		final ObjectHelper loadOptions = new ObjectHelper();
 		createLoadOptions(loadOptions);
-		
+
 		final StringBuilder sb = new StringBuilder();
 		sb.append("google.charts.load('visualization', 'current', ").append(loadOptions.js()).append(");\n");
 		sb.append("google.charts.setOnLoadCallback(drawChart);\n");
@@ -143,10 +146,10 @@ public class AbstractChart extends Composite<Div> implements Chart
 		sb.append(" this.resizeTimeout = setTimeout(resizeHandler,500);\n");
 		sb.append("});\n");
 		sb.append("}");
-		
+
 		return sb.toString();
 	}
-	
+
 	private String id()
 	{
 		String id = getId().orElse(null);
@@ -156,48 +159,48 @@ public class AbstractChart extends Composite<Div> implements Chart
 		}
 		return id;
 	}
-	
+
 	protected void createLoadOptions(final ObjectHelper obj)
 	{
 		obj.put("packages", new ArrayHelper().addAllStrings(Arrays.asList(this.packages)));
 	}
-	
+
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	public <T extends AbstractChart> Registration
 		addSelectionListener(final ComponentEventListener<SelectionEvent<T>> listener)
 	{
 		return ComponentUtil.addListener(this, SelectionEvent.class, (ComponentEventListener)listener);
 	}
-	
+
 	private void fireSelectionChanged(final boolean fromClient)
 	{
 		ComponentUtil.fireEvent(this, new SelectionEvent<>(this, fromClient, this.selection));
 	}
-	
+
 	public Selection getSelection()
 	{
 		return this.selection;
 	}
-	
+
 	public void setSelection(final Selection selection)
 	{
 		if(!this.selection.equals(requireNonNull(selection)))
 		{
 			this.selection = selection;
-			
+
 			final String js = new StringBuilder()
 				.append("this.chart.setSelection(").append(selection.js()).append(");").toString();
 			getElement().executeJs(js);
-			
+
 			fireSelectionChanged(false);
 		}
 	}
-	
+
 	public void clearSelection()
 	{
 		setSelection(Selection.Empty());
 	}
-	
+
 	@ClientCallable
 	void selectionChanged(final JsonArray selectionArray)
 	{
@@ -218,7 +221,7 @@ public class AbstractChart extends Composite<Div> implements Chart
 			fireSelectionChanged(true);
 		}
 	}
-	
+
 	protected void
 		validateColumnType(final Column.Type type, final String columnName, final Column.Type... allowedTypes)
 	{

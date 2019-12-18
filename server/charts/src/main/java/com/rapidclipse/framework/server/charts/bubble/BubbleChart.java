@@ -21,10 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.bubble;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.Column.Type;
@@ -60,7 +61,7 @@ public class BubbleChart extends AbstractChart
 	{
 		super("BubbleChart");
 	}
-	
+
 	public ChartModel initDefaultColumns(final String idColumn, final String xColumn, final String yColumn)
 	{
 		return getModel().removeAll()
@@ -68,7 +69,7 @@ public class BubbleChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, xColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, yColumn));
 	}
-	
+
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -81,7 +82,7 @@ public class BubbleChart extends AbstractChart
 		return initDefaultColumns(idColumn, xColumn, yColumn)
 			.addColumn(Column.New(valueColumnType, valueColumn));
 	}
-	
+
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -93,24 +94,42 @@ public class BubbleChart extends AbstractChart
 		return initDefaultColumns(idColumn, xColumn, yColumn, valueColumn, valueColumnType)
 			.addColumn(Column.New(Type.NUMBER, sizeColumn));
 	}
-	
+
 	public Bubble getBubble()
 	{
 		return properties().get("bubble");
 	}
-	
+
 	public void setBubble(final Bubble bubble)
 	{
 		properties().put("bubble", bubble);
 	}
-	
+
 	public Boolean getSortBubblesBySize()
 	{
 		return properties().get("sortBubblesBySize");
 	}
-	
+
 	public void setSortBubblesBySize(final Boolean sortBubblesBySize)
 	{
 		properties().put("sortBubblesBySize", sortBubblesBySize);
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns("ID", "Life Expectancy", "Fertility Rate", "Region", Type.STRING, "Population")
+			.addRow("CAN", 80.66, 1.67, "North America", 33739900)
+			.addRow("DEU", 79.84, 1.36, "Europe", 81902307)
+			.addRow("DNK", 78.6, 1.84, "Europe", 5523095)
+			.addRow("EGY", 72.73, 2.78, "Middle East", 79716203)
+			.addRow("GBR", 80.05, 2, "Europe", 61801570)
+			.addRow("IRN", 72.49, 1.7, "Middle East", 73137148)
+			.addRow("IRQ", 68.09, 4.77, "Middle East", 31090763)
+			.addRow("ISR", 81.55, 2.96, "Middle East", 7485600)
+			.addRow("RUS", 68.6, 1.54, "Europe", 141850000)
+			.addRow("USA", 78.09, 2.05, "North America", 307007000);
+
+		setTitle("Correlation between life expectancy, fertility rate and population of some world countries (2010)");
 	}
 }

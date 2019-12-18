@@ -21,12 +21,13 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.gauge;
 
 import java.util.List;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAnimation;
@@ -48,14 +49,14 @@ public class GaugeChart extends AbstractChart
 	{
 		super("Gauge", "gauge");
 	}
-
-	public ChartModel initDefaultColumnsSimpl()
+	
+	public ChartModel initDefaultColumnsSimple()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "label"))
 			.addColumn(Column.New(Column.Type.NUMBER, "value"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMulti(final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll();
@@ -65,114 +66,129 @@ public class GaugeChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public String getGreenColor()
 	{
 		return properties().get("greenColor");
 	}
-	
+
 	public void setGreenColor(final String greenColor)
 	{
 		properties().put("greenColor", greenColor);
 	}
-	
+
 	public Number getGreenFrom()
 	{
 		return properties().get("greenFrom");
 	}
-	
+
 	public void setGreenFrom(final Number greenFrom)
 	{
 		properties().put("greenFrom", greenFrom);
 	}
-	
+
 	public Number getGreenTo()
 	{
 		return properties().get("greenTo");
 	}
-	
+
 	public void setGreenTo(final Number greenTo)
 	{
 		properties().put("greenTo", greenTo);
 	}
-	
+
 	public String getRedColor()
 	{
 		return properties().get("redColor");
 	}
-	
+
 	public void setRedColor(final String redColor)
 	{
 		properties().put("redColor", redColor);
 	}
-	
+
 	public Number getRedFrom()
 	{
 		return properties().get("redFrom");
 	}
-	
+
 	public void setRedFrom(final Number redFrom)
 	{
 		properties().put("redFrom", redFrom);
 	}
-	
+
 	public Number getRedTo()
 	{
 		return properties().get("redTo");
 	}
-	
+
 	public void setRedTo(final Number redTo)
 	{
 		properties().put("redTo", redTo);
 	}
-	
+
 	public String getYellowColor()
 	{
 		return properties().get("yellowColor");
 	}
-	
+
 	public void setYellowColor(final String yellowColor)
 	{
 		properties().put("yellowColor", yellowColor);
 	}
-	
+
 	public Number getYellowFrom()
 	{
 		return properties().get("yellowFrom");
 	}
-	
+
 	public void setYellowFrom(final Number yellowFrom)
 	{
 		properties().put("yellowFrom", yellowFrom);
 	}
-	
+
 	public Number getYellowTo()
 	{
 		return properties().get("yellowTo");
 	}
-	
+
 	public void setYellowTo(final Number yellowTo)
 	{
 		properties().put("yellowTo", yellowTo);
 	}
-	
+
 	public List<String> getMajorTicks()
 	{
 		return properties().get("majorTicks");
 	}
-	
+
 	public void setMajorTicks(final List<String> majorTicks)
 	{
 		properties().put("majorTicks", majorTicks);
 	}
-	
-	public List<String> getMinorTicks()
+
+	public Number getMinorTicks()
 	{
 		return properties().get("minorTicks");
 	}
-	
-	public void setMinorTicks(final List<String> minorTicks)
+
+	public void setMinorTicks(final Number minorTicks)
 	{
 		properties().put("minorTicks", minorTicks);
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsSimple()
+			.addRow("Memory", 80)
+			.addRow("CPU", 55)
+			.addRow("Network", 68);
+
+		setYellowFrom(75);
+		setYellowTo(90);
+		setRedFrom(90);
+		setRedTo(100);
+		setMinorTicks(5);
 	}
 }

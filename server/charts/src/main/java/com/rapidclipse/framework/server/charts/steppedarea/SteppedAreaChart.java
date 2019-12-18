@@ -21,10 +21,12 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.steppedarea;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.Axis;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -50,6 +52,7 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
+import com.rapidclipse.framework.server.charts.StackMode;
 import com.vaadin.flow.component.Tag;
 
 
@@ -89,5 +92,19 @@ public class SteppedAreaChart extends AbstractChart
 	public void setConnectSteps(final Boolean connectSteps)
 	{
 		properties().put("connectSteps", connectSteps);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns("Director (Year)", "Rotten Tomatoes", "IMDB")
+			.addRow("Alfred Hitchcock (1935)", 8.4, 7.9)
+			.addRow("Ralph Thomas (1959)", 6.9, 6.5)
+			.addRow("Don Sharp (1978)", 6.5, 6.4)
+			.addRow("James Hawes (2008)", 4.4, 6.2);
+		
+		setTitle("The decline of 'The 39 Steps'");
+		setVAxis(Axis.New("Accumulated Rating"));
+		setStackMode(StackMode.TRUE);
 	}
 }

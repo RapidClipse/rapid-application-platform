@@ -21,10 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.org;
 
-import com.rapidclipse.framework.server.charts.AllowsHtml;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsHtml;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.vaadin.flow.component.Tag;
@@ -61,7 +62,7 @@ public class OrgChart extends AbstractChart
 		return initDefaultColumnsWithParent()
 			.addColumn(Column.New(Column.Type.STRING, "tooltip"));
 	}
-
+	
 	public Boolean getAllowCollapse()
 	{
 		return properties().get("allowCollapse");
@@ -100,5 +101,16 @@ public class OrgChart extends AbstractChart
 	public void setSize(final Size size)
 	{
 		properties().put("size", size);
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsWithParentAndTooltip()
+			.addRow("Mike", "", "The President")
+			.addRow("Jim", "Mike", "VP")
+			.addRow("Alice", "Mike", "")
+			.addRow("Bob", "Jim", "Bob Sponge")
+			.addRow("Carol", "Bob", "");
 	}
 }

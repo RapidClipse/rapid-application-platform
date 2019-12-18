@@ -21,11 +21,12 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.histogram;
 
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
-import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAnimation;
@@ -49,6 +50,7 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
+import com.rapidclipse.framework.server.charts.Legend;
 import com.vaadin.flow.component.Tag;
 
 
@@ -85,7 +87,7 @@ public class HistogramChart extends AbstractChart
 		}
 		return model;
 	}
-
+	
 	public Histogram getHistogram()
 	{
 		return properties().get("histogram");
@@ -94,5 +96,42 @@ public class HistogramChart extends AbstractChart
 	public void setHistogram(final Histogram histogram)
 	{
 		properties().put("histogram", histogram);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsSingleSeries("Dinosaur", "Length")
+			.addRow("Acrocanthosaurus (top-spined lizard)", 12.2)
+			.addRow("Albertosaurus (Alberta lizard)", 9.1)
+			.addRow("Allosaurus (other lizard)", 12.2)
+			.addRow("Apatosaurus (deceptive lizard)", 22.9)
+			.addRow("Archaeopteryx (ancient wing)", 0.9)
+			.addRow("Argentinosaurus (Argentina lizard)", 36.6)
+			.addRow("Baryonyx (heavy claws)", 9.1)
+			.addRow("Brachiosaurus (arm lizard)", 30.5)
+			.addRow("Ceratosaurus (horned lizard)", 6.1)
+			.addRow("Coelophysis (hollow form)", 2.7)
+			.addRow("Compsognathus (elegant jaw)", 0.9)
+			.addRow("Deinonychus (terrible claw)", 2.7)
+			.addRow("Diplodocus (double beam)", 27.1)
+			.addRow("Dromicelomimus (emu mimic)", 3.4)
+			.addRow("Gallimimus (fowl mimic)", 5.5)
+			.addRow("Mamenchisaurus (Mamenchi lizard)", 21.0)
+			.addRow("Megalosaurus (big lizard)", 7.9)
+			.addRow("Microvenator (small hunter)", 1.2)
+			.addRow("Ornithomimus (bird mimic)", 4.6)
+			.addRow("Oviraptor (egg robber)", 1.5)
+			.addRow("Plateosaurus (flat lizard)", 7.9)
+			.addRow("Sauronithoides (narrow-clawed lizard)", 2.0)
+			.addRow("Seismosaurus (tremor lizard)", 45.7)
+			.addRow("Spinosaurus (spiny lizard)", 12.2)
+			.addRow("Supersaurus (super lizard)", 30.5)
+			.addRow("Tyrannosaurus (tyrant lizard)", 15.2)
+			.addRow("Ultrasaurus (ultra lizard)", 30.5)
+			.addRow("Velociraptor (swift robber)", 1.8);
+		
+		setTitle("Lengths of dinosaurs, in meters");
+		setLegend(Legend.None());
 	}
 }

@@ -21,12 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.scatter;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.Axis;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Column.Type;
 import com.rapidclipse.framework.server.charts.DiffChart;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
 import com.rapidclipse.framework.server.charts.HasAnimation;
@@ -74,11 +77,11 @@ public class ScatterChart extends AbstractChart
 	{
 		super("ScatterChart");
 	}
-	
+
 	public ScatterChart(final ChartModel before, final ChartModel after)
 	{
 		this();
-		
+
 		setModel(before, after);
 	}
 
@@ -87,7 +90,7 @@ public class ScatterChart extends AbstractChart
 	{
 		super.setModel(before, after);
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String xValuesColumn,
@@ -97,7 +100,7 @@ public class ScatterChart extends AbstractChart
 		validateColumnType(xValuesColumnType, "x values column", Column.Type.STRING, Column.Type.NUMBER,
 			Column.Type.DATE,
 			Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xValuesColumnType, xValuesColumn));
 		for(final Column valueColumn : valueColumns)
@@ -105,9 +108,36 @@ public class ScatterChart extends AbstractChart
 			validateColumnType(valueColumn.type(), valueColumn.label(), Column.Type.STRING, Column.Type.NUMBER,
 				Column.Type.DATE,
 				Column.Type.DATE_TIME, Column.Type.TIME_OF_DAY);
-			
+
 			model.addColumn(valueColumn);
 		}
 		return model;
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsContinuous("Hours Studied", Type.NUMBER, Column.New(Type.NUMBER, "Final"))
+			.addRow(0, 67).addRow(1, 88).addRow(2, 77)
+			.addRow(3, 93).addRow(4, 85).addRow(5, 91)
+			.addRow(6, 71).addRow(7, 78).addRow(8, 93)
+			.addRow(9, 80).addRow(10, 82).addRow(0, 75)
+			.addRow(5, 80).addRow(3, 90).addRow(1, 72)
+			.addRow(5, 75).addRow(6, 68).addRow(7, 98)
+			.addRow(3, 82).addRow(9, 94).addRow(2, 79)
+			.addRow(2, 95).addRow(2, 86).addRow(3, 67)
+			.addRow(4, 60).addRow(2, 80).addRow(6, 92)
+			.addRow(2, 81).addRow(8, 79).addRow(9, 83)
+			.addRow(3, 75).addRow(1, 80).addRow(3, 71)
+			.addRow(3, 89).addRow(4, 92).addRow(5, 85)
+			.addRow(6, 92).addRow(7, 78).addRow(6, 95)
+			.addRow(3, 81).addRow(0, 64).addRow(4, 85)
+			.addRow(2, 83).addRow(3, 96).addRow(4, 77)
+			.addRow(5, 89).addRow(4, 89).addRow(7, 84)
+			.addRow(4, 92).addRow(9, 98);
+
+		setHAxis(Axis.New("Hours Studied"));
+		setVAxis(Axis.New("Grade"));
+		setTitle("Students' Final Grades");
 	}
 }

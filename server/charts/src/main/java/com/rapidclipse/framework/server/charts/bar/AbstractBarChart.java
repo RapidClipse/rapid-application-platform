@@ -21,12 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.bar;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Column.Role;
+import com.rapidclipse.framework.server.charts.Column.Type;
 import com.rapidclipse.framework.server.charts.DiffChart;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAnnotations;
@@ -48,6 +51,7 @@ import com.rapidclipse.framework.server.charts.HasStackMode;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTrendlines;
 import com.rapidclipse.framework.server.charts.HasVAxis;
+import com.rapidclipse.framework.server.charts.Legend;
 
 
 /**
@@ -64,13 +68,13 @@ public abstract class AbstractBarChart extends AbstractChart
 	{
 		super(type, packages);
 	}
-	
+
 	@Override
 	public void setModel(final ChartModel before, final ChartModel after)
 	{
 		super.setModel(before, after);
 	}
-
+	
 	public ChartModel initDefaultColumnsDiscrete(final String axisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -81,7 +85,7 @@ public abstract class AbstractBarChart extends AbstractChart
 		}
 		return model;
 	}
-
+	
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String axisColumn,
@@ -90,7 +94,7 @@ public abstract class AbstractBarChart extends AbstractChart
 	{
 		validateColumnType(axisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-
+		
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(axisColumnType, axisColumn));
 		for(final String valueColumn : valueColumns)
@@ -98,5 +102,19 @@ public abstract class AbstractBarChart extends AbstractChart
 			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 		}
 		return model;
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsDiscrete("Element", "Density")
+			.addColumn(Column.New(Type.STRING, "style", Role.STYLE))
+			.addRow("Copper", 8.94, "#b87333")
+			.addRow("Silver", 10.49, "silver")
+			.addRow("Gold", 19.30, "gold")
+			.addRow("Platinum", 21.45, "#e5e4e2");
+		
+		setTitle("Density of Precious Metals, in g/cm^3");
+		setLegend(Legend.None());
 	}
 }

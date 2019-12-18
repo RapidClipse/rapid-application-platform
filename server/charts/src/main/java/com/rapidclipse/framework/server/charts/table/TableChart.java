@@ -21,10 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.table;
 
-import com.rapidclipse.framework.server.charts.AllowsHtml;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsHtml;
+import com.rapidclipse.framework.server.charts.Cell;
+import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Column.Type;
 import com.rapidclipse.framework.server.charts.HasChartSize;
 import com.vaadin.flow.component.Tag;
 
@@ -42,7 +46,7 @@ public class TableChart extends AbstractChart
 	{
 		super("Table", "table");
 	}
-
+	
 	public Boolean getAlternatingRowStyle()
 	{
 		return properties().get("alternatingRowStyle");
@@ -181,5 +185,18 @@ public class TableChart extends AbstractChart
 	public void setStartPage(final Integer startPage)
 	{
 		properties().put("startPage", startPage);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		getModel().removeAll()
+			.addColumn(Column.New(Type.STRING, "Name"))
+			.addColumn(Column.New(Type.NUMBER, "Salary"))
+			.addColumn(Column.New(Type.BOOLEAN, "Full Time Employee"))
+			.addRow("Mike", Cell.New(10000, "$10.000"), true)
+			.addRow("Jim", Cell.New(8000, "$8.000"), false)
+			.addRow("Alice", Cell.New(12500, "$12.500"), true)
+			.addRow("Bob", Cell.New(7000, "$7.000"), true);
 	}
 }

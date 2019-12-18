@@ -21,10 +21,12 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.area;
 
-import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.Axis;
+import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -56,6 +58,7 @@ import com.rapidclipse.framework.server.charts.HasTheme;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasVAxes;
+import com.rapidclipse.framework.server.charts.TextStyle;
 import com.vaadin.flow.component.Tag;
 
 
@@ -101,5 +104,19 @@ public class AreaChart extends AbstractChart
 			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 		}
 		return model;
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsDiscrete("Year", "Sales", "Expenses")
+			.addRow("2013", 1000, 400)
+			.addRow("2014", 1170, 460)
+			.addRow("2015", 660, 1120)
+			.addRow("2016", 1030, 540);
+		
+		setTitle("Company Performance");
+		setHAxis(Axis.Builder().title("Year").titleTextStyle(TextStyle.New("#333")).build());
+		setVAxis(Axis.Builder().minValue(0).build());
 	}
 }

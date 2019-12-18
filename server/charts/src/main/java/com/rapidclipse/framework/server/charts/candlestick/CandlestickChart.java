@@ -21,12 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.candlestick;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.Column.Type;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAxisTitlesPosition;
@@ -45,6 +47,7 @@ import com.rapidclipse.framework.server.charts.HasSelectionMode;
 import com.rapidclipse.framework.server.charts.HasSeries;
 import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasVAxes;
+import com.rapidclipse.framework.server.charts.Legend;
 import com.vaadin.flow.component.Tag;
 
 
@@ -86,5 +89,18 @@ public class CandlestickChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, initialValueColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, finalValueColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, maxValueColumn));
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns(Type.STRING)
+			.addRow("Mon", 20, 28, 38, 45)
+			.addRow("Tue", 31, 38, 55, 66)
+			.addRow("Wed", 50, 55, 77, 80)
+			.addRow("Thu", 77, 77, 66, 50)
+			.addRow("Fri", 68, 66, 22, 15);
+
+		setLegend(Legend.None());
 	}
 }

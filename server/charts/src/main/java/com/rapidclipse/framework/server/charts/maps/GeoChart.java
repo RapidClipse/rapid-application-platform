@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.maps;
 
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
@@ -108,7 +109,7 @@ public class GeoChart extends AbstractMapsChart
 		return initDefaultColumnsText()
 			.addColumn(Column.New(Column.Type.NUMBER, "size"));
 	}
-
+	
 	public String getDatalessRegionColor()
 	{
 		return properties().get("datalessRegionColor");
@@ -217,5 +218,19 @@ public class GeoChart extends AbstractMapsChart
 	public void setResolution(final Resolution resolution)
 	{
 		properties().put("resolution", resolution);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		getModel().removeAll()
+			.addColumn(Column.New(Column.Type.STRING, "Country"))
+			.addColumn(Column.New(Column.Type.NUMBER, "Popularity"))
+			.addRow("Germany", 200)
+			.addRow("United States", 300)
+			.addRow("Brazil", 400)
+			.addRow("Canada", 500)
+			.addRow("France", 600)
+			.addRow("RU", 700);
 	}
 }

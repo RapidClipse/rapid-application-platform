@@ -21,11 +21,13 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.combo;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
-import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
+import com.rapidclipse.framework.server.charts.Axis;
+import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
@@ -113,9 +115,26 @@ public class ComboChart extends AbstractChart
 	{
 		return properties().get("seriesType");
 	}
-
+	
 	public void setSeriesType(final SeriesType seriesType)
 	{
 		properties().put("seriesType", seriesType);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsDiscrete("Month", "Bolivia", "Ecuador", "Madagascar", "Papua New Guinea", "Rwanda", "Average")
+			.addRow("2004/05", 165, 938, 522, 998, 450, 614.6)
+			.addRow("2005/06", 135, 1120, 599, 1268, 288, 682)
+			.addRow("2006/07", 157, 1167, 587, 807, 397, 623)
+			.addRow("2007/08", 139, 1110, 615, 968, 215, 609.4)
+			.addRow("2008/09", 136, 691, 629, 1026, 366, 569.6);
+		
+		setTitle("Monthly Coffee Production by Country");
+		setVAxis(Axis.New("Cups"));
+		setHAxis(Axis.New("Month"));
+		setSeriesType(SeriesType.BARS);
+		addSeries(5, ComboSeries.New(SeriesType.LINE));
 	}
 }

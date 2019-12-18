@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.combo;
 
 import java.util.Collections;
@@ -70,6 +71,11 @@ public interface ComboSeries extends Series
 	public SeriesType type();
 
 	public Boolean visibleInLegend();
+
+	public static ComboSeries New(final SeriesType seriesType)
+	{
+		return Builder().type(seriesType).build();
+	}
 
 	public static Builder Builder()
 	{

@@ -21,10 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.pie;
 
-import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.AbstractChart;
+import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
 import com.rapidclipse.framework.server.charts.DiffChart;
@@ -186,5 +187,19 @@ public class PieChart extends AbstractChart
 	public void setSliceVisibilityThreshold(final Number sliceVisibilityThreshold)
 	{
 		properties().put("sliceVisibilityThreshold", sliceVisibilityThreshold);
+	}
+	
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumns("Task", "Hours per Day")
+			.addRow("Work", 11)
+			.addRow("Eat", 2)
+			.addRow("Commute", 2)
+			.addRow("Watch TV", 2)
+			.addRow("Sleep", 7);
+		
+		setTitle("Daily Activities");
+		setIs3D(true);
 	}
 }

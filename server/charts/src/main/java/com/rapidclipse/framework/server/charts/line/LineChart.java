@@ -21,13 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts.line;
 
+import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.AllowsIFrame;
 import com.rapidclipse.framework.server.charts.CanInterpolateNulls;
-import com.rapidclipse.framework.server.charts.AbstractChart;
 import com.rapidclipse.framework.server.charts.ChartModel;
 import com.rapidclipse.framework.server.charts.Column;
+import com.rapidclipse.framework.server.charts.CurveType;
 import com.rapidclipse.framework.server.charts.HasAggregationTarget;
 import com.rapidclipse.framework.server.charts.HasAnimation;
 import com.rapidclipse.framework.server.charts.HasAnnotations;
@@ -57,6 +59,8 @@ import com.rapidclipse.framework.server.charts.HasTitlePosition;
 import com.rapidclipse.framework.server.charts.HasTooltip;
 import com.rapidclipse.framework.server.charts.HasTrendlines;
 import com.rapidclipse.framework.server.charts.HasVAxes;
+import com.rapidclipse.framework.server.charts.Legend;
+import com.rapidclipse.framework.server.charts.Legend.Position;
 import com.vaadin.flow.component.Tag;
 
 
@@ -105,5 +109,19 @@ public class LineChart extends AbstractChart
 			model.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 		}
 		return model;
+	}
+
+	@Override
+	public void showSampleData()
+	{
+		initDefaultColumnsDiscrete("Year", "Sales", "Expenses")
+			.addRow("2004", 1000, 400)
+			.addRow("2005", 1170, 460)
+			.addRow("2006", 660, 1120)
+			.addRow("2007", 1030, 540);
+
+		setTitle("Company Performance");
+		setCurveType(CurveType.FUNCTION);
+		setLegend(Legend.New(Position.BOTTOM));
 	}
 }
