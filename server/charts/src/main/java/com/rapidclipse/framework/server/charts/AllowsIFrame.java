@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface AllowsIFrame extends Chart
 {
-	public default Boolean getForceIFrame()
+	public default boolean isForceIFrame()
 	{
-		return properties().get("forceIFrame");
+		return properties().get("forceIFrame", false);
 	}
-	
-	public default void setForceIFrame(final Boolean forceIFrame)
+
+	public default void setForceIFrame(final boolean forceIFrame)
 	{
 		properties().put("forceIFrame", forceIFrame);
 	}

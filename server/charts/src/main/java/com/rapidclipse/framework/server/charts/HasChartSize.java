@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,19 +33,19 @@ public interface HasChartSize extends Chart
 {
 	public default Number getChartWidth()
 	{
-		return properties().get("width");
+		return properties().get("width", null);
 	}
-
+	
 	public default void setChartWidth(final Number width)
 	{
 		properties().put("width", width);
 	}
-	
+
 	public default Number getChartHeight()
 	{
-		return properties().get("height");
+		return properties().get("height", null);
 	}
-
+	
 	public default void setChartHeight(final Number height)
 	{
 		properties().put("height", height);

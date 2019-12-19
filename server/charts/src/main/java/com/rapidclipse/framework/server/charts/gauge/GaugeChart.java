@@ -49,7 +49,7 @@ public class GaugeChart extends AbstractChart
 	{
 		super("Gauge", "gauge");
 	}
-	
+
 	public ChartModel initDefaultColumnsSimple()
 	{
 		return getModel().removeAll()
@@ -69,7 +69,7 @@ public class GaugeChart extends AbstractChart
 
 	public String getGreenColor()
 	{
-		return properties().get("greenColor");
+		return properties().get("greenColor", "#109618");
 	}
 
 	public void setGreenColor(final String greenColor)
@@ -79,7 +79,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getGreenFrom()
 	{
-		return properties().get("greenFrom");
+		return properties().get("greenFrom", null);
 	}
 
 	public void setGreenFrom(final Number greenFrom)
@@ -89,7 +89,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getGreenTo()
 	{
-		return properties().get("greenTo");
+		return properties().get("greenTo", null);
 	}
 
 	public void setGreenTo(final Number greenTo)
@@ -99,7 +99,7 @@ public class GaugeChart extends AbstractChart
 
 	public String getRedColor()
 	{
-		return properties().get("redColor");
+		return properties().get("redColor", "#DC3912");
 	}
 
 	public void setRedColor(final String redColor)
@@ -109,7 +109,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getRedFrom()
 	{
-		return properties().get("redFrom");
+		return properties().get("redFrom", null);
 	}
 
 	public void setRedFrom(final Number redFrom)
@@ -119,7 +119,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getRedTo()
 	{
-		return properties().get("redTo");
+		return properties().get("redTo", null);
 	}
 
 	public void setRedTo(final Number redTo)
@@ -129,7 +129,7 @@ public class GaugeChart extends AbstractChart
 
 	public String getYellowColor()
 	{
-		return properties().get("yellowColor");
+		return properties().get("yellowColor", "#FF9900");
 	}
 
 	public void setYellowColor(final String yellowColor)
@@ -139,7 +139,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getYellowFrom()
 	{
-		return properties().get("yellowFrom");
+		return properties().get("yellowFrom", null);
 	}
 
 	public void setYellowFrom(final Number yellowFrom)
@@ -149,7 +149,7 @@ public class GaugeChart extends AbstractChart
 
 	public Number getYellowTo()
 	{
-		return properties().get("yellowTo");
+		return properties().get("yellowTo", null);
 	}
 
 	public void setYellowTo(final Number yellowTo)
@@ -159,7 +159,7 @@ public class GaugeChart extends AbstractChart
 
 	public List<String> getMajorTicks()
 	{
-		return properties().get("majorTicks");
+		return properties().get("majorTicks", null);
 	}
 
 	public void setMajorTicks(final List<String> majorTicks)
@@ -169,12 +169,24 @@ public class GaugeChart extends AbstractChart
 
 	public Number getMinorTicks()
 	{
-		return properties().get("minorTicks");
+		return properties().get("minorTicks", 2);
 	}
 
 	public void setMinorTicks(final Number minorTicks)
 	{
 		properties().put("minorTicks", minorTicks);
+	}
+
+	@Override
+	public Number getMin()
+	{
+		return properties().get("min", 0);
+	}
+
+	@Override
+	public Number getMax()
+	{
+		return properties().get("max", 100);
 	}
 
 	@Override

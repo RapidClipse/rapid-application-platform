@@ -61,7 +61,7 @@ public class BubbleChart extends AbstractChart
 	{
 		super("BubbleChart");
 	}
-
+	
 	public ChartModel initDefaultColumns(final String idColumn, final String xColumn, final String yColumn)
 	{
 		return getModel().removeAll()
@@ -69,7 +69,7 @@ public class BubbleChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, xColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, yColumn));
 	}
-
+	
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -78,11 +78,11 @@ public class BubbleChart extends AbstractChart
 		final Column.Type valueColumnType)
 	{
 		validateColumnType(valueColumnType, "value column", Column.Type.STRING, Column.Type.NUMBER);
-
+		
 		return initDefaultColumns(idColumn, xColumn, yColumn)
 			.addColumn(Column.New(valueColumnType, valueColumn));
 	}
-
+	
 	public ChartModel initDefaultColumns(
 		final String idColumn,
 		final String xColumn,
@@ -94,27 +94,27 @@ public class BubbleChart extends AbstractChart
 		return initDefaultColumns(idColumn, xColumn, yColumn, valueColumn, valueColumnType)
 			.addColumn(Column.New(Type.NUMBER, sizeColumn));
 	}
-
+	
 	public Bubble getBubble()
 	{
-		return properties().get("bubble");
+		return properties().get("bubble", null);
 	}
-
+	
 	public void setBubble(final Bubble bubble)
 	{
 		properties().put("bubble", bubble);
 	}
-
-	public Boolean getSortBubblesBySize()
+	
+	public boolean getSortBubblesBySize()
 	{
-		return properties().get("sortBubblesBySize");
+		return properties().get("sortBubblesBySize", true);
 	}
-
-	public void setSortBubblesBySize(final Boolean sortBubblesBySize)
+	
+	public void setSortBubblesBySize(final boolean sortBubblesBySize)
 	{
 		properties().put("sortBubblesBySize", sortBubblesBySize);
 	}
-
+	
 	@Override
 	public void showSampleData()
 	{
@@ -129,7 +129,7 @@ public class BubbleChart extends AbstractChart
 			.addRow("ISR", 81.55, 2.96, "Middle East", 7485600)
 			.addRow("RUS", 68.6, 1.54, "Europe", 141850000)
 			.addRow("USA", 78.09, 2.05, "North America", 307007000);
-
+		
 		setTitle("Correlation between life expectancy, fertility rate and population of some world countries (2010)");
 	}
 }

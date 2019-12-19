@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasTooltip extends Chart
 {
 	public default Tooltip getTooltip()
 	{
-		return properties().get("tooltip");
+		return properties().get("tooltip", null);
 	}
-
+	
 	public default void setTooltip(final Tooltip tooltip)
 	{
 		properties().put("tooltip", tooltip);

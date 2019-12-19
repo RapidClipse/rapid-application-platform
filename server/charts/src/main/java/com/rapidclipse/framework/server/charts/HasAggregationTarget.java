@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasAggregationTarget extends Chart
 {
 	public default AggregationTarget getAggregationTarget()
 	{
-		return properties().get("aggregationTarget");
+		return properties().get("aggregationTarget", AggregationTarget.AUTO);
 	}
-	
+
 	public default void setAggregationTarget(final AggregationTarget aggregationTarget)
 	{
 		properties().put("aggregationTarget", aggregationTarget);

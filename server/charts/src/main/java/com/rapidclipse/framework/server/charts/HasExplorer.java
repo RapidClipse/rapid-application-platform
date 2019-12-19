@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasExplorer extends Chart
 {
 	public default Explorer getExplorer()
 	{
-		return properties().get("explorer");
+		return properties().get("explorer", null);
 	}
-
+	
 	public default void setExplorer(final Explorer explorer)
 	{
 		properties().put("explorer", explorer);

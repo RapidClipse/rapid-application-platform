@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasChartArea extends Chart
 {
 	public default ChartArea getChartArea()
 	{
-		return properties().get("chartArea");
+		return properties().get("chartArea", null);
 	}
-
+	
 	public default void setChartArea(final ChartArea chartArea)
 	{
 		properties().put("chartArea", chartArea);

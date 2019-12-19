@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasCurveType extends Chart
 {
 	public default CurveType getCurveType()
 	{
-		return properties().get("curveType");
+		return properties().get("curveType", CurveType.NONE);
 	}
-
+	
 	public default void setCurveType(final CurveType curveType)
 	{
 		properties().put("curveType", curveType);

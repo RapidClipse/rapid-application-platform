@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface CanInterpolateNulls extends Chart
 {
-	public default Boolean getInterpolateNulls()
+	public default boolean isInterpolateNulls()
 	{
-		return properties().get("interpolateNulls");
+		return properties().get("interpolateNulls", false);
 	}
 	
-	public default void setInterpolateNulls(final Boolean interpolateNulls)
+	public default void setInterpolateNulls(final boolean interpolateNulls)
 	{
 		properties().put("interpolateNulls", interpolateNulls);
 	}

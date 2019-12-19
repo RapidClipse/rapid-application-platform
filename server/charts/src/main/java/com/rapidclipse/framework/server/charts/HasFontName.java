@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasFontName extends Chart
 {
 	public default String getFontName()
 	{
-		return properties().get("fontName");
+		return properties().get("fontName", null);
 	}
-	
+
 	public default void setFontName(final String fontName)
 	{
 		properties().put("fontName", fontName);

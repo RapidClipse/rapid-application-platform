@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasOrientation extends Chart
 {
 	public default Orientation getOrientation()
 	{
-		return properties().get("orientation");
+		return properties().get("orientation", Orientation.HORIZONTAL);
 	}
-
+	
 	public default void setOrientation(final Orientation orientation)
 	{
 		properties().put("orientation", orientation);

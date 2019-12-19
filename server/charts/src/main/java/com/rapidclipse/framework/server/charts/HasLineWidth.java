@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasLineWidth extends Chart
 {
 	public default Number getLineWidth()
 	{
-		return properties().get("lineWidth");
+		return properties().get("lineWidth", 2);
 	}
-
+	
 	public default void setLineWidth(final Number lineWidth)
 	{
 		properties().put("lineWidth", lineWidth);

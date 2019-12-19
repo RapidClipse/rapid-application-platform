@@ -81,7 +81,7 @@ public class ComboChart extends AbstractChart
 	{
 		super("ComboChart");
 	}
-	
+
 	public ChartModel initDefaultColumnsDiscrete(final String xAxisColumn, final String... valueColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -92,7 +92,7 @@ public class ComboChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsContinuous(
 			final String xAxisColumn,
@@ -101,7 +101,7 @@ public class ComboChart extends AbstractChart
 	{
 		validateColumnType(xAxisColumnType, "axis column", Column.Type.NUMBER, Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xAxisColumnType, xAxisColumn));
 		for(final String valueColumn : valueColumns)
@@ -110,17 +110,17 @@ public class ComboChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public SeriesType getSeriesType()
 	{
-		return properties().get("seriesType");
+		return properties().get("seriesType", SeriesType.LINE);
 	}
-	
+
 	public void setSeriesType(final SeriesType seriesType)
 	{
 		properties().put("seriesType", seriesType);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -130,7 +130,7 @@ public class ComboChart extends AbstractChart
 			.addRow("2006/07", 157, 1167, 587, 807, 397, 623)
 			.addRow("2007/08", 139, 1110, 615, 968, 215, 609.4)
 			.addRow("2008/09", 136, 691, 629, 1026, 366, 569.6);
-		
+
 		setTitle("Monthly Coffee Production by Country");
 		setVAxis(Axis.New("Cups"));
 		setHAxis(Axis.New("Month"));

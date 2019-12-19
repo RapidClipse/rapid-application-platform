@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasDataOpacity extends Chart
 {
-	public default Number getDataOpacity()
+	public default double getDataOpacity()
 	{
-		return properties().get("dataOpacity");
+		return properties().get("dataOpacity", 1.0);
 	}
-	
-	public default void setDataOpacity(final Number dataOpacity)
+
+	public default void setDataOpacity(final double dataOpacity)
 	{
 		properties().put("dataOpacity", dataOpacity);
 	}

@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasCandlestick extends Chart
 {
 	public default Candlestick getCandlestick()
 	{
-		return properties().get("candlestick");
+		return properties().get("candlestick", null);
 	}
-	
+
 	public default void setCandlestick(final Candlestick candlestick)
 	{
 		properties().put("candlestick", candlestick);

@@ -48,12 +48,12 @@ public class WordTreeChart extends AbstractChart
 	{
 		super("WordTree", "wordtree");
 	}
-	
+
 	public ChartModel initDefaultColumnsImplicit(final String textColumn)
 	{
 		return initDefaultColumnsImplicit(textColumn, null, null);
 	}
-	
+
 	public ChartModel
 		initDefaultColumnsImplicit(final String textColumn, final String sizeColumn, final String styleColumn)
 	{
@@ -69,7 +69,7 @@ public class WordTreeChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public ChartModel initDefaultColumnsExplicit(
 		final String idColumn,
 		final String textColumn,
@@ -84,27 +84,27 @@ public class WordTreeChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, sizeColumn))
 			.addColumn(Column.New(Column.Type.STRING, styleColumn, Role.STYLE));
 	}
-	
+
 	public Number getMaxFontSize()
 	{
-		return properties().get("maxFontSize");
+		return properties().get("maxFontSize", null);
 	}
-	
+
 	public void setMaxFontSize(final Number maxFontSize)
 	{
 		properties().put("maxFontSize", maxFontSize);
 	}
-	
+
 	public WordTree getWordTree()
 	{
-		return properties().get("wordTree");
+		return properties().get("wordTree", null);
 	}
-	
+
 	public void setWordTree(final WordTree wordTree)
 	{
 		properties().put("wordTree", wordTree);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -141,7 +141,7 @@ public class WordTreeChart extends AbstractChart
 			.addRow(29, "Echinodermata", 24, 1, "black")
 			.addRow(30, "Xenoturbellida", 24, 1, "black")
 			.addRow(31, "Vetulicolia", 24, 1, "black");
-		
+
 		setWordTree(WordTree.Builder().format(Format.EXPLICIT).type(Type.SUFFIX).build());
 	}
 }

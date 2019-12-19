@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasTheme extends Chart
 {
 	public default Theme getTheme()
 	{
-		return properties().get("theme");
+		return properties().get("theme", Theme.NULL);
 	}
-	
+
 	public default void setTheme(final Theme theme)
 	{
 		properties().put("theme", theme);

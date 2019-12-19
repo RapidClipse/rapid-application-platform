@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasCategories extends Chart
 {
-	public default Boolean getReverseCategories()
+	public default boolean getReverseCategories()
 	{
-		return properties().get("reverseCategories");
+		return properties().get("reverseCategories", false);
 	}
-	
-	public default void setReverseCategories(final Boolean reverseCategories)
+
+	public default void setReverseCategories(final boolean reverseCategories)
 	{
 		properties().put("reverseCategories", reverseCategories);
 	}

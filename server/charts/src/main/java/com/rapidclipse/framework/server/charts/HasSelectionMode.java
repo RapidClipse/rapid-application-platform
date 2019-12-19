@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasSelectionMode extends Chart
 {
 	public default SelectionMode getSelectionMode()
 	{
-		return properties().get("selectionMode");
+		return properties().get("selectionMode", SelectionMode.SINGLE);
 	}
-	
+
 	public default void setSelectionMode(final SelectionMode selectionMode)
 	{
 		properties().put("selectionMode", selectionMode);

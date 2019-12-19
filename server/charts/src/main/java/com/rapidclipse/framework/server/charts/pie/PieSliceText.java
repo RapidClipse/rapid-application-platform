@@ -22,22 +22,35 @@
  *     XDEV Software Corp. - initial API and implementation
  */
 
-package com.rapidclipse.framework.server.charts;
+package com.rapidclipse.framework.server.charts.pie;
+
+import com.rapidclipse.framework.server.charts.JavaScriptable;
+
+import elemental.json.Json;
+
 
 /**
  * @author XDEV Software
  * @since 10.02.00
  *
  */
-public interface HasAreaOpacity extends Chart
+public enum PieSliceText implements JavaScriptable
 {
-	public default double getAreaOpacity()
+	PERCENTAGE("percentage"),
+	VALUE("value"),
+	LABEL("label"),
+	NONE("none");
+	
+	private final String js;
+	
+	private PieSliceText(final String js)
 	{
-		return properties().get("areaOpacity", 0.3);
+		this.js = Json.create(js).toJson();
 	}
-
-	public default void setAreaOpacity(final double areaOpacity)
+	
+	@Override
+	public String js()
 	{
-		properties().put("areaOpacity", areaOpacity);
+		return this.js;
 	}
 }

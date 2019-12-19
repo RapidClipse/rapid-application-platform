@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface HasInteractivity extends Chart
 {
-	public default Boolean getEnableInteractivity()
+	public default boolean isEnableInteractivity()
 	{
-		return properties().get("enableInteractivity");
+		return properties().get("enableInteractivity", true);
 	}
-
-	public default void setEnableInteractivity(final Boolean enableInteractivity)
+	
+	public default void setEnableInteractivity(final boolean enableInteractivity)
 	{
 		properties().put("enableInteractivity", enableInteractivity);
 	}

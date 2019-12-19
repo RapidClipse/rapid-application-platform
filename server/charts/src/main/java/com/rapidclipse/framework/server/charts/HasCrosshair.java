@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasCrosshair extends Chart
 {
 	public default Crosshair getCrosshair()
 	{
-		return properties().get("crosshair");
+		return properties().get("crosshair", null);
 	}
-
+	
 	public default void setCrosshair(final Crosshair crosshair)
 	{
 		properties().put("crosshair", crosshair);

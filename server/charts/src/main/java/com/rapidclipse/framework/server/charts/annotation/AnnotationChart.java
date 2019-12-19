@@ -50,17 +50,17 @@ public class AnnotationChart extends AbstractChart
 	{
 		super("AnnotationChart", "annotationchart");
 	}
-	
+
 	public ChartModel initDefaultColumns()
 	{
 		return initDefaultColumns(Column.Type.DATE);
 	}
-	
+
 	public ChartModel initDefaultColumns(final Column.Type xColumnType)
 	{
 		return initDefaultColumns("x", xColumnType, "y", "title", "text");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(
 			final String xColumn,
@@ -70,7 +70,7 @@ public class AnnotationChart extends AbstractChart
 			final String annotationTextColumn)
 	{
 		validateColumnType(xColumnType, "x column", Column.Type.DATE, Column.Type.DATE_TIME);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(xColumnType, xColumn))
 			.addColumn(Column.New(Column.Type.STRING, yColumn));
@@ -84,217 +84,217 @@ public class AnnotationChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public String getAllValuesSuffix()
 	{
-		return properties().get("allValuesSuffix");
+		return properties().get("allValuesSuffix", null);
 	}
-	
+
 	public void setAllValuesSuffix(final String allValuesSuffix)
 	{
 		properties().put("allValuesSuffix", allValuesSuffix);
 	}
-	
+
 	public Number getAnnotationsWidth()
 	{
-		return properties().get("annotationsWidth");
+		return properties().get("annotationsWidth", 25);
 	}
-	
+
 	public void setAnnotationsWidth(final Number annotationsWidth)
 	{
 		properties().put("annotationsWidth", annotationsWidth);
 	}
-	
+
 	public String getDateFormat()
 	{
-		return properties().get("dateFormat");
+		return properties().get("dateFormat", null);
 	}
-	
+
 	public void setDateFormat(final String dateFormat)
 	{
 		properties().put("dateFormat", dateFormat);
 	}
-	
-	public Boolean getDisplayAnnotations()
+
+	public boolean getDisplayAnnotations()
 	{
-		return properties().get("displayAnnotations");
+		return properties().get("displayAnnotations", true);
 	}
-	
-	public void setDisplayAnnotations(final Boolean displayAnnotations)
+
+	public void setDisplayAnnotations(final boolean displayAnnotations)
 	{
 		properties().put("displayAnnotations", displayAnnotations);
 	}
-	
-	public Boolean getDisplayAnnotationsFilter()
+
+	public boolean getDisplayAnnotationsFilter()
 	{
-		return properties().get("displayAnnotationsFilter");
+		return properties().get("displayAnnotationsFilter", false);
 	}
-	
-	public void setDisplayAnnotationsFilter(final Boolean displayAnnotationsFilter)
+
+	public void setDisplayAnnotationsFilter(final boolean displayAnnotationsFilter)
 	{
 		properties().put("displayAnnotationsFilter", displayAnnotationsFilter);
 	}
-	
-	public Boolean getDisplayDateBarSeparator()
+
+	public boolean getDisplayDateBarSeparator()
 	{
-		return properties().get("displayDateBarSeparator");
+		return properties().get("displayDateBarSeparator", true);
 	}
-	
-	public void setDisplayDateBarSeparator(final Boolean displayDateBarSeparator)
+
+	public void setDisplayDateBarSeparator(final boolean displayDateBarSeparator)
 	{
 		properties().put("displayDateBarSeparator", displayDateBarSeparator);
 	}
-	
-	public Boolean getDisplayExactValues()
+
+	public boolean getDisplayExactValues()
 	{
-		return properties().get("displayExactValues");
+		return properties().get("displayExactValues", false);
 	}
-	
-	public void setDisplayExactValues(final Boolean displayExactValues)
+
+	public void setDisplayExactValues(final boolean displayExactValues)
 	{
 		properties().put("displayExactValues", displayExactValues);
 	}
-	
-	public Boolean getDisplayLegendDots()
+
+	public boolean getDisplayLegendDots()
 	{
-		return properties().get("displayLegendDots");
+		return properties().get("displayLegendDots", true);
 	}
-	
-	public void setDisplayLegendDots(final Boolean displayLegendDots)
+
+	public void setDisplayLegendDots(final boolean displayLegendDots)
 	{
 		properties().put("displayLegendDots", displayLegendDots);
 	}
-	
-	public Boolean getDisplayLegendValues()
+
+	public boolean getDisplayLegendValues()
 	{
-		return properties().get("displayLegendValues");
+		return properties().get("displayLegendValues", true);
 	}
-	
-	public void setDisplayLegendValues(final Boolean displayLegendValues)
+
+	public void setDisplayLegendValues(final boolean displayLegendValues)
 	{
 		properties().put("displayLegendValues", displayLegendValues);
 	}
-	
-	public Boolean getDisplayRangeSelector()
+
+	public boolean getDisplayRangeSelector()
 	{
-		return properties().get("displayRangeSelector");
+		return properties().get("displayRangeSelector", true);
 	}
-	
-	public void setDisplayRangeSelector(final Boolean displayRangeSelector)
+
+	public void setDisplayRangeSelector(final boolean displayRangeSelector)
 	{
 		properties().put("displayRangeSelector", displayRangeSelector);
 	}
-	
-	public Boolean getDisplayZoomButtons()
+
+	public boolean getDisplayZoomButtons()
 	{
-		return properties().get("displayZoomButtons");
+		return properties().get("displayZoomButtons", true);
 	}
-	
-	public void setDisplayZoomButtons(final Boolean displayZoomButtons)
+
+	public void setDisplayZoomButtons(final boolean displayZoomButtons)
 	{
 		properties().put("displayZoomButtons", displayZoomButtons);
 	}
-	
+
 	public Number getFill()
 	{
-		return properties().get("fill");
+		return properties().get("fill", 0);
 	}
-	
+
 	public void setFill(final Number fill)
 	{
 		properties().put("fill", fill);
 	}
-	
+
 	public LegendPosition getLegendPosition()
 	{
-		return properties().get("legendPosition");
+		return properties().get("legendPosition", LegendPosition.SAME_ROW);
 	}
-	
+
 	public void setLegendPosition(final LegendPosition legendPosition)
 	{
 		properties().put("legendPosition", legendPosition);
 	}
-	
+
 	public NumberFormats getNumberFormats()
 	{
-		return properties().get("numberFormats");
+		return properties().get("numberFormats", null);
 	}
-	
+
 	public void setNumberFormats(final NumberFormats numberFormats)
 	{
 		properties().put("numberFormats", numberFormats);
 	}
-	
+
 	public List<Number> getScaleColumns()
 	{
-		return properties().get("scaleColumns");
+		return properties().get("scaleColumns", null);
 	}
-	
+
 	public void setScaleColumns(final List<Number> scaleColumns)
 	{
 		properties().put("scaleColumns", scaleColumns);
 	}
-	
+
 	public String getScaleFormat()
 	{
-		return properties().get("scaleFormat");
+		return properties().get("scaleFormat", "#");
 	}
-	
+
 	public void setScaleFormat(final String scaleFormat)
 	{
 		properties().put("scaleFormat", scaleFormat);
 	}
-	
+
 	public ScaleType getScaleType()
 	{
-		return properties().get("scaleType");
+		return properties().get("scaleType", ScaleType.FIXED);
 	}
-	
+
 	public void setScaleType(final ScaleType scaleType)
 	{
 		properties().put("scaleType", scaleType);
 	}
-	
+
 	public Table getTable()
 	{
-		return properties().get("table");
+		return properties().get("table", null);
 	}
-	
+
 	public void setTable(final Table tableOptions)
 	{
 		properties().put("table", tableOptions);
 	}
-	
+
 	public Number getThickness()
 	{
-		return properties().get("thickness");
+		return properties().get("thickness", 0);
 	}
-	
+
 	public void setThickness(final Number thickness)
 	{
 		properties().put("thickness", thickness);
 	}
-	
+
 	public DateValue getZoomEndTime()
 	{
-		return properties().get("zoomEndTime");
+		return properties().get("zoomEndTime", null);
 	}
-	
+
 	public void setZoomEndTime(final DateValue zoomEndTime)
 	{
 		properties().put("zoomEndTime", zoomEndTime);
 	}
-	
+
 	public DateValue getZoomStartTime()
 	{
-		return properties().get("zoomStartTime");
+		return properties().get("zoomStartTime", null);
 	}
-	
+
 	public void setZoomStartTime(final DateValue zoomStartTime)
 	{
 		properties().put("zoomStartTime", zoomStartTime);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{

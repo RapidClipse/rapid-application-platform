@@ -46,147 +46,147 @@ public class TableChart extends AbstractChart
 	{
 		super("Table", "table");
 	}
-	
-	public Boolean getAlternatingRowStyle()
+
+	public boolean getAlternatingRowStyle()
 	{
-		return properties().get("alternatingRowStyle");
+		return properties().get("alternatingRowStyle", true);
 	}
-	
-	public void setAlternatingRowStyle(final Boolean alternatingRowStyle)
+
+	public void setAlternatingRowStyle(final boolean alternatingRowStyle)
 	{
 		properties().put("alternatingRowStyle", alternatingRowStyle);
 	}
-	
+
 	public CssClassNames getCssClassNames()
 	{
-		return properties().get("cssClassNames");
+		return properties().get("cssClassNames", null);
 	}
-	
+
 	public void setCssClassNames(final CssClassNames cssClassNames)
 	{
 		properties().put("cssClassNames", cssClassNames);
 	}
-	
-	public Integer getFirstRowNumber()
+
+	public int getFirstRowNumber()
 	{
-		return properties().get("firstRowNumber");
+		return properties().get("firstRowNumber", 1);
 	}
-	
-	public void setFirstRowNumber(final Integer firstRowNumber)
+
+	public void setFirstRowNumber(final int firstRowNumber)
 	{
 		properties().put("firstRowNumber", firstRowNumber);
 	}
-	
+
 	public Integer getFrozenColumns()
 	{
-		return properties().get("frozenColumns");
+		return properties().get("frozenColumns", null);
 	}
-	
+
 	public void setFrozenColumns(final Integer frozenColumns)
 	{
 		properties().put("frozenColumns", frozenColumns);
 	}
-	
+
 	public ActionMode getPage()
 	{
-		return properties().get("page");
+		return properties().get("page", ActionMode.DISABLE);
 	}
-	
+
 	public void setPage(final ActionMode page)
 	{
 		properties().put("page", page);
 	}
-	
-	public Integer getPageSize()
+
+	public int getPageSize()
 	{
-		return properties().get("pageSize");
+		return properties().get("pageSize", 10);
 	}
-	
-	public void setPageSize(final Integer pageSize)
+
+	public void setPageSize(final int pageSize)
 	{
 		properties().put("pageSize", pageSize);
 	}
-	
+
 	public PagingButtons getPagingButtons()
 	{
-		return properties().get("pagingButtons");
+		return properties().get("pagingButtons", null);
 	}
-	
+
 	public void setPagingButtons(final PagingButtons pagingButtons)
 	{
 		properties().put("pagingButtons", pagingButtons);
 	}
-	
-	public Boolean getRtlTable()
+
+	public boolean getRtlTable()
 	{
-		return properties().get("rtlTable");
+		return properties().get("rtlTable", false);
 	}
-	
-	public void setRtlTable(final Boolean rtlTable)
+
+	public void setRtlTable(final boolean rtlTable)
 	{
 		properties().put("rtlTable", rtlTable);
 	}
-	
-	public Integer getScrollLeftStartPosition()
+
+	public int getScrollLeftStartPosition()
 	{
-		return properties().get("scrollLeftStartPosition");
+		return properties().get("scrollLeftStartPosition", 0);
 	}
-	
-	public void setScrollLeftStartPosition(final Integer scrollLeftStartPosition)
+
+	public void setScrollLeftStartPosition(final int scrollLeftStartPosition)
 	{
 		properties().put("scrollLeftStartPosition", scrollLeftStartPosition);
 	}
-	
-	public Boolean getShowRowNumber()
+
+	public boolean getShowRowNumber()
 	{
-		return properties().get("showRowNumber");
+		return properties().get("showRowNumber", false);
 	}
-	
-	public void setShowRowNumber(final Boolean showRowNumber)
+
+	public void setShowRowNumber(final boolean showRowNumber)
 	{
 		properties().put("showRowNumber", showRowNumber);
 	}
-	
+
 	public ActionMode getSort()
 	{
-		return properties().get("sort");
+		return properties().get("sort", ActionMode.ENABLE);
 	}
-	
+
 	public void setSort(final ActionMode sort)
 	{
 		properties().put("sort", sort);
 	}
-	
-	public Boolean getSortAscending()
+
+	public boolean getSortAscending()
 	{
-		return properties().get("sortAscending");
+		return properties().get("sortAscending", true);
 	}
-	
-	public void setSortAscending(final Boolean sortAscending)
+
+	public void setSortAscending(final boolean sortAscending)
 	{
 		properties().put("sortAscending", sortAscending);
 	}
-	
-	public Integer getSortColumn()
+
+	public int getSortColumn()
 	{
-		return properties().get("sortColumn");
+		return properties().get("sortColumn", -1);
 	}
-	
-	public void setSortColumn(final Integer sortColumn)
+
+	public void setSortColumn(final int sortColumn)
 	{
 		properties().put("sortColumn", sortColumn);
 	}
-	
-	public Integer getStartPage()
+
+	public int getStartPage()
 	{
-		return properties().get("startPage");
+		return properties().get("startPage", 0);
 	}
-	
-	public void setStartPage(final Integer startPage)
+
+	public void setStartPage(final int startPage)
 	{
 		properties().put("startPage", startPage);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{

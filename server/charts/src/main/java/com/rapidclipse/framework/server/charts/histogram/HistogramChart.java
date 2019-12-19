@@ -70,14 +70,14 @@ public class HistogramChart extends AbstractChart
 	{
 		super("Histogram");
 	}
-	
+
 	public ChartModel initDefaultColumnsSingleSeries(final String labelColumn, final String valueColumn)
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, labelColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public ChartModel initDefaultColumnsMultipleSeries(final String... seriesColumns)
 	{
 		final ChartModel model = getModel().removeAll();
@@ -87,17 +87,17 @@ public class HistogramChart extends AbstractChart
 		}
 		return model;
 	}
-	
+
 	public Histogram getHistogram()
 	{
-		return properties().get("histogram");
+		return properties().get("histogram", null);
 	}
-	
+
 	public void setHistogram(final Histogram histogram)
 	{
 		properties().put("histogram", histogram);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -130,7 +130,7 @@ public class HistogramChart extends AbstractChart
 			.addRow("Tyrannosaurus (tyrant lizard)", 15.2)
 			.addRow("Ultrasaurus (ultra lizard)", 30.5)
 			.addRow("Velociraptor (swift robber)", 1.8);
-		
+
 		setTitle("Lengths of dinosaurs, in meters");
 		setLegend(Legend.None());
 	}

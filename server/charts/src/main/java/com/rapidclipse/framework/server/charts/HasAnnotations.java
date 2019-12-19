@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasAnnotations extends Chart
 {
 	public default Annotations getAnnotations()
 	{
-		return properties().get("annotations");
+		return properties().get("annotations", null);
 	}
-
+	
 	public default void setAnnotations(final Annotations annotations)
 	{
 		properties().put("annotations", annotations);

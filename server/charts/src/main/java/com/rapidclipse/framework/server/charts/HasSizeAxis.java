@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasSizeAxis extends Chart
 {
 	public default SizeAxis getSizeAxis()
 	{
-		return properties().get("sizeAxis");
+		return properties().get("sizeAxis", null);
 	}
-
+	
 	public default void setSizeAxis(final SizeAxis sizeAxis)
 	{
 		properties().put("sizeAxis", sizeAxis);

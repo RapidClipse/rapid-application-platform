@@ -48,19 +48,19 @@ public class GanttChart extends AbstractChart
 	{
 		super("Gantt", "gantt");
 	}
-
+	
 	public ChartModel initDefaultColumns()
 	{
 		return initDefaultColumns("Task ID", "Task name", null, "Start Date", "End Date", "Duration",
 			"Percent Complete", "Dependencies");
 	}
-
+	
 	public ChartModel initDefaultColumnsWithResourceId()
 	{
 		return initDefaultColumns("Task ID", "Task name", "Resource ID", "Start Date", "End Date", "Duration",
 			"Percent Complete", "Dependencies");
 	}
-
+	
 	public ChartModel
 		initDefaultColumns(
 			final String taskIdColumn,
@@ -85,17 +85,17 @@ public class GanttChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, percentCompleteColumn))
 			.addColumn(Column.New(Column.Type.STRING, dependenciesColumn));
 	}
-
+	
 	public Gantt getGantt()
 	{
-		return properties().get("gantt");
+		return properties().get("gantt", null);
 	}
-
+	
 	public void setGantt(final Gantt gantt)
 	{
 		properties().put("gantt", gantt);
 	}
-
+	
 	@Override
 	public void showSampleData()
 	{

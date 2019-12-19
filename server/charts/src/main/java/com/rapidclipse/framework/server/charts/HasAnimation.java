@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasAnimation extends Chart
 {
 	public default Animation getAnimation()
 	{
-		return properties().get("animation");
+		return properties().get("animation", null);
 	}
-	
+
 	public default void setAnimation(final Animation animation)
 	{
 		properties().put("animation", animation);

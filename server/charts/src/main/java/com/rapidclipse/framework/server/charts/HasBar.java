@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasBar extends Chart
 {
 	public default Bar getBar()
 	{
-		return properties().get("bar");
+		return properties().get("bar", null);
 	}
-
+	
 	public default void setBar(final Bar bar)
 	{
 		properties().put("bar", bar);

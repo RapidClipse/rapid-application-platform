@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -30,12 +31,12 @@ package com.rapidclipse.framework.server.charts;
  */
 public interface AllowsHtml extends Chart
 {
-	public default Boolean getAllowHtml()
+	public default boolean isAllowHtml()
 	{
-		return properties().get("allowHtml");
+		return properties().get("allowHtml", false);
 	}
 	
-	public default void setAllowHtml(final Boolean allowHtml)
+	public default void setAllowHtml(final boolean allowHtml)
 	{
 		properties().put("allowHtml", allowHtml);
 	}

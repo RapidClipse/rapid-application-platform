@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasVAxis extends Chart
 {
 	public default Axis getVAxis()
 	{
-		return properties().get("vAxis");
+		return properties().get("vAxis", null);
 	}
-	
+
 	public default void setVAxis(final Axis vAxis)
 	{
 		properties().put("vAxis", vAxis);

@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasBackground extends Chart
 {
 	public default Background getBackground()
 	{
-		return properties().get("backgroundColor");
+		return properties().get("backgroundColor", null);
 	}
-	
+
 	public default void setBackground(final Background background)
 	{
 		properties().put("backgroundColor", background);

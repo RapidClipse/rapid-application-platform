@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasColorAxis extends Chart
 {
 	public default ColorAxis getColorAxis()
 	{
-		return properties().get("colorAxis");
+		return properties().get("colorAxis", null);
 	}
-	
+
 	public default void setColorAxis(final ColorAxis colorAxis)
 	{
 		properties().put("colorAxis", colorAxis);

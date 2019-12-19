@@ -71,9 +71,19 @@ public class TreeMapChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.NUMBER, colorColumn));
 	}
 
+	public String getFontColor()
+	{
+		return properties().get("fontColor", "#ffffff");
+	}
+
+	public void setFontColor(final String fontColor)
+	{
+		properties().put("headerColor", fontColor);
+	}
+
 	public String getHeaderColor()
 	{
-		return properties().get("headerColor");
+		return properties().get("headerColor", "#988f86");
 	}
 
 	public void setHeaderColor(final String headerColor)
@@ -83,7 +93,7 @@ public class TreeMapChart extends AbstractChart
 
 	public Integer getHeaderHeight()
 	{
-		return properties().get("headerHeight");
+		return properties().get("headerHeight", 0);
 	}
 
 	public void setHeaderHeight(final Integer headerHeight)
@@ -93,7 +103,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getHeaderHighlightColor()
 	{
-		return properties().get("headerHighlightColor");
+		return properties().get("headerHighlightColor", null);
 	}
 
 	public void setHeaderHighlightColor(final String headerHighlightColor)
@@ -101,19 +111,19 @@ public class TreeMapChart extends AbstractChart
 		properties().put("headerHighlightColor", headerHighlightColor);
 	}
 
-	public Boolean getHighlightOnMouseOver()
+	public boolean getHighlightOnMouseOver()
 	{
-		return properties().get("highlightOnMouseOver");
+		return properties().get("highlightOnMouseOver", false);
 	}
 
-	public void setHighlightOnMouseOver(final Boolean highlightOnMouseOver)
+	public void setHighlightOnMouseOver(final boolean highlightOnMouseOver)
 	{
 		properties().put("highlightOnMouseOver", highlightOnMouseOver);
 	}
 
 	public Number getHintOpacity()
 	{
-		return properties().get("hintOpacity");
+		return properties().get("hintOpacity", 0.0);
 	}
 
 	public void setHintOpacity(final Number hintOpacity)
@@ -123,7 +133,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getMaxColor()
 	{
-		return properties().get("maxColor");
+		return properties().get("maxColor", "#00dd00");
 	}
 
 	public void setMaxColor(final String maxColor)
@@ -131,19 +141,19 @@ public class TreeMapChart extends AbstractChart
 		properties().put("maxColor", maxColor);
 	}
 
-	public Integer getMaxDepth()
+	public int getMaxDepth()
 	{
-		return properties().get("maxDepth");
+		return properties().get("maxDepth", 1);
 	}
 
-	public void setMaxDepth(final Integer maxDepth)
+	public void setMaxDepth(final int maxDepth)
 	{
 		properties().put("maxDepth", maxDepth);
 	}
 
 	public String getMaxHighlightColor()
 	{
-		return properties().get("maxHighlightColor");
+		return properties().get("maxHighlightColor", null);
 	}
 
 	public void setMaxHighlightColor(final String maxHighlightColor)
@@ -151,19 +161,19 @@ public class TreeMapChart extends AbstractChart
 		properties().put("maxHighlightColor", maxHighlightColor);
 	}
 
-	public Integer getMaxPostDepth()
+	public int getMaxPostDepth()
 	{
-		return properties().get("maxPostDepth");
+		return properties().get("maxPostDepth", 0);
 	}
 
-	public void setMaxPostDepth(final Integer maxPostDepth)
+	public void setMaxPostDepth(final int maxPostDepth)
 	{
 		properties().put("maxPostDepth", maxPostDepth);
 	}
 
 	public Integer getMaxColorValue()
 	{
-		return properties().get("maxColorValue");
+		return properties().get("maxColorValue", null);
 	}
 
 	public void setMaxColorValue(final Integer maxColorValue)
@@ -173,7 +183,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getMidColor()
 	{
-		return properties().get("midColor");
+		return properties().get("midColor", "#000000");
 	}
 
 	public void setMidColor(final String midColor)
@@ -183,7 +193,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getMidHighlightColor()
 	{
-		return properties().get("midHighlightColor");
+		return properties().get("midHighlightColor", null);
 	}
 
 	public void setMidHighlightColor(final String midHighlightColor)
@@ -193,7 +203,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getMinColor()
 	{
-		return properties().get("minColor");
+		return properties().get("minColor", "#dd0000");
 	}
 
 	public void setMinColor(final String minColor)
@@ -203,7 +213,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getMinHighlightColor()
 	{
-		return properties().get("minHighlightColor");
+		return properties().get("minHighlightColor", null);
 	}
 
 	public void setMinHighlightColor(final String minHighlightColor)
@@ -211,19 +221,19 @@ public class TreeMapChart extends AbstractChart
 		properties().put("minHighlightColor", minHighlightColor);
 	}
 
-	public Integer getMinColorValue()
+	public Number getMinColorValue()
 	{
-		return properties().get("minColorValue");
+		return properties().get("minColorValue", null);
 	}
 
-	public void setMinColorValue(final Integer minColorValue)
+	public void setMinColorValue(final Number minColorValue)
 	{
 		properties().put("minColorValue", minColorValue);
 	}
 
 	public String getNoColor()
 	{
-		return properties().get("noColor");
+		return properties().get("noColor", "#000000");
 	}
 
 	public void setNoColor(final String noColor)
@@ -233,7 +243,7 @@ public class TreeMapChart extends AbstractChart
 
 	public String getNoHighlightColor()
 	{
-		return properties().get("noHighlightColor");
+		return properties().get("noHighlightColor", null);
 	}
 
 	public void setNoHighlightColor(final String noHighlightColor)
@@ -241,29 +251,29 @@ public class TreeMapChart extends AbstractChart
 		properties().put("noHighlightColor", noHighlightColor);
 	}
 
-	public Boolean getShowScale()
+	public boolean getShowScale()
 	{
-		return properties().get("showScale");
+		return properties().get("showScale", false);
 	}
 
-	public void setShowScale(final Boolean showScale)
+	public void setShowScale(final boolean showScale)
 	{
 		properties().put("showScale", showScale);
 	}
 
-	public Boolean getShowTooltips()
+	public boolean getShowTooltips()
 	{
-		return properties().get("showTooltips");
+		return properties().get("showTooltips", true);
 	}
 
-	public void setShowTooltips(final Boolean showTooltips)
+	public void setShowTooltips(final boolean showTooltips)
 	{
 		properties().put("showTooltips", showTooltips);
 	}
 
 	public TextStyle getTextStyle()
 	{
-		return properties().get("textStyle");
+		return properties().get("textStyle", null);
 	}
 
 	public void setTextStyle(final TextStyle textStyle)
@@ -271,12 +281,12 @@ public class TreeMapChart extends AbstractChart
 		properties().put("textStyle", textStyle);
 	}
 
-	public Boolean getUseWeightedAverageForAggregation()
+	public boolean getUseWeightedAverageForAggregation()
 	{
-		return properties().get("useWeightedAverageForAggregation");
+		return properties().get("useWeightedAverageForAggregation", false);
 	}
 
-	public void setUseWeightedAverageForAggregation(final Boolean useWeightedAverageForAggregation)
+	public void setUseWeightedAverageForAggregation(final boolean useWeightedAverageForAggregation)
 	{
 		properties().put("useWeightedAverageForAggregation", useWeightedAverageForAggregation);
 	}

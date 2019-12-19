@@ -50,38 +50,38 @@ public class CalendarChart extends AbstractChart
 	{
 		super("Calendar", "calendar");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(final String dateColumn, final Column.Type dateColumnType, final String valueColumn)
 	{
 		validateColumnType(dateColumnType, "date column", Column.Type.DATE, Column.Type.DATE_TIME,
 			Column.Type.TIME_OF_DAY);
-		
+
 		return getModel().removeAll()
 			.addColumn(Column.New(dateColumnType, dateColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public Calendar getCalendar()
 	{
-		return properties().get("calendar");
+		return properties().get("calendar", null);
 	}
-	
+
 	public void setCalendar(final Calendar calendar)
 	{
 		properties().put("calendar", calendar);
 	}
-	
+
 	public NoDataPattern getNoDataPattern()
 	{
-		return properties().get("noDataPattern");
+		return properties().get("noDataPattern", null);
 	}
-	
+
 	public void setNoDataPattern(final NoDataPattern noDataPattern)
 	{
 		properties().put("noDataPattern", noDataPattern);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -122,7 +122,7 @@ public class CalendarChart extends AbstractChart
 			.addRow(LocalDate.of(2013, 5, 23), 45)
 			.addRow(LocalDate.of(2013, 5, 24), 36)
 			.addRow(LocalDate.of(2013, 5, 30), 45);
-		
+
 		setTitle("Attendence");
 	}
 }

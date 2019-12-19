@@ -72,7 +72,7 @@ public class SteppedAreaChart extends AbstractChart
 	{
 		super("SteppedAreaChart");
 	}
-	
+
 	public ChartModel initDefaultColumns(final String groupColumn, final String... dataColumns)
 	{
 		final ChartModel model = getModel().removeAll()
@@ -83,17 +83,17 @@ public class SteppedAreaChart extends AbstractChart
 		}
 		return model;
 	}
-
-	public Boolean getConnectSteps()
-	{
-		return properties().get("connectSteps");
-	}
 	
-	public void setConnectSteps(final Boolean connectSteps)
+	public boolean getConnectSteps()
+	{
+		return properties().get("connectSteps", true);
+	}
+
+	public void setConnectSteps(final boolean connectSteps)
 	{
 		properties().put("connectSteps", connectSteps);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -102,7 +102,7 @@ public class SteppedAreaChart extends AbstractChart
 			.addRow("Ralph Thomas (1959)", 6.9, 6.5)
 			.addRow("Don Sharp (1978)", 6.5, 6.4)
 			.addRow("James Hawes (2008)", 4.4, 6.2);
-		
+
 		setTitle("The decline of 'The 39 Steps'");
 		setVAxis(Axis.New("Accumulated Rating"));
 		setStackMode(StackMode.TRUE);

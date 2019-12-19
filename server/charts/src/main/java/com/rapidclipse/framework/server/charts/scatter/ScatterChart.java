@@ -140,4 +140,16 @@ public class ScatterChart extends AbstractChart
 		setVAxis(Axis.New("Grade"));
 		setTitle("Students' Final Grades");
 	}
+
+	@Override
+	public Number getLineWidth()
+	{
+		return properties().get("lineWidth", 0);
+	}
+	
+	@Override
+	public Number getPointSize()
+	{
+		return properties().get("pointSize", 7);
+	}
 }

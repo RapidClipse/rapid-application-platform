@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasAxisTitlesPosition extends Chart
 {
 	public default AxisTitlesPosition getAxisTitlesPosition()
 	{
-		return properties().get("axisTitlesPosition");
+		return properties().get("axisTitlesPosition", AxisTitlesPosition.OUT);
 	}
-
+	
 	public default void setAxisTitlesPosition(final AxisTitlesPosition axisTitlesPosition)
 	{
 		properties().put("axisTitlesPosition", axisTitlesPosition);

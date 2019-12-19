@@ -45,147 +45,153 @@ public class MapsChart extends AbstractMapsChart
 	public final static String MAP_TYPE_TERRAIN   = "terrain";
 	public final static String MAP_TYPE_SATELLITE = "satellite";
 	public final static String MAP_TYPE_HYBRID    = "hybrid";
-
+	
 	public MapsChart()
 	{
 		super("Map", "map");
 	}
-
+	
 	public ChartModel initDefaultColumnsLatLong()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "Latitude"))
 			.addColumn(Column.New(Column.Type.STRING, "Longitude"));
 	}
-
+	
 	public ChartModel initDefaultColumnsLatLongDescription()
 	{
 		return initDefaultColumnsLatLong()
 			.addColumn(Column.New(Column.Type.STRING, "Description"));
 	}
-
+	
 	public ChartModel initDefaultColumnsAddress()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "Address"));
 	}
-
+	
 	public ChartModel initDefaultColumnsAddressDescription()
 	{
 		return initDefaultColumnsAddress()
 			.addColumn(Column.New(Column.Type.STRING, "Description"));
 	}
-
+	
 	public void addIcon(final String marker, final Icon icon)
 	{
 		properties().putIndexed("icons", marker, icon);
 	}
-
+	
 	public Icon removeIcon(final String marker)
 	{
 		return properties().removeIndexed("icons", marker);
 	}
-
+	
 	public void removeAllIcons()
 	{
 		properties().removeAllIndexed("icons");
 	}
-
+	
 	public void addMap(final String mapId, final Map map)
 	{
 		properties().putIndexed("maps", mapId, map);
 	}
-
+	
 	public Icon removeMap(final String mapId)
 	{
 		return properties().removeIndexed("maps", mapId);
 	}
-
+	
 	public void removeAllMaps()
 	{
 		properties().removeAllIndexed("maps");
 	}
-
-	public Boolean getEnableScrollWheel()
+	
+	public boolean getEnableScrollWheel()
 	{
-		return properties().get("enableScrollWheel");
+		return properties().get("enableScrollWheel", false);
 	}
-
-	public void setEnableScrollWheel(final Boolean enableScrollWheel)
+	
+	public void setEnableScrollWheel(final boolean enableScrollWheel)
 	{
 		properties().put("enableScrollWheel", enableScrollWheel);
 	}
-
+	
 	public String getMapType()
 	{
-		return properties().get("mapType");
+		return properties().get("mapType", "hybrid");
 	}
-
+	
 	public void setMapType(final String mapType)
 	{
 		properties().put("mapType", mapType);
 	}
-
+	
 	public List<String> getMapTypeIds()
 	{
-		return properties().get("mapTypeIds");
+		return properties().get("mapTypeIds", null);
 	}
-
+	
 	public void setMapTypeIds(final List<String> mapTypeIds)
 	{
 		properties().put("mapTypeIds", mapTypeIds);
 	}
-
-	public Boolean getShowInfoWindow()
+	
+	public boolean getShowInfoWindow()
 	{
-		return properties().get("showInfoWindow");
+		return properties().get("showInfoWindow", false);
 	}
-
-	public void setShowInfoWindow(final Boolean showInfoWindow)
+	
+	public void setShowInfoWindow(final boolean showInfoWindow)
 	{
 		properties().put("showInfoWindow", showInfoWindow);
 	}
-
-	public Boolean getShowLine()
+	
+	public boolean getShowLine()
 	{
-		return properties().get("showLine");
+		return properties().get("showLine", false);
 	}
-
-	public void setShowLine(final Boolean showLine)
+	
+	public void setShowLine(final boolean showLine)
 	{
 		properties().put("showLine", showLine);
 	}
-
-	public Boolean getShowTooltip()
+	
+	public boolean getShowTooltip()
 	{
-		return properties().get("showTooltip");
+		return properties().get("showTooltip", false);
 	}
-
-	public void setShowTooltip(final Boolean showTooltip)
+	
+	public void setShowTooltip(final boolean showTooltip)
 	{
 		properties().put("showTooltip", showTooltip);
 	}
-
-	public Boolean getUseMapTypeControl()
+	
+	public boolean getUseMapTypeControl()
 	{
-		return properties().get("useMapTypeControl");
+		return properties().get("useMapTypeControl", false);
 	}
-
-	public void setUseMapTypeControl(final Boolean useMapTypeControl)
+	
+	public void setUseMapTypeControl(final boolean useMapTypeControl)
 	{
 		properties().put("useMapTypeControl", useMapTypeControl);
 	}
-
+	
 	public Number getZoomLevel()
 	{
-		return properties().get("zoomLevel");
+		return properties().get("zoomLevel", null);
 	}
-
+	
 	public void setZoomLevel(final Number zoomLevel)
 	{
 		properties().put("zoomLevel", zoomLevel);
 	}
 
+	@Override
+	public Number getLineWidth()
+	{
+		return properties().get("lineWidth", 10);
+	}
+	
 	@Override
 	public void showSampleData()
 	{
@@ -200,7 +206,7 @@ public class MapsChart extends AbstractMapsChart
 			.addRow("Bangladesh", "Bangladesh: 152,518,015")
 			.addRow("Russia", "Russia: 146,019,512")
 			.addRow("Japan", "Japan: 127,120,000");
-
+		
 		setShowTooltip(true);
 		setShowInfoWindow(true);
 	}

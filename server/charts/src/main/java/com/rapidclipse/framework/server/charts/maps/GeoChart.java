@@ -48,178 +48,179 @@ public class GeoChart extends AbstractMapsChart
 	{
 		super("GeoChart", "geochart");
 	}
-	
+
 	public ChartModel initDefaultColumnsRegion()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "location"));
 	}
-	
+
 	public ChartModel initDefaultColumnsRegionWithColor()
 	{
 		return initDefaultColumnsRegion()
 			.addColumn(Column.New(Column.Type.STRING, "color"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarker()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "location"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarkerWithColor()
 	{
 		return initDefaultColumnsMarker()
 			.addColumn(Column.New(Column.Type.STRING, "color"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarkerWithColorAndSize()
 	{
 		return initDefaultColumnsMarkerWithColor()
 			.addColumn(Column.New(Column.Type.STRING, "size"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarkerLatLong()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "latitude"))
 			.addColumn(Column.New(Column.Type.STRING, "longitude"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarkerLatLongWithColor()
 	{
 		return initDefaultColumnsMarkerLatLong()
 			.addColumn(Column.New(Column.Type.STRING, "color"));
 	}
-	
+
 	public ChartModel initDefaultColumnsMarkerLatLongWithColorAndSize()
 	{
 		return initDefaultColumnsMarkerLatLongWithColor()
 			.addColumn(Column.New(Column.Type.STRING, "size"));
 	}
-	
+
 	public ChartModel initDefaultColumnsText()
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, "text"));
 	}
-	
+
 	public ChartModel initDefaultColumnsTextWithSize()
 	{
 		return initDefaultColumnsText()
 			.addColumn(Column.New(Column.Type.NUMBER, "size"));
 	}
-	
+
 	public String getDatalessRegionColor()
 	{
-		return properties().get("datalessRegionColor");
+		return properties().get("datalessRegionColor", "#F5F5F5");
 	}
-	
+
 	public void setDatalessRegionColor(final String datalessRegionColor)
 	{
 		properties().put("datalessRegionColor", datalessRegionColor);
 	}
-	
+
 	public String getDefaultColor()
 	{
-		return properties().get("defaultColor");
+		return properties().get("defaultColor", "#267114");
 	}
-	
+
 	public void setDefaultColor(final String defaultColor)
 	{
 		properties().put("defaultColor", defaultColor);
 	}
-	
+
 	public DisplayMode getDisplayMode()
 	{
-		return properties().get("displayMode");
+		return properties().get("displayMode", DisplayMode.AUTO);
 	}
-	
+
 	public void setDisplayMode(final DisplayMode displayMode)
 	{
 		properties().put("displayMode", displayMode);
 	}
-	
+
 	public String getDomain()
 	{
-		return properties().get("domain");
+		return properties().get("domain", null);
 	}
-	
+
 	public void setDomain(final String domain)
 	{
 		properties().put("domain", domain);
 	}
-	
-	public Boolean getEnableRegionInteractivity()
+
+	public RegionInteractivity getRegionInteractivity()
 	{
-		return properties().get("enableRegionInteractivity");
+		return properties().get("enableRegionInteractivity", RegionInteractivity.AUTO);
 	}
-	
-	public void setEnableRegionInteractivity(final Boolean enableRegionInteractivity)
+
+	public void setRegionInteractivity(final RegionInteractivity regionInteractivity)
 	{
-		properties().put("enableRegionInteractivity", enableRegionInteractivity);
+		properties().put("enableRegionInteractivity",
+			regionInteractivity == RegionInteractivity.AUTO ? null : regionInteractivity);
 	}
-	
-	public Boolean getKeepAspectRatio()
+
+	public boolean getKeepAspectRatio()
 	{
-		return properties().get("keepAspectRatio");
+		return properties().get("keepAspectRatio", true);
 	}
-	
-	public void setKeepAspectRatio(final Boolean keepAspectRatio)
+
+	public void setKeepAspectRatio(final boolean keepAspectRatio)
 	{
 		properties().put("keepAspectRatio", keepAspectRatio);
 	}
-	
+
 	public Legend getLegend()
 	{
-		return properties().get("legend");
+		return properties().get("legend", null);
 	}
-	
+
 	public void setLegend(final Legend legend)
 	{
 		properties().put("legend", legend);
 	}
-	
+
 	public String getRegion()
 	{
-		return properties().get("region");
+		return properties().get("region", "world");
 	}
-	
+
 	public void setRegion(final String region)
 	{
 		properties().put("region", region);
 	}
-	
+
 	public MagnifyingGlass getMagnifyingGlass()
 	{
-		return properties().get("magnifyingGlass");
+		return properties().get("magnifyingGlass", null);
 	}
-	
+
 	public void setMagnifyingGlass(final MagnifyingGlass magnifyingGlass)
 	{
 		properties().put("magnifyingGlass", magnifyingGlass);
 	}
-	
-	public Number getMarkerOpacity()
+
+	public double getMarkerOpacity()
 	{
-		return properties().get("markerOpacity");
+		return properties().get("markerOpacity", 1.0);
 	}
-	
-	public void setMarkerOpacity(final Number markerOpacity)
+
+	public void setMarkerOpacity(final double markerOpacity)
 	{
 		properties().put("markerOpacity", markerOpacity);
 	}
-	
+
 	public Resolution getResolution()
 	{
-		return properties().get("resolution");
+		return properties().get("resolution", Resolution.COUNTRIES);
 	}
-	
+
 	public void setResolution(final Resolution resolution)
 	{
 		properties().put("resolution", resolution);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{

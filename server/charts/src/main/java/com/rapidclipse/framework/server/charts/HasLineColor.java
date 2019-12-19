@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasLineColor extends HasLineWidth
 {
 	public default String getLineColor()
 	{
-		return properties().get("lineColor");
+		return properties().get("lineColor", null);
 	}
-
+	
 	public default void setLineColor(final String lineColor)
 	{
 		properties().put("lineColor", lineColor);

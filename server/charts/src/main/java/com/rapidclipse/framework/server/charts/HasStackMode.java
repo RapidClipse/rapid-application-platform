@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasStackMode extends Chart
 {
 	public default StackMode getStackMode()
 	{
-		return properties().get("isStacked");
+		return properties().get("isStacked", StackMode.FALSE);
 	}
-	
+
 	public default void setStackMode(final StackMode stackMode)
 	{
 		properties().put("isStacked", stackMode);

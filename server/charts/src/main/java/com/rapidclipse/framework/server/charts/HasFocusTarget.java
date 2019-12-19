@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasFocusTarget extends Chart
 {
 	public default FocusTarget getFocusTarget()
 	{
-		return properties().get("focusTarget");
+		return properties().get("focusTarget", FocusTarget.DATUM);
 	}
-	
+
 	public default void setFocusTarget(final FocusTarget focusTarget)
 	{
 		properties().put("focusTarget", focusTarget);

@@ -49,12 +49,12 @@ public class SankeyChart extends AbstractChart
 	{
 		super("Sankey", "sankey");
 	}
-	
+
 	public ChartModel initDefaultColumns()
 	{
 		return initDefaultColumns("Source", "Destination", "Value");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(final String sourceColumn, final String destinationColumn, final String valueColumn)
 	{
@@ -63,17 +63,17 @@ public class SankeyChart extends AbstractChart
 			.addColumn(Column.New(Column.Type.STRING, destinationColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public Sankey getSankey()
 	{
-		return properties().get("sankey");
+		return properties().get("sankey", null);
 	}
-	
+
 	public void setSankey(final Sankey sankey)
 	{
 		properties().put("sankey", sankey);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -124,7 +124,7 @@ public class SankeyChart extends AbstractChart
 			.addRow("Morocco", "China", 5)
 			.addRow("Morocco", "India", 1)
 			.addRow("Morocco", "Japan", 3);
-		
+
 		final List<String> colors =
 			Arrays.asList("#a6cee3", "#b2df8a", "#fb9a99", "#fdbf6f",
 				"#cab2d6", "#ffff99", "#1f78b4", "#33a02c");

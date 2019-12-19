@@ -52,7 +52,7 @@ public class TimelineChart extends AbstractChart
 	{
 		super("Timeline", "timeline");
 	}
-	
+
 	public ChartModel
 		initDefaultColumns(
 			final String rowLabelColumn,
@@ -65,7 +65,7 @@ public class TimelineChart extends AbstractChart
 	{
 		validateColumnType(startColumnType, "start column", Column.Type.NUMBER, Column.Type.DATE);
 		validateColumnType(endColumnType, "end column", Column.Type.NUMBER, Column.Type.DATE);
-		
+
 		final ChartModel model = getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, rowLabelColumn));
 		if(barLabelColumn != null)
@@ -79,37 +79,37 @@ public class TimelineChart extends AbstractChart
 		return model.addColumn(Column.New(startColumnType, startColumn))
 			.addColumn(Column.New(endColumnType, endColumn));
 	}
-	
-	public Boolean getAvoidOverlappingGridLines()
+
+	public boolean getAvoidOverlappingGridLines()
 	{
-		return properties().get("avoidOverlappingGridLines");
+		return properties().get("avoidOverlappingGridLines", true);
 	}
-	
-	public void setAvoidOverlappingGridLines(final Boolean avoidOverlappingGridLines)
+
+	public void setAvoidOverlappingGridLines(final boolean avoidOverlappingGridLines)
 	{
 		properties().put("avoidOverlappingGridLines", avoidOverlappingGridLines);
 	}
-	
+
 	public String getBackgroundColor()
 	{
-		return properties().get("backgroundColor");
+		return properties().get("backgroundColor", "white");
 	}
-	
+
 	public void setBackgroundColor(final String backgroundColor)
 	{
 		properties().put("backgroundColor", backgroundColor);
 	}
-	
+
 	public Timeline getTimeline()
 	{
-		return properties().get("timeline");
+		return properties().get("timeline", null);
 	}
-	
+
 	public void setTimeline(final Timeline timeline)
 	{
 		properties().put("timeline", timeline);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{

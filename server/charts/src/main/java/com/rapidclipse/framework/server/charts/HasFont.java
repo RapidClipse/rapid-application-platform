@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasFont extends HasFontName
 {
 	public default Number getFontSize()
 	{
-		return properties().get("fontSize");
+		return properties().get("fontSize", null);
 	}
-
+	
 	public default void setFontSize(final Number fontSize)
 	{
 		properties().put("fontSize", fontSize);

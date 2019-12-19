@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasLegend extends Chart
 {
 	public default Legend getLegend()
 	{
-		return properties().get("legend");
+		return properties().get("legend", null);
 	}
-	
+
 	public default void setLegend(final Legend legend)
 	{
 		properties().put("legend", legend);

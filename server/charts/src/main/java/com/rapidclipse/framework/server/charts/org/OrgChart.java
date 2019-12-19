@@ -62,20 +62,20 @@ public class OrgChart extends AbstractChart
 		return initDefaultColumnsWithParent()
 			.addColumn(Column.New(Column.Type.STRING, "tooltip"));
 	}
-	
-	public Boolean getAllowCollapse()
+
+	public boolean getAllowCollapse()
 	{
-		return properties().get("allowCollapse");
+		return properties().get("allowCollapse", false);
 	}
 
-	public void setAllowCollapse(final Boolean allowCollapse)
+	public void setAllowCollapse(final boolean allowCollapse)
 	{
 		properties().put("allowCollapse", allowCollapse);
 	}
 
 	public String getNodeClass()
 	{
-		return properties().get("nodeClass");
+		return properties().get("nodeClass", null);
 	}
 
 	public void setNodeClass(final String nodeClass)
@@ -85,7 +85,7 @@ public class OrgChart extends AbstractChart
 
 	public String getSelectedNodeClass()
 	{
-		return properties().get("selectedNodeClass");
+		return properties().get("selectedNodeClass", null);
 	}
 
 	public void setSelectedNodeClass(final String selectedNodeClass)
@@ -95,7 +95,7 @@ public class OrgChart extends AbstractChart
 
 	public Size getSize()
 	{
-		return properties().get("size");
+		return properties().get("size", Size.MEDIUM);
 	}
 
 	public void setSize(final Size size)

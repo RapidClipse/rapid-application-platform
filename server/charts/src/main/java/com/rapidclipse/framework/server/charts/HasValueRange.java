@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,19 +33,19 @@ public interface HasValueRange extends Chart
 {
 	public default Number getMin()
 	{
-		return properties().get("min");
+		return properties().get("min", null);
 	}
-
+	
 	public default void setMin(final Number min)
 	{
 		properties().put("min", min);
 	}
-
+	
 	public default Number getMax()
 	{
-		return properties().get("max");
+		return properties().get("max", null);
 	}
-
+	
 	public default void setMax(final Number max)
 	{
 		properties().put("max", max);

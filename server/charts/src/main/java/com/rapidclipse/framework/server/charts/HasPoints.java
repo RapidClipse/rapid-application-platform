@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,7 +33,7 @@ public interface HasPoints extends Chart
 {
 	public default PointShape getPointShape()
 	{
-		return properties().get("pointShape");
+		return properties().get("pointShape", null);
 	}
 
 	public default void setPointShape(final PointShape pointShape)
@@ -42,7 +43,7 @@ public interface HasPoints extends Chart
 	
 	public default Number getPointSize()
 	{
-		return properties().get("pointSize");
+		return properties().get("pointSize", 0);
 	}
 	
 	public default void setPointSize(final Number pointSize)
@@ -50,12 +51,12 @@ public interface HasPoints extends Chart
 		properties().put("pointSize", pointSize);
 	}
 	
-	public default Boolean getPointsVisible()
+	public default boolean getPointsVisible()
 	{
-		return properties().get("pointsVisible");
+		return properties().get("pointsVisible", true);
 	}
 	
-	public default void setPointsVisible(final Boolean pointsVisible)
+	public default void setPointsVisible(final boolean pointsVisible)
 	{
 		properties().put("pointsVisible", pointsVisible);
 	}

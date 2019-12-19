@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.charts;
 
 /**
@@ -32,9 +33,9 @@ public interface HasTitlePosition extends HasTitle
 {
 	public default TextPosition getTitlePosition()
 	{
-		return properties().get("titlePosition");
+		return properties().get("titlePosition", TextPosition.OUT);
 	}
-	
+
 	public default void setTitlePosition(final TextPosition titlePosition)
 	{
 		properties().put("titlePosition", titlePosition);

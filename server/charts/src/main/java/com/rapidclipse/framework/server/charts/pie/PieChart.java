@@ -53,7 +53,7 @@ public class PieChart extends AbstractChart
 	implements HasBackground, HasChartArea, HasColors, HasInteractivity, HasFont, AllowsIFrame, HasChartSize,
 	HasLegend, HasCategories, HasTitle, HasTooltip, DiffChart
 {
-	
+
 	public PieChart()
 	{
 		super("PieChart");
@@ -71,124 +71,124 @@ public class PieChart extends AbstractChart
 	{
 		super.setModel(before, after);
 	}
-	
+
 	public ChartModel initDefaultColumns()
 	{
 		return initDefaultColumns("label", "value");
 	}
-	
+
 	public ChartModel initDefaultColumns(final String labelColumn, final String valueColumn)
 	{
 		return getModel().removeAll()
 			.addColumn(Column.New(Column.Type.STRING, labelColumn))
 			.addColumn(Column.New(Column.Type.NUMBER, valueColumn));
 	}
-	
+
 	public void addSlice(final int rowIndex, final Slice slice)
 	{
 		properties().putIndexed("slices", rowIndex, slice);
 	}
-	
+
 	public Slice removeSlice(final int rowIndex)
 	{
 		return properties().removeIndexed("slices", rowIndex);
 	}
-	
+
 	public void removeAllSlices()
 	{
 		properties().removeAllIndexed("slices");
 	}
 
-	public Boolean getIs3D()
+	public boolean getIs3D()
 	{
-		return properties().get("is3D");
+		return properties().get("is3D", false);
 	}
-	
-	public void setIs3D(final Boolean is3D)
+
+	public void setIs3D(final boolean is3D)
 	{
 		properties().put("is3D", is3D);
 	}
-	
+
 	public Number getPieHole()
 	{
-		return properties().get("pieHole");
+		return properties().get("pieHole", 0);
 	}
-	
+
 	public void setPieHole(final Number pieHole)
 	{
 		properties().put("pieHole", pieHole);
 	}
-	
+
 	public String getPieSliceBorderColor()
 	{
-		return properties().get("pieSliceBorderColor");
+		return properties().get("pieSliceBorderColor", "white");
 	}
-	
+
 	public void setPieSliceBorderColor(final String pieSliceBorderColor)
 	{
 		properties().put("pieSliceBorderColor", pieSliceBorderColor);
 	}
-	
-	public String getPieSliceText()
+
+	public PieSliceText getPieSliceText()
 	{
-		return properties().get("pieSliceText");
+		return properties().get("pieSliceText", PieSliceText.PERCENTAGE);
 	}
-	
-	public void setPieSliceText(final String pieSliceText)
+
+	public void setPieSliceText(final PieSliceText pieSliceText)
 	{
 		properties().put("pieSliceText", pieSliceText);
 	}
-	
+
 	public TextStyle getPieSliceTextStyle()
 	{
-		return properties().get("pieSliceTextStyle");
+		return properties().get("pieSliceTextStyle", null);
 	}
-	
+
 	public void setPieSliceTextStyle(final TextStyle pieSliceTextStyle)
 	{
 		properties().put("pieSliceTextStyle", pieSliceTextStyle);
 	}
-	
+
 	public Number getPieStartAngle()
 	{
-		return properties().get("pieStartAngle");
+		return properties().get("pieStartAngle", 0);
 	}
-	
+
 	public void setPieStartAngle(final Number pieStartAngle)
 	{
 		properties().put("pieStartAngle", pieStartAngle);
 	}
-	
+
 	public String getPieResidueSliceColor()
 	{
-		return properties().get("pieResidueSliceColor");
+		return properties().get("pieResidueSliceColor", "#ccc");
 	}
-	
+
 	public void setPieResidueSliceColor(final String pieResidueSliceColor)
 	{
 		properties().put("pieResidueSliceColor", pieResidueSliceColor);
 	}
-	
+
 	public String getPieResidueSliceLabel()
 	{
-		return properties().get("pieResidueSliceLabel");
+		return properties().get("pieResidueSliceLabel", "Other");
 	}
-	
+
 	public void setPieResidueSliceLabel(final String pieResidueSliceLabel)
 	{
 		properties().put("pieResidueSliceLabel", pieResidueSliceLabel);
 	}
-	
+
 	public Number getSliceVisibilityThreshold()
 	{
-		return properties().get("sliceVisibilityThreshold");
+		return properties().get("sliceVisibilityThreshold", 0.0014);
 	}
-	
+
 	public void setSliceVisibilityThreshold(final Number sliceVisibilityThreshold)
 	{
 		properties().put("sliceVisibilityThreshold", sliceVisibilityThreshold);
 	}
-	
+
 	@Override
 	public void showSampleData()
 	{
@@ -198,7 +198,7 @@ public class PieChart extends AbstractChart
 			.addRow("Commute", 2)
 			.addRow("Watch TV", 2)
 			.addRow("Sleep", 7);
-		
+
 		setTitle("Daily Activities");
 		setIs3D(true);
 	}
