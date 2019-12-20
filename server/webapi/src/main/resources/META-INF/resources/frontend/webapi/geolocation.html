@@ -1,0 +1,60 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html" />
+
+<dom-module id="rap-geolocation">
+	<script>
+		class RapGeolocation extends Polymer.Element {
+			static get is() {
+				return 'rap-geolocation';
+			}
+
+			/* Copy over values as for some reason these have no value if you only return pos */
+			clonePositionObject(pos) {
+				const coords = {
+					latitude: pos.coords.latitude,
+					longitude: pos.coords.longitude,
+					altitude: pos.coords.altitude,
+					accuracy: pos.coords.accuracy,
+					altitudeAccuracy: pos.coords.altitudeAccuracy,
+					heading: pos.coords.heading,
+					speed: pos.coords.speed
+				};
+				const retval = {
+					coords: coords,
+					timestamp: pos.timestamp
+				};
+				return retval;
+			}
+			
+			getCurrentPosition(options) {
+				navigator.geolocation.getCurrentPosition(
+					pos => {
+						const cloned = this.clonePositionObject(pos);
+						this.$server.onPositionSuccess(cloned);
+					},
+					this.$server.onPositionError,
+					options
+				);
+			}
+
+			registerWatchPositionListener(options) {
+				// Save the returned id so we can unregister the event later
+				this.watchPositionId = navigator.geolocation.watchPosition(
+					pos => {
+						const cloned = this.clonePositionObject(pos);
+						this.$server.onPositionSuccess(cloned);
+					},
+					this.$server.onPositionError,
+					options
+				);
+			}
+
+			unregisterWatchPositionListener() {
+				if(this.watchPositionId !== undefined) {
+					navigator.geolocation.clearWatch(this.watchPositionId);
+					this.watchPositionId = undefined;
+				}
+			}
+		}
+		customElements.define(RapGeolocation.is, RapGeolocation);
+	</script>
+</dom-module>

@@ -1,0 +1,29 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html" />
+
+<dom-module id="rap-payment">
+	<script>
+		class RapPayment extends Polymer.Element {
+			static get is() {
+				return 'rap-payment';
+			}
+
+            requestPayment(methodData, details, options) {
+                let paymentRequest = new PaymentRequest(methodData, details, options);
+                paymentRequest.show()
+                    .then(result => { this.result = result; this.$server.onRequestPaymentResultReceived(result); })
+                    .catch(this.$server.onRequestPaymentErrorReceived);
+            }
+
+            completePayment(result) {
+                this.result.complete(result).catch(this.$server.onCompleteErrorReceived);
+            }
+
+            retryPayment(errorFields) {
+                this.result.retry(errorFields)
+                    .then(e => this.$server.onRetryResultReceived(this.result))
+                    .catch(this.$server.onRetryErrorReceived);
+            }
+		}
+		customElements.define(RapPayment.is, RapPayment);
+	</script>
+</dom-module>

@@ -1,0 +1,22 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html" />
+
+<dom-module id="rap-online">
+	<script>
+		class RapOnline extends Polymer.Element {
+			static get is() {
+				return 'rap-online';
+			}
+
+			registerOnlineListener() {
+				window.ononline = e => this.$server.onOnline();
+				window.onoffline = e => this.$server.onOffline();
+			}
+
+			unregisterOnlineLineListener() {
+				window.ononline = undefined;
+				window.onoffline = undefined;
+			}
+		}
+		customElements.define(RapOnline.is, RapOnline);
+	</script>
+</dom-module>

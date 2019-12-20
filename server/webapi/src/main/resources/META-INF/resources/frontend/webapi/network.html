@@ -1,0 +1,34 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html" />
+
+<dom-module id="rap-network">
+	<script>
+		class RapNetwork extends Polymer.Element {
+			static get is() {
+				return 'rap-network';
+			}
+
+			createNetworkInformation() {
+				const n = navigator.connection;
+				return {
+					downlink: n.downlink,
+					downlinkMax: n.downlinkMax,
+					effectiveType: n.effectiveType,
+					rtt: n.rtt,
+					saveData: n.saveData,
+					type: n.type
+				};
+			}
+
+			registerOnChangeListener() {
+				navigator.connection.onchange = e => {
+					this.$server.onNetworkInformationChanged(this.createNetworkInformation());
+				}
+			}
+
+			unregisterOnChangeListener() {
+				navigator.connection.onchange = undefined;
+			}
+		}
+		customElements.define(RapNetwork.is, RapNetwork);
+	</script>
+</dom-module>
