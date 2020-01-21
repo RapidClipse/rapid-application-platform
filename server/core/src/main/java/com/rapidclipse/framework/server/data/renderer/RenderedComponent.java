@@ -51,7 +51,7 @@ public interface RenderedComponent<T> extends HasElement, Serializable
 	// {
 	// return new ComponentRenderer<>(componentSupplier, RenderedComponent::renderComponent);
 	// }
-
+	
 	@SuppressWarnings("unchecked")
 	public static <COMPONENT extends Component, SOURCE> Renderer<SOURCE>
 		Renderer(final SerializableSupplier<COMPONENT> componentSupplier)
@@ -59,9 +59,17 @@ public interface RenderedComponent<T> extends HasElement, Serializable
 		return new RenderedComponentRenderer<>(componentSupplier,
 			(component, value) -> ((RenderedComponent<SOURCE>)component).renderComponent(value));
 	}
-
+	
 	public void renderComponent(T value);
-
+	
+	/**
+	 *
+	 * @author XDEV Software
+	 * @since 10.02.00
+	 *
+	 * @param <COMPONENT>
+	 * @param <SOURCE>
+	 */
 	public static class RenderedComponentRenderer<COMPONENT extends Component, SOURCE>
 		extends ComponentRenderer<COMPONENT, SOURCE>
 	{
@@ -71,24 +79,24 @@ public interface RenderedComponent<T> extends HasElement, Serializable
 		{
 			super(componentFunction, componentUpdateFunction);
 		}
-
+		
 		public RenderedComponentRenderer(final SerializableFunction<SOURCE, COMPONENT> componentFunction)
 		{
 			super(componentFunction);
 		}
-
+		
 		public RenderedComponentRenderer(
 			final SerializableSupplier<COMPONENT> componentSupplier,
 			final SerializableBiConsumer<COMPONENT, SOURCE> itemConsumer)
 		{
 			super(componentSupplier, itemConsumer);
 		}
-
+		
 		public RenderedComponentRenderer(final SerializableSupplier<COMPONENT> componentSupplier)
 		{
 			super(componentSupplier);
 		}
-
+		
 	}
-
+	
 }
