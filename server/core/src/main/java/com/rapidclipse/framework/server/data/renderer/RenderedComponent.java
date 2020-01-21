@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.renderer;
 
 import java.io.Serializable;
@@ -29,6 +30,9 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.data.renderer.ComponentRenderer;
 import com.vaadin.flow.data.renderer.Renderer;
+import com.vaadin.flow.function.SerializableBiConsumer;
+import com.vaadin.flow.function.SerializableBiFunction;
+import com.vaadin.flow.function.SerializableFunction;
 import com.vaadin.flow.function.SerializableSupplier;
 
 
@@ -52,9 +56,39 @@ public interface RenderedComponent<T> extends HasElement, Serializable
 	public static <COMPONENT extends Component, SOURCE> Renderer<SOURCE>
 		Renderer(final SerializableSupplier<COMPONENT> componentSupplier)
 	{
-		return new ComponentRenderer<>(componentSupplier,
+		return new RenderedComponentRenderer<>(componentSupplier,
 			(component, value) -> ((RenderedComponent<SOURCE>)component).renderComponent(value));
 	}
 
 	public void renderComponent(T value);
+
+	public static class RenderedComponentRenderer<COMPONENT extends Component, SOURCE>
+		extends ComponentRenderer<COMPONENT, SOURCE>
+	{
+		public RenderedComponentRenderer(
+			final SerializableFunction<SOURCE, COMPONENT> componentFunction,
+			final SerializableBiFunction<Component, SOURCE, Component> componentUpdateFunction)
+		{
+			super(componentFunction, componentUpdateFunction);
+		}
+
+		public RenderedComponentRenderer(final SerializableFunction<SOURCE, COMPONENT> componentFunction)
+		{
+			super(componentFunction);
+		}
+
+		public RenderedComponentRenderer(
+			final SerializableSupplier<COMPONENT> componentSupplier,
+			final SerializableBiConsumer<COMPONENT, SOURCE> itemConsumer)
+		{
+			super(componentSupplier, itemConsumer);
+		}
+
+		public RenderedComponentRenderer(final SerializableSupplier<COMPONENT> componentSupplier)
+		{
+			super(componentSupplier);
+		}
+
+	}
+
 }
