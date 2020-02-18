@@ -118,7 +118,7 @@ public interface FilterOperator extends Serializable
 		{
 			final TextField textField = new TextFieldWithNull();
 			textField.setValueChangeMode(ValueChangeMode.EAGER);
-			return FilterValueEditorComposite.New(textField);
+			return FilterValueEditorComposite.New(textField, "");
 		}
 		
 		protected <MODEL extends Number> FilterValueEditorComposite<String, MODEL> createNumberField(
@@ -127,7 +127,8 @@ public interface FilterOperator extends Serializable
 			final TextField textField = new TextFieldWithNull();
 			textField.setValueChangeMode(ValueChangeMode.EAGER);
 			return FilterValueEditorComposite.New(textField,
-				ConverterBuilder.StringToNumber(numberType).build());
+				ConverterBuilder.StringToNumber(numberType).build(),
+				"");
 		}
 		
 		/**
@@ -139,7 +140,8 @@ public interface FilterOperator extends Serializable
 		{
 			final DatePicker datePicker = new DatePicker();
 			return FilterValueEditorComposite.New(datePicker,
-				LocalDateToTemporalConverter.New(dateType));
+				LocalDateToTemporalConverter.New(dateType),
+				LocalDate.now());
 		}
 		
 		protected <MODEL extends Date> FilterValueEditorComposite<LocalDate, MODEL> createDateField(
@@ -147,13 +149,14 @@ public interface FilterOperator extends Serializable
 		{
 			final DatePicker datePicker = new DatePicker();
 			return FilterValueEditorComposite.New(datePicker,
-				LocalDateToDateConverter.New(dateType));
+				LocalDateToDateConverter.New(dateType),
+				LocalDate.now());
 		}
 		
 		protected FilterValueEditorComposite<Boolean, Boolean> createBooleanField()
 		{
 			final Checkbox checkbox = new Checkbox();
-			return FilterValueEditorComposite.New(checkbox);
+			return FilterValueEditorComposite.New(checkbox, false);
 		}
 		
 		@SuppressWarnings("unchecked")
@@ -169,7 +172,7 @@ public interface FilterOperator extends Serializable
 			final ComboBox<T> combo = new ComboBox<>();
 			combo.setItemLabelGenerator(ItemLabelGeneratorFactory.NonNull(CaptionUtils::resolveCaption));
 			subsetDataProvider.configure(combo, context, property);
-			return FilterValueEditorComposite.New(combo);
+			return FilterValueEditorComposite.New(combo, null);
 		}
 	}
 	

@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.filter;
 
 import java.io.Serializable;
@@ -29,7 +30,9 @@ import com.vaadin.flow.component.HasValidation;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.HasValueAndElement;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.Result;
 import com.vaadin.flow.data.binder.ValidationResult;
+import com.vaadin.flow.data.binder.ValueContext;
 import com.vaadin.flow.data.converter.Converter;
 
 
@@ -47,15 +50,17 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 
 	public static <PRESENTATION, MODEL> FilterValueEditorComposite<PRESENTATION, MODEL> New(
 		final HasValueAndElement<?, PRESENTATION> component,
-		final Converter<PRESENTATION, MODEL> converter)
+		final Converter<PRESENTATION, MODEL> converter,
+		final PRESENTATION nullRepresentation)
 	{
-		return new Default<>(component, converter);
+		return new Default<>(component, converter, nullRepresentation);
 	}
 
 	public static <MODEL> FilterValueEditorComposite<MODEL, MODEL> New(
-		final HasValueAndElement<?, MODEL> component)
+		final HasValueAndElement<?, MODEL> component,
+		final MODEL nullRepresentation)
 	{
-		return new Default<>(component, Converter.identity());
+		return new Default<>(component, Converter.identity(), nullRepresentation);
 	}
 
 	public static class Default<PRESENTATION, MODEL>
@@ -67,7 +72,8 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 
 		protected Default(
 			final HasValueAndElement<?, PRESENTATION> component,
-			final Converter<PRESENTATION, MODEL> converter)
+			final Converter<PRESENTATION, MODEL> converter,
+			final PRESENTATION nullRepresentation)
 		{
 			super();
 
@@ -86,10 +92,18 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 						fieldWithValidation.setInvalid(true);
 					}
 				}
+
+				@Override
+				public void setBean(final Default<PRESENTATION, MODEL> bean)
+				{
+					super.setBean(bean);
+				}
 			};
-			this.binder.forField(component).withConverter(converter).bind(
-				Default<PRESENTATION, MODEL>::getValue,
-				Default<PRESENTATION, MODEL>::setModelValue);
+			this.binder.forField(component)
+				.withConverter(new NullAwareConverter<>(converter, nullRepresentation))
+				.bind(
+					Default<PRESENTATION, MODEL>::getValue,
+					Default<PRESENTATION, MODEL>::setModelValue);
 			this.binder.setBean(this);
 		}
 
@@ -116,5 +130,38 @@ public interface FilterValueEditorComposite<PRESENTATION, MODEL> extends Seriali
 		{
 			this.value = value;
 		}
+		
+		private static class NullAwareConverter<PRESENTATION, MODEL> implements Converter<PRESENTATION, MODEL>
+		{
+			private final Converter<PRESENTATION, MODEL> delegate;
+			private final PRESENTATION                   nullRepresentation;
+
+			NullAwareConverter(
+				final Converter<PRESENTATION, MODEL> delegate,
+				final PRESENTATION nullRepresentation)
+			{
+				super();
+				this.delegate           = delegate;
+				this.nullRepresentation = nullRepresentation;
+			}
+
+			@Override
+			public Result<MODEL> convertToModel(final PRESENTATION value, final ValueContext context)
+			{
+				return this.delegate.convertToModel(value, context);
+			}
+
+			@Override
+			public PRESENTATION convertToPresentation(final MODEL value, final ValueContext context)
+			{
+				final PRESENTATION presentation = this.delegate.convertToPresentation(value, context);
+				return presentation != null
+					? presentation
+					: this.nullRepresentation;
+			}
+
+		}
+
 	}
+
 }
