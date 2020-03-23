@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.provider;
 
 import static java.util.Objects.requireNonNull;
@@ -93,7 +94,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 		{
 			private final CriteriaQuery<T>          criteria;
 			private final CriteriaParameterProvider parameterProvider;
-			private final Root<T>                   root;
+			private final Root<?>                   root;
 
 			protected CriteriaCallbackBase(
 				final CriteriaQuery<T> criteria,
@@ -103,7 +104,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 
 				this.criteria          = requireNonNull(criteria);
 				this.parameterProvider = requireNonNull(parameterProvider);
-				this.root              = Jpa.findRoot(criteria, criteria.getResultType());
+				this.root              = Jpa.getRoot(criteria);
 				if(this.root == null)
 				{
 					throw new IllegalArgumentException("Unsupported criteria");
@@ -120,14 +121,14 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 				return this.parameterProvider;
 			}
 
-			protected Root<T> root()
+			protected Root<?> root()
 			{
 				return this.root;
 			}
 
 			protected EntityManager entityManager()
 			{
-				return Jpa.getEntityManager(criteria().getResultType());
+				return Jpa.getEntityManager(root().getJavaType());
 			}
 
 			protected CriteriaQuery<T> createCriteria(
@@ -135,7 +136,7 @@ public interface CriteriaDataProvider<T> extends FilterableDataProvider<T, Filte
 				final EntityManager entityManager)
 			{
 				final CriteriaQuery<T> originalCriteria = criteria();
-				final Root<T>          root             = root();
+				final Root<?>          root             = root();
 
 				final CriteriaQuery<T> criteria = entityManager.getCriteriaBuilder()
 					.createQuery(originalCriteria.getResultType());

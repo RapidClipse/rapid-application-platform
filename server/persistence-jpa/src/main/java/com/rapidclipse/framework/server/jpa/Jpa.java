@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -217,11 +219,11 @@ public final class Jpa
 		if(criteria.isDistinct())
 		{
 			countExpression = builder
-				.countDistinct(findRoot(countCriteria, criteria.getResultType()));
+				.countDistinct(getRoot(countCriteria));
 		}
 		else
 		{
-			countExpression = builder.count(findRoot(countCriteria, criteria.getResultType()));
+			countExpression = builder.count(getRoot(countCriteria));
 		}
 
 		return countCriteria.select(countExpression);
@@ -270,6 +272,14 @@ public final class Jpa
 		{
 			to.where(predicate);
 		}
+	}
+	
+	public static Root<?> getRoot(final CriteriaQuery<?> query)
+	{
+		final Set<Root<?>> roots = query.getRoots();
+		return roots.size() == 1
+			? roots.iterator().next()
+			: findRoot(query, query.getResultType());
 	}
 
 	public static <T> Root<T> findRoot(final CriteriaQuery<?> query, final Class<T> clazz)
