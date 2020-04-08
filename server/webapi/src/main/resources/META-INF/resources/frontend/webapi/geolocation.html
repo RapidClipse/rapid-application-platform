@@ -56,7 +56,7 @@
 						const cloned = this.clonePositionObject(pos);
 						this.$server.onPositionSuccess(cloned);
 					},
-					this.$server.onPositionError,
+					e => this.$server.onPositionError({message: e.message, name: e.name}),
 					options
 				);
 			}
@@ -68,7 +68,7 @@
 						const cloned = this.clonePositionObject(pos);
 						this.$server.onPositionSuccess(cloned);
 					},
-					this.$server.onPositionError,
+					e => this.$server.onPositionError({message: e.message, name: e.name}),
 					options
 				);
 			}
