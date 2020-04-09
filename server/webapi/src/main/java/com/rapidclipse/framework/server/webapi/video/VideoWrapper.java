@@ -21,8 +21,14 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.webapi.video;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -52,5 +58,17 @@ public class VideoWrapper implements Serializable
 	public List<byte[]> getData()
 	{
 		return this.data;
+	}
+	
+	public void saveToFile(final File target, final boolean append) throws FileNotFoundException, IOException
+	{
+		try(final OutputStream out = new FileOutputStream(target, append))
+		{
+			// Ranged for-loop as we would have to catch the exception otherwise
+			for(final byte[] b : this.data)
+			{
+				out.write(b);
+			}
+		}
 	}
 }
