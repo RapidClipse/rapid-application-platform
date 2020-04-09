@@ -33,7 +33,7 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap-server</artifactId>
-		<version>10.02.00-RAP-GA</version>
+		<version>10.02.01-RAP-GA</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -53,12 +53,12 @@
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-security-auth</artifactId>
-			<version>10.02.00-RAP-GA</version>
+			<version>10.02.01-RAP-GA</version>
 		</dependency>
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-persistence-jpa</artifactId>
-			<version>10.02.00-RAP-GA</version>
+			<version>10.02.01-RAP-GA</version>
 		</dependency>
 	</dependencies>
 
