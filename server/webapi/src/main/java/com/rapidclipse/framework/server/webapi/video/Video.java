@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.webapi.video;
 
 import java.util.Base64;
@@ -45,7 +46,7 @@ import elemental.json.JsonString;
  * The html video element that can contain multimedia such as videos. To add such sources the {@link #addSource(Source)}
  * method can be used. To add the users device camera the {@link #addDeviceCameraVideoSource(boolean, boolean, boolean)}
  * method can be used. You can also take pictures with the {@link #takePicture()} method.
- * 
+ *
  * @author XDEV Software
  * @since 10.02.00
  */
@@ -53,8 +54,11 @@ import elemental.json.JsonString;
 @Tag("rap-video")
 public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implements HasSize
 {
-	// TODO: What to do if no more memory is left? Maybe send multiple video received callbacks
+	// TODO: What to do if no more memory is left? Maybe add some sort of immediate mode, where the server
+	// can immediately process the received video after recieving one of the chunks
 	private final List<byte[]> recordedData = new LinkedList<>();
+	private String             mimeType     = null;
+	private boolean            isRecording  = false;
 
 	public Video()
 	{
@@ -127,6 +131,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	 */
 	public void startRecording()
 	{
+		this.isRecording = true;
 		this.getElement().callJsFunction("startRecording");
 	}
 
@@ -136,9 +141,9 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	 */
 	public void stopRecording()
 	{
-		this.getElement().callJsFunction("stopRecording").then(String.class, mimeType -> {
-			this.notifyConsumers(VideoWrapper.class, new VideoWrapper(mimeType, this.recordedData));
-		});
+		this.isRecording = false;
+		this.getElement().callJsFunction("stopRecording")
+			.then(String.class, mimeType -> this.mimeType = mimeType);
 	}
 
 	/**
@@ -183,8 +188,15 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		// The received data chunk is encoded in a base64 string
 		final Decoder decoder     = Base64.getDecoder();
-		final byte[]  decodedData = decoder.decode(data.asString().split(",")[1]);
+		final String  s           = data.asString();
+		final byte[]  decodedData = decoder.decode(s.substring(s.indexOf("base64,") + 7));
 		this.recordedData.add(decodedData);
+
+		// If the recording was stopped and this is the last data chunk we will receive, notify the consumers
+		if(!this.isRecording)
+		{
+			this.notifyConsumers(VideoWrapper.class, new VideoWrapper(this.mimeType, this.recordedData));
+		}
 	}
 
 	@ClientCallable
