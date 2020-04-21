@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.persistence.handler;
 
 import java.util.Map;
@@ -34,30 +35,35 @@ import com.vaadin.flow.component.AbstractCompositeField;
 public class AbstractCompositeFieldHandler<C extends AbstractCompositeField> extends ComponentHandler<C>
 	implements HasValueHandler
 {
+	public AbstractCompositeFieldHandler()
+	{
+		super();
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public Class<C> handledType()
 	{
 		return (Class<C>)AbstractCompositeField.class;
 	}
-	
+
 	@Override
 	protected void addEntryValues(final Map<String, Object> entryValues, final C component)
 	{
 		super.addEntryValues(entryValues, component);
-		
+
 		if(PersistValueFlag.get(component))
 		{
 			entryValues.put(VALUE, getFieldValueToStore(component.getValue()));
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void restore(final C component, final GuiPersistenceEntry entry)
 	{
 		super.restore(component, entry);
-		
+
 		if(PersistValueFlag.get(component))
 		{
 			component.setValue(getFieldValueToRestore(entry.value(VALUE)));

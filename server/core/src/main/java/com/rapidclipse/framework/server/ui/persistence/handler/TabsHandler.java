@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.persistence.handler;
 
 import java.util.Map;
@@ -32,26 +33,31 @@ import com.vaadin.flow.component.tabs.Tabs;
 public class TabsHandler extends ComponentHandler<Tabs>
 {
 	protected static final String SELECTED_TAB_INDEX = "selectedTabIndex";
+	
+	public TabsHandler()
+	{
+		super();
+	}
 
 	@Override
 	public Class<Tabs> handledType()
 	{
 		return Tabs.class;
 	}
-
+	
 	@Override
 	protected void addEntryValues(final Map<String, Object> entryValues, final Tabs component)
 	{
 		super.addEntryValues(entryValues, component);
-
+		
 		entryValues.put(SELECTED_TAB_INDEX, component.getSelectedIndex());
 	}
-
+	
 	@Override
 	public void restore(final Tabs component, final GuiPersistenceEntry entry)
 	{
 		super.restore(component, entry);
-
+		
 		component.setSelectedIndex(((Number)entry.value(SELECTED_TAB_INDEX)).intValue());
 	}
 }

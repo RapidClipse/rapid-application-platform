@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui.persistence.handler;
 
 import java.util.HashMap;
@@ -34,7 +35,12 @@ import com.vaadin.flow.component.Component;
 public abstract class ComponentHandler<C extends Component> implements GuiPersistenceHandler<C>
 {
 	protected static final String KEY_VISIBLE = "visible";
-	
+
+	protected ComponentHandler()
+	{
+		super();
+	}
+
 	@Override
 	public GuiPersistenceEntry persist(final C component)
 	{
@@ -42,12 +48,12 @@ public abstract class ComponentHandler<C extends Component> implements GuiPersis
 		this.addEntryValues(valueTable, component);
 		return GuiPersistenceEntry.New(valueTable);
 	}
-
+	
 	protected void addEntryValues(final Map<String, Object> entryValues, final C component)
 	{
 		entryValues.put(KEY_VISIBLE, component.isVisible());
 	}
-
+	
 	@Override
 	public void restore(final C component, final GuiPersistenceEntry entry)
 	{
