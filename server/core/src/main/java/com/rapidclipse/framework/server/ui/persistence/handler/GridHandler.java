@@ -26,6 +26,7 @@ package com.rapidclipse.framework.server.ui.persistence.handler;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -63,7 +64,7 @@ public class GridHandler extends ComponentHandler<Grid>
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void storeColumnWidth(final Map<String, Object> entryValues, final Grid grid)
+	private void storeColumnWidth(final Map<String, Object> entryValues, final Grid grid)
 	{
 		final List<Column>        columns  = grid.getColumns();
 		final Map<String, String> widthMap = columns.stream()
@@ -76,7 +77,7 @@ public class GridHandler extends ComponentHandler<Grid>
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void storeColumnSortOrder(final Map<String, Object> entryValues, final Grid grid)
+	private void storeColumnSortOrder(final Map<String, Object> entryValues, final Grid grid)
 	{
 		final List<GridSortOrder> sortOrder = grid.getSortOrder();
 		final Map<String, String> sortMap   = sortOrder.stream()
@@ -98,7 +99,7 @@ public class GridHandler extends ComponentHandler<Grid>
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void restoreColumnWidth(final Grid grid, final GuiPersistenceEntry entry)
+	private void restoreColumnWidth(final Grid grid, final GuiPersistenceEntry entry)
 	{
 		final Map<String, String> widthMap = (Map<String, String>)entry.value(COLUMN_WIDTH);
 		if(widthMap != null)
@@ -114,21 +115,25 @@ public class GridHandler extends ComponentHandler<Grid>
 	}
 	
 	@SuppressWarnings("unchecked")
-	protected void restoreColumnSortOrder(final Grid grid, final GuiPersistenceEntry entry)
+	private void restoreColumnSortOrder(final Grid grid, final GuiPersistenceEntry entry)
 	{
 		final Map<String, String> sortMap = (Map<String, String>)entry.value(COLUMN_SORT_ORDER);
 		if(sortMap != null)
 		{
 			final List<GridSortOrder> sortOrder = sortMap.entrySet().stream()
-				.map(e -> {
-					final Column column = grid.getColumnByKey(e.getKey());
-					return column != null
-						? new GridSortOrder<>(column, SortDirection.valueOf(e.getValue()))
-						: null;
-				})
+				.map(e -> restoreSortOrder(grid, e))
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 			grid.sort(sortOrder);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	private GridSortOrder restoreSortOrder(final Grid grid, final Entry<String, String> entry)
+	{
+		final Column column = grid.getColumnByKey(entry.getKey());
+		return column != null
+			? new GridSortOrder(column, SortDirection.valueOf(entry.getValue()))
+			: null;
 	}
 }
