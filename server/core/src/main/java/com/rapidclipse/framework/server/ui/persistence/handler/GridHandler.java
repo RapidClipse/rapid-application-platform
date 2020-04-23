@@ -24,9 +24,9 @@
 
 package com.rapidclipse.framework.server.ui.persistence.handler;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -37,32 +37,37 @@ import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.data.provider.SortDirection;
 
 
+/**
+ *
+ * @author XDEV Software
+ * @since 10.02.02
+ */
 @SuppressWarnings("rawtypes")
 public class GridHandler extends ComponentHandler<Grid>
 {
 	protected static final String COLUMN_SORT_ORDER = "columnSortOrder";
 	protected static final String COLUMN_WIDTH      = "columnWidth";
-	
+
 	public GridHandler()
 	{
 		super();
 	}
-
+	
 	@Override
 	public Class<Grid> handledType()
 	{
 		return Grid.class;
 	}
-
+	
 	@Override
 	protected void addEntryValues(final Map<String, Object> entryValues, final Grid grid)
 	{
 		super.addEntryValues(entryValues, grid);
-
+		
 		storeColumnSortOrder(entryValues, grid);
 		storeColumnWidth(entryValues, grid);
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private void storeColumnWidth(final Map<String, Object> entryValues, final Grid grid)
 	{
@@ -75,29 +80,38 @@ public class GridHandler extends ComponentHandler<Grid>
 			entryValues.put(COLUMN_WIDTH, widthMap);
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
 	private void storeColumnSortOrder(final Map<String, Object> entryValues, final Grid grid)
 	{
-		final List<GridSortOrder> sortOrder = grid.getSortOrder();
-		final Map<String, String> sortMap   = sortOrder.stream()
+		final List<GridSortOrder>       sortOrder          = grid.getSortOrder();
+		final List<Map<String, String>> persistedSortOrder = sortOrder.stream()
 			.filter(so -> so.getSorted().getKey() != null)
-			.collect(Collectors.toMap(so -> so.getSorted().getKey(), so -> so.getDirection().name()));
-		if(sortMap.size() > 0)
+			.map(this::sortOrderToMap)
+			.collect(Collectors.toList());
+		if(persistedSortOrder.size() > 0)
 		{
-			entryValues.put(COLUMN_SORT_ORDER, sortMap);
+			entryValues.put(COLUMN_SORT_ORDER, persistedSortOrder);
 		}
 	}
-
+	
+	private Map<String, String> sortOrderToMap(final GridSortOrder so)
+	{
+		final Map<String, String> map = new HashMap<>();
+		map.put("key", so.getSorted().getKey());
+		map.put("direction", so.getDirection().name());
+		return map;
+	}
+	
 	@Override
 	public void restore(final Grid grid, final GuiPersistenceEntry entry)
 	{
 		super.restore(grid, entry);
-
+		
 		restoreColumnSortOrder(grid, entry);
 		restoreColumnWidth(grid, entry);
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void restoreColumnWidth(final Grid grid, final GuiPersistenceEntry entry)
 	{
@@ -113,27 +127,27 @@ public class GridHandler extends ComponentHandler<Grid>
 			});
 		}
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	private void restoreColumnSortOrder(final Grid grid, final GuiPersistenceEntry entry)
 	{
-		final Map<String, String> sortMap = (Map<String, String>)entry.value(COLUMN_SORT_ORDER);
-		if(sortMap != null)
+		final List<Map<String, String>> sortList = (List<Map<String, String>>)entry.value(COLUMN_SORT_ORDER);
+		if(sortList != null)
 		{
-			final List<GridSortOrder> sortOrder = sortMap.entrySet().stream()
-				.map(e -> restoreSortOrder(grid, e))
+			final List<GridSortOrder> sortOrder = sortList.stream()
+				.map(map -> mapToSortOrder(grid, map))
 				.filter(Objects::nonNull)
 				.collect(Collectors.toList());
 			grid.sort(sortOrder);
 		}
 	}
-
+	
 	@SuppressWarnings("unchecked")
-	private GridSortOrder restoreSortOrder(final Grid grid, final Entry<String, String> entry)
+	private GridSortOrder mapToSortOrder(final Grid grid, final Map<String, String> map)
 	{
-		final Column column = grid.getColumnByKey(entry.getKey());
+		final Column column = grid.getColumnByKey(map.get("key"));
 		return column != null
-			? new GridSortOrder(column, SortDirection.valueOf(entry.getValue()))
+			? new GridSortOrder(column, SortDirection.valueOf(map.get("direction")))
 			: null;
 	}
 }
