@@ -27,25 +27,26 @@ package com.rapidclipse.framework.server.reports;
 import com.rapidclipse.framework.server.util.ServiceLoader;
 
 import net.sf.dynamicreports.design.transformation.StyleResolver;
+import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
 import net.sf.dynamicreports.report.base.style.DRFont;
 import net.sf.dynamicreports.report.defaults.Defaults;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.export.HtmlExporter;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
 import net.sf.jasperreports.engine.export.JRTextExporter;
 import net.sf.jasperreports.engine.export.JRXlsExporter;
-import net.sf.jasperreports.engine.export.JRXmlExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdsExporter;
 import net.sf.jasperreports.engine.export.oasis.JROdtExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRDocxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRPptxExporter;
 import net.sf.jasperreports.engine.export.ooxml.JRXlsxExporter;
 import net.sf.jasperreports.export.SimpleExporterInput;
+import net.sf.jasperreports.export.SimpleHtmlExporterOutput;
 import net.sf.jasperreports.export.SimpleOutputStreamExporterOutput;
 import net.sf.jasperreports.export.SimpleTextReportConfiguration;
 import net.sf.jasperreports.export.SimpleWriterExporterOutput;
-import net.sf.jasperreports.export.SimpleXmlExporterOutput;
 
 
 /**
@@ -184,13 +185,42 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toPdf(stream);
+			return JasperReportBuilder::toPdf;
 		}
 		
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> JasperExportManager.exportReportToPdfStream(print, stream);
+		}
+	}
+	
+	public static class Html extends Abstract
+	{
+		public final static String MIME_TYPE = "text/html";
+		
+		public Html()
+		{
+			super("HTML", "html", MIME_TYPE);
+		}
+		
+		@Override
+		protected DynamicExporter createDynamicExporter()
+		{
+			return JasperReportBuilder::toHtml;
+		}
+		
+		@Override
+		protected PlainExporter createPlainExporter()
+		{
+			return (print, stream) -> {
+				
+				final HtmlExporter exporter = new HtmlExporter(
+					DefaultJasperReportsContext.getInstance());
+				exporter.setExporterInput(new SimpleExporterInput(print));
+				exporter.setExporterOutput(new SimpleHtmlExporterOutput(stream));
+				exporter.exportReport();
+			};
 		}
 	}
 	
@@ -206,20 +236,13 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toHtml(stream);
+			return JasperReportBuilder::toXml;
 		}
 		
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
-			return (print, stream) -> {
-				
-				final JRXmlExporter exporter = new JRXmlExporter(
-					DefaultJasperReportsContext.getInstance());
-				exporter.setExporterInput(new SimpleExporterInput(print));
-				exporter.setExporterOutput(new SimpleXmlExporterOutput(stream));
-				exporter.exportReport();
-			};
+			return JasperExportManager::exportReportToXmlStream;
 		}
 	}
 	
@@ -235,7 +258,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toText(stream);
+			return JasperReportBuilder::toText;
 		}
 		
 		@Override
@@ -269,7 +292,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toRtf(stream);
+			return JasperReportBuilder::toRtf;
 		}
 		
 		@Override
@@ -298,7 +321,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toCsv(stream);
+			return JasperReportBuilder::toCsv;
 		}
 		
 		@Override
@@ -327,7 +350,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toXls(stream);
+			return JasperReportBuilder::toXls;
 		}
 		
 		@Override
@@ -356,7 +379,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toXlsx(stream);
+			return JasperReportBuilder::toXlsx;
 		}
 		
 		@Override
@@ -386,7 +409,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toDocx(stream);
+			return JasperReportBuilder::toDocx;
 		}
 		
 		@Override
@@ -416,7 +439,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toPptx(stream);
+			return JasperReportBuilder::toPptx;
 		}
 		
 		@Override
@@ -445,7 +468,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toOdt(stream);
+			return JasperReportBuilder::toOdt;
 		}
 		
 		@Override
@@ -474,7 +497,7 @@ public interface Format
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
-			return (builder, stream) -> builder.toOds(stream);
+			return JasperReportBuilder::toOds;
 		}
 		
 		@Override

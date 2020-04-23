@@ -1,4 +1,5 @@
 com.rapidclipse.framework.server.reports.Format$Pdf
+com.rapidclipse.framework.server.reports.Format$Html
 com.rapidclipse.framework.server.reports.Format$Xml
 com.rapidclipse.framework.server.reports.Format$Text
 com.rapidclipse.framework.server.reports.Format$Rtf
