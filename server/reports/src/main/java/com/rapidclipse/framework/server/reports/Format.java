@@ -56,165 +56,180 @@ import net.sf.jasperreports.export.SimpleWriterExporterOutput;
 public interface Format
 {
 	public String name();
-	
+
 	public String fileSuffix();
-	
+
 	public String mimeType();
-	
+
 	public Exporter createExporter();
-	
+
 	public static Format Csv()
 	{
 		return new Csv();
 	}
-	
+
 	public static Format Docx()
 	{
 		return new Docx();
 	}
-	
+
 	public static Format Ods()
 	{
 		return new Ods();
 	}
-	
+
 	public static Format Odt()
 	{
 		return new Odt();
 	}
-	
+
 	public static Format Pdf()
 	{
 		return new Pdf();
 	}
-	
+
 	public static Format Pptx()
 	{
 		return new Pptx();
 	}
-	
+
 	public static Format Rtf()
 	{
 		return new Rtf();
 	}
-	
+
 	public static Format Text()
 	{
 		return new Text();
 	}
-	
+
 	public static Format Xls()
 	{
 		return new Xls();
 	}
-	
+
 	public static Format Xlsx()
 	{
 		return new Xlsx();
 	}
-	
+
 	public static Format Xml()
 	{
 		return new Xml();
 	}
 	
+	/**
+	 *
+	 * @author XDEV Software
+	 * @since 10.02.02
+	 */
+	public static Format Html()
+	{
+		return new Html();
+	}
+
 	public static Format[] All()
 	{
 		return ServiceLoader.forType(Format.class).servicesStream().toArray(Format[]::new);
 	}
-	
+
 	public static abstract class Abstract implements Format
 	{
 		private final String name;
 		private final String fileSuffix;
 		private final String mimeType;
-		
+
 		public Abstract(final String name, final String fileSuffix, final String mimeType)
 		{
 			super();
-			
+
 			this.name       = name;
 			this.fileSuffix = fileSuffix;
 			this.mimeType   = mimeType;
 		}
-		
+
 		@Override
 		public String name()
 		{
 			return this.name;
 		}
-		
+
 		@Override
 		public String fileSuffix()
 		{
 			return this.fileSuffix;
 		}
-		
+
 		@Override
 		public String mimeType()
 		{
 			return this.mimeType;
 		}
-		
+
 		@Override
 		public Exporter createExporter()
 		{
 			return Exporter.New(this, createDynamicExporter(), createPlainExporter());
 		}
-		
+
 		protected abstract DynamicExporter createDynamicExporter();
-		
+
 		protected abstract PlainExporter createPlainExporter();
-		
+
 		@Override
 		public boolean equals(final Object obj)
 		{
 			return obj instanceof Format && this.name.equals(((Format)obj).name());
 		}
 	}
-	
+
 	public static class Pdf extends Abstract
 	{
 		public final static String MIME_TYPE = "application/pdf";
-		
+
 		public Pdf()
 		{
 			super("PDF", "pdf", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toPdf;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> JasperExportManager.exportReportToPdfStream(print, stream);
 		}
 	}
-	
+
+	/**
+	 *
+	 * @author XDEV Software
+	 * @since 10.02.02
+	 */
 	public static class Html extends Abstract
 	{
 		public final static String MIME_TYPE = "text/html";
-		
+
 		public Html()
 		{
 			super("HTML", "html", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toHtml;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final HtmlExporter exporter = new HtmlExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -223,49 +238,49 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Xml extends Abstract
 	{
 		public final static String MIME_TYPE = "text/xml";
-		
+
 		public Xml()
 		{
 			super("XML", "xml", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toXml;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return JasperExportManager::exportReportToXmlStream;
 		}
 	}
-	
+
 	public static class Text extends Abstract
 	{
 		public final static String MIME_TYPE = "text/plain";
-		
+
 		public Text()
 		{
 			super("Text", "txt", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toText;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRTextExporter exporter = new JRTextExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -279,27 +294,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Rtf extends Abstract
 	{
 		public final static String MIME_TYPE = "text/rtf";
-		
+
 		public Rtf()
 		{
 			super("Rich Text", "rtf", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toRtf;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRRtfExporter exporter = new JRRtfExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -308,27 +323,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Csv extends Abstract
 	{
 		public final static String MIME_TYPE = "text/comma-separated-values";
-		
+
 		public Csv()
 		{
 			super("CSV", "csv", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toCsv;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRCsvExporter exporter = new JRCsvExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -337,27 +352,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Xls extends Abstract
 	{
 		public final static String MIME_TYPE = "application/vnd.ms-excel";
-		
+
 		public Xls()
 		{
 			super("Excel (xls)", "xls", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toXls;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRXlsExporter exporter = new JRXlsExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -366,27 +381,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Xlsx extends Abstract
 	{
 		public final static String MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
-		
+
 		public Xlsx()
 		{
 			super("Excel (xlsx)", "xlsx", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toXlsx;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRXlsxExporter exporter = new JRXlsxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -395,28 +410,28 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Docx extends Abstract
 	{
 		public final static String MIME_TYPE =
 			"application/vnd.openxmlformats-officedocument.wordprocessingml.document";
-		
+
 		public Docx()
 		{
 			super("Word (docx)", "docx", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toDocx;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRDocxExporter exporter = new JRDocxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -425,28 +440,28 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Pptx extends Abstract
 	{
 		public final static String MIME_TYPE =
 			"application/vnd.openxmlformats-officedocument.presentationml.presentation";
-		
+
 		public Pptx()
 		{
 			super("Powerpoint (pptx)", "pptx", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toPptx;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JRPptxExporter exporter = new JRPptxExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -455,27 +470,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Odt extends Abstract
 	{
 		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.text";
-		
+
 		public Odt()
 		{
 			super("Open Document Text (odt)", "odt", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toOdt;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JROdtExporter exporter = new JROdtExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
@@ -484,27 +499,27 @@ public interface Format
 			};
 		}
 	}
-	
+
 	public static class Ods extends Abstract
 	{
 		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.spreadsheet";
-		
+
 		public Ods()
 		{
 			super("Open Document Spreadsheet (ods)", "ods", MIME_TYPE);
 		}
-		
+
 		@Override
 		protected DynamicExporter createDynamicExporter()
 		{
 			return JasperReportBuilder::toOds;
 		}
-		
+
 		@Override
 		protected PlainExporter createPlainExporter()
 		{
 			return (print, stream) -> {
-				
+
 				final JROdsExporter exporter = new JROdsExporter(
 					DefaultJasperReportsContext.getInstance());
 				exporter.setExporterInput(new SimpleExporterInput(print));
