@@ -33,7 +33,7 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap-server</artifactId>
-		<version>10.02.02-RAP-SNAPSHOT</version>
+		<version>10.02.02-RAP-GA</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-core</artifactId>
-			<version>10.02.02-RAP-SNAPSHOT</version>
+			<version>10.02.02-RAP-GA</version>
 		</dependency>
 	</dependencies>
 
