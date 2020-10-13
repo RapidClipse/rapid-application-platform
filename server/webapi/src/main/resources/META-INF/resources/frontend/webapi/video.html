@@ -68,6 +68,14 @@
                 this.recorder.stop();
                 return this.recorder.mimeType;
             }
+            
+            play() {
+            	this.$.rapvideo.play();
+            }
+            
+            pause() {
+            	this.$.rapvideo.pause();
+            }
 
             takePicture() {
                 let video = this.$.rapvideo;

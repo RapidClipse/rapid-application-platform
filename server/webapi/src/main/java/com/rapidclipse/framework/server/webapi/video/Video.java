@@ -55,25 +55,25 @@ import elemental.json.JsonString;
 public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implements HasSize
 {
 	// TODO: What to do if no more memory is left? Maybe add some sort of immediate mode, where the server
-	// can immediately process the received video after recieving one of the chunks
+	// can immediately process the received video after receiving one of the chunks
 	private final List<byte[]> recordedData = new LinkedList<>();
 	private String             mimeType     = null;
 	private boolean            isRecording  = false;
-
+	
 	public Video()
 	{
 		this.setSizeFull();
 	}
-
+	
 	/**
 	 * Add a consumer for the video received event triggered by {@link #stopRecording()}. This consumer will be called
-	 * when the video transmition has ended.
+	 * when the video transmission has ended.
 	 */
 	public Registration addVideoConsumer(final SerializableConsumer<VideoWrapper> consumer)
 	{
 		return this.registerConsumer(VideoWrapper.class, consumer);
 	}
-
+	
 	/**
 	 * Add a consumer for the picture received event triggered by {@link #takePicture()}. It will consume the image
 	 * received. The result is wrapped in an ImageWrapper that contains convinience methods such as
@@ -83,7 +83,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		return this.registerConsumer(ImageWrapper.class, consumer);
 	}
-
+	
 	/**
 	 * Set the list of sources for the video element.
 	 */
@@ -92,7 +92,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		this.getModel().setSources(sources);
 		return this;
 	}
-
+	
 	/**
 	 * Add a source to the list of sources for the video element. These sources are usually the same video but in
 	 * different formats to support as many browsers as possible.
@@ -101,7 +101,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		this.getModel().getSources().add(source);
 	}
-
+	
 	/**
 	 * Add the users device camera as a source.
 	 */
@@ -112,7 +112,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		this.getElement().callJsFunction("addDeviceCameraVideoSource", withVideo, withAudio, useFrontCamera);
 	}
-
+	
 	/**
 	 * Remove a source with the given index.
 	 */
@@ -120,12 +120,12 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		this.getModel().getSources().remove(index);
 	}
-
+	
 	public List<Source> getSources()
 	{
 		return this.getModel().getSources();
 	}
-
+	
 	/**
 	 * Start recording the current source.
 	 */
@@ -134,7 +134,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		this.isRecording = true;
 		this.getElement().callJsFunction("startRecording");
 	}
-
+	
 	/**
 	 * Stop recording the current source and return the result to the consumers added via the
 	 * {@link #addVideoConsumer(SerializableConsumer)} method.
@@ -145,44 +145,65 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		this.getElement().callJsFunction("stopRecording")
 			.then(String.class, mimeType -> this.mimeType = mimeType);
 	}
-
+	
 	/**
-	 * Grap the current frame displayed in the video element. It will create a picture using the html canvas and then
+	 * Start playing the video. If the video was paused, this will unpause the video. If the video has stopped because
+	 * the end was reached, this will play from the beginning.
+	 *
+	 * @see #pause()
+	 */
+	public void play()
+	{
+		this.getElement().callJsFunction("play");
+	}
+	
+	/**
+	 * Pauses the video. Calling this method subsequently has no effects.
+	 *
+	 * @see #play()
+	 */
+	public void pause()
+	{
+		this.getElement().callJsFunction("pause");
+	}
+	
+	/**
+	 * Grab the current frame displayed in the video element. This will create a picture using the html canvas and then
 	 * return to the consumers added via the {@link #addPictureConsumer(SerializableConsumer)} method.
 	 */
 	public void takePicture()
 	{
 		this.getElement().callJsFunction("takePicture");
 	}
-
+	
 	@Override
 	public void setWidth(final String width)
 	{
 		HasSize.super.setWidth(width);
 		this.getModel().setVideoWidth(width);
 	}
-
+	
 	@Override
 	public void setWidthFull()
 	{
 		HasSize.super.setWidthFull();
 		this.getModel().setVideoWidth("100%");
 	}
-
+	
 	@Override
 	public void setHeight(final String height)
 	{
 		HasSize.super.setHeight(height);
 		this.getModel().setVideoHeight(height);
 	}
-
+	
 	@Override
 	public void setHeightFull()
 	{
 		HasSize.super.setHeightFull();
 		this.getModel().setVideoHeight("100%");
 	}
-
+	
 	@ClientCallable
 	private void receiveRecordChunk(final JsonString data)
 	{
@@ -191,14 +212,14 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		final String  s           = data.asString();
 		final byte[]  decodedData = decoder.decode(s.substring(s.indexOf("base64,") + 7));
 		this.recordedData.add(decodedData);
-
+		
 		// If the recording was stopped and this is the last data chunk we will receive, notify the consumers
 		if(!this.isRecording)
 		{
 			this.notifyConsumers(VideoWrapper.class, new VideoWrapper(this.mimeType, this.recordedData));
 		}
 	}
-
+	
 	@ClientCallable
 	public void onPictureReceived(final JsonString data)
 	{
@@ -206,15 +227,15 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		final byte[]  decodedData = decoder.decode(data.asString().split(",")[1]);
 		this.notifyConsumers(ImageWrapper.class, new ImageWrapper(decodedData));
 	}
-
+	
 	public interface VideoTemplateModel extends TemplateModel
 	{
 		void setSources(final List<Source> sources);
-
+		
 		List<Source> getSources();
-
+		
 		void setVideoWidth(final String width);
-
+		
 		void setVideoHeight(final String height);
 	}
 }
