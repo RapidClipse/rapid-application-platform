@@ -21,14 +21,15 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server;
 
 import com.rapidclipse.framework.server.util.ServiceLoader;
 import com.vaadin.flow.function.DeploymentConfiguration;
 import com.vaadin.flow.router.RouteConfiguration;
+import com.vaadin.flow.server.HandlerHelper;
+import com.vaadin.flow.server.HandlerHelper.RequestType;
 import com.vaadin.flow.server.ServiceException;
-import com.vaadin.flow.server.ServletHelper;
-import com.vaadin.flow.server.ServletHelper.RequestType;
 import com.vaadin.flow.server.SessionExpiredException;
 import com.vaadin.flow.server.VaadinRequest;
 import com.vaadin.flow.server.VaadinResponse;
@@ -47,31 +48,31 @@ public class RapServletService extends VaadinServletService
 		public default void serviceInitialized(final RapServletService service)
 		{
 		}
-		
+
 		public default void sessionCreated(
 			final RapServletService service,
 			final VaadinSession session,
 			final VaadinRequest request)
 		{
 		}
-		
+
 		public default void onRequestStart(
 			final RapServletService service,
 			final VaadinSession session)
 		{
 		}
-		
+
 		public default void onRequestEnd(
 			final RapServletService service,
 			final VaadinSession session)
 		{
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////////////////////////////////////
-	
+
 	/**
 	 * @param servlet
 	 * @param deploymentConfiguration
@@ -82,11 +83,11 @@ public class RapServletService extends VaadinServletService
 	{
 		super(servlet, deploymentConfiguration);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// overrides //
 	/////////////////////////////////////////////////
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -95,7 +96,7 @@ public class RapServletService extends VaadinServletService
 	{
 		return (RapServlet)super.getServlet();
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -103,11 +104,11 @@ public class RapServletService extends VaadinServletService
 	public void init() throws ServiceException
 	{
 		super.init();
-		
+
 		ServiceLoader.forType(Extension.class).services()
 			.forEach(extension -> extension.serviceInitialized(this));
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -115,18 +116,18 @@ public class RapServletService extends VaadinServletService
 	protected VaadinSession createVaadinSession(final VaadinRequest request)
 	{
 		final VaadinSession session = super.createVaadinSession(request);
-		
+
 		ServiceLoader.forType(Extension.class).services()
 			.forEach(extension -> extension.sessionCreated(this, session, request));
-		
+
 		return session;
 	}
-	
+
 	@Override
 	public VaadinSession findVaadinSession(final VaadinRequest request) throws SessionExpiredException
 	{
 		final VaadinSession session = super.findVaadinSession(request);
-		
+
 		if(session != null)
 		{
 			// auto-map * to <root>
@@ -136,10 +137,10 @@ public class RapServletService extends VaadinServletService
 				routeConfiguration.getRoute("").ifPresent(clazz -> routeConfiguration.setRoute("*", clazz));
 			}
 		}
-		
+
 		return session;
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -147,8 +148,8 @@ public class RapServletService extends VaadinServletService
 	public void requestStart(final VaadinRequest request, final VaadinResponse response)
 	{
 		super.requestStart(request, response);
-		
-		if(!ServletHelper.isRequestType(request, RequestType.HEARTBEAT))
+
+		if(!HandlerHelper.isRequestType(request, RequestType.HEARTBEAT))
 		{
 			try
 			{
@@ -158,7 +159,7 @@ public class RapServletService extends VaadinServletService
 					try
 					{
 						session.lock();
-						
+
 						ServiceLoader.forType(Extension.class).services()
 							.forEach(extension -> extension.onRequestStart(this, session));
 					}
@@ -174,7 +175,7 @@ public class RapServletService extends VaadinServletService
 			}
 		}
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */
@@ -184,12 +185,12 @@ public class RapServletService extends VaadinServletService
 		final VaadinResponse response,
 		final VaadinSession session)
 	{
-		if(session != null && !ServletHelper.isRequestType(request, RequestType.HEARTBEAT))
+		if(session != null && !HandlerHelper.isRequestType(request, RequestType.HEARTBEAT))
 		{
 			try
 			{
 				session.lock();
-				
+
 				ServiceLoader.forType(Extension.class).services()
 					.forEach(extension -> extension.onRequestEnd(this, session));
 			}
@@ -198,7 +199,7 @@ public class RapServletService extends VaadinServletService
 				session.unlock();
 			}
 		}
-		
+
 		super.requestEnd(request, response, session);
 	}
 }

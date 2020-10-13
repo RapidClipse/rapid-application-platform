@@ -51,6 +51,7 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
+import com.vaadin.flow.component.orderedlayout.FlexLayout.FlexWrap;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.page.Page;
@@ -304,7 +305,7 @@ public class GridExportDialog<T> extends Dialog
 		this.txtReportTitle.setLabel(StringResourceUtils.optLocalizeString("{$title}", this));
 		this.lblGridTitle.setText(StringResourceUtils.optLocalizeString("{$columns}", this));
 		this.lblGridTitle.getStyle().set("padding-top", "10px");
-		this.gridcontainer.setWrapMode(FlexLayout.WrapMode.WRAP);
+		this.gridcontainer.setFlexWrap(FlexWrap.WRAP);
 		this.grid.setMaxWidth("100%");
 		this.grid.addThemeVariants(GridVariant.LUMO_COLUMN_BORDERS, GridVariant.LUMO_ROW_STRIPES);
 		this.grid
@@ -325,7 +326,7 @@ public class GridExportDialog<T> extends Dialog
 		this.gridselectors.setDefaultHorizontalComponentAlignment(FlexComponent.Alignment.STRETCH);
 		this.btnSelectAll.setText(StringResourceUtils.optLocalizeString("{$selectAll}", this));
 		this.btnClearSelection.setText(StringResourceUtils.optLocalizeString("{$selectNone}", this));
-		this.optionscontainer.setWrapMode(FlexLayout.WrapMode.WRAP);
+		this.optionscontainer.setFlexWrap(FlexWrap.WRAP);
 		this.cmbPageFormat.setLabel(StringResourceUtils.optLocalizeString("{$pageFormat}", this));
 		this.cmbPageFormat.getStyle().set("padding-right", "10px");
 		this.cmbPageFormat.setItemLabelGenerator(ItemLabelGeneratorFactory.NonNull(CaptionUtils::resolveCaption));
