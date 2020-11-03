@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 import java.util.Objects;
@@ -41,13 +42,13 @@ public interface FilterCreator extends SerializableFunction<String, Filter>
 {
 	@Override
 	public Filter apply(String string);
-
+	
 	public static FilterCreator CaptionBased(final Class<?> type)
 	{
 		final Caption captionAnnotation = type.getAnnotation(Caption.class);
-		return new CaptionBased(captionAnnotation != null ? captionAnnotation.value() : null);
+		return CaptionBased(captionAnnotation != null ? captionAnnotation.value() : null);
 	}
-
+	
 	public static FilterCreator CaptionBased(final String caption)
 	{
 		if(StringUtils.isBlank(caption))
@@ -56,18 +57,18 @@ public interface FilterCreator extends SerializableFunction<String, Filter>
 		}
 		return new CaptionBased(caption);
 	}
-
+	
 	public static class CaptionBased implements FilterCreator
 	{
 		private final String caption;
-
+		
 		protected CaptionBased(final String caption)
 		{
 			super();
-
+			
 			this.caption = Objects.requireNonNull(caption);
 		}
-
+		
 		@Override
 		public Filter apply(String string)
 		{
@@ -77,12 +78,12 @@ public interface FilterCreator extends SerializableFunction<String, Filter>
 				// null, empty string or only wildcard: no filtering necessary
 				return null;
 			}
-
+			
 			if(string.charAt(string.length() - 1) != StringComparison.DEFAULT_WILDCARD)
 			{
 				string += StringComparison.DEFAULT_WILDCARD;
 			}
-
+			
 			Filter filter      = null;
 			int    start;
 			int    searchStart = 0;
@@ -92,14 +93,14 @@ public interface FilterCreator extends SerializableFunction<String, Filter>
 				if(end > start)
 				{
 					final String identifier = this.caption.substring(start + 2, end);
-
+					
 					final Filter parameterFilter = Filter.StringComparison(identifier, string, false);
 					filter = filter == null ? parameterFilter : Filter.Or(filter, parameterFilter);
-
+					
 					searchStart = end + 1;
 				}
 			}
-
+			
 			return filter;
 		}
 	}
