@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.resources;
 
 import java.lang.reflect.AnnotatedElement;
@@ -41,11 +42,19 @@ public class EntityClassCaptionResolver implements ClassCaptionResolver
 	{
 		super();
 	}
-	
+
 	@Override
 	public String resolveCaption(final Class<?> clazz, final String propertyName)
 	{
-		final Attribute<?, ?> attribute = Jpa.resolveAttribute(clazz, propertyName);
+		Attribute<?, ?> attribute = null;
+		try
+		{
+			attribute = Jpa.resolveAttribute(clazz, propertyName);
+		}
+		catch(final IllegalArgumentException e)
+		{
+			// swallow, probably a transient field, let other CaptionResolver take over
+		}
 		if(attribute != null)
 		{
 			final Member javaMember = attribute.getJavaMember();
@@ -54,10 +63,10 @@ public class EntityClassCaptionResolver implements ClassCaptionResolver
 			{
 				return CaptionUtils.resolveCaption(javaMember);
 			}
-			
+
 			return attribute.getName();
 		}
-		
+
 		return null;
 	}
 }
