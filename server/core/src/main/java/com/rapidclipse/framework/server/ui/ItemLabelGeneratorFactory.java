@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.ui;
 
 import java.util.Objects;
@@ -38,18 +39,22 @@ public final class ItemLabelGeneratorFactory
 	{
 		return WithDefaultValue(delegate, "");
 	}
-
+	
 	public static <T> ItemLabelGenerator<T>
 		WithDefaultValue(final ItemLabelGenerator<T> delegate, final String defaultValue)
 	{
 		Objects.requireNonNull(defaultValue);
-		
+
 		return value -> {
+			if(value == null)
+			{
+				return defaultValue;
+			}
 			final String label = delegate.apply(value);
 			return label != null ? label : defaultValue;
 		};
 	}
-	
+
 	private ItemLabelGeneratorFactory()
 	{
 		throw new Error();
