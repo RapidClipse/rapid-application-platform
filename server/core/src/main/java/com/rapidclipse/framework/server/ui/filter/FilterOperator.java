@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2020 by XDEV Software, All Rights Reserved.
+ * Copyright (C) 2013-2021 by XDEV Software, All Rights Reserved.
  *
  * This file is part of the RapidClipse Application Platform (RAP).
  *
@@ -21,7 +21,6 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-
 package com.rapidclipse.framework.server.ui.filter;
 
 import java.io.Serializable;
