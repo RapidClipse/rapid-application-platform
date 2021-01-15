@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports.grid;
 
 import java.lang.reflect.Field;
@@ -65,14 +66,14 @@ public interface GridDataSourceFactory<T>
 		@Override
 		public JRDataSource createDataSource(final GridExportConfiguration<T> configuration)
 		{
-			final List<ColumnConfiguration<T>> columns     = configuration.getColumnConfigurations();
-			final String[]                     columnNames = columns.stream()
-				.filter(ColumnConfiguration::isVisible)
-				.map(ColumnConfiguration::getHeader)
-				.toArray(String[]::new);
+			final List<ColumnConfiguration<T>> columns = configuration.getColumnConfigurations();
 			
-			final DRDataSource dataSource = new DRDataSource(columnNames);
-			
+			final DRDataSource dataSource = new DRDataSource(
+				columns.stream()
+					.filter(ColumnConfiguration::isVisible)
+					.map(c -> c.getGridColumn().getKey())
+					.toArray(String[]::new));
+
 			this.getSortedAndFilteredData(configuration.getGrid()).forEach(item -> {
 				
 				final Object[] rowData = columns.stream()
