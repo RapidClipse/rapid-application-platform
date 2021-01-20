@@ -32,7 +32,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>10.03.00-RAP-SNAPSHOT</version>
+	<version>10.03.00-RAP-GA</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
@@ -566,9 +566,9 @@
 								</manifestEntries>
 							</archive>
 							<detectLinks>true</detectLinks>
-							<links>
-								<link>https://vaadin.com/api/platform/${vaadin.version}/</link>
-							</links>
+<!-- 							<links> -->
+<!-- 								<link>https://vaadin.com/api/platform/${vaadin.version}/</link> -->
+<!-- 							</links> -->
 						</configuration>
 						<executions>
 							<execution>
