@@ -33,7 +33,7 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap-server</artifactId>
-		<version>10.03.00-RAP-GA</version>
+		<version>10.04.00-RAP-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
