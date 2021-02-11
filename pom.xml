@@ -81,7 +81,7 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<vaadin.version>14.4.7</vaadin.version>
-		<hibernate.version>5.4.2.Final</hibernate.version>
+		<hibernate.version>5.4.28.Final</hibernate.version>
 	</properties>
 
 	<dependencies>
