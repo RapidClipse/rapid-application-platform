@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import javax.persistence.EntityManager;
@@ -58,16 +59,13 @@ public interface SessionStrategy
 			final Conversationables conversationables,
 			final String persistenceUnit)
 		{
-			final EntityManagerFactory factory = Jpa.getPersistenceManager()
-				.getEntityManagerFactory(persistenceUnit);
-			final EntityManager        manager = factory.createEntityManager();
-
-			// instantiate conversationable wrapper with entity manager.
-			final Conversationable conversationable = Conversationable.New();
-			conversationable.setEntityManager(manager);
-
-			// Begin a database transaction, start the unit of work
-			manager.getTransaction().begin();
+			final Conversationable conversationable = Conversationable.New(() -> {
+				final EntityManagerFactory factory =
+					Jpa.getPersistenceManager().getEntityManagerFactory(persistenceUnit);
+				final EntityManager        manager = factory.createEntityManager();
+				manager.getTransaction().begin();
+				return manager;
+			});
 
 			conversationables.put(persistenceUnit, conversationable);
 		}
@@ -80,7 +78,7 @@ public interface SessionStrategy
 			final Conversationable conversationable = conversationables.get(persistenceUnit);
 			if(conversationable != null)
 			{
-				final EntityManager em = conversationable.getEntityManager();
+				final EntityManager em = conversationable.peekEntityManager();
 				if(em != null)
 				{
 					final Conversation conversation = conversationable.getConversation();

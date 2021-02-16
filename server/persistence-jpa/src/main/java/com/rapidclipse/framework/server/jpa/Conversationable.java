@@ -21,9 +21,11 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.jpa;
 
 import java.io.Serializable;
+import java.util.function.Supplier;
 
 import javax.persistence.EntityManager;
 
@@ -34,43 +36,56 @@ import javax.persistence.EntityManager;
  */
 public interface Conversationable
 {
-	public void setEntityManager(EntityManager em);
-
 	public EntityManager getEntityManager();
+	
+	public EntityManager peekEntityManager();
 
 	public void setConversation(Conversation conversation);
 
 	public Conversation getConversation();
 
-	public static Conversationable New()
+	public static Conversationable New(final Supplier<EntityManager> entityManagerSupplier)
 	{
-		return new Default();
+		return new Default(entityManagerSupplier);
 	}
 
 	public class Default implements Conversationable, Serializable
 	{
-		private EntityManager entityManager;
-		private Conversation  conversation;
+		private final Supplier<EntityManager> entityManagerSupplier;
+		private volatile EntityManager        entityManager;
+		private Conversation                  conversation;
 
-		protected Default()
+		protected Default(final Supplier<EntityManager> entityManagerSupplier)
 		{
 			super();
-		}
-
-		@Override
-		public void setEntityManager(final EntityManager entityManager)
-		{
-			this.entityManager = entityManager;
+			this.entityManagerSupplier = entityManagerSupplier;
 		}
 
 		@Override
 		public EntityManager getEntityManager()
 		{
+			EntityManager entityManager;
+			if((entityManager = this.entityManager) == null)
+			{
+				synchronized(this)
+				{
+					if((entityManager = this.entityManager) == null)
+					{
+						entityManager = this.entityManager = this.entityManagerSupplier.get();
+					}
+				}
+			}
+			return entityManager;
+		}
+		
+		@Override
+		public EntityManager peekEntityManager()
+		{
 			return this.entityManager;
 		}
 
 		@Override
-		public void setConversation(final Conversation conversation)
+		public synchronized void setConversation(final Conversation conversation)
 		{
 			if(this.conversation != null && this.conversation.isActive())
 			{
@@ -82,7 +97,7 @@ public interface Conversationable
 		}
 
 		@Override
-		public Conversation getConversation()
+		public synchronized Conversation getConversation()
 		{
 			return this.conversation;
 		}
