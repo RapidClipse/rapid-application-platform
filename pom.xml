@@ -32,7 +32,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>10.04.00-RAP-SNAPSHOT</version>
+	<version>11.00.00-RAP-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
@@ -80,7 +80,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<vaadin.version>14.4.7</vaadin.version>
+		<vaadin.version>14.5.2</vaadin.version>
 		<hibernate.version>5.4.28.Final</hibernate.version>
 	</properties>
 
@@ -100,11 +100,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 				<version>${vaadin.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>com.vaadin</groupId>
-				<artifactId>flow-server-compatibility-mode</artifactId>
-				<version>2.1.8</version>
 			</dependency>
 			<dependency>
 				<groupId>com.flowingcode.addons</groupId>
