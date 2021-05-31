@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.net;
 
 import com.rapidclipse.framework.server.RapServletService;
@@ -40,6 +41,6 @@ public class ClientInfoExtension implements RapServletService.Extension
 		final VaadinSession session,
 		final VaadinRequest request)
 	{
-		session.setAttribute(ClientInfo.class, ClientInfo.New(request));
+		session.setAttribute(ClientInfo.class, ClientInfo.New(session, request));
 	}
 }
