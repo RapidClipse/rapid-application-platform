@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.data.filter;
 
 import java.util.Objects;
@@ -29,6 +30,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.rapidclipse.framework.server.data.filter.Comparison.StringComparison;
 import com.rapidclipse.framework.server.resources.Caption;
+import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.vaadin.flow.function.SerializableFunction;
 
 
@@ -56,51 +58,97 @@ public interface FilterCreator extends SerializableFunction<String, Filter>
 		}
 		return new CaptionBased(caption);
 	}
-	
-	public static class CaptionBased implements FilterCreator
+
+	/**
+	 * @since 10.04.01
+	 */
+	public static FilterCreator PropertyBased(final String... properties)
 	{
-		private final String caption;
-		
-		protected CaptionBased(final String caption)
-		{
-			super();
-			
-			this.caption = Objects.requireNonNull(caption);
-		}
-		
+		return new PropertyBased(Objects.requireNonNull(properties));
+	}
+
+	public static abstract class Abstract implements FilterCreator
+	{
 		@Override
 		public Filter apply(String string)
 		{
-			if(string == null || (string = string.trim()).length() == 0
+			if(string == null
+				|| (string = string.trim()).length() == 0
 				|| (string.length() == 1 && string.charAt(0) == StringComparison.DEFAULT_WILDCARD))
 			{
 				// null, empty string or only wildcard: no filtering necessary
 				return null;
 			}
-			
+
 			if(string.charAt(string.length() - 1) != StringComparison.DEFAULT_WILDCARD)
 			{
+				// ensure wildcard at end
 				string += StringComparison.DEFAULT_WILDCARD;
 			}
 			
-			Filter filter      = null;
-			int    start;
-			int    searchStart = 0;
-			while((start = this.caption.indexOf("{%", searchStart)) >= 0)
+			return this.applyInternal(string);
+		}
+		
+		protected abstract Filter applyInternal(String string);
+	}
+
+	public static class CaptionBased extends Abstract
+	{
+		private final String caption;
+		
+		CaptionBased(final String caption)
+		{
+			super();
+			
+			this.caption = caption;
+		}
+		
+		@Override
+		protected Filter applyInternal(final String string)
+		{
+			final Filter[] filter = new Filter[1];
+
+			StringResourceUtils.format(this.caption, key -> {
+				final Filter parameterFilter = Filter.StringComparison(key, string, false);
+				filter[0] = filter[0] == null
+					? parameterFilter
+					: Filter.Or(filter[0], parameterFilter);
+
+				return key;
+			});
+
+			return filter[0];
+		}
+	}
+
+	/**
+	 * @since 10.04.01
+	 */
+	public static class PropertyBased extends Abstract
+	{
+		private final String[] properties;
+		
+		PropertyBased(final String[] properties)
+		{
+			super();
+			this.properties = properties;
+		}
+		
+		@Override
+		protected Filter applyInternal(final String string)
+		{
+			Filter filter = null;
+			
+			for(final String property : this.properties)
 			{
-				final int end = this.caption.indexOf("}", start + 2);
-				if(end > start)
-				{
-					final String identifier = this.caption.substring(start + 2, end);
-					
-					final Filter parameterFilter = Filter.StringComparison(identifier, string, false);
-					filter = filter == null ? parameterFilter : Filter.Or(filter, parameterFilter);
-					
-					searchStart = end + 1;
-				}
+				final Filter propertyFilter = Filter.StringComparison(property, string, false);
+				filter = filter == null
+					? propertyFilter
+					: Filter.Or(filter, propertyFilter);
 			}
 			
 			return filter;
 		}
 	}
+	
 }
