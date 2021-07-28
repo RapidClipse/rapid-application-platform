@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports.grid;
 
 import java.beans.Beans;
@@ -34,6 +35,8 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.router.AfterNavigationEvent;
+import com.vaadin.flow.router.AfterNavigationObserver;
 import com.vaadin.flow.server.StreamResource;
 
 
@@ -42,7 +45,7 @@ import com.vaadin.flow.server.StreamResource;
  * @author XDEV Software
  * @since 10.01.00
  */
-public class ReportViewerDialog extends Dialog
+public class ReportViewerDialog extends Dialog implements AfterNavigationObserver
 {
 	public ReportViewerDialog(final StreamResource res, final String mimeType)
 	{
@@ -63,6 +66,13 @@ public class ReportViewerDialog extends Dialog
 			this.downloadAnchor.setResource(res);
 			this.downloadAnchor.add(new Button("Download", VaadinIcon.DOWNLOAD.create()));
 		}
+	}
+	
+	@Override
+	public void afterNavigation(final AfterNavigationEvent event)
+	{
+		// Workaround for https://github.com/vaadin/vaadin-dialog-flow/issues/108
+		this.close();
 	}
 	
 	private void initUI()
