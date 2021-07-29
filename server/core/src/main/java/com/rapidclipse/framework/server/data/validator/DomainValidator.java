@@ -14,7 +14,7 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -35,8 +35,8 @@ import com.vaadin.flow.data.validator.AbstractValidator;
  *
  * <p>
  * Domain names are evaluated according
- * to the standards <a href="http://www.ietf.org/rfc/rfc1034.txt">RFC1034</a>,
- * section 3, and <a href="http://www.ietf.org/rfc/rfc1123.txt">RFC1123</a>,
+ * to the standards <a href="https://www.ietf.org/rfc/rfc1034.txt">RFC1034</a>,
+ * section 3, and <a href="https://www.ietf.org/rfc/rfc1123.txt">RFC1123</a>,
  * section 2.1. No accommodation is provided for the specialized needs of
  * other applications; if the domain name has been URL-encoded, for example,
  * validation will fail even though the equivalent plaintext version of the
