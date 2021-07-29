@@ -21,7 +21,10 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.resources;
+
+import static java.util.Objects.requireNonNull;
 
 import java.beans.BeanInfo;
 import java.beans.IntrospectionException;
@@ -52,19 +55,36 @@ public interface CaptionResolver
 	
 	public static CaptionResolver New()
 	{
-		return new Default();
+		return new Default("");
+	}
+	
+	/**
+	 * @since 11.00.00
+	 */
+	public static CaptionResolver New(final String nullRepresentation)
+	{
+		return new Default(requireNonNull(nullRepresentation));
 	}
 
 	public static class Default implements CaptionResolver
 	{
-		protected Default()
+		private final String nullRepresentation;
+		
+		protected Default(final String nullRepresentation)
 		{
 			super();
+			
+			this.nullRepresentation = nullRepresentation;
 		}
 
 		@Override
 		public String resolveCaption(final Object element, final Locale locale)
 		{
+			if(element == null)
+			{
+				return this.nullRepresentation;
+			}
+			
 			final Caption caption = getCaptionAnnotation(element);
 			final String  value   = caption != null ? caption.value() : null;
 			if(value == null || value.length() == 0)
@@ -127,8 +147,8 @@ public interface CaptionResolver
 		{
 			CaptionParameterProvider parameterProvider = null;
 
-			int start;
-			int searchStart = 0;
+			int                      start;
+			int                      searchStart       = 0;
 			while((start = string.indexOf("{%", searchStart)) >= 0)
 			{
 				final int end = string.indexOf("}", start + 2);
@@ -139,14 +159,14 @@ public interface CaptionResolver
 						parameterProvider = getParameterProvider(element);
 					}
 
-					final String parameterName = string.substring(start + 2, end);
-					final String value         = parameterProvider.getParameterValue(element, parameterName);
+					final String        parameterName = string.substring(start + 2, end);
+					final String        value         = parameterProvider.getParameterValue(element, parameterName);
 
-					final StringBuilder sb = new StringBuilder();
+					final StringBuilder sb            = new StringBuilder();
 					sb.append(string.substring(0, start));
 					sb.append(value);
 					sb.append(string.substring(end + 1));
-					string = sb.toString();
+					string      = sb.toString();
 
 					searchStart = start + value.length();
 				}
@@ -170,8 +190,8 @@ public interface CaptionResolver
 	{
 		private final Object element;
 
-		private boolean  acquireBeanInfo = true;
-		private BeanInfo beanInfo;
+		private boolean      acquireBeanInfo = true;
+		private BeanInfo     beanInfo;
 
 		public BeanInfoParameterProvider(final Object element)
 		{
