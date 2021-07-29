@@ -42,7 +42,7 @@
 	<name>Rapid Application Platform / Server / Web API</name>
 	<description>Rapid Application Platform / Server / Web API</description>
 
-	<url>http://www.rapidclipse.com</url>
+	<url>https://www.rapidclipse.com</url>
 	<scm>
 		<url>https://github.com/RapidClipse/rapid-application-platform</url>
 		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>

@@ -42,7 +42,7 @@
 	<name>Rapid Application Platform / Server / Persistence / JPA</name>
 	<description>Rapid Application Platform / Server / Persistence / JPA</description>
 
-	<url>http://www.rapidclipse.com</url>
+	<url>https://www.rapidclipse.com</url>
 	<scm>
 		<url>https://github.com/RapidClipse/rapid-application-platform</url>
 		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>

@@ -37,7 +37,7 @@
 
 	<name>Rapid Application Platform</name>
 	<description>Rapid Application Platform</description>
-	<url>http://www.rapidclipse.com</url>
+	<url>https://www.rapidclipse.com</url>
 
 	<modules>
 		<module>security-auth</module>
@@ -60,14 +60,14 @@
 
 	<organization>
 		<name>XDEV Software Corp.</name>
-		<url>http://www.xdev-software.com</url>
+		<url>https://www.xdev-software.com</url>
 	</organization>
 
 	<developers>
 		<developer>
 			<name>XDEV Software</name>
 			<organization>XDEV Software Corp.</organization>
-			<url>http://www.xdev-software.com</url>
+			<url>https://www.xdev-software.com</url>
 		</developer>
 	</developers>
 
