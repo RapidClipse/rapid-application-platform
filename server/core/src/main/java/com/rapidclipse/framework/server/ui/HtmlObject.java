@@ -14,7 +14,7 @@
  * GNU Affero General Public License for more details.
  *
  * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  *
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
@@ -36,7 +36,7 @@ import com.vaadin.flow.server.StreamResource;
  * treated as an image, a nested browsing context, or a resource to be handled by a plugin.
  *
  * @see https://developer.mozilla.org/en-US/docs/Web/HTML/Element/object
- * @see http://www.iana.org/assignments/media-types/media-types.xhtml
+ * @see https://www.iana.org/assignments/media-types/media-types.xhtml
  *
  * @author XDEV Software
  * @since 10.01.00
@@ -154,7 +154,7 @@ public class HtmlObject extends HtmlComponent
 	 *
 	 * @param type
 	 *            the new mime type
-	 * @see http://www.iana.org/assignments/media-types/media-types.xhtml
+	 * @see https://www.iana.org/assignments/media-types/media-types.xhtml
 	 */
 	public void setType(final String type)
 	{

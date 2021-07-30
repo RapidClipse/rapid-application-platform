@@ -16,7 +16,7 @@
     GNU Affero General Public License for more details.
 
     You should have received a copy of the GNU Affero General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
     SPDX-License-Identifier: AGPL-3.0-or-later
 
@@ -37,7 +37,7 @@
 
 	<name>Rapid Application Platform</name>
 	<description>Rapid Application Platform</description>
-	<url>http://www.rapidclipse.com</url>
+	<url>https://www.rapidclipse.com</url>
 
 	<modules>
 		<module>security-auth</module>
@@ -60,14 +60,14 @@
 
 	<organization>
 		<name>XDEV Software Corp.</name>
-		<url>http://www.xdev-software.com</url>
+		<url>https://www.xdev-software.com</url>
 	</organization>
 
 	<developers>
 		<developer>
 			<name>XDEV Software</name>
 			<organization>XDEV Software Corp.</organization>
-			<url>http://www.xdev-software.com</url>
+			<url>https://www.xdev-software.com</url>
 		</developer>
 	</developers>
 
@@ -258,7 +258,7 @@
 		</repository>
 		<repository>
 			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
+			<url>https://maven.vaadin.com/vaadin-addons</url>
 		</repository>
 	</repositories>
 
