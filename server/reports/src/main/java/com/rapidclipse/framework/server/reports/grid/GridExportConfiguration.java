@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports.grid;
 
 import java.awt.Insets;
@@ -52,34 +53,34 @@ public class GridExportConfiguration<T>
 	public static <T> Predicate<Column<T>> DefaultColumnFilter()
 	{
 		return column -> {
-
+			
 			final Renderer<T> renderer = column.getRenderer();
 			if(renderer instanceof RenderedComponent.RenderedComponentRenderer)
 			{
 				return false;
 			}
-
+			
 			return true;
 		};
 	}
-
+	
 	private final Grid<T>                      grid;
 	private final List<ColumnConfiguration<T>> columnConfigurations;
-
-	private Format[]        availableFormats = Format.All();
-	private Format          format           = Format.Pdf();
-	private String          title            = "Report";
-	private PageType        pageType         = PageType.A4;
-	private PageOrientation pageOrientation  = PageOrientation.PORTRAIT;
-	private Insets          pageMargin       = new Insets(20, 20, 20, 20);
-	private boolean         showPageNumber   = false;
-	private boolean         highlightRows    = false;
-
+	
+	private Format[]                           availableFormats = Format.DefaultFormats();
+	private Format                             format           = Format.Pdf();
+	private String                             title            = "Report";
+	private PageType                           pageType         = PageType.A4;
+	private PageOrientation                    pageOrientation  = PageOrientation.PORTRAIT;
+	private Insets                             pageMargin       = new Insets(20, 20, 20, 20);
+	private boolean                            showPageNumber   = false;
+	private boolean                            highlightRows    = false;
+	
 	public GridExportConfiguration(final Grid<T> grid)
 	{
 		this(grid, DefaultColumnFilter());
 	}
-
+	
 	/**
 	 *
 	 * @since 10.02.00
@@ -87,9 +88,9 @@ public class GridExportConfiguration<T>
 	public GridExportConfiguration(final Grid<T> grid, final Predicate<Column<T>> columnFilter)
 	{
 		super();
-
+		
 		this.grid = grid;
-
+		
 		final List<Column<T>> columns = grid.getColumns();
 		// final int columnWidth =
 		// (this.pageType.getWidth() - this.pageMargin.left - this.pageMargin.right) / columns.size();
@@ -98,99 +99,99 @@ public class GridExportConfiguration<T>
 			.map(gridColumn -> new ColumnConfiguration<>(gridColumn))
 			.collect(Collectors.toList());
 	}
-
+	
 	public Grid<T> getGrid()
 	{
 		return this.grid;
 	}
-
+	
 	public List<ColumnConfiguration<T>> getColumnConfigurations()
 	{
 		return this.columnConfigurations;
 	}
-
+	
 	public GridExportConfiguration<T> setAvailableFormats(final Format... availableFormats)
 	{
 		this.availableFormats = availableFormats;
 		return this;
 	}
-
+	
 	public Format[] getAvailableFormats()
 	{
 		return this.availableFormats;
 	}
-
+	
 	public GridExportConfiguration<T> setFormat(final Format format)
 	{
 		this.format = format;
 		return this;
 	}
-
+	
 	public Format getFormat()
 	{
 		return this.format;
 	}
-
+	
 	public String getTitle()
 	{
 		return this.title;
 	}
-
+	
 	public GridExportConfiguration<T> setTitle(final String title)
 	{
 		this.title = title;
 		return this;
 	}
-
+	
 	public PageType getPageType()
 	{
 		return this.pageType;
 	}
-
+	
 	public GridExportConfiguration<T> setPageType(final PageType pageType)
 	{
 		this.pageType = pageType;
 		return this;
 	}
-
+	
 	public PageOrientation getPageOrientation()
 	{
 		return this.pageOrientation;
 	}
-
+	
 	public GridExportConfiguration<T> setPageOrientation(final PageOrientation pageOrientation)
 	{
 		this.pageOrientation = pageOrientation;
 		return this;
 	}
-
+	
 	public Insets getPageMargin()
 	{
 		return this.pageMargin;
 	}
-
+	
 	public GridExportConfiguration<T> setPageMargin(final Insets pageMargin)
 	{
 		this.pageMargin = pageMargin;
 		return this;
 	}
-
+	
 	public boolean isShowPageNumber()
 	{
 		return this.showPageNumber;
 	}
-
+	
 	public GridExportConfiguration<T> setShowPageNumber(final boolean showPageNumber)
 	{
 		this.showPageNumber = showPageNumber;
 		return this;
 	}
-
+	
 	public boolean isHighlightRows()
 	{
 		return this.highlightRows;
 	}
-
+	
 	public GridExportConfiguration<T> setHighlightRows(final boolean highlightRows)
 	{
 		this.highlightRows = highlightRows;

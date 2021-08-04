@@ -41,6 +41,11 @@
 
 	<name>Rapid Application Platform / Server / Reports</name>
 	<description>Rapid Application Platform / Server / Reports</description>
+	
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+	</properties>
 
 	<url>https://www.rapidclipse.com</url>
 	<scm>
