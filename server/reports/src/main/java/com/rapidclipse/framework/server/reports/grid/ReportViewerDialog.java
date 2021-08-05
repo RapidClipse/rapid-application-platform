@@ -122,6 +122,7 @@ public class ReportViewerDialog extends Dialog implements AfterNavigationObserve
 		}
 		else
 		{
+			// Must be assigned, other wise the field can't be final
 			this.resViewer = null;
 		}
 	}
