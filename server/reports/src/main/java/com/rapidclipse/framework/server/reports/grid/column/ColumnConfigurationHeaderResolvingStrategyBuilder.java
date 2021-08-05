@@ -71,6 +71,25 @@ public class ColumnConfigurationHeaderResolvingStrategyBuilder
 		return this;
 	}
 	
+	/**
+	 * Adds a new {@link ColumnConfigHeaderResolvingStrategy}.<br/>
+	 * This strategy will be added at the start of the strategy list.
+	 * 
+	 * @param strategy
+	 * @return
+	 */
+	public ColumnConfigurationHeaderResolvingStrategyBuilder
+		withFirstStrategy(final ColumnHeaderResolvingStrategy strategy)
+	{
+		this.strategies.add(0, strategy);
+		return this;
+	}
+	
+	/**
+	 * Clears all existing strategies
+	 *
+	 * @return
+	 */
 	public ColumnConfigurationHeaderResolvingStrategyBuilder clearAllStrategies()
 	{
 		this.strategies.clear();
