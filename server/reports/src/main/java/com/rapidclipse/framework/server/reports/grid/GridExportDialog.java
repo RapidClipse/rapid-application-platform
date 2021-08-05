@@ -260,9 +260,8 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			return;
 		}
 		
-		final StreamResource res      = this.createReportResource();
-		final String         mimeType = this.cmbExportFormat.getValue().mimeType();
-		new ReportViewerDialog(res, mimeType).open();
+		final StreamResource res = this.createReportResource();
+		new ReportViewerDialog(res, this.cmbExportFormat.getValue()).open();
 	}
 	
 	@Override
