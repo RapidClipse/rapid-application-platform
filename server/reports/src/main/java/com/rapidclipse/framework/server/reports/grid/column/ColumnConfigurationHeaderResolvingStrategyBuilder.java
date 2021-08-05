@@ -47,11 +47,11 @@ public class ColumnConfigurationHeaderResolvingStrategyBuilder
 	}
 	
 	/**
-	 * Uses the {@link BeanKeyCaptionColumnHeaderResolvingStrategy}
+	 * Uses the {@link ManualColumnHeaderResolvingStrategy}
 	 * 
 	 * @return
 	 */
-	public <I> ColumnConfigurationHeaderResolvingStrategyBuilder withBeanKeyCaptionStrategy(
+	public <I> ColumnConfigurationHeaderResolvingStrategyBuilder withManualColumnHeaderStrategy(
 		final Function<Column<?>, I> identifierResolver,
 		final Map<I, Function<I, String>> headerTextResolverMap)
 	{
