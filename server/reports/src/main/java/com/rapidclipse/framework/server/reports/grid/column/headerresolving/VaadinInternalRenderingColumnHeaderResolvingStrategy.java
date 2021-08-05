@@ -21,21 +21,21 @@ public class VaadinInternalRenderingColumnHeaderResolvingStrategy implements Col
 {
 	protected Field findFieldInClass(final Class<?> clazz, final String fieldName)
 	{
-		Class<?> c = clazz;
-		Field    f = null;
-		while(c != null) // stop when we got field or reached top of class hierarchy
+		Class<?> currentClazz = clazz;
+		do
 		{
 			try
 			{
-				f = c.getDeclaredField(fieldName);
-				return f;
+				return currentClazz.getDeclaredField(fieldName);
 			}
 			catch(final NoSuchFieldException e)
 			{
-				// only get super-class when we couldn't find field
-				c = c.getSuperclass();
+				// continue search
 			}
 		}
+		// stop when we got the field or reached top of class hierarchy
+		// no need to search in Object as well
+		while((currentClazz = currentClazz.getSuperclass()) != null && currentClazz != Object.class);
 		
 		return null;
 	}
