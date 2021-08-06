@@ -90,6 +90,8 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 	
 	public GridExportDialog(final GridExportConfiguration<T> configuration)
 	{
+		super();
+		
 		this.configuration = configuration;
 		
 		this.initUI();
