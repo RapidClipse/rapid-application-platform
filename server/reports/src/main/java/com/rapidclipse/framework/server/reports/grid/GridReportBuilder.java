@@ -25,6 +25,7 @@ package com.rapidclipse.framework.server.reports.grid;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 
 import net.sf.dynamicreports.jasper.builder.JasperReportBuilder;
