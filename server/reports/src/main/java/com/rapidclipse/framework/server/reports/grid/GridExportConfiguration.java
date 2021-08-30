@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 
 import com.rapidclipse.framework.server.data.renderer.RenderedComponent;
 import com.rapidclipse.framework.server.reports.Format;
+import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.data.renderer.Renderer;
@@ -67,7 +68,7 @@ public class GridExportConfiguration<T>
 	private final Grid<T>                      grid;
 	private final List<ColumnConfiguration<T>> columnConfigurations;
 	
-	private Format[]                           availableFormats = Format.DefaultFormats();
+	private Format[]                           availableFormats = Format.All();
 	private Format                             format           = Format.Pdf();
 	private String                             title            = "Report";
 	private PageType                           pageType         = PageType.A4;
