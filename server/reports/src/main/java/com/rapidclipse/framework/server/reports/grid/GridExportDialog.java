@@ -77,30 +77,30 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 	{
 		return open(new GridExportConfiguration<>(gridToExport));
 	}
-
+	
 	public static <T> GridExportDialog<T> open(final GridExportConfiguration<T> configuration)
 	{
 		final GridExportDialog<T> dialog = new GridExportDialog<>(configuration);
 		dialog.open();
 		return dialog;
 	}
-
+	
 	private final GridExportConfiguration<T> configuration;
 	private GridReportBuilder<T>             gridReportBuilder = GridReportBuilder.New();
-
+	
 	public GridExportDialog(final GridExportConfiguration<T> configuration)
 	{
 		super();
-
+		
 		this.configuration = configuration;
-
+		
 		this.initUI();
-
+		
 		this.txtReportTitle.setValue(configuration.getTitle());
-
+		
 		final Format[] formats = configuration.getAvailableFormats();
 		Arrays.sort(formats, (f1, f2) -> f1.name().compareTo(f2.name()));
-
+		
 		this.cmbExportFormat.setItems(formats);
 		if(formats.length > 0)
 		{
@@ -108,44 +108,44 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			this.cmbExportFormat.setValue(presetFormat != null ? presetFormat : formats[0]);
 		}
 		this.cmbExportFormat.setItemLabelGenerator(Format::name);
-
+		
 		this.cmbPageOrientation.setItems(PageOrientation.values());
 		this.cmbPageOrientation.setValue(configuration.getPageOrientation());
 		this.cmbPageOrientation.setItemLabelGenerator(orientation -> StringResourceUtils
 			.optLocalizeString("{$PageOrientation." + orientation.name() + "}", this));
-
+		
 		this.cmbPageFormat.setItems(PageType.values());
 		this.cmbPageFormat.setValue(configuration.getPageType());
-
+		
 		this.grid.getColumnByKey("visible").setHeader(new Icon(VaadinIcon.EYE));
 		this.grid.setItems(configuration.getColumnConfigurations());
 		this.grid.recalculateColumnWidths();
-
+		
 		this.ckShowPageNumbers.setValue(configuration.isShowPageNumber());
 		this.ckHighlightRows.setValue(configuration.isHighlightRows());
-
+		
 		final Page page = UI.getCurrent().getPage();
 		page.retrieveExtendedClientDetails(e -> this.adjustGridColumns(e.getBodyClientWidth()));
 		page.addBrowserWindowResizeListener(e -> this.adjustGridColumns(e.getWidth()));
 	}
-
+	
 	public void setGridReportBuilder(final GridReportBuilder<T> gridReportBuilder)
 	{
 		this.gridReportBuilder = requireNonNull(gridReportBuilder);
 	}
-
+	
 	public GridReportBuilder<T> getGridReportBuilder()
 	{
 		return this.gridReportBuilder;
 	}
-
+	
 	private void adjustGridColumns(final int width)
 	{
 		final boolean visible = width >= 666;
 		this.grid.getColumnByKey("width").setVisible(visible);
 		this.grid.getColumnByKey("position").setVisible(visible);
 	}
-
+	
 	private void moveUp(final ColumnConfiguration<T> column)
 	{
 		final List<ColumnConfiguration<T>> columns = this.configuration.getColumnConfigurations();
@@ -156,7 +156,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		}
 		this.grid.getDataProvider().refreshAll();
 	}
-
+	
 	private void moveDown(final ColumnConfiguration<T> column)
 	{
 		final List<ColumnConfiguration<T>> columns = this.configuration.getColumnConfigurations();
@@ -167,12 +167,12 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		}
 		this.grid.getDataProvider().refreshAll();
 	}
-
+	
 	private boolean check()
 	{
 		boolean ok    = false;
 		String  error = "";
-
+		
 		if(checkColumnSelection())
 		{
 			if(checkColumnWidth())
@@ -187,13 +187,13 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 				error = StringResourceUtils.optLocalizeString("{$widthTooBigError}", this);
 			}
 		}
-
+		
 		this.btnExport.setEnabled(ok);
 		this.lblStatus.setText(error);
-
+		
 		return ok;
 	}
-
+	
 	private boolean checkColumnWidth()
 	{
 		if(this.cmbPageOrientation.getValue() != null && this.cmbPageFormat.getValue() != null)
@@ -214,10 +214,10 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 				}
 			}
 		}
-
+		
 		return true;
 	}
-
+	
 	private int calculateFixedWidth()
 	{
 		return this.configuration.getColumnConfigurations().stream()
@@ -227,13 +227,13 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			.mapToInt(Integer::intValue)
 			.sum();
 	}
-
+	
 	private boolean checkColumnSelection()
 	{
 		return this.configuration.getColumnConfigurations().stream()
 			.anyMatch(ColumnConfiguration::isVisible);
 	}
-
+	
 	private StreamResource createReportResource()
 	{
 		final Format format = this.cmbExportFormat.getValue();
@@ -243,35 +243,36 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.configuration.setPageType(this.cmbPageFormat.getValue());
 		this.configuration.setShowPageNumber(this.ckShowPageNumbers.getValue());
 		this.configuration.setTitle(this.txtReportTitle.getValue());
-
+		
 		final JasperReportBuilder builder = this.gridReportBuilder.buildReport(this.configuration);
 		return format.createExporter().exportToResource(builder, this.configuration.getTitle());
 	}
-
+	
 	private void setAllColumnsVisible(final boolean visible)
 	{
 		this.configuration.getColumnConfigurations().forEach(conf -> conf.setVisible(visible));
 		this.grid.getDataProvider().refreshAll();
 		this.check();
 	}
-
+	
 	private void export()
 	{
-		if(this.check())
+		if(!this.check())
 		{
-			final StreamResource res      = this.createReportResource();
-			final String         mimeType = this.cmbExportFormat.getValue().mimeType();
-			new ReportViewerDialog(res, mimeType).open();
+			return;
 		}
+		
+		final StreamResource res = this.createReportResource();
+		new ReportViewerDialog(res, this.cmbExportFormat.getValue()).open();
 	}
-
+	
 	@Override
 	public void afterNavigation(final AfterNavigationEvent event)
 	{
 		// Workaround for https://github.com/vaadin/vaadin-dialog-flow/issues/108
 		this.close();
 	}
-
+	
 	private void initUI()
 	{
 		this.layout                  = new VerticalLayout();
@@ -298,7 +299,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.buttonbar               = new HorizontalLayout();
 		this.btnCancel               = new Button();
 		this.btnExport               = new Button();
-
+		
 		this.layout.setSpacing(false);
 		this.layout.setMaxHeight("100%");
 		this.layout.setMaxWidth("100%");
@@ -351,13 +352,13 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.btnExport.setText(StringResourceUtils.optLocalizeString("{$btnExport}", this));
 		this.btnExport.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 		this.btnClose = new Button(VaadinIcon.CLOSE.create());
-
+		
 		this.titlebar.add(this.iconGrid, this.lblTitle, this.btnClose);
 		this.titlebar.setWidthFull();
 		this.titlebar.setHeight(null);
 		this.titlebar.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
 		this.titlebar.setFlexGrow(1.0, this.lblTitle);
-
+		
 		this.btnSelectAll.setWidthFull();
 		this.btnSelectAll.setHeight(null);
 		this.btnClearSelection.setWidthFull();
@@ -401,7 +402,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.layout.setHeight(null);
 		this.add(this.layout);
 		this.setSizeUndefined();
-
+		
 		this.txtReportTitle.addValueChangeListener(event -> check());
 		this.btnSelectAll.addClickListener(event -> setAllColumnsVisible(true));
 		this.btnClearSelection.addClickListener(event -> setAllColumnsVisible(false));
@@ -412,7 +413,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.btnClose.addClickListener(event -> close());
 		this.btnExport.addClickListener(event -> export());
 	}
-
+	
 	private Checkbox                     ckShowPageNumbers, ckHighlightRows;
 	private Button                       btnSelectAll, btnClearSelection, btnCancel, btnExport;
 	private FlexLayout                   optionscontainer, gridcontainer;
@@ -426,7 +427,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 	private Icon                         iconGrid;
 	private TextField                    txtReportTitle;
 	private ComboBox<PageOrientation>    cmbPageOrientation;
-
+	
 	private class VisibilityRenderer extends Checkbox implements RenderedComponent<ColumnConfiguration<T>>
 	{
 		@Override
@@ -439,17 +440,17 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			});
 		}
 	}
-
+	
 	private class HeaderRenderer extends TextField implements RenderedComponent<ColumnConfiguration<T>>
 	{
 		HeaderRenderer()
 		{
 			super();
-
+			
 			this.setRequired(true);
 			this.setWidthFull();
 		}
-
+		
 		@Override
 		public void renderComponent(final ColumnConfiguration<T> value)
 		{
@@ -457,16 +458,16 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			this.addValueChangeListener(e -> value.setHeader(e.getValue()));
 		}
 	}
-
+	
 	private class WidthRenderer extends NumberField implements RenderedComponent<ColumnConfiguration<T>>
 	{
 		WidthRenderer()
 		{
 			super();
-
+			
 			this.setWidthFull();
 		}
-
+		
 		@Override
 		public void renderComponent(final ColumnConfiguration<T> value)
 		{
@@ -479,25 +480,25 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 			});
 		}
 	}
-
+	
 	private class PositionRenderer extends HorizontalLayout
 		implements RenderedComponent<ColumnConfiguration<T>>
 	{
 		private final Button up, down;
-
+		
 		PositionRenderer()
 		{
 			super();
-
+			
 			this.up   = new Button(IronIcons.ARROW_UPWARD.create());
 			this.down = new Button(IronIcons.ARROW_DOWNWARD.create());
-
+			
 			this.add(this.up, this.down);
 			this.setSizeFull();
 			this.setMargin(false);
 			this.setPadding(false);
 		}
-
+		
 		@Override
 		public void renderComponent(final ColumnConfiguration<T> value)
 		{

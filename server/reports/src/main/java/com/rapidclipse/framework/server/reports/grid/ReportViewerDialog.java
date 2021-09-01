@@ -26,10 +26,16 @@ package com.rapidclipse.framework.server.reports.grid;
 
 import java.beans.Beans;
 
+import com.rapidclipse.framework.server.reports.Format;
+import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.DownloadAnchor;
 import com.rapidclipse.framework.server.ui.HtmlObject;
+import com.vaadin.flow.component.accordion.Accordion;
+import com.vaadin.flow.component.accordion.AccordionPanel;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -47,25 +53,123 @@ import com.vaadin.flow.server.StreamResource;
  */
 public class ReportViewerDialog extends Dialog implements AfterNavigationObserver
 {
+	private final VerticalLayout   rootLayout            = new VerticalLayout();
+	
+	private final HorizontalLayout headerbar             = new HorizontalLayout();
+	private final Button           btnClose              = new Button(VaadinIcon.CLOSE.create());
+	private final DownloadAnchor   downloadAnchor        = new DownloadAnchor();
+	private final Label            lblTitle              = new Label("Report");
+	
+	private final Accordion        previewAccordion      = new Accordion();
+	private final AccordionPanel   previewAccordionPanel =
+		new AccordionPanel(StringResourceUtils.optLocalizeString("{$preview}", this), new Div());
+	
+	private final HtmlObject       resViewer;
+	
+	/**
+	 *
+	 * @param res
+	 * @param mimeType
+	 * @deprecated Use {@link #ReportViewerDialog(StreamResource, ExportFormat)}
+	 */
+	@Deprecated
 	public ReportViewerDialog(final StreamResource res, final String mimeType)
 	{
-		super();
-		
+		this(res, mimeType, true);
+	}
+	
+	/**
+	 *
+	 * @param res
+	 * @param mimeType
+	 * @param isPreviewableInStandardBrowser
+	 * @deprecated Will be moved to {@link #ReportViewerDialog(StreamResource, ExportFormat)}
+	 */
+	@Deprecated
+	protected ReportViewerDialog(
+		final StreamResource res,
+		final String mimeType,
+		final boolean isPreviewableInStandardBrowser)
+	{
 		this.initUI();
 		
 		if(!Beans.isDesignTime())
 		{
 			this.lblTitle.setText(res.getName());
-			final HtmlObject resViewer = new HtmlObject(res, mimeType);
-			resViewer.setWidth("1000px");
-			resViewer.setHeight("700px");
-			resViewer.setMaxWidth("100%");
-			resViewer.setMaxHeight("100%");
-			this.rootLayout.add(resViewer);
 			
+			this.resViewer = new HtmlObject(res, mimeType);
+			this.resViewer.setMinHeight("60vh");
+			this.resViewer.setSizeFull();
+			this.resViewer.setMaxWidth("100%");
+			this.resViewer.setMaxHeight("100%");
+			this.resViewer.getElement().setText(StringResourceUtils.optLocalizeString("{$unableToShowPreview}", this));
+			
+			this.previewAccordionPanel.setContent(this.resViewer);
+			if(isPreviewableInStandardBrowser)
+			{
+				this.previewAccordion.open(this.previewAccordionPanel);
+			}
+			else
+			{
+				this.previewAccordion.close();
+			}
+			
+			final Button btnDownload =
+				new Button(StringResourceUtils.optLocalizeString("{$download}", this), VaadinIcon.DOWNLOAD.create());
+			btnDownload.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+			this.downloadAnchor.add(btnDownload);
 			this.downloadAnchor.setResource(res);
-			this.downloadAnchor.add(new Button("Download", VaadinIcon.DOWNLOAD.create()));
 		}
+		else
+		{
+			// Must be assigned, other wise the field can't be final
+			this.resViewer = null;
+		}
+	}
+	
+	public ReportViewerDialog(final StreamResource res, final Format format)
+	{
+		this(res, format.mimeType(), format.isPreviewableInStandardBrowser());
+	}
+	
+	private void initUI()
+	{
+		this.btnClose.addClickListener(event -> close());
+		
+		this.headerbar.setSpacing(true);
+		this.headerbar.setPadding(false);
+		this.headerbar.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
+		this.headerbar.setFlexGrow(1.0, this.lblTitle);
+		this.headerbar.setWidthFull();
+		this.headerbar.add(this.lblTitle, this.downloadAnchor, this.btnClose);
+		
+		this.previewAccordion.setSizeFull();
+		this.previewAccordion.add(this.previewAccordionPanel);
+		
+		this.rootLayout.setSpacing(true);
+		this.rootLayout.setPadding(false);
+		this.rootLayout.setWidth("70vw");
+		this.rootLayout.setMaxHeight("80vh");
+		this.rootLayout.add(this.headerbar, this.previewAccordion);
+		
+		this.add(this.rootLayout);
+		this.setSizeUndefined();
+	}
+	
+	/**
+	 * @return the rootLayout
+	 */
+	public VerticalLayout getRootLayout()
+	{
+		return this.rootLayout;
+	}
+	
+	/**
+	 * @return the resViewer
+	 */
+	public HtmlObject getResViewer()
+	{
+		return this.resViewer;
 	}
 	
 	@Override
@@ -74,38 +178,4 @@ public class ReportViewerDialog extends Dialog implements AfterNavigationObserve
 		// Workaround for https://github.com/vaadin/vaadin-dialog-flow/issues/108
 		this.close();
 	}
-	
-	private void initUI()
-	{
-		this.rootLayout     = new VerticalLayout();
-		this.headerbar      = new HorizontalLayout();
-		this.lblTitle       = new Label();
-		this.btnClose       = new Button(VaadinIcon.CLOSE.create());
-		this.downloadAnchor = new DownloadAnchor();
-		
-		this.rootLayout.setSpacing(true);
-		this.rootLayout.setPadding(false);
-		this.headerbar.setSpacing(true);
-		this.headerbar.setPadding(false);
-		
-		this.lblTitle.setText("Report");
-		
-		this.headerbar.add(this.lblTitle, this.downloadAnchor, this.btnClose);
-		this.headerbar.setWidthFull();
-		this.rootLayout.add(this.headerbar);
-		this.rootLayout.setSizeFull();
-		this.add(this.rootLayout);
-		this.setSizeUndefined();
-		
-		this.headerbar.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
-		this.headerbar.setFlexGrow(1.0, this.lblTitle);
-		
-		this.btnClose.addClickListener(event -> close());
-	}
-	
-	private Button           btnClose;
-	private DownloadAnchor   downloadAnchor;
-	private VerticalLayout   rootLayout;
-	private HorizontalLayout headerbar;
-	private Label            lblTitle;
 }
