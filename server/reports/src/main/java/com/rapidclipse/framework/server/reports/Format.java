@@ -73,6 +73,14 @@ public interface Format
 	 */
 	boolean isPreviewableInStandardBrowser();
 	
+	/**
+	 * Returns if a report is paginated (on every new page a new title, column-headers are printed, etc)
+	 *
+	 * @return <code>true</code> if the pagination is active
+	 * @since 11.00.00
+	 */
+	boolean isPaginationActive();
+	
 	public static Format Csv()
 	{
 		return new Csv();
@@ -157,6 +165,7 @@ public interface Format
 		private final String fileSuffix;
 		private final String mimeType;
 		protected boolean    canBePreviewedInStandardBrowser = false;
+		protected boolean    paginationActive                = false;
 		
 		protected Abstract(final String name, final String fileSuffix, final String mimeType)
 		{
@@ -175,6 +184,16 @@ public interface Format
 		public void setPreviewableInStandardBrowser(final boolean canBePreviewedInStandardBrowser)
 		{
 			this.canBePreviewedInStandardBrowser = canBePreviewedInStandardBrowser;
+		}
+		
+		public void enablePagination()
+		{
+			setPaginationActive(true);
+		}
+		
+		public void setPaginationActive(final boolean paginationActive)
+		{
+			this.paginationActive = paginationActive;
 		}
 		
 		@Override
@@ -199,6 +218,12 @@ public interface Format
 		public boolean isPreviewableInStandardBrowser()
 		{
 			return this.canBePreviewedInStandardBrowser;
+		}
+		
+		@Override
+		public boolean isPaginationActive()
+		{
+			return this.paginationActive;
 		}
 		
 		@Override
@@ -245,6 +270,7 @@ public interface Format
 		{
 			super("PDF", "pdf", MIME_TYPE);
 			canBePreviewedInStandardBrowser();
+			enablePagination();
 		}
 		
 		@Override
@@ -359,6 +385,7 @@ public interface Format
 		public Rtf()
 		{
 			super("Rich Text", "rtf", MIME_TYPE);
+			enablePagination();
 		}
 		
 		@Override
@@ -476,6 +503,7 @@ public interface Format
 		public Docx()
 		{
 			super("Word (docx)", "docx", MIME_TYPE);
+			enablePagination();
 		}
 		
 		@Override
@@ -506,6 +534,7 @@ public interface Format
 		public Pptx()
 		{
 			super("Powerpoint (pptx)", "pptx", MIME_TYPE);
+			enablePagination();
 		}
 		
 		@Override
@@ -535,6 +564,7 @@ public interface Format
 		public Odt()
 		{
 			super("Open Document Text (odt)", "odt", MIME_TYPE);
+			enablePagination();
 		}
 		
 		@Override

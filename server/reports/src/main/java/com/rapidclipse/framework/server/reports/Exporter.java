@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports;
 
 import java.io.ByteArrayInputStream;
@@ -48,39 +49,39 @@ import net.sf.jasperreports.engine.JasperReport;
 public interface Exporter
 {
 	public StreamResource exportToResource(final JasperReportBuilder reportBuilder);
-
+	
 	public StreamResource exportToResource(
 		final JasperReportBuilder reportBuilder,
 		final String fileNamePrefix);
-
+	
 	public StreamResource exportToResource(
 		final InputStream jrxml,
 		final JRDataSource dataSource,
 		final Map<String, Object> parameters);
-
+	
 	public StreamResource exportToResource(
 		final InputStream jrxml,
 		final JRDataSource dataSource,
 		final Map<String, Object> parameters,
 		final String fileNamePrefix);
-
+	
 	public byte[] exportToBytes(final JasperReportBuilder reportBuilder);
-
+	
 	public byte[] exportToBytes(
 		final InputStream jrxml,
 		final JRDataSource dataSource,
 		final Map<String, Object> parameters);
-
+	
 	public void export(final JasperReportBuilder reportBuilder, final OutputStream stream);
-
+	
 	public void export(final JasperPrint print, final OutputStream stream);
-
+	
 	public void export(
 		final InputStream jrxml,
 		final JRDataSource dataSource,
 		final Map<String, Object> parameters,
 		final OutputStream stream);
-
+	
 	public static Exporter New(
 		final Format format,
 		final DynamicExporter dynamicExporter,
@@ -88,45 +89,49 @@ public interface Exporter
 	{
 		return new Default(format, dynamicExporter, plainExporter);
 	}
-
+	
 	public static class Default implements Exporter
 	{
 		private final Format          format;
 		private final DynamicExporter dynamicExporter;
 		private final PlainExporter   plainExporter;
-
+		
 		protected Default(
 			final Format format,
 			final DynamicExporter dynamicExporter,
 			final PlainExporter plainExporter)
 		{
 			super();
-
+			
 			this.format          = format;
 			this.dynamicExporter = dynamicExporter;
 			this.plainExporter   = plainExporter;
 		}
-
+		
 		protected StreamResource createResource(final byte[] bytes, final String fileNamePrefix)
 		{
+			final String         fileName = fileNamePrefix != null && !fileNamePrefix.trim().isEmpty()
+				? fileNamePrefix
+				: getDefaultFileNamePrefix();
+			
 			final StreamResource resource = new StreamResource(
-				fileNamePrefix + "." + this.format.fileSuffix(),
+				fileName + "." + this.format.fileSuffix(),
 				() -> new ByteArrayInputStream(bytes));
 			resource.setContentType(this.format.mimeType());
 			return resource;
 		}
-
+		
 		protected String getDefaultFileNamePrefix()
 		{
 			return "report" + System.currentTimeMillis();
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(final JasperReportBuilder reportBuilder)
 		{
 			return exportToResource(reportBuilder, getDefaultFileNamePrefix());
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(
 			final JasperReportBuilder reportBuilder,
@@ -134,7 +139,7 @@ public interface Exporter
 		{
 			return createResource(exportToBytes(reportBuilder), fileNamePrefix);
 		}
-
+		
 		@Override
 		public byte[] exportToBytes(final JasperReportBuilder reportBuilder)
 		{
@@ -142,7 +147,7 @@ public interface Exporter
 			export(reportBuilder, stream);
 			return stream.toByteArray();
 		}
-
+		
 		@Override
 		public void export(final JasperReportBuilder reportBuilder, final OutputStream stream)
 		{
@@ -155,7 +160,7 @@ public interface Exporter
 				throw new ReportException(e);
 			}
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(
 			final InputStream jrxml,
@@ -164,7 +169,7 @@ public interface Exporter
 		{
 			return exportToResource(jrxml, dataSource, parameters, getDefaultFileNamePrefix());
 		}
-
+		
 		@Override
 		public StreamResource exportToResource(
 			final InputStream jrxml,
@@ -174,7 +179,7 @@ public interface Exporter
 		{
 			return createResource(exportToBytes(jrxml, dataSource, parameters), fileNamePrefix);
 		}
-
+		
 		@Override
 		public byte[] exportToBytes(
 			final InputStream jrxml,
@@ -185,7 +190,7 @@ public interface Exporter
 			export(jrxml, dataSource, parameters, stream);
 			return stream.toByteArray();
 		}
-
+		
 		@Override
 		public void export(
 			final InputStream jrxml,
@@ -205,7 +210,7 @@ public interface Exporter
 				throw new ReportException(e);
 			}
 		}
-
+		
 		@Override
 		public void export(final JasperPrint print, final OutputStream stream)
 		{

@@ -178,7 +178,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		{
 			if(checkColumnWidth())
 			{
-				if(!this.txtReportTitle.isEmpty() && this.cmbExportFormat.getValue() != null)
+				if(this.cmbExportFormat.getValue() != null)
 				{
 					ok = true;
 				}
@@ -306,8 +306,6 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.layout.setMaxWidth("100%");
 		this.layout.setPadding(false);
 		this.lblTitle.setText(StringResourceUtils.optLocalizeString("{$caption}", this));
-		this.txtReportTitle.setRequired(true);
-		this.txtReportTitle.setRequiredIndicatorVisible(true);
 		this.txtReportTitle.setMaxWidth("100%");
 		this.txtReportTitle.setLabel(StringResourceUtils.optLocalizeString("{$title}", this));
 		this.lblGridTitle.setText(StringResourceUtils.optLocalizeString("{$columns}", this));

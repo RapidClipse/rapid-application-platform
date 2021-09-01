@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports.grid;
 
 import org.apache.commons.lang3.StringUtils;
@@ -44,34 +45,34 @@ import net.sf.dynamicreports.report.constant.HorizontalTextAlignment;
 public interface GridReportBuilder<T>
 {
 	public JasperReportBuilder buildReport(GridExportConfiguration<T> configuration);
-
+	
 	public static <T> GridReportBuilder<T> New()
 	{
 		return new Default<>(GridDataSourceFactory.New(), GridReportStyles.New());
 	}
-
+	
 	public static <T> GridReportBuilder<T> New(final GridDataSourceFactory<T> dataSourceFactory)
 	{
 		return new Default<>(dataSourceFactory, GridReportStyles.New());
 	}
-
+	
 	public static <T> GridReportBuilder<T> New(final GridReportStyles styles)
 	{
 		return new Default<>(GridDataSourceFactory.New(), styles);
 	}
-
+	
 	public static <T> GridReportBuilder<T> New(
 		final GridDataSourceFactory<T> dataSourceFactory,
 		final GridReportStyles styles)
 	{
 		return new Default<>(dataSourceFactory, styles);
 	}
-
+	
 	public static class Default<T> implements GridReportBuilder<T>
 	{
 		protected final GridDataSourceFactory<T> dataSourceFactory;
 		protected final GridReportStyles         styles;
-
+		
 		Default(
 			final GridDataSourceFactory<T> dataSourceFactory,
 			final GridReportStyles styles)
@@ -79,7 +80,7 @@ public interface GridReportBuilder<T>
 			this.dataSourceFactory = dataSourceFactory;
 			this.styles            = styles;
 		}
-
+		
 		@Override
 		public JasperReportBuilder buildReport(final GridExportConfiguration<T> configuration)
 		{
@@ -114,6 +115,8 @@ public interface GridReportBuilder<T>
 				report.highlightDetailOddRows();
 			}
 			
+			report.setIgnorePagination(!configuration.getFormat().isPaginationActive());
+			
 			report.setShowColumnTitle(true);
 			report.setDataSource(this.dataSourceFactory.createDataSource(configuration));
 			report.setPageFormat(configuration.getPageType(), configuration.getPageOrientation());
@@ -121,34 +124,34 @@ public interface GridReportBuilder<T>
 			
 			return report;
 		}
-
+		
 		private TextColumnBuilder<String> toReportColumn(final ColumnConfiguration<T> column)
 		{
 			final TextColumnBuilder<String> reportColumn = Columns
 				.column(column.getHeader(), column.getGridColumn().getKey(), String.class);
-
-			final Integer width = column.getColumnWidth();
+			
+			final Integer                   width        = column.getColumnWidth();
 			if(width != null && width > 0)
 			{
 				reportColumn.setFixedWidth(width);
 			}
-
+			
 			reportColumn.setHorizontalTextAlignment(
 				this.toReportTextAlignment(column.getColumnAlignment()));
-
+			
 			return reportColumn;
 		}
-
+		
 		private HorizontalTextAlignment toReportTextAlignment(final ColumnTextAlign alignment)
 		{
 			switch(alignment)
 			{
 				case END:
 					return HorizontalTextAlignment.RIGHT;
-
+				
 				case CENTER:
 					return HorizontalTextAlignment.CENTER;
-
+				
 				default:
 					return HorizontalTextAlignment.LEFT;
 			}
