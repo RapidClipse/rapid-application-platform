@@ -138,36 +138,27 @@ public interface Format
 		return new Html();
 	}
 	
-	public static Format[] DefaultFormats()
-	{
-		return new Format[]{
-			Csv(),
-			Docx(),
-			Ods(),
-			Odt(),
-			Pdf(),
-			Pptx(),
-			Rtf(),
-			Text(),
-			Xls(),
-			Xlsx(),
-			Html()
-		};
-	}
-	
+	/**
+	 * Loads all default defined formats via {@link java.util.ServiceLoader}.
+	 * The file with the definitions can be found in META-INF/services/.
+	 *
+	 * @return
+	 */
 	public static Format[] All()
 	{
-		return ServiceLoader.forType(Format.class).servicesStream().toArray(Format[]::new);
+		return ServiceLoader.forType(Format.class)
+			.servicesStream()
+			.toArray(Format[]::new);
 	}
 	
-	public static abstract class Abstract implements Format
+	public abstract static class Abstract implements Format
 	{
 		private final String name;
 		private final String fileSuffix;
 		private final String mimeType;
 		protected boolean    canBePreviewedInStandardBrowser = false;
 		
-		public Abstract(final String name, final String fileSuffix, final String mimeType)
+		protected Abstract(final String name, final String fileSuffix, final String mimeType)
 		{
 			super();
 			

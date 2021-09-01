@@ -70,7 +70,7 @@ public class GridExportConfiguration<T>
 	
 	private Predicate<Column<T>>       columnFilter        = DefaultColumnFilter();
 	private ColumnConfigurationBuilder columnConfigBuilder = getDefaultColumnConfigBuilder();
-	private Format[]                   availableFormats    = Format.DefaultFormats();
+	private Format[]                   availableFormats    = Format.All();
 	private Format                     format              = Format.Pdf();
 	private String                     title               = "Report";
 	private PageType                   pageType            = PageType.A4;
