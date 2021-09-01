@@ -21,13 +21,12 @@
  * Contributors:
  *     XDEV Software Corp. - initial API and implementation
  */
-package com.rapidclipse.framework.server.reports.grid;
 
-import org.apache.commons.lang3.StringUtils;
+package com.rapidclipse.framework.server.reports.grid.column;
 
-import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.grid.ColumnTextAlign;
 import com.vaadin.flow.component.grid.Grid.Column;
+import com.vaadin.flow.function.SerializableFunction;
 
 
 /**
@@ -42,87 +41,59 @@ public class ColumnConfiguration<T>
 	private String          header;
 	private ColumnTextAlign columnAlignment;
 	private Integer         columnWidth;
-
-	ColumnConfiguration(final Column<T> gridColumn)
+	
+	ColumnConfiguration(
+		final Column<T> gridColumn,
+		final SerializableFunction<Column<?>, String> headerResolver)
 	{
-		super();
-
 		this.gridColumn      = gridColumn;
-		this.header          = resolveHeader(gridColumn);
+		this.header          = headerResolver.apply(gridColumn);
 		this.columnAlignment = gridColumn.getTextAlign();
 	}
-
-	static String resolveHeader(final Column<?> gridColumn)
-	{
-		final String key = gridColumn.getKey();
-		if(key == null)
-		{
-			return "";
-		}
-
-		final Class<?> beanType = gridColumn.getGrid().getBeanType();
-		if(beanType != null)
-		{
-			try
-			{
-				final String caption = CaptionUtils.resolveCaption(beanType, gridColumn.getKey());
-				if(!StringUtils.isEmpty(caption))
-				{
-					return caption;
-				}
-			}
-			catch(final Exception e)
-			{
-				// swallow
-			}
-		}
-
-		return key;
-	}
-
-	Column<T> getGridColumn()
+	
+	public Column<T> getGridColumn()
 	{
 		return this.gridColumn;
 	}
-
+	
 	public boolean isVisible()
 	{
 		return this.visible;
 	}
-
+	
 	public ColumnConfiguration<T> setVisible(final boolean visible)
 	{
 		this.visible = visible;
 		return this;
 	}
-
+	
 	public String getHeader()
 	{
 		return this.header;
 	}
-
+	
 	public ColumnConfiguration<T> setHeader(final String header)
 	{
 		this.header = header;
 		return this;
 	}
-
+	
 	public ColumnTextAlign getColumnAlignment()
 	{
 		return this.columnAlignment;
 	}
-
+	
 	public ColumnConfiguration<T> setColumnAlignment(final ColumnTextAlign columnAlignment)
 	{
 		this.columnAlignment = columnAlignment;
 		return this;
 	}
-
+	
 	public Integer getColumnWidth()
 	{
 		return this.columnWidth;
 	}
-
+	
 	public ColumnConfiguration<T> setColumnWidth(final Integer columnWidth)
 	{
 		this.columnWidth = columnWidth;

@@ -30,6 +30,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
 import com.vaadin.flow.component.ItemLabelGenerator;
 import com.vaadin.flow.component.grid.ColumnPathRenderer;
 import com.vaadin.flow.component.grid.Grid;

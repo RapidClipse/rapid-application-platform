@@ -32,9 +32,9 @@ import java.util.stream.Collectors;
 import com.rapidclipse.framework.server.data.renderer.RenderedComponent;
 import com.rapidclipse.framework.server.reports.Format;
 import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
+import com.rapidclipse.framework.server.reports.grid.column.ColumnConfigurationBuilder;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.Grid.Column;
-import com.vaadin.flow.data.renderer.Renderer;
 
 import net.sf.dynamicreports.report.constant.PageOrientation;
 import net.sf.dynamicreports.report.constant.PageType;
@@ -53,62 +53,100 @@ public class GridExportConfiguration<T>
 	 */
 	public static <T> Predicate<Column<T>> DefaultColumnFilter()
 	{
-		return column -> {
-			
-			final Renderer<T> renderer = column.getRenderer();
-			if(renderer instanceof RenderedComponent.RenderedComponentRenderer)
-			{
-				return false;
-			}
-			
-			return true;
-		};
+		return col -> !(col.getRenderer() instanceof RenderedComponent.RenderedComponentRenderer);
 	}
 	
-	private final Grid<T>                      grid;
-	private final List<ColumnConfiguration<T>> columnConfigurations;
+	public static ColumnConfigurationBuilder getDefaultColumnConfigBuilder()
+	{
+		return new ColumnConfigurationBuilder()
+			.withColumnConfigHeaderResolvingStrategyBuilder(headerResolvingStrategyBuilder -> {
+				headerResolvingStrategyBuilder
+					.withVaadinInternalHeaderStrategy()
+					.withBeanKeyCaptionStrategy();
+			});
+	}
 	
-	private Format[]                           availableFormats = Format.All();
-	private Format                             format           = Format.Pdf();
-	private String                             title            = "Report";
-	private PageType                           pageType         = PageType.A4;
-	private PageOrientation                    pageOrientation  = PageOrientation.PORTRAIT;
-	private Insets                             pageMargin       = new Insets(20, 20, 20, 20);
-	private boolean                            showPageNumber   = false;
-	private boolean                            highlightRows    = false;
+	private final Grid<T>              grid;
+	
+	private Predicate<Column<T>>       columnFilter        = DefaultColumnFilter();
+	private ColumnConfigurationBuilder columnConfigBuilder = getDefaultColumnConfigBuilder();
+	private Format[]                   availableFormats    = Format.All();
+	private Format                     format              = Format.Pdf();
+	private String                     title               = "Report";
+	private PageType                   pageType            = PageType.A4;
+	private PageOrientation            pageOrientation     = PageOrientation.PORTRAIT;
+	private Insets                     pageMargin          = new Insets(20, 20, 20, 20);
+	private boolean                    showPageNumber      = false;
+	private boolean                    highlightRows       = false;
 	
 	public GridExportConfiguration(final Grid<T> grid)
 	{
-		this(grid, DefaultColumnFilter());
+		this.grid = grid;
 	}
 	
 	/**
 	 *
 	 * @since 10.02.00
+	 * 
+	 * @deprecated Use {@link #setColumnFilter(Predicate)}
 	 */
+	@Deprecated
 	public GridExportConfiguration(final Grid<T> grid, final Predicate<Column<T>> columnFilter)
 	{
-		super();
+		this(grid);
 		
-		this.grid = grid;
-		
-		final List<Column<T>> columns = grid.getColumns();
-		// final int columnWidth =
-		// (this.pageType.getWidth() - this.pageMargin.left - this.pageMargin.right) / columns.size();
-		this.columnConfigurations = columns.stream()
-			.filter(columnFilter)
-			.map(gridColumn -> new ColumnConfiguration<>(gridColumn))
+		setColumnFilter(columnFilter);
+	}
+	
+	/**
+	 * @param columnFilter
+	 *            the columnFilter to set
+	 * @return
+	 */
+	public GridExportConfiguration<T> setColumnFilter(final Predicate<Column<T>> columnFilter)
+	{
+		this.columnFilter = columnFilter;
+		return this;
+	}
+	
+	/**
+	 * @return the columnFilter
+	 */
+	public Predicate<Column<T>> getColumnFilter()
+	{
+		return this.columnFilter;
+	}
+	
+	/**
+	 * @param columnConfigBuilder
+	 *            the columnConfigBuilder to set
+	 * @return
+	 */
+	public GridExportConfiguration<T> setColumnConfigBuilder(final ColumnConfigurationBuilder columnConfigBuilder)
+	{
+		this.columnConfigBuilder = columnConfigBuilder;
+		return this;
+	}
+	
+	/**
+	 * @return the columnConfigBuilder
+	 */
+	public ColumnConfigurationBuilder getColumnConfigBuilder()
+	{
+		return this.columnConfigBuilder;
+	}
+	
+	public List<ColumnConfiguration<T>> getColumnConfigurations()
+	{
+		return this.grid.getColumns().stream()
+			.filter(this.columnFilter)
+			.map(this.columnConfigBuilder::build)
 			.collect(Collectors.toList());
 	}
 	
 	public Grid<T> getGrid()
 	{
 		return this.grid;
-	}
-	
-	public List<ColumnConfiguration<T>> getColumnConfigurations()
-	{
-		return this.columnConfigurations;
 	}
 	
 	public GridExportConfiguration<T> setAvailableFormats(final Format... availableFormats)

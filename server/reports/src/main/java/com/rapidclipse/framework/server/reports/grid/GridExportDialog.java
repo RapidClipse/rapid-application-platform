@@ -35,6 +35,7 @@ import java.util.Objects;
 import com.flowingcode.vaadin.addons.ironicons.IronIcons;
 import com.rapidclipse.framework.server.data.renderer.RenderedComponent;
 import com.rapidclipse.framework.server.reports.Format;
+import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.rapidclipse.framework.server.resources.StringResourceUtils;
 import com.rapidclipse.framework.server.ui.ItemLabelGeneratorFactory;
