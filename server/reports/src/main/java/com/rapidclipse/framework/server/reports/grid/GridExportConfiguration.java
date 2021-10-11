@@ -66,82 +66,57 @@ public class GridExportConfiguration<T>
 			});
 	}
 	
-	private final Grid<T>              grid;
+	private final Grid<T>                      grid;
 	
-	private Predicate<Column<T>>       columnFilter        = DefaultColumnFilter();
-	private ColumnConfigurationBuilder columnConfigBuilder = getDefaultColumnConfigBuilder();
-	private Format[]                   availableFormats    = Format.All();
-	private Format                     format              = Format.Pdf();
-	private String                     title               = "Report";
-	private PageType                   pageType            = PageType.A4;
-	private PageOrientation            pageOrientation     = PageOrientation.PORTRAIT;
-	private Insets                     pageMargin          = new Insets(20, 20, 20, 20);
-	private boolean                    showPageNumber      = false;
-	private boolean                    highlightRows       = false;
+	private final List<ColumnConfiguration<T>> columnConfigurations;
+	private Format[]                           availableFormats = Format.All();
+	private Format                             format           = Format.Pdf();
+	private String                             title            = "Report";
+	private PageType                           pageType         = PageType.A4;
+	private PageOrientation                    pageOrientation  = PageOrientation.PORTRAIT;
+	private Insets                             pageMargin       = new Insets(20, 20, 20, 20);
+	private boolean                            showPageNumber   = false;
+	private boolean                            highlightRows    = false;
 	
 	public GridExportConfiguration(final Grid<T> grid)
 	{
-		this.grid = grid;
+		this(grid, null, null);
 	}
 	
-	/**
-	 *
-	 * @since 10.02.00
-	 * 
-	 * @deprecated Use {@link #setColumnFilter(Predicate)}
-	 */
-	@Deprecated
 	public GridExportConfiguration(final Grid<T> grid, final Predicate<Column<T>> columnFilter)
 	{
-		this(grid);
+		this(grid, columnFilter, null);
+	}
+	
+	public GridExportConfiguration(
+		final Grid<T> grid,
+		Predicate<Column<T>> columnFilter,
+		ColumnConfigurationBuilder configurationBuilder)
+	{
+		this.grid = grid;
 		
-		setColumnFilter(columnFilter);
+		if(columnFilter == null)
+		{
+			columnFilter = DefaultColumnFilter();
+		}
+		if(configurationBuilder == null)
+		{
+			configurationBuilder = getDefaultColumnConfigBuilder();
+		}
+		
+		// This has to be done here so that it's already available for the ExportDialog
+		this.columnConfigurations = this.grid.getColumns().stream()
+			.filter(columnFilter)
+			.map(configurationBuilder::build)
+			.collect(Collectors.toList());
 	}
 	
 	/**
-	 * @param columnFilter
-	 *            the columnFilter to set
-	 * @return
+	 * @return the columnConfigurations
 	 */
-	public GridExportConfiguration<T> setColumnFilter(final Predicate<Column<T>> columnFilter)
-	{
-		this.columnFilter = columnFilter;
-		return this;
-	}
-	
-	/**
-	 * @return the columnFilter
-	 */
-	public Predicate<Column<T>> getColumnFilter()
-	{
-		return this.columnFilter;
-	}
-	
-	/**
-	 * @param columnConfigBuilder
-	 *            the columnConfigBuilder to set
-	 * @return
-	 */
-	public GridExportConfiguration<T> setColumnConfigBuilder(final ColumnConfigurationBuilder columnConfigBuilder)
-	{
-		this.columnConfigBuilder = columnConfigBuilder;
-		return this;
-	}
-	
-	/**
-	 * @return the columnConfigBuilder
-	 */
-	public ColumnConfigurationBuilder getColumnConfigBuilder()
-	{
-		return this.columnConfigBuilder;
-	}
-	
 	public List<ColumnConfiguration<T>> getColumnConfigurations()
 	{
-		return this.grid.getColumns().stream()
-			.filter(this.columnFilter)
-			.map(this.columnConfigBuilder::build)
-			.collect(Collectors.toList());
+		return this.columnConfigurations;
 	}
 	
 	public Grid<T> getGrid()
