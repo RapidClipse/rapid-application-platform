@@ -71,7 +71,7 @@ public class GridExportConfiguration<T>
 	private final List<ColumnConfiguration<T>> columnConfigurations;
 	private Format[]                           availableFormats = Format.All();
 	private Format                             format           = Format.Pdf();
-	private String                             title            = "Report";
+	private String                             title            = "";                        // No text = no title
 	private PageType                           pageType         = PageType.A4;
 	private PageOrientation                    pageOrientation  = PageOrientation.PORTRAIT;
 	private Insets                             pageMargin       = new Insets(20, 20, 20, 20);
