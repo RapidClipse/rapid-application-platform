@@ -120,7 +120,9 @@ public interface GridReportBuilder<T>
 			report.setShowColumnTitle(true);
 			report.setDataSource(this.dataSourceFactory.createDataSource(configuration));
 			report.setPageFormat(configuration.getPageType(), configuration.getPageOrientation());
-			report.setPageMargin(DynamicReports.margin(20));
+			
+			report.setPageMargin(
+				configuration.getFormat().hasPageMargin() ? DynamicReports.margin(20) : DynamicReports.margin(0));
 			
 			return report;
 		}

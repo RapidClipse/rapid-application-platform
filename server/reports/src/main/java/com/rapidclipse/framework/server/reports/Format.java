@@ -81,6 +81,14 @@ public interface Format
 	 */
 	boolean isPaginationActive();
 	
+	/**
+	 * Returns if a report has a page margin.
+	 * 
+	 * @return <code>true</code> if there is a page margin
+	 * @since 11.00.00
+	 */
+	boolean hasPageMargin();
+	
 	public static Format Csv()
 	{
 		return new Csv();
@@ -166,6 +174,7 @@ public interface Format
 		private final String mimeType;
 		protected boolean    canBePreviewedInStandardBrowser = false;
 		protected boolean    paginationActive                = false;
+		protected boolean    hasPageMargin                   = true;
 		
 		protected Abstract(final String name, final String fileSuffix, final String mimeType)
 		{
@@ -196,6 +205,16 @@ public interface Format
 			this.paginationActive = paginationActive;
 		}
 		
+		public void disablePageMargin()
+		{
+			setHasPageMargin(false);
+		}
+		
+		public void setHasPageMargin(final boolean hasPageMargin)
+		{
+			this.hasPageMargin = hasPageMargin;
+		}
+		
 		@Override
 		public String name()
 		{
@@ -224,6 +243,12 @@ public interface Format
 		public boolean isPaginationActive()
 		{
 			return this.paginationActive;
+		}
+		
+		@Override
+		public boolean hasPageMargin()
+		{
+			return this.hasPageMargin;
 		}
 		
 		@Override
@@ -264,7 +289,7 @@ public interface Format
 	
 	public static class Pdf extends Abstract
 	{
-		public final static String MIME_TYPE = "application/pdf";
+		public static final String MIME_TYPE = "application/pdf";
 		
 		public Pdf()
 		{
@@ -293,7 +318,7 @@ public interface Format
 	 */
 	public static class Html extends Abstract
 	{
-		public final static String MIME_TYPE = "text/html";
+		public static final String MIME_TYPE = "text/html";
 		
 		public Html()
 		{
@@ -323,11 +348,12 @@ public interface Format
 	
 	public static class Xml extends Abstract
 	{
-		public final static String MIME_TYPE = "text/xml";
+		public static final String MIME_TYPE = "text/xml";
 		
 		public Xml()
 		{
 			super("XML", "xml", MIME_TYPE);
+			disablePageMargin();
 		}
 		
 		@Override
@@ -345,12 +371,13 @@ public interface Format
 	
 	public static class Text extends Abstract
 	{
-		public final static String MIME_TYPE = "text/plain";
+		public static final String MIME_TYPE = "text/plain";
 		
 		public Text()
 		{
 			super("Text", "txt", MIME_TYPE);
 			canBePreviewedInStandardBrowser();
+			disablePageMargin();
 		}
 		
 		@Override
@@ -380,12 +407,13 @@ public interface Format
 	
 	public static class Rtf extends Abstract
 	{
-		public final static String MIME_TYPE = "text/rtf";
+		public static final String MIME_TYPE = "text/rtf";
 		
 		public Rtf()
 		{
 			super("Rich Text", "rtf", MIME_TYPE);
 			enablePagination();
+			disablePageMargin();
 		}
 		
 		@Override
@@ -410,11 +438,12 @@ public interface Format
 	
 	public static class Csv extends Abstract
 	{
-		public final static String MIME_TYPE = "text/comma-separated-values";
+		public static final String MIME_TYPE = "text/comma-separated-values";
 		
 		public Csv()
 		{
 			super("CSV", "csv", MIME_TYPE);
+			disablePageMargin();
 		}
 		
 		@Override
@@ -439,11 +468,12 @@ public interface Format
 	
 	public static class Xls extends Abstract
 	{
-		public final static String MIME_TYPE = "application/vnd.ms-excel";
+		public static final String MIME_TYPE = "application/vnd.ms-excel";
 		
 		public Xls()
 		{
 			super("Excel (xls)", "xls", MIME_TYPE);
+			disablePageMargin();
 		}
 		
 		@Override
@@ -468,11 +498,12 @@ public interface Format
 	
 	public static class Xlsx extends Abstract
 	{
-		public final static String MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+		public static final String MIME_TYPE = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
 		
 		public Xlsx()
 		{
 			super("Excel (xlsx)", "xlsx", MIME_TYPE);
+			disablePageMargin();
 		}
 		
 		@Override
@@ -497,7 +528,7 @@ public interface Format
 	
 	public static class Docx extends Abstract
 	{
-		public final static String MIME_TYPE =
+		public static final String MIME_TYPE =
 			"application/vnd.openxmlformats-officedocument.wordprocessingml.document";
 		
 		public Docx()
@@ -528,7 +559,7 @@ public interface Format
 	
 	public static class Pptx extends Abstract
 	{
-		public final static String MIME_TYPE =
+		public static final String MIME_TYPE =
 			"application/vnd.openxmlformats-officedocument.presentationml.presentation";
 		
 		public Pptx()
@@ -559,7 +590,7 @@ public interface Format
 	
 	public static class Odt extends Abstract
 	{
-		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.text";
+		public static final String MIME_TYPE = "application/vnd.oasis.opendocument.text";
 		
 		public Odt()
 		{
@@ -589,11 +620,12 @@ public interface Format
 	
 	public static class Ods extends Abstract
 	{
-		public final static String MIME_TYPE = "application/vnd.oasis.opendocument.spreadsheet";
+		public static final String MIME_TYPE = "application/vnd.oasis.opendocument.spreadsheet";
 		
 		public Ods()
 		{
 			super("Open Document Spreadsheet (ods)", "ods", MIME_TYPE);
+			disablePageMargin();
 		}
 		
 		@Override
