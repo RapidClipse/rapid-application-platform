@@ -216,7 +216,7 @@
 			<dependency>
 				<groupId>net.sourceforge.dynamicreports</groupId>
 				<artifactId>dynamicreports-core</artifactId>
-				<version>6.11.1</version>
+				<version>6.12.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.junit.jupiter</groupId>
