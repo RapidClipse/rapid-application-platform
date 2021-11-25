@@ -48,5 +48,12 @@
 		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
 		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
 	</scm>
-	
+
+	<dependencies>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+		</dependency>
+	</dependencies>
+
 </project>
