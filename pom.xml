@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
 
-    Copyright (C) 2013-2021 by XDEV Software, All Rights Reserved.
+    Copyright (C) 2013-2022 by XDEV Software, All Rights Reserved.
 
     This file is part of the RapidClipse Application Platform (RAP).
 
@@ -21,7 +21,7 @@
     SPDX-License-Identifier: AGPL-3.0-or-later
 
     Contributors:
-        XDEV Software Corp. - initial API and implementation
+        XDEV Software - initial API and implementation
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -59,15 +59,15 @@
 	</scm>
 
 	<organization>
-		<name>XDEV Software Corp.</name>
-		<url>https://www.xdev-software.com</url>
+		<name>XDEV Software</name>
+		<url>https://xdev-software.com</url>
 	</organization>
 
 	<developers>
 		<developer>
 			<name>XDEV Software</name>
-			<organization>XDEV Software Corp.</organization>
-			<url>https://www.xdev-software.com</url>
+			<organization>XDEV Software</organization>
+			<url>https://xdev-software.com</url>
 		</developer>
 	</developers>
 

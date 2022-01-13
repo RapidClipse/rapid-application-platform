@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2021 by XDEV Software, All Rights Reserved.
+ * Copyright (C) 2013-2022 by XDEV Software, All Rights Reserved.
  *
  * This file is part of the RapidClipse Application Platform (RAP).
  *
@@ -19,7 +19,7 @@
  * SPDX-License-Identifier: AGPL-3.0-or-later
  *
  * Contributors:
- *     XDEV Software Corp. - initial API and implementation
+ *     XDEV Software - initial API and implementation
  */
 package com.rapidclipse.framework.server.webapi.visibility;
 
