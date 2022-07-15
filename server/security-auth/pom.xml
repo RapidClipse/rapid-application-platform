@@ -53,12 +53,12 @@
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-server-core</artifactId>
-			<version>11.00.00-RAP-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
 			<artifactId>rap-security-auth</artifactId>
-			<version>11.00.00-RAP-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 
