@@ -69,7 +69,7 @@ public interface SubsetDataProvider<T> extends Serializable
 	
 	public static <T> SubsetDataProvider<T> New(final ListDataProvider<T> listDataProvider)
 	{
-		return (comboBox, context, property) -> comboBox.setDataProvider(listDataProvider);
+		return (comboBox, context, property) -> comboBox.setItems(listDataProvider);
 	}
 	
 	public static <T> SubsetDataProvider<T> New(

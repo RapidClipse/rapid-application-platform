@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.configuration.xml;
 
 import java.util.ArrayList;
@@ -40,20 +41,20 @@ public final class XmlSubject
 	///////////////////////////////////////////////////////////////////////////
 	// instance fields //
 	////////////////////
-	
+
 	@XmlAttribute
-	String name;
-	
+	String                      name;
+
 	@XmlAttribute
-	String password;
-	
+	String                      password;
+
 	@XmlElement(name = "role")
 	ArrayList<XmlRoleReference> roles;
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-	
+
 	public XmlSubject(final String name, final String password, final ArrayList<XmlRole> roles)
 	{
 		super();
@@ -61,39 +62,39 @@ public final class XmlSubject
 		this.password = password;
 		this.roles    = XmlRoleReference.box(roles);
 	}
-	
+
 	public XmlSubject(final String name, final ArrayList<XmlRole> roles)
 	{
 		this(name, null, roles);
 	}
-	
+
 	// JAXB dummy constructor
 	XmlSubject()
 	{
 		this(null, null, null);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// override methods //
 	/////////////////////
-	
+
 	public final String password()
 	{
 		return this.password;
 	}
-	
+
 	public final List<XmlRoleReference> roles()
 	{
 		return this.roles;
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// override methods //
 	/////////////////////
-	
+
 	public final String name()
 	{
 		return this.name;
 	}
-	
+
 }

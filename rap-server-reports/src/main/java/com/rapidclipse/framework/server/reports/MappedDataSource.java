@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports;
 
 import java.util.HashMap;
@@ -108,7 +109,7 @@ public class MappedDataSource extends DelegatingDataSource
 	{
 		final String mappedName = this.fieldNameMapping.get(jrField.getName());
 		
-		JRField field = jrField;
+		JRField      field      = jrField;
 		if(mappedName != null)
 		{
 			field = this.mappedFields.computeIfAbsent(mappedName,
@@ -181,11 +182,11 @@ public class MappedDataSource extends DelegatingDataSource
 		}
 	}
 	
-	public static class Json extends Rewindable implements JsonData
+	public static class Json<T extends JsonData<T>> extends Rewindable implements JsonData<T>
 	{
-		private final JsonData delegate;
+		private final JsonData<T> delegate;
 		
-		public Json(final JsonData delegate, final Map<String, String> fieldNameMapping)
+		public Json(final JsonData<T> delegate, final Map<String, String> fieldNameMapping)
 		{
 			super(delegate, fieldNameMapping);
 			
@@ -193,13 +194,13 @@ public class MappedDataSource extends DelegatingDataSource
 		}
 		
 		@Override
-		public JsonData subDataSource() throws JRException
+		public T subDataSource() throws JRException
 		{
 			return this.delegate.subDataSource();
 		}
 		
 		@Override
-		public JsonData subDataSource(final String selectExpression) throws JRException
+		public T subDataSource(final String selectExpression) throws JRException
 		{
 			return this.delegate.subDataSource(selectExpression);
 		}

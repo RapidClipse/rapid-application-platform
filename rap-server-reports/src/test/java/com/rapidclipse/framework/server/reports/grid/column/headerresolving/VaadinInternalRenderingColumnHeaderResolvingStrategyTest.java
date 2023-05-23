@@ -34,7 +34,7 @@ class VaadinInternalRenderingColumnHeaderResolvingStrategyTest
 			.setHeader(expectedHeader);
 		
 		final Optional<String>    optResolvedName =
-			new VaadinInternalRenderingColumnHeaderResolvingStrategy().resolve(colUsername);
+			new VaadinColumnHeaderResolvingStrategy().resolve(colUsername);
 		
 		assertTrue(optResolvedName.isPresent(), "No resolved column name found");
 		assertEquals(expectedHeader, optResolvedName.get());
@@ -50,7 +50,7 @@ class VaadinInternalRenderingColumnHeaderResolvingStrategyTest
 			.addColumn(TestUserDTO::getUsername);
 		
 		final Optional<String>    optResolvedName =
-			new VaadinInternalRenderingColumnHeaderResolvingStrategy().resolve(colUsername);
+			new VaadinColumnHeaderResolvingStrategy().resolve(colUsername);
 		
 		assertTrue(!optResolvedName.isPresent(), "column name found");
 	}
@@ -66,7 +66,7 @@ class VaadinInternalRenderingColumnHeaderResolvingStrategyTest
 			.setHeader(new Label("text"));
 		
 		final Optional<String>    optResolvedName =
-			new VaadinInternalRenderingColumnHeaderResolvingStrategy().resolve(colUsername);
+			new VaadinColumnHeaderResolvingStrategy().resolve(colUsername);
 		
 		assertTrue(!optResolvedName.isPresent(), "column name found");
 	}
@@ -77,7 +77,7 @@ class VaadinInternalRenderingColumnHeaderResolvingStrategyTest
 	{
 		final Optional<String> optResolvedName =
 			assertDoesNotThrow(
-				() -> new VaadinInternalRenderingColumnHeaderResolvingStrategy().resolve(null));
+				() -> new VaadinColumnHeaderResolvingStrategy().resolve(null));
 		
 		assertTrue(!optResolvedName.isPresent(), "column name found");
 	}

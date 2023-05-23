@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports;
 
 import java.util.Objects;
@@ -396,8 +397,8 @@ public interface Format
 				exporter.setExporterOutput(new SimpleWriterExporterOutput(stream));
 				final SimpleTextReportConfiguration configuration = new SimpleTextReportConfiguration();
 				final DRFont                        font          = Defaults.getDefaults().getFont();
-				configuration.setCharWidth(new Float(StyleResolver.getFontWidth(font)));
-				configuration.setCharHeight(new Float(StyleResolver.getFontHeight(font)));
+				configuration.setCharWidth(Float.valueOf((float)StyleResolver.getFontWidth(font)));
+				configuration.setCharHeight(Float.valueOf((float)StyleResolver.getFontHeight(font)));
 				exporter.setConfiguration(configuration);
 				exporter.exportReport();
 			};

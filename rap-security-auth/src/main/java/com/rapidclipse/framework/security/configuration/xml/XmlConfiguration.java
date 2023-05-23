@@ -21,18 +21,19 @@
  * Contributors:
  *     XDEV Software - initial API and implementation
  */
+
 package com.rapidclipse.framework.security.configuration.xml;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.rapidclipse.framework.security.authorization.AuthorizationException;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
-
-import com.rapidclipse.framework.security.authorization.AuthorizationException;
 
 
 /**
@@ -46,7 +47,7 @@ public final class XmlConfiguration
 	///////////////////////////////////////////////////////////////////////////
 	// static methods //
 	///////////////////
-	
+
 	public static final XmlConfiguration readFromFile(final File xmlFile) throws AuthorizationException
 	{
 		try
@@ -62,24 +63,24 @@ public final class XmlConfiguration
 			throw new AuthorizationException(e);
 		}
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// instance fields //
 	////////////////////
-	
+
 	@XmlElement(name = "resource")
 	ArrayList<XmlResource> resources;
-	
+
 	@XmlElement(name = "role")
-	ArrayList<XmlRole> roles;
-	
+	ArrayList<XmlRole>     roles;
+
 	@XmlElement(name = "subject")
-	ArrayList<XmlSubject> subjects;
-	
+	ArrayList<XmlSubject>  subjects;
+
 	///////////////////////////////////////////////////////////////////////////
 	// constructors //
 	/////////////////
-	
+
 	public XmlConfiguration(
 		final ArrayList<XmlResource> resources,
 		final ArrayList<XmlRole> roles,
@@ -90,36 +91,36 @@ public final class XmlConfiguration
 		this.roles     = roles;
 		this.subjects  = subjects;
 	}
-	
+
 	// JAXB dummy constructor
 	XmlConfiguration()
 	{
 		this(null, null, null);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// declared methods //
 	/////////////////////
-	
+
 	public final List<XmlResource> resources()
 	{
 		return this.resources;
 	}
-	
+
 	public final List<XmlRole> roles()
 	{
 		return this.roles;
 	}
-	
+
 	public final List<XmlSubject> subjects()
 	{
 		return this.subjects;
 	}
-	
+
 	///////////////////////////////////////////////////////////////////////////
 	// override methods //
 	/////////////////////
-	
+
 	@Override
 	public final String toString()
 	{

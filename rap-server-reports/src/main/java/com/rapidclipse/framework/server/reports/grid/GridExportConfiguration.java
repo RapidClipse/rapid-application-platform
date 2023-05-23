@@ -21,6 +21,7 @@
  * Contributors:
  *     XDEV Software - initial API and implementation
  */
+
 package com.rapidclipse.framework.server.reports.grid;
 
 import java.awt.Insets;
@@ -60,7 +61,7 @@ public class GridExportConfiguration<T>
 		return new ColumnConfigurationBuilder()
 			.withColumnConfigHeaderResolvingStrategyBuilder(headerResolvingStrategyBuilder -> {
 				headerResolvingStrategyBuilder
-					.withVaadinInternalHeaderStrategy()
+					.withVaadinColumnHeaderStrategy()
 					.withBeanKeyCaptionStrategy();
 			});
 	}

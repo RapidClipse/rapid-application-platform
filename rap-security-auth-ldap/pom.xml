@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <!--
 
     Copyright (C) 2013-2023 by XDEV Software, All Rights Reserved.
@@ -51,9 +50,11 @@
 			<artifactId>rap-security-auth</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
+			<version>1.11.0</version>
 		</dependency>
 	</dependencies>
 

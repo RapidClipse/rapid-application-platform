@@ -33,7 +33,7 @@ import java.util.function.Function;
 import com.rapidclipse.framework.server.reports.grid.column.headerresolving.BeanKeyCaptionColumnHeaderResolvingStrategy;
 import com.rapidclipse.framework.server.reports.grid.column.headerresolving.ColumnHeaderResolvingStrategy;
 import com.rapidclipse.framework.server.reports.grid.column.headerresolving.ManualColumnHeaderResolvingStrategy;
-import com.rapidclipse.framework.server.reports.grid.column.headerresolving.VaadinInternalRenderingColumnHeaderResolvingStrategy;
+import com.rapidclipse.framework.server.reports.grid.column.headerresolving.VaadinColumnHeaderResolvingStrategy;
 import com.vaadin.flow.component.grid.Grid.Column;
 import com.vaadin.flow.function.SerializableFunction;
 
@@ -50,13 +50,13 @@ public class ColumnConfigurationHeaderResolvingStrategyBuilder
 	private final List<ColumnHeaderResolvingStrategy> strategies = new ArrayList<>();
 	
 	/**
-	 * Uses the {@link VaadinInternalRenderingColumnHeaderResolvingStrategy}
+	 * Uses the {@link VaadinColumnHeaderResolvingStrategy}
 	 *
 	 * @return
 	 */
-	public ColumnConfigurationHeaderResolvingStrategyBuilder withVaadinInternalHeaderStrategy()
+	public ColumnConfigurationHeaderResolvingStrategyBuilder withVaadinColumnHeaderStrategy()
 	{
-		return withStrategy(new VaadinInternalRenderingColumnHeaderResolvingStrategy());
+		return withStrategy(new VaadinColumnHeaderResolvingStrategy());
 	}
 	
 	/**

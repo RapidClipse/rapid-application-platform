@@ -42,7 +42,7 @@ public class ContentSecurityPolicyExtension implements VaadinServiceInitListener
 	@Override
 	public void serviceInit(final ServiceInitEvent event)
 	{
-		event.addBootstrapListener(response -> {
+		event.addIndexHtmlRequestListener(response -> {
 			
 			final ContentSecurityPolicy contentSecurityPolicy = Rap.getContentSecurityPolicy();
 			if(contentSecurityPolicy != null && !contentSecurityPolicy.isEmpty())

@@ -26,7 +26,6 @@ package com.rapidclipse.framework.server.jpa.dal;
 import java.io.Serializable;
 import java.util.Objects;
 
-import org.hibernate.criterion.Example.PropertySelector;
 
 import com.rapidclipse.framework.server.jpa.AttributeChain;
 import com.rapidclipse.framework.server.jpa.Jpa;
