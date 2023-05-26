@@ -12,7 +12,10 @@ export class RapGeolocation extends LitElement {
 	}
 	
 	watchPosition(options?: PositionOptions) {
-		this.watchId = navigator.geolocation.watchPosition(this.$server.onSuccess, this.$server.onError, options);
+		this.watchId = navigator.geolocation.watchPosition(
+			e => this.$server.onSuccess(this.clonePositionObject(e)),
+			e => this.$server.onError(this.cloneErrorObject(e)),
+			options);
 	}
 	
 	clearWatch() {
