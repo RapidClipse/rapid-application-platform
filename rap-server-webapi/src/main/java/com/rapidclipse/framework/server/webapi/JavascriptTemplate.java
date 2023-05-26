@@ -31,10 +31,9 @@ import java.util.Optional;
 import java.util.Set;
 
 import com.vaadin.flow.component.HasElement;
-import com.vaadin.flow.component.polymertemplate.PolymerTemplate;
+import com.vaadin.flow.component.littemplate.LitTemplate;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 
 /**
@@ -45,7 +44,7 @@ import com.vaadin.flow.templatemodel.TemplateModel;
  * @author XDEV Software
  * @since 10.02.00
  */
-public abstract class JavascriptTemplate<M extends TemplateModel> extends PolymerTemplate<M>
+public abstract class JavascriptTemplate extends LitTemplate
 {
 	private final Map<Class<?>, Set<? extends SerializableConsumer<?>>> consumers = new HashMap<>();
 

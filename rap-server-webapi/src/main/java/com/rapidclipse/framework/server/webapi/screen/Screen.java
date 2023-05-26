@@ -35,11 +35,10 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 import elemental.json.JsonObject;
 
@@ -50,9 +49,9 @@ import elemental.json.JsonObject;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/screen.html")
+@JsModule("./webapi/screen.js")
 @Tag("rap-screen")
-public class Screen extends JavascriptTemplate<Screen.ScreenTemplateModel>
+public class Screen extends JavascriptTemplate
 {
 	private final HasElement target;
 
@@ -248,9 +247,5 @@ public class Screen extends JavascriptTemplate<Screen.ScreenTemplateModel>
 		{
 			return OrientationType.valueOf(str.replace('-', '_'));
 		}
-	}
-
-	public static interface ScreenTemplateModel extends TemplateModel
-	{
 	}
 }

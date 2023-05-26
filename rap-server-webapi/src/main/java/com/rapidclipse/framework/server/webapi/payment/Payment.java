@@ -34,8 +34,7 @@ import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.templatemodel.TemplateModel;
+import com.vaadin.flow.component.dependency.JsModule;
 
 import elemental.json.JsonObject;
 
@@ -47,9 +46,9 @@ import elemental.json.JsonObject;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/payment.html")
+@JsModule("frontend://webapi/payment.html")
 @Tag("rap-payment")
-public class Payment extends JavascriptTemplate<Payment.PaymentTemplateModel>
+public class Payment extends JavascriptTemplate
 {
 	private Consumer<PaymentResult>   onRequestPaymentResultReceived;
 	private Consumer<JavascriptError> onRequestPaymentErrorReceived;
@@ -215,9 +214,5 @@ public class Payment extends JavascriptTemplate<Payment.PaymentTemplateModel>
 		 * This will signal the user that the transaction status is unkown.
 		 */
 		unkown
-	}
-
-	public static interface PaymentTemplateModel extends TemplateModel
-	{
 	}
 }

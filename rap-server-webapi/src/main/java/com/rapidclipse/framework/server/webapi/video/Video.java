@@ -28,61 +28,65 @@ import java.util.Base64.Decoder;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.google.gson.reflect.TypeToken;
 import com.rapidclipse.framework.server.webapi.JavascriptTemplate;
+import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
+import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.HasSize;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
-import com.vaadin.flow.component.polymertemplate.RepeatIndex;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 import elemental.json.JsonString;
 
-
 /**
- * The html video element that can contain multimedia such as videos. To add such sources the {@link #addSource(Source)}
- * method can be used. To add the users device camera the {@link #addDeviceCameraVideoSource(boolean, boolean, boolean)}
- * method can be used. You can also take pictures with the {@link #takePicture()} method.
+ * The html video element that can contain multimedia such as videos. To add
+ * such sources the {@link #addSource(Source)} method can be used. To add the
+ * users device camera the
+ * {@link #addDeviceCameraVideoSource(boolean, boolean, boolean)} method can be
+ * used. You can also take pictures with the {@link #takePicture()} method.
  *
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/video.html")
+@JsModule("./webapi/video.js")
 @Tag("rap-video")
-public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implements HasSize
+public class Video extends JavascriptTemplate implements HasSize
 {
 	// TODO: What to do if no more memory is left? Maybe add some sort of immediate mode, where the server
 	// can immediately process the received video after receiving one of the chunks
 	private final List<byte[]> recordedData = new LinkedList<>();
-	private String             mimeType     = null;
-	private boolean            isRecording  = false;
-	
+	private String mimeType = null;
+	private boolean isRecording = false;
+
 	public Video()
 	{
 		this.setSizeFull();
 	}
-	
+
 	/**
-	 * Add a consumer for the video received event triggered by {@link #stopRecording()}. This consumer will be called
-	 * when the video transmission has ended.
+	 * Add a consumer for the video received event triggered by
+	 * {@link #stopRecording()}. This consumer will be called when the video
+	 * transmission has ended.
 	 */
 	public Registration addVideoConsumer(final SerializableConsumer<VideoWrapper> consumer)
 	{
 		return this.registerConsumer(VideoWrapper.class, consumer);
 	}
-	
+
 	/**
-	 * Add a consumer for the picture received event triggered by {@link #takePicture()}. It will consume the image
-	 * received. The result is wrapped in an ImageWrapper that contains convinience methods such as
+	 * Add a consumer for the picture received event triggered by
+	 * {@link #takePicture()}. It will consume the image received. The result is
+	 * wrapped in an ImageWrapper that contains convinience methods such as
 	 * {@link ImageWrapper#toStreamResource(String)}
 	 */
 	public Registration addPictureConsumer(final SerializableConsumer<ImageWrapper> consumer)
 	{
 		return this.registerConsumer(ImageWrapper.class, consumer);
 	}
-	
+
 	/**
 	 * Set the list of sources for the video element.
 	 */
@@ -91,40 +95,42 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		this.getModel().setSources(sources);
 		return this;
 	}
-	
+
 	/**
-	 * Add a source to the list of sources for the video element. These sources are usually the same video but in
-	 * different formats to support as many browsers as possible.
+	 * Add a source to the list of sources for the video element. These sources are
+	 * usually the same video but in different formats to support as many browsers
+	 * as possible.
 	 */
 	public void addSource(final Source source)
 	{
 		this.getModel().getSources().add(source);
 	}
-	
+
 	/**
 	 * Add the users device camera as a source.
 	 */
 	public void addDeviceCameraVideoSource(
 		final boolean withVideo,
 		final boolean useFrontCamera,
-		final boolean withAudio)
+		final boolean withAudio
+	)
 	{
 		this.getElement().callJsFunction("addDeviceCameraVideoSource", withVideo, withAudio, useFrontCamera);
 	}
-	
+
 	/**
 	 * Remove a source with the given index.
 	 */
-	public void removeSource(@RepeatIndex final int index)
+	public void removeSource(@EventData("event.model.index") final int index)
 	{
 		this.getModel().getSources().remove(index);
 	}
-	
+
 	public List<Source> getSources()
 	{
 		return this.getModel().getSources();
 	}
-	
+
 	/**
 	 * Start recording the current source.
 	 */
@@ -133,21 +139,21 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 		this.isRecording = true;
 		this.getElement().callJsFunction("startRecording");
 	}
-	
+
 	/**
-	 * Stop recording the current source and return the result to the consumers added via the
-	 * {@link #addVideoConsumer(SerializableConsumer)} method.
+	 * Stop recording the current source and return the result to the consumers
+	 * added via the {@link #addVideoConsumer(SerializableConsumer)} method.
 	 */
 	public void stopRecording()
 	{
 		this.isRecording = false;
-		this.getElement().callJsFunction("stopRecording")
-			.then(String.class, mimeType -> this.mimeType = mimeType);
+		this.getElement().callJsFunction("stopRecording").then(String.class, mimeType -> this.mimeType = mimeType);
 	}
-	
+
 	/**
-	 * Start playing the video. If the video was paused, this will unpause the video. If the video has stopped because
-	 * the end was reached, this will play from the beginning.
+	 * Start playing the video. If the video was paused, this will unpause the
+	 * video. If the video has stopped because the end was reached, this will play
+	 * from the beginning.
 	 *
 	 * @see #pause()
 	 */
@@ -155,7 +161,7 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		this.getElement().callJsFunction("play");
 	}
-	
+
 	/**
 	 * Pauses the video. Calling this method subsequently has no effects.
 	 *
@@ -165,76 +171,111 @@ public class Video extends JavascriptTemplate<Video.VideoTemplateModel> implemen
 	{
 		this.getElement().callJsFunction("pause");
 	}
-	
+
 	/**
-	 * Grab the current frame displayed in the video element. This will create a picture using the html canvas and then
-	 * return to the consumers added via the {@link #addPictureConsumer(SerializableConsumer)} method.
+	 * Grab the current frame displayed in the video element. This will create a
+	 * picture using the html canvas and then return to the consumers added via the
+	 * {@link #addPictureConsumer(SerializableConsumer)} method.
 	 */
 	public void takePicture()
 	{
 		this.getElement().callJsFunction("takePicture");
 	}
-	
+
 	@Override
 	public void setWidth(final String width)
 	{
 		HasSize.super.setWidth(width);
 		this.getModel().setVideoWidth(width);
 	}
-	
+
 	@Override
 	public void setWidthFull()
 	{
 		HasSize.super.setWidthFull();
 		this.getModel().setVideoWidth("100%");
 	}
-	
+
 	@Override
 	public void setHeight(final String height)
 	{
 		HasSize.super.setHeight(height);
 		this.getModel().setVideoHeight(height);
 	}
-	
+
 	@Override
 	public void setHeightFull()
 	{
 		HasSize.super.setHeightFull();
 		this.getModel().setVideoHeight("100%");
 	}
-	
+
 	@ClientCallable
 	private void receiveRecordChunk(final JsonString data)
 	{
 		// The received data chunk is encoded in a base64 string
-		final Decoder decoder     = Base64.getDecoder();
-		final String  s           = data.asString();
-		final byte[]  decodedData = decoder.decode(s.substring(s.indexOf("base64,") + 7));
+		final Decoder decoder = Base64.getDecoder();
+		final String s = data.asString();
+		final byte[] decodedData = decoder.decode(s.substring(s.indexOf("base64,") + 7));
 		this.recordedData.add(decodedData);
-		
+
 		// If the recording was stopped and this is the last data chunk we will receive, notify the consumers
-		if(!this.isRecording)
+		if (!this.isRecording)
 		{
 			this.notifyConsumers(VideoWrapper.class, new VideoWrapper(this.mimeType, this.recordedData));
 		}
 	}
-	
+
 	@ClientCallable
 	public void onPictureReceived(final JsonString data)
 	{
-		final Decoder decoder     = Base64.getDecoder();
-		final byte[]  decodedData = decoder.decode(data.asString().split(",")[1]);
+		final Decoder decoder = Base64.getDecoder();
+		final byte[] decodedData = decoder.decode(data.asString().split(",")[1]);
 		this.notifyConsumers(ImageWrapper.class, new ImageWrapper(decodedData));
 	}
-	
-	public interface VideoTemplateModel extends TemplateModel
+
+	private Model getModel()
+	{
+		return new Model()
+		{
+			@Override
+			public void setVideoWidth(String width)
+			{
+				getElement().setProperty("videoWidth", width);
+			}
+
+			@Override
+			public void setVideoHeight(String height)
+			{
+				getElement().setProperty("videoHeight", height);
+			}
+
+			@Override
+			public void setSources(List<Source> sources)
+			{
+				final var token = TypeToken.getParameterized(List.class, Source.class).getType();
+				final var sourcesJson = JsonUtils.GSON.toJson(sources, token);
+				getElement().setProperty("sources", sourcesJson);
+			}
+
+			@Override
+			public List<Source> getSources()
+			{
+				final var token = TypeToken.getParameterized(List.class, Source.class).getType();
+				final var sourcesJson = getElement().getProperty("sources");
+				return JsonUtils.GSON.fromJson(sourcesJson, token);
+			}
+		};
+	}
+
+	public interface Model
 	{
 		void setSources(final List<Source> sources);
-		
+
 		List<Source> getSources();
-		
+
 		void setVideoWidth(final String width);
-		
+
 		void setVideoHeight(final String height);
 	}
 }

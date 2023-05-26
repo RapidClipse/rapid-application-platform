@@ -1,4 +1,5 @@
 **/target/**
+**/.flattened-pom.xml
 
 # eclispe stuff for root
 /.project

@@ -33,10 +33,9 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 import elemental.json.JsonObject;
 import elemental.json.JsonValue;
@@ -51,9 +50,9 @@ import elemental.json.JsonValue;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/network.html")
+@JsModule("./webapi/network.ts")
 @Tag("rap-network")
-public class Network extends JavascriptTemplate<Network.NetworkTemplateModel>
+public class Network extends JavascriptTemplate
 {
 	public Network(final HasElement parent)
 	{
@@ -125,9 +124,5 @@ public class Network extends JavascriptTemplate<Network.NetworkTemplateModel>
 		final Type t = new TypeToken<NetworkInformation>()
 		{}.getType();
 		return JsonUtils.GSON.fromJson(json.toJson(), t);
-	}
-	
-	public static interface NetworkTemplateModel extends TemplateModel
-	{
 	}
 }
