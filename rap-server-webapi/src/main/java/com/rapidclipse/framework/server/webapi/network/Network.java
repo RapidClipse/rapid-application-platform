@@ -23,10 +23,8 @@
  */
 package com.rapidclipse.framework.server.webapi.network;
 
-import java.lang.reflect.Type;
 import java.util.function.Consumer;
 
-import com.googlecode.gentyref.TypeToken;
 import com.rapidclipse.framework.server.webapi.JavascriptTemplate;
 import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
@@ -121,8 +119,6 @@ public class Network extends JavascriptTemplate
 	 */
 	private static NetworkInformation parseNetworkInformation(final JsonValue json)
 	{
-		final Type t = new TypeToken<NetworkInformation>()
-		{}.getType();
-		return JsonUtils.GSON.fromJson(json.toJson(), t);
+		return JsonUtils.GSON.fromJson(json.toJson(), NetworkInformation.class);
 	}
 }
