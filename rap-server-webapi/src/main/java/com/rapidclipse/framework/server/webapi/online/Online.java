@@ -40,7 +40,7 @@ import com.vaadin.flow.shared.Registration;
  * @author XDEV Software
  * @since 10.02.00
  */
-@JsModule("./webapi/online.js")
+@JsModule("./webapi/online.ts")
 @Tag("rap-online")
 public class Online extends JavascriptTemplate
 {
