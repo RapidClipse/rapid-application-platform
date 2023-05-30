@@ -102,7 +102,7 @@ public class TouchEvent implements Serializable
 
 	public static class TouchObject implements Serializable
 	{
-		private final String identifier;
+		private final long identifier;
 		private final double screenX;
 		private final double screenY;
 		private final double clientX;
@@ -115,7 +115,7 @@ public class TouchEvent implements Serializable
 		private final float  force;
 
 		public TouchObject(
-			final String identifier,
+			final long identifier,
 			final double screenX,
 			final double screenY,
 			final double clientX,
@@ -140,7 +140,7 @@ public class TouchEvent implements Serializable
 			this.force         = force;
 		}
 
-		public String getIdentifier()
+		public long getIdentifier()
 		{
 			return this.identifier;
 		}
