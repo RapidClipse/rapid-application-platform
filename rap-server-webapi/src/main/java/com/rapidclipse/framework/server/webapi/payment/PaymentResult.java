@@ -25,6 +25,8 @@ package com.rapidclipse.framework.server.webapi.payment;
 
 import java.io.Serializable;
 
+import elemental.json.JsonObject;
+
 
 /**
  *
@@ -35,7 +37,7 @@ import java.io.Serializable;
 public class PaymentResult implements Serializable
 {
 	// Seems like this again could be something different as well
-	private final BasicCardResponse details;
+	private final JsonObject        details;
 	private final String            methodName;
 	private final String            payerEmail;
 	private final String            payerName;
@@ -45,7 +47,7 @@ public class PaymentResult implements Serializable
 	private final String            shippingOption;
 	
 	public PaymentResult(
-		final BasicCardResponse details,
+		final JsonObject details,
 		final String methodName,
 		final String payerEmail,
 		final String payerName,
@@ -64,7 +66,7 @@ public class PaymentResult implements Serializable
 		this.shippingOption  = shippingOption;
 	}
 	
-	public BasicCardResponse getDetails()
+	public JsonObject getDetails()
 	{
 		return this.details;
 	}
