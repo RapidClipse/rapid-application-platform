@@ -25,21 +25,23 @@ package com.rapidclipse.framework.server.webapi.video;
 
 import java.util.Base64;
 import java.util.Base64.Decoder;
-import java.util.LinkedList;
 import java.util.List;
 
 import com.google.gson.reflect.TypeToken;
 import com.rapidclipse.framework.server.webapi.JavascriptTemplate;
 import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
-import com.vaadin.flow.component.EventData;
 import com.vaadin.flow.component.HasSize;
+import com.vaadin.flow.component.PropertyDescriptor;
+import com.vaadin.flow.component.PropertyDescriptors;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.dependency.JsModule;
+import com.vaadin.flow.dom.Element;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
 
 import elemental.json.JsonString;
+import elemental.json.JsonValue;
 
 /**
  * The html video element that can contain multimedia such as videos. To add
@@ -51,35 +53,92 @@ import elemental.json.JsonString;
  * @author XDEV Software
  * @since 10.02.00
  */
-@JsModule("./webapi/video.js")
+@JsModule("./webapi/video.ts")
 @Tag("rap-video")
 public class Video extends JavascriptTemplate implements HasSize
 {
-	// TODO: What to do if no more memory is left? Maybe add some sort of immediate mode, where the server
-	// can immediately process the received video after receiving one of the chunks
-	private final List<byte[]> recordedData = new LinkedList<>();
-	private String mimeType = null;
-	private boolean isRecording = false;
+	private final PropertyDescriptor<Boolean, Boolean> controlsProperty;
+	private final PropertyDescriptor<List<Source>, List<Source>> sourcesProperty;
 
 	public Video()
 	{
-		this.setSizeFull();
+		this.controlsProperty = PropertyDescriptors.propertyWithDefault("controls", true);
+		this.sourcesProperty = new PropertyDescriptor<List<Source>, List<Source>>()
+		{
+			@Override
+			public void set(Element element, List<Source> value)
+			{
+				element.setPropertyList(getPropertyName(), value);
+			}
+
+			@Override
+			public String getPropertyName()
+			{
+				return "sources";
+			}
+
+			@Override
+			public List<Source> get(Element element)
+			{
+				final var token = TypeToken.getParameterized(List.class, Source.class).getType();
+				final var sourcesJson = ((JsonValue)getElement().getPropertyRaw(this.getPropertyName())).toJson();
+				return JsonUtils.GSON.fromJson(sourcesJson, token);
+			}
+		};
 	}
 
 	/**
-	 * Add a consumer for the video received event triggered by
-	 * {@link #stopRecording()}. This consumer will be called when the video
-	 * transmission has ended.
+	 * Check if the controls attribute of the video element has been set.
+	 * 
+	 * @return <code>true</code> if the control attribute is set.
 	 */
-	public Registration addVideoConsumer(final SerializableConsumer<VideoWrapper> consumer)
+	public boolean getShowControls()
 	{
-		return this.registerConsumer(VideoWrapper.class, consumer);
+		return this.controlsProperty.get(this);
+	}
+
+	/**
+	 * Set the controls attribute of the video element.
+	 * 
+	 * @param showControls if <code>true</code> the controls attribute will be set,
+	 *                     if <code>false</code> it will be unset.
+	 * @return The video element.
+	 */
+	public Video setShowControls(final boolean showControls)
+	{
+		this.controlsProperty.set(this, showControls);
+		return this;
+	}
+
+	/**
+	 * Add a consumer for whenever video data is received from the client side. This
+	 * can be stopped by calling {@link #stopRecording()}.
+	 * 
+	 * @param consumer Consumer called whenever more video data has been received.
+	 * @return A registration that can cancel this subscription.
+	 */
+	public Registration addVideoDataConsumer(final SerializableConsumer<byte[]> consumer)
+	{
+		return this.registerConsumer(byte[].class, consumer);
+	}
+
+	/**
+	 * Add a listener that is triggered whenever a the video source is recorded.
+	 * This will be triggered when the first video data chunk is received from the
+	 * client. This will provide the mime type of the video.
+	 * 
+	 * @param mimeTypeConsumer A consumer for the mime type of the recorded video.
+	 * @return A registration that can cancel this subscription.
+	 */
+	public Registration addRecordStartListener(final SerializableConsumer<String> mimeTypeConsumer)
+	{
+		return this.registerConsumer(String.class, mimeTypeConsumer);
 	}
 
 	/**
 	 * Add a consumer for the picture received event triggered by
 	 * {@link #takePicture()}. It will consume the image received. The result is
-	 * wrapped in an ImageWrapper that contains convinience methods such as
+	 * wrapped in an ImageWrapper that contains convenience methods such as
 	 * {@link ImageWrapper#toStreamResource(String)}
 	 */
 	public Registration addPictureConsumer(final SerializableConsumer<ImageWrapper> consumer)
@@ -88,22 +147,24 @@ public class Video extends JavascriptTemplate implements HasSize
 	}
 
 	/**
-	 * Set the list of sources for the video element.
+	 * Set the list of source elements for the video.
+	 * 
+	 * @return The video element.
 	 */
 	public Video setSources(final List<Source> sources)
 	{
-		this.getModel().setSources(sources);
+		this.sourcesProperty.set(this, sources);
 		return this;
 	}
 
 	/**
-	 * Add a source to the list of sources for the video element. These sources are
-	 * usually the same video but in different formats to support as many browsers
-	 * as possible.
+	 * Get the list of source elements for the video.
+	 * 
+	 * @return The list of sources.
 	 */
-	public void addSource(final Source source)
+	public List<Source> getSources()
 	{
-		this.getModel().getSources().add(source);
+		return this.sourcesProperty.get(this);
 	}
 
 	/**
@@ -119,35 +180,21 @@ public class Video extends JavascriptTemplate implements HasSize
 	}
 
 	/**
-	 * Remove a source with the given index.
-	 */
-	public void removeSource(@EventData("event.model.index") final int index)
-	{
-		this.getModel().getSources().remove(index);
-	}
-
-	public List<Source> getSources()
-	{
-		return this.getModel().getSources();
-	}
-
-	/**
-	 * Start recording the current source.
+	 * Start recording a video of the current source.
 	 */
 	public void startRecording()
 	{
-		this.isRecording = true;
 		this.getElement().callJsFunction("startRecording");
 	}
 
 	/**
-	 * Stop recording the current source and return the result to the consumers
-	 * added via the {@link #addVideoConsumer(SerializableConsumer)} method.
+	 * Stop recording the video. This will trigger the listener added via
+	 * {@link #addVideoCompletedConsumer(SerializableConsumer)} once the last chunk
+	 * has been received.
 	 */
 	public void stopRecording()
 	{
-		this.isRecording = false;
-		this.getElement().callJsFunction("stopRecording").then(String.class, mimeType -> this.mimeType = mimeType);
+		this.getElement().callJsFunction("stopRecording");
 	}
 
 	/**
@@ -182,34 +229,6 @@ public class Video extends JavascriptTemplate implements HasSize
 		this.getElement().callJsFunction("takePicture");
 	}
 
-	@Override
-	public void setWidth(final String width)
-	{
-		HasSize.super.setWidth(width);
-		this.getModel().setVideoWidth(width);
-	}
-
-	@Override
-	public void setWidthFull()
-	{
-		HasSize.super.setWidthFull();
-		this.getModel().setVideoWidth("100%");
-	}
-
-	@Override
-	public void setHeight(final String height)
-	{
-		HasSize.super.setHeight(height);
-		this.getModel().setVideoHeight(height);
-	}
-
-	@Override
-	public void setHeightFull()
-	{
-		HasSize.super.setHeightFull();
-		this.getModel().setVideoHeight("100%");
-	}
-
 	@ClientCallable
 	private void receiveRecordChunk(final JsonString data)
 	{
@@ -217,13 +236,13 @@ public class Video extends JavascriptTemplate implements HasSize
 		final Decoder decoder = Base64.getDecoder();
 		final String s = data.asString();
 		final byte[] decodedData = decoder.decode(s.substring(s.indexOf("base64,") + 7));
-		this.recordedData.add(decodedData);
-
-		// If the recording was stopped and this is the last data chunk we will receive, notify the consumers
-		if (!this.isRecording)
-		{
-			this.notifyConsumers(VideoWrapper.class, new VideoWrapper(this.mimeType, this.recordedData));
-		}
+		this.notifyConsumers(byte[].class, decodedData);
+	}
+	
+	@ClientCallable
+	private void onRecordStart(final JsonString data)
+	{
+		this.notifyConsumers(String.class, data.asString());
 	}
 
 	@ClientCallable
@@ -232,50 +251,5 @@ public class Video extends JavascriptTemplate implements HasSize
 		final Decoder decoder = Base64.getDecoder();
 		final byte[] decodedData = decoder.decode(data.asString().split(",")[1]);
 		this.notifyConsumers(ImageWrapper.class, new ImageWrapper(decodedData));
-	}
-
-	private Model getModel()
-	{
-		return new Model()
-		{
-			@Override
-			public void setVideoWidth(String width)
-			{
-				getElement().setProperty("videoWidth", width);
-			}
-
-			@Override
-			public void setVideoHeight(String height)
-			{
-				getElement().setProperty("videoHeight", height);
-			}
-
-			@Override
-			public void setSources(List<Source> sources)
-			{
-				final var token = TypeToken.getParameterized(List.class, Source.class).getType();
-				final var sourcesJson = JsonUtils.GSON.toJson(sources, token);
-				getElement().setProperty("sources", sourcesJson);
-			}
-
-			@Override
-			public List<Source> getSources()
-			{
-				final var token = TypeToken.getParameterized(List.class, Source.class).getType();
-				final var sourcesJson = getElement().getProperty("sources");
-				return JsonUtils.GSON.fromJson(sourcesJson, token);
-			}
-		};
-	}
-
-	public interface Model
-	{
-		void setSources(final List<Source> sources);
-
-		List<Source> getSources();
-
-		void setVideoWidth(final String width);
-
-		void setVideoHeight(final String height);
 	}
 }
