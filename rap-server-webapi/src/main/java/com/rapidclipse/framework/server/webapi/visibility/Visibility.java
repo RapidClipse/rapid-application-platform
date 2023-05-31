@@ -43,7 +43,7 @@ import com.vaadin.flow.shared.Registration;
  * @author XDEV Software
  * @since 10.02.00
  */
-@JsModule("./webapi/visibility.js")
+@JsModule("./webapi/visibility.ts")
 @Tag("rap-visibility")
 public class Visibility extends JavascriptTemplate
 {
