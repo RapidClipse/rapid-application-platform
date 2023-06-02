@@ -39,7 +39,7 @@
 	<modules>
 		<module>rap-security-auth</module>
 		<module>rap-security-auth-ldap</module>
-		<!--<module>rap-bom</module>-->
+		<module>rap-bom</module>
 		<module>rap-server-charts</module>
 		<module>rap-server-core</module>
 		<module>rap-server-persistence-jpa</module>
