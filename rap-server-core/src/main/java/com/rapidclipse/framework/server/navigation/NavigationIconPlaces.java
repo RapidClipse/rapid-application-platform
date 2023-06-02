@@ -29,15 +29,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 import com.flowingcode.vaadin.addons.ironicons.PlacesIcons;
+import com.vaadin.flow.component.icon.IronIcon;
 
 
 /**
  * @author XDEV Software
- *
+ * @deprecated depends on deprecated {@link IronIcon}
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 @NavigationIcon
+@Deprecated
 public @interface NavigationIconPlaces
 {
 	PlacesIcons value();

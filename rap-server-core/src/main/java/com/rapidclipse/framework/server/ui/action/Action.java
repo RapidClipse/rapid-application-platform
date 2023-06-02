@@ -68,6 +68,13 @@ public interface Action extends Serializable
 		return setIcon((SerializableSupplier<Component>)factory::create);
 	}
 
+	/**
+	 * 
+	 * @param ironIcon
+	 * @return
+	 * @deprecated Use {@link #setIcon(IconFactory)} instead
+	 */
+	@Deprecated
 	public default Action setIcon(final IronIconEnum ironIcon)
 	{
 		return setIcon((SerializableSupplier<Component>)ironIcon::create);
