@@ -30,10 +30,9 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 
 /**
@@ -44,9 +43,9 @@ import com.vaadin.flow.templatemodel.TemplateModel;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/visibility.html")
+@JsModule("./webapi/visibility.ts")
 @Tag("rap-visibility")
-public class Visibility extends JavascriptTemplate<Visibility.VisibilityTemplateModel>
+public class Visibility extends JavascriptTemplate
 {
 	public Visibility(final HasElement parent)
 	{
@@ -111,9 +110,5 @@ public class Visibility extends JavascriptTemplate<Visibility.VisibilityTemplate
 	private void onVisibilityChanged()
 	{
 		Visibility.getVisibilityState(state -> this.notifyConsumers(VisibilityState.class, state));
-	}
-	
-	public static interface VisibilityTemplateModel extends TemplateModel
-	{
 	}
 }

@@ -23,18 +23,14 @@
  */
 package com.rapidclipse.framework.server.webapi.touch;
 
-import java.lang.reflect.Type;
-
-import com.google.gson.reflect.TypeToken;
 import com.rapidclipse.framework.server.webapi.JavascriptTemplate;
 import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 import elemental.json.JsonObject;
 
@@ -46,9 +42,9 @@ import elemental.json.JsonObject;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/touch.html")
+@JsModule("./webapi/touch.ts")
 @Tag("rap-touch")
-public class Touch extends JavascriptTemplate<Touch.TouchTemplateModel>
+public class Touch extends JavascriptTemplate
 {
 	private final HasElement target;
 	
@@ -105,14 +101,8 @@ public class Touch extends JavascriptTemplate<Touch.TouchTemplateModel>
 	
 	private void notifyTouchListener(final JsonObject eventObj, final TouchEvent.Type eventType)
 	{
-		final Type       t     = new TypeToken<TouchEvent>()
-								{}.getType();
-		final TouchEvent event = JsonUtils.GSON.fromJson(eventObj.toJson(), t);
+		final TouchEvent event = JsonUtils.GSON.fromJson(eventObj.toJson(), TouchEvent.class);
 		event.type = eventType;
 		this.notifyConsumers(TouchEvent.class, event);
-	}
-	
-	public static interface TouchTemplateModel extends TemplateModel
-	{
 	}
 }

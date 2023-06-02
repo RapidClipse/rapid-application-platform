@@ -40,7 +40,7 @@ public class PositionOptions implements Serializable
 	
 	public static PositionOptions Default()
 	{
-		return new PositionOptions(true, 10_000, 1_000);
+		return new PositionOptions();
 	}
 	
 	public PositionOptions(final Boolean enableHighAccuracy, final Integer timeout, final Integer maximumAge)

@@ -25,6 +25,8 @@ package com.rapidclipse.framework.server.webapi.payment;
 
 import java.io.Serializable;
 
+import elemental.json.JsonObject;
+
 
 /**
  *
@@ -34,14 +36,13 @@ import java.io.Serializable;
 public class PaymentRequestMethodData implements Serializable
 {
 	private String supportedMethods;
-	// This can be also of different type depending on supportedMethods it seems
-	private BasicCardRequest data;
+	private JsonObject data;
 
 	public PaymentRequestMethodData()
 	{
 	}
 
-	public PaymentRequestMethodData(final String supportedMethods, final BasicCardRequest data)
+	public PaymentRequestMethodData(final String supportedMethods, final JsonObject data)
 	{
 		this.supportedMethods = supportedMethods;
 		this.data             = data;
@@ -58,12 +59,12 @@ public class PaymentRequestMethodData implements Serializable
 		return this;
 	}
 
-	public BasicCardRequest getData()
+	public JsonObject getData()
 	{
 		return this.data;
 	}
 
-	public PaymentRequestMethodData setData(final BasicCardRequest data)
+	public PaymentRequestMethodData setData(final JsonObject data)
 	{
 		this.data = data;
 		return this;

@@ -28,10 +28,9 @@ import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
 import com.vaadin.flow.component.UI;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 
 /**
@@ -41,9 +40,9 @@ import com.vaadin.flow.templatemodel.TemplateModel;
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/online.html")
+@JsModule("./webapi/online.ts")
 @Tag("rap-online")
-public class Online extends JavascriptTemplate<Online.OnlineTemplateModel>
+public class Online extends JavascriptTemplate
 {
 	public Online(final HasElement parent)
 	{
@@ -95,9 +94,5 @@ public class Online extends JavascriptTemplate<Online.OnlineTemplateModel>
 	private void onOffline()
 	{
 		this.notifyConsumers(OnlineState.class, OnlineState.OFFLINE);
-	}
-	
-	public static interface OnlineTemplateModel extends TemplateModel
-	{
 	}
 }

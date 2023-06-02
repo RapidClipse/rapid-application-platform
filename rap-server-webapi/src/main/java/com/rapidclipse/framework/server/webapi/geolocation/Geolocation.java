@@ -23,42 +23,36 @@
  */
 package com.rapidclipse.framework.server.webapi.geolocation;
 
-import java.lang.reflect.Type;
-
-import com.googlecode.gentyref.TypeToken;
 import com.rapidclipse.framework.server.webapi.JavascriptTemplate;
 import com.rapidclipse.framework.server.webapi.JsonUtils;
 import com.vaadin.flow.component.ClientCallable;
 import com.vaadin.flow.component.HasElement;
 import com.vaadin.flow.component.Tag;
-import com.vaadin.flow.component.dependency.HtmlImport;
+import com.vaadin.flow.component.dependency.JsModule;
 import com.vaadin.flow.function.SerializableConsumer;
 import com.vaadin.flow.shared.Registration;
-import com.vaadin.flow.templatemodel.TemplateModel;
 
 import elemental.json.JsonObject;
 
-
 /**
- * This class lets you query the geographic position of the current device and also register onChange update listeners.
+ * This class lets you query the geographic position of the current device and
+ * also register onChange update listeners.
  *
  * @author XDEV Software
  * @since 10.02.00
  */
-@HtmlImport("frontend://webapi/geolocation.html")
+@JsModule("./webapi/geolocation.ts")
 @Tag("rap-geolocation")
-public class Geolocation extends JavascriptTemplate<Geolocation.GeolocationTemplateModel>
+public class Geolocation extends JavascriptTemplate
 {
 	public Geolocation(final HasElement parent)
 	{
-		super();
-
-		parent.getElement().appendVirtualChild(this.getElement());
+		super(parent);
 	}
 
 	/**
-	 * Add a position listener. This consumer is triggered when {@link #watchPosition(PositionOptions)} returns a
-	 * position successfully.
+	 * Add a position listener. This consumer is triggered when
+	 * {@link #watchPosition(PositionOptions)} returns a position successfully.
 	 */
 	public Registration addPositionListener(final SerializableConsumer<Position> listener)
 	{
@@ -66,8 +60,8 @@ public class Geolocation extends JavascriptTemplate<Geolocation.GeolocationTempl
 	}
 
 	/**
-	 * Add a position error consumer. This consumer is triggered when {@link #watchPosition(PositionOptions)} returns an
-	 * error.
+	 * Add a position error consumer. This consumer is triggered when
+	 * {@link #watchPosition(PositionOptions)} returns an error.
 	 */
 	public Registration addPositionErrorConsumer(final SerializableConsumer<PositionError> consumer)
 	{
@@ -75,63 +69,56 @@ public class Geolocation extends JavascriptTemplate<Geolocation.GeolocationTempl
 	}
 
 	/**
-	 * Ask the device for its current geographic location. When the information is received, the consumers added via
-	 * {@link #addPositionListener(SerializableConsumer)} are called. If errors are received the consumers added via
+	 * Ask the device for its current geographic location. When the information is
+	 * received, the consumers added via
+	 * {@link #addPositionListener(SerializableConsumer)} are called. If errors are
+	 * received the consumers added via
 	 * {@link #addPositionErrorConsumer(SerializableConsumer)} are called.
 	 *
-	 * @param options
-	 *            Various options used for the query. If a simple read suffices the {@link PositionOptions#DEFAULT}
-	 *            constant can be used.
+	 * @param options Various options used for the query. If a simple read suffices
+	 *                the {@link PositionOptions#DEFAULT} constant can be used.
 	 */
 	public void getCurrentPosition(final PositionOptions options)
 	{
-		this.getElement().callJsFunction("getCurrentPosition", JsonUtils.encodeObject(options));
+		this.getElement()
+			.callJsFunction("getCurrentPosition", JsonUtils.encodeObject(options));
 	}
 
 	/**
-	 * Queries the geographic location of the device. When the location is received the consumers added via
-	 * {@link #addPositionListener(SerializableConsumer)} are called. If an error is received the consumers added via
+	 * Queries the geographic location of the device. When the location is received
+	 * the consumers added via {@link #addPositionListener(SerializableConsumer)}
+	 * are called. If an error is received the consumers added via
 	 * {@link #addPositionErrorConsumer(SerializableConsumer)} are called.
 	 *
-	 * @param options
-	 *            Various options that are used for the location query.
+	 * @param options Various options that are used for the location query.
 	 */
 	public Registration watchPosition(final PositionOptions options)
 	{
-		this.getElement()
-			.callJsFunction("registerWatchPositionListener", JsonUtils.encodeObject(options));
+		this.getElement().callJsFunction("watchPosition", JsonUtils.encodeObject(options));
 		return this::clearWatch;
 	}
 
 	/**
-	 * Clears the listeners registered with the addPosition... methods and stops the client from sending more events to
-	 * the server.
+	 * Clears the listeners registered with the addPosition... methods and stops the
+	 * client from sending more events to the server.
 	 */
 	public void clearWatch()
 	{
-		this.getElement().callJsFunction("unregisterWatchPositionListener");
+		this.getElement().callJsFunction("clearWatch");
 		this.clearConsumers();
 	}
 
 	@ClientCallable
-	private void onPositionSuccess(final JsonObject positionObj)
+	private void onSuccess(final JsonObject positionObj)
 	{
-		final Type     type     = new TypeToken<Position>()
-								{}.getType();
-		final Position position = JsonUtils.GSON.fromJson(positionObj.toJson(), type);
+		final Position position = JsonUtils.GSON.fromJson(positionObj.toJson(), Position.class);
 		this.notifyConsumers(Position.class, position);
 	}
 
 	@ClientCallable
-	private void onPositionError(final JsonObject errorObj)
+	private void onError(final JsonObject errorObj)
 	{
-		final Type          type  = new TypeToken<PositionError>()
-									{}.getType();
-		final PositionError error = JsonUtils.GSON.fromJson(errorObj.toJson(), type);
+		final PositionError error = JsonUtils.GSON.fromJson(errorObj.toJson(), PositionError.class);
 		this.notifyConsumers(PositionError.class, error);
-	}
-
-	public static interface GeolocationTemplateModel extends TemplateModel
-	{
 	}
 }
