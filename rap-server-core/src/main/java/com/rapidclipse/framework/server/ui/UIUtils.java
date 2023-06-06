@@ -103,7 +103,7 @@ public final class UIUtils
 	 * @param visitor
 	 *            the visitor
 	 * @return
-	 * @see #lookupComponentTree(Component, Function, Class)
+	 * @see #lookupComponentTree(Component, Class, Function)
 	 */
 
 	public static <T> T lookupComponentTree(

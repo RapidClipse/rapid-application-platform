@@ -38,7 +38,6 @@ public interface UnauthorizedNavigationRequestHandler
 	 * Handles the unauthorized request, e.g. shows an error message and
 	 * redirects.
 	 *
-	 * @param navigator
 	 * @param event
 	 */
 	public void handle(BeforeEvent event);

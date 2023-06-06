@@ -82,7 +82,7 @@ public class ColumnConfigurationHeaderResolvingStrategyBuilder
 	}
 	
 	/**
-	 * Adds a new {@link ColumnConfigHeaderResolvingStrategy}.<br/>
+	 * Adds a new {@link ColumnHeaderResolvingStrategy}.<br/>
 	 * This strategy will be added at the end of the strategy list.
 	 * 
 	 * @param strategy
@@ -95,7 +95,7 @@ public class ColumnConfigurationHeaderResolvingStrategyBuilder
 	}
 	
 	/**
-	 * Adds a new {@link ColumnConfigHeaderResolvingStrategy}.<br/>
+	 * Adds a new {@link ColumnHeaderResolvingStrategy}.<br/>
 	 * This strategy will be added at the start of the strategy list.
 	 * 
 	 * @param strategy

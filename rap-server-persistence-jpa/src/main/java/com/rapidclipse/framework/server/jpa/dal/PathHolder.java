@@ -33,7 +33,7 @@ import com.rapidclipse.framework.server.jpa.Jpa;
 
 /**
  * Holder class for path used by the {@link OrderBy}, {@link PropertySelector},
- * {@link TermSelector} and {@link SearchParameters}.
+ * {@link PathHolder}, {@link Range} and {@link SearchParameters}.
  *
  * @author XDEV Software
  */

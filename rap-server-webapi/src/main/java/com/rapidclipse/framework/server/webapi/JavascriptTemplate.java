@@ -40,7 +40,6 @@ import com.vaadin.flow.shared.Registration;
  * This class allows subclasses to register consumers for various javascript events. These are distinguished by their
  * consumed type.
  *
- * @param <M>
  * @author XDEV Software
  * @since 10.02.00
  */

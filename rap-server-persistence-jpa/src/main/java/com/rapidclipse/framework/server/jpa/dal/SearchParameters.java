@@ -112,9 +112,6 @@ public interface SearchParameters extends Serializable
 	/**
 	 * Use the EQUALS @{link SearchMode}.
 	 *
-	 * @param searchMode
-	 *            searchmode
-	 *
 	 * @see SearchMode#EQUALS
 	 */
 	public default SearchParameters equals()
@@ -124,9 +121,6 @@ public interface SearchParameters extends Serializable
 	
 	/**
 	 * Use the ANYWHERE @{link SearchMode}.
-	 *
-	 * @param searchMode
-	 *            searchmode
 	 *
 	 * @see SearchMode#ANYWHERE
 	 */

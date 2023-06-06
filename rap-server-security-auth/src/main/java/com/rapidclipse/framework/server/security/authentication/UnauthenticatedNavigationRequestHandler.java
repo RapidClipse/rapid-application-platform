@@ -40,7 +40,6 @@ public interface UnauthenticatedNavigationRequestHandler
 	 * Handles the unauthenticated request, e.g. shows an error message and
 	 * redirects to the login view.
 	 *
-	 * @param navigator
 	 * @param event
 	 */
 	public void handle(BeforeEvent event);

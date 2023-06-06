@@ -35,8 +35,6 @@ public interface FilterContext
 	/**
 	 *
 	 * @return if the search should be case sensitive
-	 *
-	 * @see SimpleStringFilter#isIgnoreCase()
 	 */
 	public boolean isCaseSensitive();
 	

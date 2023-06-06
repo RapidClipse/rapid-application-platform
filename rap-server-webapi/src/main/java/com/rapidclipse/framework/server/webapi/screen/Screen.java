@@ -109,7 +109,7 @@ public class Screen extends JavascriptTemplate
 
 	/**
 	 * Asks the user agent to place the target element (and, by extension, its
-	 * descendants) into full-screen mode. If an error occurrs the onFullscreenError
+	 * descendants) into full-screen mode. If an error occurs the onFullscreenError
 	 * callbacks registered via the
 	 * {@link #addFullscreenErrorListener(SerializableConsumer)} method are
 	 * triggered. Fullscreen can be exited with the

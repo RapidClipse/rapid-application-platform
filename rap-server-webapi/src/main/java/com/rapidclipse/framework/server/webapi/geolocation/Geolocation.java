@@ -76,7 +76,7 @@ public class Geolocation extends JavascriptTemplate
 	 * {@link #addPositionErrorConsumer(SerializableConsumer)} are called.
 	 *
 	 * @param options Various options used for the query. If a simple read suffices
-	 *                the {@link PositionOptions#DEFAULT} constant can be used.
+	 *                the {@link PositionOptions#Default()} can be used.
 	 */
 	public void getCurrentPosition(final PositionOptions options)
 	{

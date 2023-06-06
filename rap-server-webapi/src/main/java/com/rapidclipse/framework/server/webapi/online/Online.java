@@ -64,7 +64,7 @@ public class Online extends JavascriptTemplate
 	/**
 	 * This method can be used to unregister previously registered onOnLine listeners. This will also stop the client
 	 * from sending more events to the server. To register an onOnLine listener
-	 * you can call the {@link #addOnLineListener(Runnable)} method.
+	 * you can call the {@link #addOnlineListener(SerializableConsumer)} method.
 	 */
 	public void unregisterAllOnlineListeners()
 	{

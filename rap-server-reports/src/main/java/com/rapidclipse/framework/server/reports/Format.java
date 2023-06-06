@@ -144,11 +144,6 @@ public interface Format
 		return new Xml();
 	}
 	
-	/**
-	 *
-	 * @author XDEV Software
-	 * @since 10.02.02
-	 */
 	public static Format Html()
 	{
 		return new Html();
