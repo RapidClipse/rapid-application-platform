@@ -22,4 +22,6 @@ updates:
   open-pull-requests-limit: 10
   ignore:
   - dependency-name: "com.vaadin:vaadin-bom"
-    versions: ">=15.0.0"
+    versions: ">=24.0.0"
+  - dependency-name: "jakarta.servlet:jakarta.servlet-api"
+    versions: ">=5.0.0"
