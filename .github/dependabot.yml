@@ -25,3 +25,5 @@ updates:
     versions: ">=24.0.0"
   - dependency-name: "jakarta.servlet:jakarta.servlet-api"
     versions: ">=5.0.0"
+  - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
+    versions: ">=3.0.0"

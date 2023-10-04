@@ -92,7 +92,7 @@
 		
 		<!-- Javax XML binding / JavaX -keep in sync with Hibernate -->
 		<jaxb.api.version>2.3.1</jaxb.api.version>
-		<jaxb.runtime.version>2.3.1</jaxb.runtime.version>
+		<jaxb.runtime.version>2.3.8</jaxb.runtime.version>
 
 		<!-- Dependencies -->
 		<!--
