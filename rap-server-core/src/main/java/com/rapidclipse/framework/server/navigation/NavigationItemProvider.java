@@ -37,9 +37,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.icon.IconFactory;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.function.SerializableComparator;
 import com.vaadin.flow.function.SerializablePredicate;
+import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.RouteConfiguration;
 import com.vaadin.flow.router.RouteData;
@@ -123,7 +125,7 @@ public interface NavigationItemProvider extends Serializable
 			final NavigationItemProperties propertiesAnnotation =
 				target.getAnnotation(NavigationItemProperties.class);
 
-			final Supplier<Component> icon        = resolveIcon(target);
+			final SerializableSupplier<Component> icon        = resolveIcon(target);
 			String                    displayName = null;
 			int                       position    = -1;
 			String                    category    = null;
@@ -153,19 +155,19 @@ public interface NavigationItemProvider extends Serializable
 			return NavigationItem.New(icon, displayName, data, position, category, hidden);
 		}
 
-		protected Supplier<Component> resolveIcon(final Class<? extends Component> target)
+		protected SerializableSupplier<Component> resolveIcon(final Class<? extends Component> target)
 		{
 			final NavigationIconFactory factory = target.getAnnotation(NavigationIconFactory.class);
 			if(factory != null)
 			{
 				try
 				{
-					return factory.value().newInstance();
+					return factory.value().getDeclaredConstructor().newInstance();
 				}
-				catch(InstantiationException | IllegalAccessException e)
+				catch(InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e)
 				{
 					throw new RuntimeException(e);
-				}
+				} 
 			}
 
 			for(final Annotation annotation : target.getAnnotations())
@@ -177,9 +179,9 @@ public interface NavigationItemProvider extends Serializable
 					{
 						final Method valueMethod = annotationType.getDeclaredMethod("value");
 						final Object value       = valueMethod.invoke(annotation);
-						if(value instanceof VaadinIcon)
+						if(value instanceof IconFactory)
 						{
-							return ((VaadinIcon)value)::create;
+							return ((IconFactory)value)::create;
 						}
 					}
 					catch(IllegalAccessException | IllegalArgumentException | InvocationTargetException

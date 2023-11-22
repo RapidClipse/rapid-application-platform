@@ -26,6 +26,7 @@ package com.rapidclipse.framework.server.navigation;
 import java.util.function.Supplier;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.function.SerializableSupplier;
 
 
 /**
@@ -40,7 +41,7 @@ public interface NavigationCategory extends NavigationElement
 	}
 	
 	public static NavigationCategory New(
-		final Supplier<Component> icon,
+		final SerializableSupplier<Component> icon,
 		final String displayName)
 	{
 		return new Default(icon, displayName);
@@ -49,7 +50,7 @@ public interface NavigationCategory extends NavigationElement
 	public static class Default extends NavigationElement.Abstract implements NavigationCategory
 	{
 		protected Default(
-			final Supplier<Component> icon,
+			final SerializableSupplier<Component> icon,
 			final String displayName)
 		{
 			super(icon, displayName);

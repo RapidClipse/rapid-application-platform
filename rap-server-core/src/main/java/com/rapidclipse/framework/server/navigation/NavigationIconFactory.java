@@ -27,9 +27,9 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import java.util.function.Supplier;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.function.SerializableSupplier;
 
 
 /**
@@ -41,5 +41,5 @@ import com.vaadin.flow.component.Component;
 @NavigationIcon
 public @interface NavigationIconFactory
 {
-	Class<? extends Supplier<Component>> value();
+	Class<? extends SerializableSupplier<Component>> value();
 }

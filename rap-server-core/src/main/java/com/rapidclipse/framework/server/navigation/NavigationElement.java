@@ -29,6 +29,7 @@ import java.io.Serializable;
 import java.util.function.Supplier;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.function.SerializableSupplier;
 
 
 /**
@@ -37,17 +38,17 @@ import com.vaadin.flow.component.Component;
  */
 public interface NavigationElement extends Serializable
 {
-	public Supplier<Component> icon();
+	public SerializableSupplier<Component> icon();
 
 	public String displayName();
 
 	public static abstract class Abstract implements NavigationElement
 	{
-		private final Supplier<Component> icon;
+		private final SerializableSupplier<Component> icon;
 		private final String              displayName;
 
 		public Abstract(
-			final Supplier<Component> icon,
+			final SerializableSupplier<Component> icon,
 			final String displayName)
 		{
 			super();
@@ -57,7 +58,7 @@ public interface NavigationElement extends Serializable
 		}
 
 		@Override
-		public Supplier<Component> icon()
+		public SerializableSupplier<Component> icon()
 		{
 			return this.icon;
 		}

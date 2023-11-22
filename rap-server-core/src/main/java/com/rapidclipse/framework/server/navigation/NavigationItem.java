@@ -26,6 +26,7 @@ package com.rapidclipse.framework.server.navigation;
 import java.util.function.Supplier;
 
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.function.SerializableSupplier;
 import com.vaadin.flow.router.RouteData;
 
 
@@ -44,7 +45,7 @@ public interface NavigationItem extends NavigationElement
 	public boolean isHidden();
 
 	public static NavigationItem New(
-		final Supplier<Component> icon,
+		final SerializableSupplier<Component> icon,
 		final String displayName,
 		final RouteData routeData,
 		final int position,
@@ -62,7 +63,7 @@ public interface NavigationItem extends NavigationElement
 		private final boolean   hidden;
 
 		protected Default(
-			final Supplier<Component> icon,
+			final SerializableSupplier<Component> icon,
 			final String displayName,
 			final RouteData routeData,
 			final int position,
