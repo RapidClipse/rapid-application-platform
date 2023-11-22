@@ -31,7 +31,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
-import com.flowingcode.vaadin.addons.ironicons.IronIcons;
 import com.rapidclipse.framework.server.data.renderer.RenderedComponent;
 import com.rapidclipse.framework.server.reports.Format;
 import com.rapidclipse.framework.server.reports.grid.column.ColumnConfiguration;
@@ -488,8 +487,8 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		{
 			super();
 			
-			this.up   = new Button(IronIcons.ARROW_UPWARD.create());
-			this.down = new Button(IronIcons.ARROW_DOWNWARD.create());
+			this.up   = new Button(VaadinIcon.ARROW_UP.create());
+			this.down = new Button(VaadinIcon.ARROW_DOWN.create());
 			
 			this.add(this.up, this.down);
 			this.setSizeFull();

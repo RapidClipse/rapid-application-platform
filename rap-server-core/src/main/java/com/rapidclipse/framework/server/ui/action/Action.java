@@ -32,7 +32,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-import com.flowingcode.vaadin.addons.ironicons.IronIconEnum;
 import com.vaadin.flow.component.ClickNotifier;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.ComponentEvent;
@@ -66,18 +65,6 @@ public interface Action extends Serializable
 	public default Action setIcon(final IconFactory factory)
 	{
 		return setIcon((SerializableSupplier<Component>)factory::create);
-	}
-
-	/**
-	 * 
-	 * @param ironIcon
-	 * @return
-	 * @deprecated Use {@link #setIcon(IconFactory)} instead
-	 */
-	@Deprecated
-	public default Action setIcon(final IronIconEnum ironIcon)
-	{
-		return setIcon((SerializableSupplier<Component>)ironIcon::create);
 	}
 
 	public Key getShortcutKey();
