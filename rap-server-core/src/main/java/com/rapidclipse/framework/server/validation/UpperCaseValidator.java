@@ -23,8 +23,8 @@
  */
 package com.rapidclipse.framework.server.validation;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 import com.rapidclipse.framework.server.validation.constraints.UpperCase;
 
