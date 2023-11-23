@@ -29,10 +29,10 @@ import java.util.Collection;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import javax.servlet.ServletContext;
-import javax.servlet.ServletContextEvent;
-import javax.servlet.ServletContextListener;
-import javax.servlet.annotation.WebListener;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletContextEvent;
+import jakarta.servlet.ServletContextListener;
+import jakarta.servlet.annotation.WebListener;
 
 import org.apache.commons.lang3.StringUtils;
 

@@ -30,7 +30,7 @@ import java.net.URL;
 import java.net.URLStreamHandler;
 import java.net.URLStreamHandlerFactory;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import com.rapidclipse.framework.server.RapServlet;
 

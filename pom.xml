@@ -92,7 +92,7 @@
 		<hibernate.validator.version>6.2.5.Final</hibernate.validator.version>
 
 		<!-- Servlet API / JavaX, override vaadin -->
-		<servlet.api.version>4.0.4</servlet.api.version>
+		<servlet.api.version>6.0.0</servlet.api.version>
 		
 		<!-- Javax XML binding / JavaX -keep in sync with Hibernate -->
 		<jaxb.api.version>2.3.1</jaxb.api.version>

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.util.Arrays;
 
-import javax.servlet.http.Cookie;
+import jakarta.servlet.http.Cookie;
 
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.server.VaadinSession;

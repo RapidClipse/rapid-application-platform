@@ -23,7 +23,7 @@
  */
 package com.rapidclipse.framework.server.jpa;
 
-import javax.servlet.ServletException;
+import jakarta.servlet.ServletException;
 
 import com.rapidclipse.framework.server.RapServlet;
 

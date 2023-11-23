@@ -29,7 +29,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.vaadin.flow.server.StreamResource;
 import com.vaadin.flow.server.VaadinServlet;

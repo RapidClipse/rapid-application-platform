@@ -31,7 +31,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ThreadFactory;
 
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import com.rapidclipse.framework.server.Rap;
 

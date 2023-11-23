@@ -36,7 +36,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.PersistenceException;
 import javax.persistence.SharedCacheMode;
-import javax.servlet.ServletContext;
+import jakarta.servlet.ServletContext;
 
 import org.dom4j.Document;
 import org.dom4j.Element;

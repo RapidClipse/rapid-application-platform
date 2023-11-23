@@ -26,10 +26,10 @@ package com.rapidclipse.framework.server.ui.action;
 import java.lang.reflect.Modifier;
 import java.util.Set;
 
-import javax.servlet.ServletContainerInitializer;
-import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
-import javax.servlet.annotation.HandlesTypes;
+import jakarta.servlet.ServletContainerInitializer;
+import jakarta.servlet.ServletContext;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.HandlesTypes;
 
 import com.rapidclipse.framework.server.util.ReflectionUtils;
 import com.vaadin.flow.server.ServiceInitEvent;
