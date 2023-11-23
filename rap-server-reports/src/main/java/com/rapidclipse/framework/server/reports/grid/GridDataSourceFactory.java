@@ -111,12 +111,12 @@ public interface GridDataSourceFactory<T>
 				}
 				else if(renderer instanceof ColumnPathRenderer)
 				{
-					for(final ValueProvider<T, ?> valprov : renderer.getValueProviders().values())
+					final Field provider = ColumnPathRenderer.class.getDeclaredField("provider");
+					provider.setAccessible(true);
+					final ValueProvider<T, ?> valprov = (ValueProvider<T, ?>)provider.get(renderer);
+					if(valprov != null)
 					{
-						if(valprov != null)
-						{
-							return valprov.apply(item).toString();
-						}
+						return valprov.apply(item).toString();
 					}
 				}
 			}
