@@ -26,6 +26,8 @@ package com.rapidclipse.framework.server.ui;
 import java.io.IOException;
 import java.util.UUID;
 
+import com.vaadin.flow.component.PropertyDescriptor;
+import com.vaadin.flow.component.PropertyDescriptors;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.html.Anchor;
 import com.vaadin.flow.function.SerializableConsumer;
@@ -42,6 +44,9 @@ import com.vaadin.flow.server.VaadinSession;
  */
 public class DownloadAnchor extends Anchor
 {
+	private static final PropertyDescriptor<String, String> downloadDescriptor =
+		PropertyDescriptors.attributeWithDefault("download", "", false);
+	
 	private final String   identifier = "download-" + UUID.randomUUID().toString();
 	private RequestHandler requestHandler;
 	private StreamResource resource;
@@ -49,6 +54,7 @@ public class DownloadAnchor extends Anchor
 	public DownloadAnchor()
 	{
 		super();
+		this.set(DownloadAnchor.downloadDescriptor, "");
 		
 		runBeforeClientResponse(ui -> {
 			this.requestHandler = new RequestHandler()
