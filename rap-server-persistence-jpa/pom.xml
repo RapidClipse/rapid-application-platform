@@ -58,12 +58,12 @@
 			<artifactId>rap-server-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.1.0</version>
+			<version>${jakarta.persistence-api.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
@@ -101,11 +101,18 @@
 			</exclusions>
 		</dependency>
 
-		
+		<dependency>
+			<groupId>jakarta.validation</groupId>
+			<artifactId>jakarta.validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.hibernate.validator</groupId>
-			<artifactId>hibernate-validator-cdi</artifactId>
-			<version>${hibernate.validator.version}</version>
+			<artifactId>hibernate-validator</artifactId>
 		</dependency>
 
 		<dependency>
