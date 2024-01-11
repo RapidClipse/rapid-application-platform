@@ -23,8 +23,6 @@
  */
 package com.rapidclipse.framework.server.navigation;
 
-import java.util.function.Supplier;
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.function.SerializableSupplier;
 

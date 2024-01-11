@@ -77,7 +77,8 @@ public interface NavigationCategoryComponentFactory
 			content.setSpacing(false);
 			content.setMargin(false);
 			content.setPadding(false);
-			details.setContent(content);
+			details.removeAll();
+			details.add(content);
 
 			return NavigationCategoryComponent.New(details, content::add);
 		}

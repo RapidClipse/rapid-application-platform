@@ -26,7 +26,6 @@ package com.rapidclipse.framework.server.navigation;
 import static java.util.Objects.requireNonNull;
 
 import java.io.Serializable;
-import java.util.function.Supplier;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.function.SerializableSupplier;

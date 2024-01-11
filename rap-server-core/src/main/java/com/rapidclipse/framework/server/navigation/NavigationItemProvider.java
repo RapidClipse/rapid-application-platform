@@ -30,7 +30,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
@@ -38,7 +37,6 @@ import org.apache.commons.lang3.StringUtils;
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.icon.IconFactory;
-import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.function.SerializableComparator;
 import com.vaadin.flow.function.SerializablePredicate;
 import com.vaadin.flow.function.SerializableSupplier;
