@@ -23,7 +23,9 @@
         XDEV Software - initial API and implementation
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -43,7 +45,7 @@
 		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
 		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
 	</scm>
-	
+
 	<dependencies>
 		<dependency>
 			<groupId>com.rapidclipse</groupId>
@@ -58,7 +60,7 @@
 			<version>2.0.0</version>
 		</dependency>
 		-->
-		
+
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-core</artifactId>
@@ -97,10 +99,9 @@
 			<version>6.20.6</version>
 		</dependency>
 
-
 		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.glassfish.jaxb</groupId>
