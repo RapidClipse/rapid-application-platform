@@ -122,6 +122,15 @@
 			<groupId>org.hibernate.validator</groupId>
 			<artifactId>hibernate-validator</artifactId>
 		</dependency>
+		
+		<!-- Fix for XWS-2290 - Old EE8 BeanValidation api which is needed for Hibernate ORM 5.6.x config 
+		Remove this when switching to Hibernate ORM version with jakarta namespace
+		-->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>2.0.1.Final</version>
+		</dependency>
 
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
