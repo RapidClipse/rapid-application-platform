@@ -23,7 +23,9 @@
         XDEV Software - initial API and implementation
 
 -->
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<parent>
@@ -40,9 +42,23 @@
 	<url>https://www.rapidclipse.com</url>
 	<scm>
 		<url>https://github.com/RapidClipse/rapid-application-platform</url>
-		<connection>https://github.com/RapidClipse/rapid-application-platform.git</connection>
-		<developerConnection>https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
+		<connection>
+			https://github.com/RapidClipse/rapid-application-platform.git</connection>
+		<developerConnection>
+			https://github.com/RapidClipse/rapid-application-platform.git</developerConnection>
 	</scm>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.apache.shiro</groupId>
+				<artifactId>shiro-bom</artifactId>
+				<version>2.0.0</version>
+				<scope>import</scope>
+				<type>pom</type>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 	<dependencies>
 		<dependency>
@@ -50,11 +66,11 @@
 			<artifactId>rap-security-auth</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.shiro</groupId>
 			<artifactId>shiro-core</artifactId>
-			<version>2.0.0</version>
+			<classifier>jakarta</classifier>
 		</dependency>
 	</dependencies>
 

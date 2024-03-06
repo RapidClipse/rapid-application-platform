@@ -62,15 +62,14 @@ public class LDAPRealm extends ActiveDirectoryRealm implements AutoCloseable
 		throws NamingException
 	{
 		final String url                = configuration.getProviderUrl();
-		final String suffix             = configuration.getSuffix();
+		principalSuffix             	= configuration.getSuffix();
 		final String username           = credentials.username();
 		final String password           = new String(credentials.password());
-		final String userNameWithSuffix = username + suffix;
+		final String userNameWithSuffix = username + principalSuffix;
 		
 		setUrl(url);
 		setSystemUsername(username);
 		setSystemPassword(password);
-		setPrincipalSuffix(suffix);
 		
 		final String searchbase = configuration.getSearchbase();
 		if(searchbase != null)
