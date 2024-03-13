@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2023 by XDEV Software, All Rights Reserved.
+ * Copyright (C) 2013-2024 by XDEV Software, All Rights Reserved.
  *
  * This file is part of the RapidClipse Application Platform (RAP).
  *
@@ -23,11 +23,10 @@
  */
 package com.rapidclipse.framework.server.data.renderer;
 
-import java.util.function.Function;
-
 import com.rapidclipse.framework.server.resources.CaptionUtils;
 import com.rapidclipse.framework.server.ui.ItemLabelGeneratorFactory;
 import com.vaadin.flow.data.renderer.TextRenderer;
+import com.vaadin.flow.function.SerializableFunction;
 
 
 /**
@@ -36,13 +35,13 @@ import com.vaadin.flow.data.renderer.TextRenderer;
  */
 public class CaptionRenderer<ITEM> extends TextRenderer<ITEM>
 {
-	public <P> CaptionRenderer(final Function<ITEM, P> valueProvider)
+	public <P> CaptionRenderer(final SerializableFunction<ITEM, P> valueProvider)
 	{
 		super(ItemLabelGeneratorFactory.NonNull(
 			item -> CaptionUtils.resolveCaption(valueProvider.apply(item))));
 	}
 
-	public <P> CaptionRenderer(final Function<ITEM, P> valueProvider, final String defaultValue)
+	public <P> CaptionRenderer(final SerializableFunction<ITEM, P> valueProvider, final String defaultValue)
 	{
 		super(ItemLabelGeneratorFactory.WithDefaultValue(
 			item -> CaptionUtils.resolveCaption(valueProvider.apply(item)),

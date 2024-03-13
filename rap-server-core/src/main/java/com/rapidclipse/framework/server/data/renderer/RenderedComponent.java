@@ -42,8 +42,10 @@ import com.vaadin.flow.function.SerializableSupplier;
 public interface RenderedComponent<T> extends HasElement, Serializable
 {
 	/*
+	 * 
 	 * Unable to use intersection type due to java compiler bug, see
 	 * https://stackoverflow.com/a/34160332
+	 * TODO: 2024-03-12 Check & rework, this may be fixed with java17+ 
 	 */
 	// public static <COMPONENT extends Component & RenderedComponent<SOURCE>, SOURCE> Renderer<SOURCE>
 	// Renderer(final SerializableSupplier<COMPONENT> componentSupplier)
