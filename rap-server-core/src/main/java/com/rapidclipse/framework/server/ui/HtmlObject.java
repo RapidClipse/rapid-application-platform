@@ -40,7 +40,10 @@ import com.vaadin.flow.server.StreamResource;
  *
  * @author XDEV Software
  * @since 10.01.00
+ * 
+ * @deprecated Use {@link com.vaadin.flow.component.html.HtmlObject} instead
  */
+@Deprecated
 @Tag("object")
 public class HtmlObject extends HtmlComponent
 {
