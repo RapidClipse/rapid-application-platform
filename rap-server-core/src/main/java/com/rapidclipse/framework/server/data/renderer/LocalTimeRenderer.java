@@ -49,22 +49,20 @@ public class LocalTimeRenderer<SOURCE> extends BasicRenderer<SOURCE, LocalTime>
 	/**
 	 * Creates a new LocalTimeRenderer.
 	 * <p>
-	 * The renderer is configured with the format style {@code FormatStyle.LONG} and
-	 * an empty string as its null representation.
-	 * </p>
-	 * 
+	 * The renderer is configured with the format style {@code FormatStyle.SHORT}
+	 * and an empty string as its null representation.
+	 *
 	 * @param valueProvider
 	 *        the callback to provide a {@link LocalTime} to the renderer, not
 	 *        <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html#LONG">
-	 *      FormatStyle.LONG</a>
+	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html#SHORT">FormatStyle.SHORT</a>
 	 */
 	public LocalTimeRenderer(
 		final ValueProvider<SOURCE, LocalTime> valueProvider)
 	{
-		this(valueProvider, () -> DateTimeFormatter.ofLocalizedTime(FormatStyle.LONG), "");
+		this(valueProvider, () -> DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT), "");
 	}
 
 	/**
