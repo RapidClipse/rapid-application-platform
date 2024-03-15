@@ -61,8 +61,9 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	 *        <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html#LONG">
-	 *      FormatStyle.LONG</a>
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/FormatStyle.html">
+	 *      FormatStyle</a>
+	 *      
 	 */
 	public InstantRenderer(
 		final ValueProvider<SOURCE, Instant> valueProvider)
@@ -84,7 +85,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	 *        the format pattern to format the time with, not <code>null</code>
 	 *
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public InstantRenderer(
@@ -111,7 +112,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	 *        the locale to use, not <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public InstantRenderer(
@@ -140,7 +141,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	 *        the textual representation of the <code>null</code> value
 	 *
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public InstantRenderer(

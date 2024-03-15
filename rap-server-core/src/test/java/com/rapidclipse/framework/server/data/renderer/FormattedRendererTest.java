@@ -5,8 +5,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
+import java.io.ByteArrayOutputStream;
+import java.io.ObjectOutputStream;
+import java.text.DateFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 import org.junit.jupiter.api.Test;
 
@@ -40,5 +46,36 @@ public class FormattedRendererTest
 		String formattedValue = renderer.getFormattedValue(Instant.EPOCH);
 		
 		assertEquals("1. Januar 1970, 01:00", formattedValue);
+	}
+	
+	
+	@Test
+	public void dateRendererIsSerializable() throws IOException
+	{
+		DateRenderer<?> renderer = new DateRenderer<>(value -> Date.from(Instant.now()));
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
+
+		renderer = new DateRenderer<>(value -> Date.from(Instant.now()), () -> DateFormat.getDateInstance());
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
+	}
+
+	@Test
+	public void localTimeRendererIsSerializable() throws IOException
+	{
+		LocalTimeRenderer<?> renderer = new LocalTimeRenderer<>(value -> LocalTime.now());
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
+
+		renderer = new LocalTimeRenderer<>(value -> LocalTime.now(), () -> DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT));
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
+	}
+
+	@Test
+	public void instantRendererIsSerializable() throws IOException
+	{
+		InstantRenderer<?> renderer = new InstantRenderer<>((v) -> Instant.now());
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
+
+		renderer = new InstantRenderer<>((v) -> Instant.now(), () -> DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withZone(ZoneId.systemDefault()));
+		new ObjectOutputStream(new ByteArrayOutputStream()).writeObject(renderer);
 	}
 }

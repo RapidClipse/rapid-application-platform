@@ -51,13 +51,15 @@ public class LocalTimeRenderer<SOURCE> extends BasicRenderer<SOURCE, LocalTime>
 	 * <p>
 	 * The renderer is configured with the format style {@code FormatStyle.SHORT}
 	 * and an empty string as its null representation.
-	 *
+	 * </p>
+	 * 
 	 * @param valueProvider
 	 *        the callback to provide a {@link LocalTime} to the renderer, not
 	 *        <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/FormatStyle.html#SHORT">FormatStyle.SHORT</a>
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/FormatStyle.html#SHORT">
+	 *      FormatStyle.SHORT</a>
 	 */
 	public LocalTimeRenderer(
 		final ValueProvider<SOURCE, LocalTime> valueProvider)
@@ -79,7 +81,7 @@ public class LocalTimeRenderer<SOURCE> extends BasicRenderer<SOURCE, LocalTime>
 	 *        the format pattern to format the time with, not <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public LocalTimeRenderer(
@@ -106,7 +108,7 @@ public class LocalTimeRenderer<SOURCE> extends BasicRenderer<SOURCE, LocalTime>
 	 *        the locale to use, not <code>null</code>
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public LocalTimeRenderer(
@@ -135,7 +137,7 @@ public class LocalTimeRenderer<SOURCE> extends BasicRenderer<SOURCE, LocalTime>
 	 *        the textual representation of the <code>null</code> value
 	 * 
 	 * @see <a href=
-	 *      "https://docs.oracle.com/javase/8/docs/api/java/time/format/DateTimeFormatter.html#patterns">
+	 *      "https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/time/format/DateTimeFormatter.html#patterns">
 	 *      Format Pattern Syntax</a>
 	 */
 	public LocalTimeRenderer(
