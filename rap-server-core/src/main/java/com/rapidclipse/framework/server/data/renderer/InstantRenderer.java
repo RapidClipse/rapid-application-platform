@@ -24,6 +24,7 @@
 package com.rapidclipse.framework.server.data.renderer;
 
 import java.time.Instant;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.Locale;
@@ -51,10 +52,10 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	/**
 	 * Creates a new InstantRenderer.
 	 * <p>
-	 * The renderer is configured with the format style {@code FormatStyle.LONG} and
-	 * an empty string as its null representation.
-	 * </p>
-	 * 
+	 * The renderer is configured with the format style {@code FormatStyle.LONG} for the date and {@code FormatStyle.SHORT} for
+     * time and an empty string as its null representation, and uses <b>{@link ZoneId#systemDefault()}</b> to get the time zone for the DateTimeFormatter.
+     * 
+	 *
 	 * @param valueProvider
 	 *        the callback to provide a {@link Instant} to the renderer, not
 	 *        <code>null</code>
@@ -66,7 +67,7 @@ public class InstantRenderer<SOURCE> extends BasicRenderer<SOURCE, Instant>
 	public InstantRenderer(
 		final ValueProvider<SOURCE, Instant> valueProvider)
 	{
-		this(valueProvider, () -> DateTimeFormatter.ofLocalizedTime(FormatStyle.LONG), "");
+		this(valueProvider, () -> DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withZone(ZoneId.systemDefault()), "");
 	}
 
 	/**

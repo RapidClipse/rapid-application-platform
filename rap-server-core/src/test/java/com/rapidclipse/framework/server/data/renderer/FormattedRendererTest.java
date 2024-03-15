@@ -31,4 +31,14 @@ public class FormattedRendererTest
 		
 		assertEquals("12:00", formattedValue);
 	}
+
+	@Test
+	public void getDefaultFormattedInstantValue() throws IOException
+	{
+		Locale.setDefault(Locale.GERMANY); // de_DE
+		InstantRenderer<?> renderer = new InstantRenderer<>((v) -> Instant.now());
+		String formattedValue = renderer.getFormattedValue(Instant.EPOCH);
+		
+		assertEquals("1. Januar 1970, 01:00", formattedValue);
+	}
 }
