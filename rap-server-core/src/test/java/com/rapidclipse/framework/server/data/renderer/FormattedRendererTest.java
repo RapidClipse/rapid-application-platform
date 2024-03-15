@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectOutputStream;
 import java.text.DateFormat;
@@ -22,6 +23,8 @@ public class FormattedRendererTest
 	public void getDefaultFormattedDateValue() throws IOException
 	{
 		Locale.setDefault(Locale.GERMANY); // de_DE
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+		
 		DateRenderer<?> renderer = new DateRenderer<>(value -> Date.from(Instant.now()));
 		String formattedValue = renderer.getFormattedValue(Date.from(Instant.EPOCH));
 		
@@ -32,6 +35,8 @@ public class FormattedRendererTest
 	public void getDefaultFormattedLocalTimeValue() throws IOException
 	{
 		Locale.setDefault(Locale.GERMANY); // de_DE
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+		
 		LocalTimeRenderer<?> renderer = new LocalTimeRenderer<>(value -> LocalTime.now());
 		String formattedValue = renderer.getFormattedValue(LocalTime.NOON);
 		
@@ -42,6 +47,8 @@ public class FormattedRendererTest
 	public void getDefaultFormattedInstantValue() throws IOException
 	{
 		Locale.setDefault(Locale.GERMANY); // de_DE
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Berlin"));
+		
 		InstantRenderer<?> renderer = new InstantRenderer<>((v) -> Instant.now());
 		String formattedValue = renderer.getFormattedValue(Instant.EPOCH);
 		
