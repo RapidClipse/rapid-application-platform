@@ -104,7 +104,7 @@
 		<jakarta.jaxb-runtime.version>4.0.4</jakarta.jaxb-runtime.version>
 		
 		<!-- XML binding - Javax namespace for hibernate 5.6.x -->
-		<jaxb.api.version>2.3.3</jaxb.api.version>
+		<jaxb.api.version>4.0.2</jaxb.api.version>
 		<jaxb.runtime.version>2.3.9</jaxb.runtime.version>
 
 		<junit.version>5.10.2</junit.version>
