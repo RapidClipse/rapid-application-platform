@@ -68,7 +68,7 @@
 		<dependency>
 			<groupId>net.sourceforge.dynamicreports</groupId>
 			<artifactId>dynamicreports-core</artifactId>
-			<version>6.12.1</version>
+			<version>6.20.1</version>
 			<exclusions>
 				<!--
 				Unused. Has extremely outdated and vulnerable transitive dependencies.
