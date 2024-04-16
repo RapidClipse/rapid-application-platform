@@ -123,6 +123,10 @@ public interface PersistenceManager
 		{
 			final Map<String, Collection<Class<?>>> persistenceUnitTypes = new LinkedHashMap<>();
 			
+			// TODO: Replace SAXReader by javax.xml.parsers.DocumentBuilder & org.w3c.dom.Document 
+			// as in org.hibernate.jpa.boot.internal.PersistenceXmlParser or 
+			// use PersistenceXmlParser instead
+			
 			try
 			{
 				final URL url = findPersistenceXML(servletContext);
