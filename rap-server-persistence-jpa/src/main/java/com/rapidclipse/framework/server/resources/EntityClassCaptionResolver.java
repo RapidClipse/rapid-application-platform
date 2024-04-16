@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.resources;
 import java.lang.reflect.AnnotatedElement;
 import java.lang.reflect.Member;
 
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 
 import com.rapidclipse.framework.server.jpa.Jpa;
 

@@ -25,8 +25,8 @@ package com.rapidclipse.framework.server.ui.filter;
 
 import static java.util.Objects.requireNonNull;
 
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.metamodel.Attribute;
 
 import com.rapidclipse.framework.server.data.filter.Filter;
 import com.rapidclipse.framework.server.data.provider.CriteriaDataProvider;

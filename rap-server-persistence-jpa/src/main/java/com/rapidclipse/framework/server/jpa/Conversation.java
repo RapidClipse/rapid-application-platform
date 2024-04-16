@@ -23,7 +23,7 @@
  */
 package com.rapidclipse.framework.server.jpa;
 
-import javax.persistence.LockModeType;
+import jakarta.persistence.LockModeType;
 
 
 /**

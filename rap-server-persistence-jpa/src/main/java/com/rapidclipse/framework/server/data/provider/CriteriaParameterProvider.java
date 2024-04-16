@@ -30,8 +30,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.persistence.Parameter;
-import javax.persistence.TypedQuery;
+import jakarta.persistence.Parameter;
+import jakarta.persistence.TypedQuery;
 
 
 /**
