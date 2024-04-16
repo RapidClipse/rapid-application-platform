@@ -87,7 +87,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 
 		<vaadin.version>24.4.7</vaadin.version>
-		<hibernate.orm.version>5.6.15.Final</hibernate.orm.version>
+		<hibernate.orm.version>6.4.4.Final</hibernate.orm.version>
 		<hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
 
 		<!-- Jakarta EE APIs -->
@@ -132,9 +132,9 @@
 			<dependency>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-bom</artifactId>
+				<version>${vaadin.version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-				<version>${vaadin.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>jakarta.servlet</groupId>
@@ -169,6 +169,15 @@
 				<groupId>org.glassfish.jaxb</groupId>
 				<artifactId>jaxb-runtime</artifactId>
 				<version>${jakarta.xml.bind-runtime.version}</version>
+			</dependency>
+
+			<!-- Hibernate ORM Platform-->
+			<dependency>
+				<groupId>org.hibernate.orm</groupId>
+				<artifactId>hibernate-platform</artifactId>
+				<version>${hibernate.orm.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
 			</dependency>
 
 			<!-- Test -->
