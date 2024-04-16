@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.jpa.dal;
 import java.io.Serializable;
 import java.util.Objects;
 
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 
 import com.rapidclipse.framework.server.jpa.AttributeChain;
 

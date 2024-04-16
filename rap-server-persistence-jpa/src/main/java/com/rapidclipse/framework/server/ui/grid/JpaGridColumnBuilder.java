@@ -25,7 +25,7 @@ package com.rapidclipse.framework.server.ui.grid;
 
 import static java.util.Objects.requireNonNull;
 
-import javax.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.Attribute;
 
 import com.rapidclipse.framework.server.jpa.AttributeChain;
 import com.rapidclipse.framework.server.jpa.Jpa;
