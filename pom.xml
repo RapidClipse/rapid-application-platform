@@ -94,8 +94,8 @@
 		<jakartaee.version>10.0.0</jakartaee.version>
 
 		<jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
-		<!-- Javax namespace for hibernate 5.6.x -->
-		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
+		<!-- Persistence API (Jakarta) - for hibernate -->
+		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
 		<!-- EL API / for Hibernate Validator -->
 		<jakarta.el-api.version>5.0.1</jakarta.el-api.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>

@@ -26,7 +26,7 @@ package com.rapidclipse.framework.server.jpa;
 import java.io.Serializable;
 import java.util.function.Supplier;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 
 
 /**
