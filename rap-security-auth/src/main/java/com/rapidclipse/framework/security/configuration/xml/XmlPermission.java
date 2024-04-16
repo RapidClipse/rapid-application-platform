@@ -24,7 +24,7 @@
 
 package com.rapidclipse.framework.security.configuration.xml;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 
 /**
