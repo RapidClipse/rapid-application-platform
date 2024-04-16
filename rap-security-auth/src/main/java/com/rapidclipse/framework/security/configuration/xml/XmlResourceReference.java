@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 import com.rapidclipse.framework.security.util.Named;
 
-import javax.xml.bind.annotation.XmlAttribute;
+import jakarta.xml.bind.annotation.XmlAttribute;
 
 
 // pragmatic workaround class for insufficient JAXB concept
