@@ -23,10 +23,10 @@
  */
 package com.rapidclipse.framework.server.jpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.RollbackException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.RollbackException;
 
 import org.hibernate.FlushMode;
 import org.hibernate.Session;

@@ -38,30 +38,30 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EntityManager;
-import javax.persistence.Id;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.SharedCacheMode;
-import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Expression;
-import javax.persistence.criteria.Fetch;
-import javax.persistence.criteria.FetchParent;
-import javax.persistence.criteria.From;
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.JoinType;
-import javax.persistence.criteria.Path;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import javax.persistence.criteria.Selection;
-import javax.persistence.metamodel.Attribute;
-import javax.persistence.metamodel.ManagedType;
-import javax.persistence.metamodel.PluralAttribute;
-import javax.persistence.metamodel.SingularAttribute;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.EmbeddedId;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Id;
+import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.SharedCacheMode;
+import jakarta.persistence.TypedQuery;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Fetch;
+import jakarta.persistence.criteria.FetchParent;
+import jakarta.persistence.criteria.From;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
+import jakarta.persistence.criteria.Path;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.Selection;
+import jakarta.persistence.metamodel.Attribute;
+import jakarta.persistence.metamodel.ManagedType;
+import jakarta.persistence.metamodel.PluralAttribute;
+import jakarta.persistence.metamodel.SingularAttribute;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
@@ -69,6 +69,7 @@ import jakarta.servlet.annotation.WebListener;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.QueryHints;
+import org.hibernate.cfg.AvailableSettings;
 
 import com.rapidclipse.framework.server.data.DAO;
 import com.rapidclipse.framework.server.data.DataAccessObject;
@@ -85,10 +86,10 @@ import com.rapidclipse.framework.server.util.SoftCache;
  */
 public final class Jpa
 {
-	private final static String HINT_CACHE_STORE_MODE    =
-		"javax.persistence.cache.storeMode";
-	private final static String HINT_CACHE_RETRIEVE_MODE =
-		"javax.persistence.cache.retrieveMode";
+	private final static String HINT_CACHE_STORE_MODE    = AvailableSettings.JAKARTA_JPA_SHARED_CACHE_STORE_MODE;
+
+	private final static String HINT_CACHE_RETRIEVE_MODE = AvailableSettings.JAKARTA_JPA_SHARED_CACHE_RETRIEVE_MODE;
+
 
 	public final static String  PROPERTY_SEPARATOR       = ".";
 	private final static String PROPERTY_SEPARATOR_REGEX = "\\.";

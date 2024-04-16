@@ -28,9 +28,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.RollbackException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.RollbackException;
 
 import com.vaadin.flow.internal.CurrentInstance;
 import com.vaadin.flow.server.VaadinSession;
