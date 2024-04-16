@@ -25,6 +25,7 @@ package com.rapidclipse.framework.server.jpa;
 
 import java.io.Serializable;
 import java.lang.reflect.AnnotatedElement;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Member;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,18 @@ import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.jpa.AvailableHints;
+
+import com.rapidclipse.framework.server.data.DAO;
+import com.rapidclipse.framework.server.data.DataAccessObject;
+import com.rapidclipse.framework.server.jpa.dal.CacheableQueries;
+import com.rapidclipse.framework.server.jpa.dal.CacheableQuery;
+import com.rapidclipse.framework.server.jpa.dal.JpaDataAccessObject;
+import com.rapidclipse.framework.server.util.ReflectionUtils;
+import com.rapidclipse.framework.server.util.SoftCache;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EmbeddedId;
@@ -67,18 +80,6 @@ import jakarta.servlet.ServletContextEvent;
 import jakarta.servlet.ServletContextListener;
 import jakarta.servlet.annotation.WebListener;
 
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.QueryHints;
-import org.hibernate.cfg.AvailableSettings;
-
-import com.rapidclipse.framework.server.data.DAO;
-import com.rapidclipse.framework.server.data.DataAccessObject;
-import com.rapidclipse.framework.server.jpa.dal.CacheableQueries;
-import com.rapidclipse.framework.server.jpa.dal.CacheableQuery;
-import com.rapidclipse.framework.server.jpa.dal.JpaDataAccessObject;
-import com.rapidclipse.framework.server.util.ReflectionUtils;
-import com.rapidclipse.framework.server.util.SoftCache;
-
 
 /**
  * @author XDEV Software
@@ -86,9 +87,9 @@ import com.rapidclipse.framework.server.util.SoftCache;
  */
 public final class Jpa
 {
-	private final static String HINT_CACHE_STORE_MODE    = AvailableSettings.JAKARTA_JPA_SHARED_CACHE_STORE_MODE;
+	private final static String HINT_CACHE_STORE_MODE    = AvailableSettings.JAKARTA_SHARED_CACHE_STORE_MODE;
 
-	private final static String HINT_CACHE_RETRIEVE_MODE = AvailableSettings.JAKARTA_JPA_SHARED_CACHE_RETRIEVE_MODE;
+	private final static String HINT_CACHE_RETRIEVE_MODE = AvailableSettings.JAKARTA_SHARED_CACHE_RETRIEVE_MODE;
 
 
 	public final static String  PROPERTY_SEPARATOR       = ".";
@@ -119,7 +120,7 @@ public final class Jpa
 			try
 			{
 				final PersistenceManager.Factory factory = (PersistenceManager.Factory)Class
-					.forName(className).newInstance();
+					.forName(className).getDeclaredConstructor().newInstance();
 				return factory.createPersistenceManager(context);
 			}
 			catch(final Throwable t)
@@ -149,7 +150,7 @@ public final class Jpa
 			try
 			{
 				final SessionStrategyProvider.Factory factory = (SessionStrategyProvider.Factory)Class
-					.forName(className).newInstance();
+					.forName(className).getDeclaredConstructor().newInstance();
 				return factory.createSessionStrategyProvider(context);
 			}
 			catch(final Throwable t)
@@ -633,14 +634,14 @@ public final class Jpa
 			break;
 		}
 
-		typedQuery.setHint(QueryHints.CACHEABLE, cacheable);
+		typedQuery.setHint(AvailableHints.HINT_CACHEABLE, cacheable);
 
 		if(cacheable && cacheableQuery != null)
 		{
 			final String region = cacheableQuery.region();
 			if(!StringUtils.isBlank(region))
 			{
-				typedQuery.setHint(QueryHints.CACHE_REGION, region);
+				typedQuery.setHint(AvailableHints.HINT_CACHE_REGION, region);
 			}
 
 			typedQuery.setHint(HINT_CACHE_STORE_MODE, cacheableQuery.storeMode());
@@ -695,10 +696,10 @@ public final class Jpa
 			{
 				try
 				{
-					dao = daoType.newInstance();
+					dao = daoType.getDeclaredConstructor().newInstance();
 					daoCache.put(daoType, dao);
 				}
-				catch(InstantiationException | IllegalAccessException e)
+				catch(InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e)
 				{
 					throw new RuntimeException(e);
 				}

@@ -29,6 +29,15 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cfg.AvailableSettings;
+import org.hibernate.jpa.AvailableHints;
+import org.rapidpm.dependencies.core.logger.HasLogger;
+
+import com.rapidclipse.framework.server.jpa.AttributeChain;
+import com.rapidclipse.framework.server.jpa.Jpa;
+import com.rapidclipse.framework.server.util.ReflectionUtils;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import jakarta.persistence.TypedQuery;
@@ -49,14 +58,6 @@ import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.ManagedType;
 import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
-
-import org.apache.commons.lang3.StringUtils;
-import org.hibernate.annotations.QueryHints;
-import org.rapidpm.dependencies.core.logger.HasLogger;
-
-import com.rapidclipse.framework.server.jpa.AttributeChain;
-import com.rapidclipse.framework.server.jpa.Jpa;
-import com.rapidclipse.framework.server.util.ReflectionUtils;
 
 
 /**
@@ -727,26 +728,26 @@ class FindByExample<E> implements HasLogger
 	{
 		if(this.searchParameters.isCacheable())
 		{
-			typedQuery.setHint(QueryHints.CACHEABLE, true);
+			typedQuery.setHint(AvailableHints.HINT_CACHEABLE, true);
 
 			if(this.searchParameters.hasCacheRegion())
 			{
-				typedQuery.setHint(QueryHints.CACHE_REGION, this.searchParameters.getCacheRegion());
+				typedQuery.setHint(AvailableHints.HINT_CACHE_REGION, this.searchParameters.getCacheRegion());
 			}
 			else
 			{
-				typedQuery.setHint(QueryHints.CACHE_REGION, this.persistentClass.getCanonicalName());
+				typedQuery.setHint(AvailableHints.HINT_CACHE_REGION, this.persistentClass.getCanonicalName());
 			}
 
 			if(this.searchParameters.hasCacheStoreMode())
 			{
-				typedQuery.setHint("javax.persistence.cache.storeMode",
+				typedQuery.setHint(AvailableSettings.JAKARTA_SHARED_CACHE_STORE_MODE,
 					this.searchParameters.getCacheStoreMode());
 			}
 
 			if(this.searchParameters.hasCacheRetrieveMode())
 			{
-				typedQuery.setHint("javax.persistence.cache.retrieveMode",
+				typedQuery.setHint(AvailableSettings.JAKARTA_SHARED_CACHE_RETRIEVE_MODE,
 					this.searchParameters.getCacheRetrieveMode());
 			}
 		}
