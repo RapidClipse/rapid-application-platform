@@ -28,8 +28,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import javax.persistence.CacheRetrieveMode;
-import javax.persistence.CacheStoreMode;
+import jakarta.persistence.CacheRetrieveMode;
+import jakarta.persistence.CacheStoreMode;
 
 
 /**
