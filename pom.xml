@@ -87,7 +87,7 @@
 		<maven.compiler.target>17</maven.compiler.target>
 
 		<vaadin.version>24.3.9</vaadin.version>
-		<hibernate.orm.version>6.4.4.Final</hibernate.orm.version>
+		<hibernate.orm.version>6.4.5.Final</hibernate.orm.version>
 		<hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
 
 		<!-- Jakarta EE APIs -->
