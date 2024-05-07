@@ -31,7 +31,7 @@
 
 	<groupId>com.rapidclipse</groupId>
 	<artifactId>rap</artifactId>
-	<version>13.0.4</version>
+	<version>13.0.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<name>Rapid Application Platform</name>
@@ -318,7 +318,7 @@
 				<plugin>
 					<groupId>com.mycila</groupId>
 					<artifactId>license-maven-plugin</artifactId>
-					<version>4.4</version>
+					<version>4.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
