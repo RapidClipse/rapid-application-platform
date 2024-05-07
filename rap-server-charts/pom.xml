@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap</artifactId>
-		<version>13.0.2</version>
+		<version>13.0.3-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>rap-server-charts</artifactId>
