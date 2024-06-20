@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2023 by XDEV Software, All Rights Reserved.
+ * Copyright (C) 2013-2024 by XDEV Software, All Rights Reserved.
  *
  * This file is part of the RapidClipse Application Platform (RAP).
  *
@@ -45,7 +45,7 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -277,9 +277,9 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.layout                  = new VerticalLayout();
 		this.titlebar                = new HorizontalLayout();
 		this.iconGrid                = new Icon(VaadinIcon.TABLE);
-		this.lblTitle                = new Label();
+		this.lblTitle                = new NativeLabel();
 		this.txtReportTitle          = new TextField();
-		this.lblGridTitle            = new Label();
+		this.lblGridTitle            = new NativeLabel();
 		this.gridcontent             = new VerticalLayout();
 		this.gridcontainer           = new FlexLayout();
 		this.grid                    = new Grid<ColumnConfiguration<T>>();
@@ -294,7 +294,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 		this.ckHighlightRows         = new Checkbox();
 		this.cmbExportFormat         = new ComboBox<>();
 		this.bottomlayout            = new HorizontalLayout();
-		this.lblStatus               = new Label();
+		this.lblStatus               = new NativeLabel();
 		this.buttonbar               = new HorizontalLayout();
 		this.btnCancel               = new Button();
 		this.btnExport               = new Button();
@@ -417,7 +417,7 @@ public class GridExportDialog<T> extends Dialog implements AfterNavigationObserv
 	private Grid<ColumnConfiguration<T>> grid;
 	private VerticalLayout               layout, gridcontent, configurationcheckboxes, gridselectors;
 	private HorizontalLayout             titlebar, bottomlayout, buttonbar;
-	private Label                        lblTitle, lblGridTitle, lblStatus;
+	private NativeLabel                  lblTitle, lblGridTitle, lblStatus;
 	private Button                       btnClose;
 	private ComboBox<PageType>           cmbPageFormat;
 	private ComboBox<Format>             cmbExportFormat;

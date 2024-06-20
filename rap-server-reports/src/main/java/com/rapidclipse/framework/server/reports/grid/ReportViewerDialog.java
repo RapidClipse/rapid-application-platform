@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2013-2023 by XDEV Software, All Rights Reserved.
+ * Copyright (C) 2013-2024 by XDEV Software, All Rights Reserved.
  *
  * This file is part of the RapidClipse Application Platform (RAP).
  *
@@ -35,7 +35,7 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.HtmlObject;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeLabel;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -57,7 +57,7 @@ public class ReportViewerDialog extends Dialog implements AfterNavigationObserve
 	private final HorizontalLayout headerbar             = new HorizontalLayout();
 	private final Button           btnClose              = new Button(VaadinIcon.CLOSE.create());
 	private final DownloadAnchor   downloadAnchor        = new DownloadAnchor();
-	private final Label            lblTitle              = new Label("Report");
+	private final NativeLabel      lblTitle              = new NativeLabel("Report");
 	
 	private final Accordion        previewAccordion      = new Accordion();
 	private final AccordionPanel   previewAccordionPanel =
