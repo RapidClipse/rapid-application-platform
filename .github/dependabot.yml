@@ -19,11 +19,11 @@ updates:
     interval: daily
     # Run it at a specific time so that we don't get emails all day long
     time: "00:00"
-  open-pull-requests-limit: 10
+  open-pull-requests-limit: 20
   ignore:
   - dependency-name: "com.vaadin:vaadin-bom"
-    versions: ">=24.0.0"
-  - dependency-name: "jakarta.servlet:jakarta.servlet-api"
-    versions: ">=5.0.0"
+    versions: ">=24.4.0"
+  - dependency-name: "jakarta.persistence:jakarta.persistence-api"
+    versions: ">=3.0.0"
   - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
     versions: ">=3.0.0"
