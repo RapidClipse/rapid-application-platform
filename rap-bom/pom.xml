@@ -1,6 +1,6 @@
 <!--
 
-    Copyright (C) 2013-2023 by XDEV Software, All Rights Reserved.
+    Copyright (C) 2013-2024 by XDEV Software, All Rights Reserved.
 
     This file is part of the RapidClipse Application Platform (RAP).
 
@@ -29,7 +29,7 @@
 	<parent>
 		<groupId>com.rapidclipse</groupId>
 		<artifactId>rap</artifactId>
-		<version>13.0.5-SNAPSHOT</version>
+		<version>13.0.5</version>
 	</parent>
 
 	<artifactId>rap-bom</artifactId>
