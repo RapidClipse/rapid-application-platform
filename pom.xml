@@ -107,7 +107,7 @@
 		<jaxb.api.version>2.3.3</jaxb.api.version>
 		<jaxb.runtime.version>2.3.9</jaxb.runtime.version>
 
-		<junit.version>5.10.2</junit.version>
+		<junit.version>5.10.3</junit.version>
 	</properties>
 
 
