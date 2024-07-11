@@ -21,8 +21,6 @@ updates:
     time: "00:00"
   open-pull-requests-limit: 20
   ignore:
-  - dependency-name: "com.vaadin:vaadin-bom"
-    versions: ">=24.4.0"
   - dependency-name: "jakarta.persistence:jakarta.persistence-api"
     versions: ">=3.0.0"
   - dependency-name: "org.glassfish.jaxb:jaxb-runtime"
