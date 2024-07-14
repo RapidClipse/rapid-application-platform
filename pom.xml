@@ -97,7 +97,7 @@
 		<!-- Persistence API (Jakarta) - for hibernate -->
 		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
 		<!-- EL API / for Hibernate Validator -->
-		<jakarta.el-api.version>5.0.1</jakarta.el-api.version>
+		<jakarta.el-api.version>6.0.0</jakarta.el-api.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<!-- XML binding (Jakarta) - for hibernate -->
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
