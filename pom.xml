@@ -86,7 +86,7 @@
 		<maven.compiler.source>17</maven.compiler.source>
 		<maven.compiler.target>17</maven.compiler.target>
 
-		<vaadin.version>24.4.6</vaadin.version>
+		<vaadin.version>24.4.7</vaadin.version>
 		<hibernate.orm.version>6.5.2.Final</hibernate.orm.version>
 		<hibernate.validator.version>8.0.1.Final</hibernate.validator.version>
 
