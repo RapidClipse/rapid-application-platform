@@ -97,7 +97,7 @@
 		<!-- Javax namespace for hibernate 5.6.x -->
 		<jakarta.persistence-api.version>2.2.3</jakarta.persistence-api.version>
 		<!-- EL API / for Hibernate Validator -->
-		<jakarta.el-api.version>5.0.1</jakarta.el-api.version>
+		<jakarta.el-api.version>6.0.1</jakarta.el-api.version>
 		<jakarta.servlet-api.version>6.0.0</jakarta.servlet-api.version>
 		<!-- XML binding (Jakarta)- UNUSED-->
 		<jakarta.jaxb-api.version>4.0.1</jakarta.jaxb-api.version>
