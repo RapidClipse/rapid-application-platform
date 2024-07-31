@@ -93,7 +93,7 @@
 		<!-- Jakarta EE APIs -->
 		<jakartaee.version>10.0.0</jakartaee.version>
 
-		<jakarta.validation-api.version>3.0.2</jakarta.validation-api.version>
+		<jakarta.validation-api.version>3.1.0</jakarta.validation-api.version>
 		<!-- Persistence API (Jakarta) - for hibernate -->
 		<jakarta.persistence-api.version>3.1.0</jakarta.persistence-api.version>
 		<!-- EL API / for Hibernate Validator -->
