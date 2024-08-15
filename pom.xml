@@ -103,7 +103,7 @@
 		<jakarta.xml.bind-api.version>4.0.2</jakarta.xml.bind-api.version>
 		<jakarta.xml.bind-runtime.version>4.0.5</jakarta.xml.bind-runtime.version>
 
-		<junit.version>5.10.3</junit.version>
+		<junit.version>5.11.0</junit.version>
 	</properties>
 
 
