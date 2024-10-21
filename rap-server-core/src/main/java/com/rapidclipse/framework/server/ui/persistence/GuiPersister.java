@@ -27,9 +27,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.rapidpm.dependencies.core.logger.HasLogger;
-
 import com.vaadin.flow.component.Component;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 public interface GuiPersister
@@ -43,8 +43,9 @@ public interface GuiPersister
 		return new Default(entries);
 	}
 	
-	public static class Default implements GuiPersister, HasLogger
+	public static class Default implements GuiPersister
 	{
+		private static final Logger LOG = LoggerFactory.getLogger(Default.class);
 		private final Map<String, Map<String, Component>> entries;
 		
 		protected Default(final Map<String, Map<String, Component>> entries)
@@ -81,7 +82,7 @@ public interface GuiPersister
 				final Map<String, Component> componentMap = this.entries.get(name);
 				if(componentMap == null)
 				{
-					logger().info("[GuiPersister.restoreState] Unused state: " + name);
+					LOG.info("Unused state: {}", name);
 				}
 				else
 				{
@@ -89,7 +90,7 @@ public interface GuiPersister
 						final Component component = componentMap.get(identifier);
 						if(component == null)
 						{
-							logger().info("[GuiPersister.restoreState] Component not found: " + name);
+							LOG.info("Component not found: {}", name);
 						}
 						else
 						{

@@ -37,9 +37,9 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
 
-import org.rapidpm.dependencies.core.logger.HasLogger;
-
 import com.rapidclipse.framework.server.util.ServiceLoader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -185,8 +185,9 @@ public interface CaptionResolver
 		}
 	}
 
-	public static class BeanInfoParameterProvider implements Function<String, String>, HasLogger
+	public static class BeanInfoParameterProvider implements Function<String, String>
 	{
+		private static final Logger LOG = LoggerFactory.getLogger(BeanInfoParameterProvider.class);
 		private final Object element;
 
 		private boolean      acquireBeanInfo = true;
@@ -215,7 +216,7 @@ public interface CaptionResolver
 				}
 				catch(final IntrospectionException e)
 				{
-					logger().severe(e.getMessage(), e);
+					LOG.error(e.getMessage(), e);
 				}
 			}
 
@@ -250,7 +251,7 @@ public interface CaptionResolver
 			}
 			catch(final Throwable t)
 			{
-				logger().severe(t.getMessage(), t);
+				LOG.error(t.getMessage(), t);
 				return parameter;
 			}
 		}

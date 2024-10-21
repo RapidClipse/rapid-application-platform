@@ -70,11 +70,6 @@
 		</dependency>
 
 		<dependency>
-			<groupId>org.rapidpm</groupId>
-			<artifactId>rapidpm-logger-adapter</artifactId>
-			<version>01.00.10-RPM</version>
-		</dependency>
-		<dependency>
 			<groupId>eu.bitwalker</groupId>
 			<artifactId>UserAgentUtils</artifactId>
 			<version>1.21</version>
