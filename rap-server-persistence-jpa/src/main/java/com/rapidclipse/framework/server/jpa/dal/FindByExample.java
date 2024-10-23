@@ -32,7 +32,6 @@ import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.cfg.AvailableSettings;
 import org.hibernate.jpa.AvailableHints;
-import org.rapidpm.dependencies.core.logger.HasLogger;
 
 import com.rapidclipse.framework.server.jpa.AttributeChain;
 import com.rapidclipse.framework.server.jpa.Jpa;
@@ -58,13 +57,16 @@ import jakarta.persistence.metamodel.EntityType;
 import jakarta.persistence.metamodel.ManagedType;
 import jakarta.persistence.metamodel.PluralAttribute;
 import jakarta.persistence.metamodel.SingularAttribute;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  * @author XDEV Software
  */
-class FindByExample<E> implements HasLogger
+class FindByExample<E>
 {
+	private static final Logger LOG = LoggerFactory.getLogger(FindByExample.class);
 	private final Class<E>         persistentClass;
 	private final EntityManager    entityManager;
 	private final SearchParameters searchParameters;
@@ -623,7 +625,7 @@ class FindByExample<E> implements HasLogger
 					{
 						if(values.size() > 3)
 						{
-							logger().warning(
+							LOG.warn(
 								"Please note that using AND restriction on an Many to Many relationship requires as many joins as values");
 						}
 						for(final Object value : values)
