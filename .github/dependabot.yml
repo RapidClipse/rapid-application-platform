@@ -29,3 +29,7 @@ updates:
     versions: ">=6.0.0"
   - dependency-name: "jakarta.servlet:jakarta.servlet-api"
     versions: ">=6.0.0"
+  - dependency-name: "com.vaadin:vaadin-bom"
+    versions: ">=24.5.0"
+  - dependency-name: "org.hibernate.orm:hibernate-platform"
+    versions: ">=6.6.0"
