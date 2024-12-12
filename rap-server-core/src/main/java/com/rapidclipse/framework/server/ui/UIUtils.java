@@ -33,8 +33,11 @@ import com.vaadin.flow.component.Component;
 
 /**
  * @author XDEV Software
- *
+ * @deprecated This class breaks the encapsulation/abstraction principle and uses Vaadin internals.<p/>
+ * Use the <a href="https://vaadin.com/docs/latest/flow/create-ui/creating-components/events">Vaadin event bus</a>
+ * instead
  */
+@Deprecated(since = "14", forRemoval = true)
 public final class UIUtils
 {
 	@SuppressWarnings("unchecked") // type ensured by instance check
