@@ -59,11 +59,6 @@ public final class UIUtils
 		return null;
 	}
 
-	/**
-	 *
-	 * @param parent
-	 * @param visitor
-	 */
 	public static void traverseComponentTree(
 		final Component parent,
 		final Consumer<Component> visitor)
@@ -71,12 +66,6 @@ public final class UIUtils
 		lookupComponentTree(parent, toFunction(visitor));
 	}
 
-	/**
-	 *
-	 * @param parent
-	 * @param visitor
-	 * @param type
-	 */
 	public static <C> void traverseComponentTree(
 		final Component parent,
 		final Class<C> type,
@@ -135,7 +124,6 @@ public final class UIUtils
 	 * @param visitor
 	 *            the visitor
 	 * @return
-	 * @see {@link ComponentTreeVisitor}
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -165,6 +153,5 @@ public final class UIUtils
 
 	private UIUtils()
 	{
-		throw new Error();
 	}
 }
