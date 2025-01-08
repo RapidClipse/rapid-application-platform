@@ -33,7 +33,15 @@ import com.vaadin.flow.component.Component;
 
 /**
  * @author XDEV Software
- *
+ * @apiNote This class breaks the encapsulation/abstraction principle by potentially introducing indirect dependencies
+ * onto parent/child components.
+ * <p/>
+ * This might also cause unexpected errors as expected components are not always present -
+ * e.g. inside dialogs, which have no parent.
+ * <p/>
+ * It's a lot better to use the
+ * <a href="https://vaadin.com/docs/latest/flow/create-ui/creating-components/events">Vaadin event bus</a>
+ * instead or hand over the needed components via constructor or method.
  */
 public final class UIUtils
 {
@@ -59,11 +67,6 @@ public final class UIUtils
 		return null;
 	}
 
-	/**
-	 *
-	 * @param parent
-	 * @param visitor
-	 */
 	public static void traverseComponentTree(
 		final Component parent,
 		final Consumer<Component> visitor)
@@ -71,12 +74,6 @@ public final class UIUtils
 		lookupComponentTree(parent, toFunction(visitor));
 	}
 
-	/**
-	 *
-	 * @param parent
-	 * @param visitor
-	 * @param type
-	 */
 	public static <C> void traverseComponentTree(
 		final Component parent,
 		final Class<C> type,
@@ -135,7 +132,6 @@ public final class UIUtils
 	 * @param visitor
 	 *            the visitor
 	 * @return
-	 * @see {@link ComponentTreeVisitor}
 	 */
 
 	@SuppressWarnings("unchecked")
@@ -165,6 +161,5 @@ public final class UIUtils
 
 	private UIUtils()
 	{
-		throw new Error();
 	}
 }
