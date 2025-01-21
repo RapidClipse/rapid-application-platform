@@ -9,6 +9,14 @@
         "maven"
       ],
       "enabled": false
+    },
+    {
+      "description": "Ignore m2e - Eclipse internal - can't be resolved as these deps do not exist",
+      "packagePattern": "^org.eclipse.m2e:",
+      "datasources": [
+        "maven"
+      ],
+      "enabled": false
     }
   ]
 }
