@@ -189,19 +189,6 @@
 		</dependencies>
 	</dependencyManagement>
 
-
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
-
-
 	<repositories>
 		<!-- The order of definitions matters. Explicitly defining central here 
 			to make sure it has the highest priority. -->
@@ -210,17 +197,6 @@
 			<url>https://repo.maven.apache.org/maven2</url>
 			<snapshots>
 				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>sonatype-nexus-snapshots</id>
-			<name>Sonatype Nexus Snapshots</name>
-			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
-			<releases>
-				<enabled>false</enabled>
-			</releases>
-			<snapshots>
-				<enabled>true</enabled>
 			</snapshots>
 		</repository>
 		<repository>
@@ -366,9 +342,9 @@
 					<version>3.21.0</version>
 				</plugin>
 				<plugin>
-					<groupId>org.sonatype.plugins</groupId>
-					<artifactId>nexus-staging-maven-plugin</artifactId>
-					<version>1.7.0</version>
+					<groupId>org.sonatype.central</groupId>
+					<artifactId>central-publishing-maven-plugin</artifactId>
+					<version>0.7.0</version>
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
@@ -509,7 +485,7 @@
 
 	<profiles>
 		<profile>
-			<id>ossrh</id>
+			<id>publish-sonatype-central-portal</id>
 			<build>
 				<plugins>
 					<plugin>
@@ -539,15 +515,12 @@
 					</plugin>
 
 					<plugin>
-						<groupId>org.sonatype.plugins</groupId>
-						<artifactId>nexus-staging-maven-plugin</artifactId>
+						<groupId>org.sonatype.central</groupId>
+						<artifactId>central-publishing-maven-plugin</artifactId>
 						<extensions>true</extensions>
 						<configuration>
-							<serverId>ossrh</serverId>
-							<nexusUrl>https://oss.sonatype.org/</nexusUrl>
-							<!-- Sometimes OSSRH is really slow -->
-							<stagingProgressTimeoutMinutes>30</stagingProgressTimeoutMinutes>
-							<autoReleaseAfterClose>true</autoReleaseAfterClose>
+							<publishingServerId>sonatype-central-portal</publishingServerId>
+							<autoPublish>true</autoPublish>
 						</configuration>
 					</plugin>
 				</plugins>
