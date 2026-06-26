@@ -5,6 +5,11 @@
 
 # RapidClipse Application Platform
 
+> [!IMPORTANT]
+> **RapidClipse is [end of life](https://rapidclipse.com/en/end-of-life)**
+
+We want companies to be able to protect their existing investment in RapidClipse applications. That is why XDEV supports existing users in assessing, stabilizing, further developing, and potentially modernizing their projects.
+
 The RapidClipse Framework is used inside the RapidClipse IDE.
 
 Issues can be reported in our [issuetracker](https://xdevsoftware.atlassian.net/browse/XDEVSERVER).
