@@ -10,8 +10,10 @@
 
 We want companies to be able to protect their existing investment in RapidClipse applications. That is why XDEV supports existing users in assessing, stabilizing, further developing, and potentially modernizing their projects.
 
-The RapidClipse Framework is used inside the RapidClipse IDE.
+[Schedule a consultation](https://rapidclipse.com/en/about-us/contact)
 
-Issues can be reported in our [issuetracker](https://xdevsoftware.atlassian.net/browse/XDEVSERVER).
+
+
+The RapidClipse Framework is used inside the RapidClipse IDE.
 
 [![License](https://img.shields.io/github/license/RapidClipse/rapid-application-platform)](./LICENSE)
